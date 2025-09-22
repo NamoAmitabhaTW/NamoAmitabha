@@ -1,0 +1,26 @@
+name: Conventional Commits Lint
+
+on:
+  pull_request:
+    types: [opened, synchronize, edited, reopened]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  commitlint:
+    name: Lint commit messages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run commitlint
+        uses: wagoid/commitlint-github-action@v6
+        with:
+          helpURL: https://www.conventionalcommits.org/zh-hant/v1.0.0/
