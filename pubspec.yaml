@@ -38,17 +38,44 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  flutter_flavorizr: 2.4.1
+  flutter_launcher_icons: ^0.13.1
+
+flavorizr:
+  app:
+    android:
+      flavorDimensions: "app"   
+    ios:
+      buildConfiguration: "Release"  
+  flavors:
+    dev:
+      app:
+        name: "念佛app Dev"
+      android:
+        applicationId: "com.example.amitabha.dev"
+      ios:
+        bundleId: "com.example.amitabha.dev"
+
+    staging:
+      app:
+        name: "念佛app Staging"
+      android:
+        applicationId: "com.example.amitabha.staging"
+      ios:
+        bundleId: "com.example.amitabha.staging"
+
+    prod:
+      app:
+        name: "念佛app"
+      android:
+        applicationId: "com.example.amitabha"
+      ios:
+        bundleId: "com.example.amitabha"
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter packages.
 flutter:
 
@@ -87,3 +114,24 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  remove_alpha_ios: true
+
+  flavors:
+    dev:
+      android: true
+      ios: true
+      image_path: "assets/icons/dev.png"
+
+    staging:
+      android: true
+      ios: true
+      image_path: "assets/icons/staging.png"
+
+    prod:
+      android: true
+      ios: true
+      image_path: "assets/icons/prod.png"
