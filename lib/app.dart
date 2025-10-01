@@ -31,3 +31,5 @@ class App extends StatelessWidget {
         )
       : Container(child: child);
 }
+
+typedef MyApp = App;
