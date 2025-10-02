@@ -3,6 +3,8 @@
 // Original copyright (c) 2024 Xiaomi Corporation
 
 import 'dart:async';
+import 'package:amitabha/ars_hotwords.dart';
+
 import 'widgets/download_progress_dialog.dart';
 import 'download_model.dart';
 import 'online_model.dart';
@@ -20,9 +22,13 @@ Future<sherpa_onnx.OnlineRecognizer> createOnlineRecognizer(
   final localModelConfig = await getModelConfigByModelName(
     modelName: modelName,
   );
+  final hotwordsPath = await materializeHotwordsFile();
   final config = sherpa_onnx.OnlineRecognizerConfig(
     model: localModelConfig,
     ruleFsts: '',
+    decodingMethod: 'modified_beam_search',
+    hotwordsFile: hotwordsPath,
+    hotwordsScore: 6,
   );
 
   return sherpa_onnx.OnlineRecognizer(config);
