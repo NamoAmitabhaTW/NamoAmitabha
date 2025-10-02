@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
 import 'flavors.dart';
+import 'download_model.dart';
 import 'pages/my_home_page.dart';
 
 class App extends StatelessWidget {
@@ -9,10 +10,22 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: F.title,
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: _flavorBanner(child: MyHomePage(), show: kDebugMode),
+    return ChangeNotifierProvider(
+      create: (_) { 
+        final m = DownloadModel();
+        if (F.appFlavor == Flavor.dev) {
+          m.useKws(); 
+        } else {
+          m.useAsr(); 
+        }
+        return m;
+      },
+      child: MaterialApp(
+        title: F.title,
+        theme: ThemeData(primarySwatch: Colors.blue),
+        home: _flavorBanner(
+          child: const MyHomePage(), show: kDebugMode),
+      ),
     );
   }
 
@@ -21,15 +34,12 @@ class App extends StatelessWidget {
           location: BannerLocation.topStart,
           message: F.name,
           color: Colors.green.withAlpha(150),
-          textStyle: TextStyle(
-            fontWeight: FontWeight.w700,
-            fontSize: 12.0,
-            letterSpacing: 1.0,
-          ),
+          textStyle: const TextStyle(
+            fontWeight: FontWeight.w700, fontSize: 12.0, letterSpacing: 1.0),
           textDirection: TextDirection.ltr,
           child: child,
         )
-      : Container(child: child);
+      : child;
 }
 
 typedef MyApp = App;

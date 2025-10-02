@@ -49,14 +49,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.4"
-  cli_util:
-    dependency: transitive
-    description:
-      name: cli_util
-      sha256: ff6785f7e9e3c38ac98b2fb035701789de90154024a75b6cb926445e83197d1c
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.4.2"
   clock:
     dependency: transitive
     description:
@@ -126,14 +118,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.4.1"
-  flutter_launcher_icons:
-    dependency: "direct dev"
-    description:
-      name: flutter_launcher_icons
-      sha256: "526faf84284b86a4cb36d20a5e45147747b7563d921373d4ee0559c54fcdbcea"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.13.1"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -364,10 +348,10 @@ packages:
     dependency: "direct main"
     description:
       name: record
-      sha256: "2e3d56d196abcd69f1046339b75e5f3855b2406fc087e5991f6703f188aa03a6"
+      sha256: "9dbc6ff3e784612f90a9b001373c45ff76b7a08abd2bd9fdf72c242320c8911c"
       url: "https://pub.dev"
     source: hosted
-    version: "5.2.1"
+    version: "6.1.1"
   record_android:
     dependency: transitive
     description:
@@ -376,22 +360,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.2"
-  record_darwin:
+  record_ios:
     dependency: transitive
     description:
-      name: record_darwin
-      sha256: e487eccb19d82a9a39cd0126945cfc47b9986e0df211734e2788c95e3f63c82c
+      name: record_ios
+      sha256: "13e241ed9cbc220534a40ae6b66222e21288db364d96dd66fb762ebd3cb77c71"
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.2"
+    version: "1.1.2"
   record_linux:
     dependency: transitive
     description:
       name: record_linux
-      sha256: "74d41a9ebb1eb498a38e9a813dd524e8f0b4fdd627270bda9756f437b110a3e3"
+      sha256: "235b1f1fb84e810f8149cc0c2c731d7d697f8d1c333b32cb820c449bf7bb72d8"
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.2"
+    version: "1.2.1"
+  record_macos:
+    dependency: transitive
+    description:
+      name: record_macos
+      sha256: "2849068bb59072f300ad63ed146e543d66afaef8263edba4de4834fc7c8d4d35"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.1"
   record_platform_interface:
     dependency: transitive
     description:
