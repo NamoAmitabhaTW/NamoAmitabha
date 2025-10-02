@@ -12,3 +12,9 @@ App名稱：念佛
 播放音檔的計數方式，使用者必須配合音檔速度，過程若要調整念誦速度，需停下重新設置。
 
 此次開發的念佛App，透過語音辨識自動計數佛號，念佛過程可以隨時調整念誦速度，不用分心計算佛號數量。
+
+## Licenses
+
+This project depends on [sherpa-onnx](https://pub.dev/packages/sherpa_onnx),
+which is licensed under the Apache License 2.0.  
+See `THIRD_PARTY_LICENSES.txt` for details.
