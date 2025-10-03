@@ -4,7 +4,7 @@
 
 import 'dart:async';
 import 'package:amitabha/ars_hotwords.dart';
-
+import 'package:amitabha/amitabha_normalizer.dart';
 import 'widgets/download_progress_dialog.dart';
 import 'download_model.dart';
 import 'online_model.dart';
@@ -14,7 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:record/record.dart';
 import 'package:sherpa_onnx/sherpa_onnx.dart' as sherpa_onnx;
-
 
 Future<sherpa_onnx.OnlineRecognizer> createOnlineRecognizer(
   String modelName,
@@ -55,12 +54,15 @@ class _StreamingAsrScreenState extends State<StreamingAsrScreen> {
   StreamSubscription<RecordState>? _recordSub;
   RecordState _recordState = RecordState.stop;
 
+  int _asrHitCount = 0;
+  DateTime? _asrLastHitAt;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<DownloadModel>().useAsr(
-      'sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20',
+        'sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20',
       );
     });
     _audioRecorder = AudioRecorder();
@@ -152,9 +154,20 @@ class _StreamingAsrScreenState extends State<StreamingAsrScreen> {
               if (text != '') {
                 _last = textToDisplay;
                 _index += 1;
+
+                final hitAdd = countAmitabhaOccurrences(text);
+                if (hitAdd > 0) {
+                  setState(() {
+                    _asrHitCount += hitAdd;
+                    _asrLastHitAt = DateTime.now();
+                    debugPrint(
+                      '[ASR] 阿彌陀佛 HIT=$hitAdd Count = $_asrHitCount '
+                      ' Time = ${_asrLastHitAt!.toIso8601String()}',
+                    );
+                  });
+                }
               }
             }
-            // print('text: $textToDisplay');
 
             _controller.value = TextEditingValue(
               text: textToDisplay,
@@ -206,7 +219,9 @@ class _StreamingAsrScreenState extends State<StreamingAsrScreen> {
       children: [
         const SizedBox(height: 50),
         TextField(maxLines: 5, controller: _controller, readOnly: true),
-        const SizedBox(height: 50),
+        const SizedBox(height: 12),
+        _asrCounterPanel(),
+        const SizedBox(height: 38),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -260,5 +275,47 @@ class _StreamingAsrScreenState extends State<StreamingAsrScreen> {
     } else {
       return const Text("Stop");
     }
+  }
+
+  Widget _asrCounterPanel() {
+    final ts = _asrLastHitAt != null
+      ? _asrLastHitAt!
+          .toLocal()
+          .toIso8601String()
+          .replaceFirst('T', ' ')
+          .split('.')
+          .first 
+      : '—';
+    return Card(
+      elevation: 0,
+      color: Colors.amber.withOpacity(0.08),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              'ASR 阿彌陀佛',
+              style: TextStyle(fontWeight: FontWeight.w600),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  '累計：$_asrHitCount 聲',
+                  style: const TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '最後：$ts',
+                  style: const TextStyle(fontSize: 12, color: Colors.black54),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

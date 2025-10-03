@@ -7,7 +7,7 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sherpa_onnx/sherpa_onnx.dart' as sherpa_onnx;
 
-// ARS 
+// ASR 
 Future<sherpa_onnx.OnlineModelConfig> getModelConfigByModelName(
     {required String modelName}) async {
   final Directory directory = await getApplicationDocumentsDirectory();
@@ -49,7 +49,7 @@ Future<sherpa_onnx.KeywordSpotterConfig> getKwsConfigByModelName({
   final Directory dir = await getApplicationDocumentsDirectory();
   final root = join(dir.path, modelName);
 
-  final encoder = join(root, 'encoder-epoch-12-avg-2-chunk-16-left-64.int8.onnx');
+  final encoder = join(root, 'encoder-epoch-12-avg-2-chunk-16-left-64.onnx');
   final decoder = join(root, 'decoder-epoch-12-avg-2-chunk-16-left-64.onnx');    
   final joiner  = join(root, 'joiner-epoch-12-avg-2-chunk-16-left-64.int8.onnx');
   final tokens  = join(root, 'tokens.txt');

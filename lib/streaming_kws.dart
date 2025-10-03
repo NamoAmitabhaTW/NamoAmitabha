@@ -11,7 +11,6 @@ import 'package:provider/provider.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart' as path_provider;
 
-
 class StreamingKwsScreen extends StatefulWidget {
   const StreamingKwsScreen({super.key});
   @override
@@ -25,6 +24,13 @@ class _StreamingKwsScreenState extends State<StreamingKwsScreen> {
   sherpa_onnx.OnlineStream? _stream;
   StreamSubscription<RecordState>? _sub;
   RecordState _state = RecordState.stop;
+  final Map<String, int> _hitCounts = {};
+  final Map<String, DateTime> _lastHitAt = {};
+  int _kwsHitCount = 0;
+  DateTime? _kwsLastHitAt;
+  String _fmtTs(DateTime? t) => t == null
+      ? '—'
+      : t.toLocal().toIso8601String().replaceFirst('T', ' ').split('.').first;
 
   @override
   void initState() {
@@ -60,8 +66,6 @@ class _StreamingKwsScreenState extends State<StreamingKwsScreen> {
       final cfg = await getKwsConfigByModelName(
         modelName: modelName,
         keywordsFilePath: customKeywordsPath,
-        keywordsScore: 1.4,
-        keywordsThreshold: 0.20,
       );
 
       _kws ??= sherpa_onnx.KeywordSpotter(cfg);
@@ -94,8 +98,18 @@ class _StreamingKwsScreenState extends State<StreamingKwsScreen> {
 
           final r = _kws!.getResult(_stream!);
           if (r.keyword.isNotEmpty) {
-            _log.value = '[HIT] ${r.keyword}\n${_log.value}';
-            _kws!.reset(_stream!);
+            _lastHitAt[r.keyword] = DateTime.now();
+            final count = _hitCounts.update(
+              r.keyword,
+              (v) => v + 1,
+              ifAbsent: () => 1,
+            );
+
+            _kwsLastHitAt = _lastHitAt[r.keyword];
+            _kwsHitCount = count;
+            _log.value = '累計 阿彌陀佛 $_kwsHitCount 聲';
+            setState(() {}); 
+            setState(() {});
           }
         } catch (e, st) {
           debugPrint('KWS stream error: $e\n$st');
@@ -137,8 +151,8 @@ class _StreamingKwsScreenState extends State<StreamingKwsScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(
-              height: 200, // 顯示區高度可調
-              width: 300, // 可加個寬度限制，視需求
+              height: 200,
+              width: 300,
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   color: Colors.black.withOpacity(0.04),
@@ -157,6 +171,8 @@ class _StreamingKwsScreenState extends State<StreamingKwsScreen> {
                 ),
               ),
             ),
+            const SizedBox(height: 12),
+            _kwsCounterPanel(),
             const SizedBox(height: 24),
             SizedBox(
               width: 140,
@@ -164,6 +180,41 @@ class _StreamingKwsScreenState extends State<StreamingKwsScreen> {
                 onPressed: _state == RecordState.stop ? _start : _stop,
                 child: Text(_state == RecordState.stop ? 'Start KWS' : 'Stop'),
               ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _kwsCounterPanel() {
+    final ts = _fmtTs(_kwsLastHitAt);
+    return Card(
+      elevation: 0,
+      color: Colors.amber.withOpacity(0.08),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              'KWS 阿彌陀佛',
+              style: TextStyle(fontWeight: FontWeight.w600),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  '累計：$_kwsHitCount 聲',
+                  style: const TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '最後：$ts',
+                  style: const TextStyle(fontSize: 12, color: Colors.black54),
+                ),
+              ],
             ),
           ],
         ),

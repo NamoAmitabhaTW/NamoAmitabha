@@ -6,6 +6,7 @@ import "dart:io";
 import 'package:archive/archive.dart';
 import 'package:archive/archive_io.dart';
 import 'download_model.dart';
+import 'model_cleanup.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -261,29 +262,47 @@ Future<void> _unzipDownloadedFile(
 
   downloadModel.setUnzipProgress(0.4);
 
-    final files = result[1] as List<ArchiveFile>;
-    final totalFiles = files.length;
-    int processedFiles = 0;
+  final files = result[1] as List<ArchiveFile>;
+  final totalFiles = files.length;
+  int processedFiles = 0;
 
-    for (final file in files) {
-      await compute(_extractFileInIsolate, {
-        'file': file,
-        'destinationPath': destinationPath,
-      });
+  for (final file in files) {
+    await compute(_extractFileInIsolate, {
+      'file': file,
+      'destinationPath': destinationPath,
+    });
 
-      processedFiles++;
-      double progress = 0.4 + (0.6 * processedFiles / totalFiles);
-      // Add a small delay to allow UI updates
-      if (processedFiles % 10 == 0) {
-        await Future.delayed(Duration(milliseconds: 1));
-      }
-
-      downloadModel.setUnzipProgress(progress);
+    processedFiles++;
+    double progress = 0.4 + (0.6 * processedFiles / totalFiles);
+    // Add a small delay to allow UI updates
+    if (processedFiles % 10 == 0) {
+      await Future.delayed(Duration(milliseconds: 1));
     }
-  
-  
+
+    downloadModel.setUnzipProgress(progress);
+  }
+
   downloadModel.setProgress(1.0);
   downloadModel.setUnzipProgress(1.0);
+
+  try {
+    final f = File(zipFilePath);
+    if (await f.exists()) {
+      await f.delete();
+    }
+  } catch (_) {}
+
+  // …前面進度設為 1.0 並刪壓縮檔
+  final modelRootName = basenameWithoutExtension(
+    basenameWithoutExtension(zipFilePath), // 去 .bz2 再去 .tar
+  );
+  final modelRoot = join(destinationPath, modelRootName);
+
+  await deleteSpecificFilesForModel(
+    modelName: downloadModel.modelName,
+    modelRoot: modelRoot,
+    dryRun: false, // 初次建議先 dryRun 看 log，確認無誤再移除
+  );
 
   if (Navigator.canPop(context)) {
     Navigator.of(context).pop();
