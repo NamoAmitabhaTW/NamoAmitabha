@@ -8,33 +8,11 @@ import 'package:archive/archive_io.dart';
 import 'download_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'widgets/download_progress_dialog.dart';
-
-Future<String> copyAssetFile(String src, [String? dst]) async {
-  final Directory directory = await getApplicationDocumentsDirectory();
-  if (dst == null) {
-    dst = basename(src);
-  }
-  final target = join(directory.path, dst);
-  bool exists = await new File(target).exists();
-
-  final data = await rootBundle.load(src);
-
-  if (!exists || File(target).lengthSync() != data.lengthInBytes) {
-    final List<int> bytes = data.buffer.asUint8List(
-      data.offsetInBytes,
-      data.lengthInBytes,
-    );
-    await File(target).writeAsBytes(bytes);
-  }
-
-  return target;
-}
 
 Float32List convertBytesToFloat32(Uint8List bytes, [endian = Endian.little]) {
   final values = Float32List(bytes.length ~/ 2);
