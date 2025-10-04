@@ -15,17 +15,18 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'widgets/download_progress_dialog.dart';
 
-Float32List convertBytesToFloat32(Uint8List bytes, [endian = Endian.little]) {
-  final values = Float32List(bytes.length ~/ 2);
+Float32List convertBytesToFloat32(Uint8List bytes, [Endian endian = Endian.little]) {
+  final pairCount = bytes.length >> 1;        
+  if (pairCount == 0) return Float32List(0);  
 
-  final data = ByteData.view(bytes.buffer);
+  final out = Float32List(pairCount);
+  final data = ByteData.sublistView(bytes);
 
-  for (var i = 0; i < bytes.length; i += 2) {
-    int short = data.getInt16(i, endian);
-    values[i ~/ 2] = short / 32768.0;
+  for (int j = 0, i = 0; j < pairCount; j++, i += 2) {
+    final s = data.getInt16(i, endian);
+    out[j] = s / 32768.0;
   }
-
-  return values;
+  return out;
 }
 
 Future<void> downloadModelAndUnZip(
