@@ -26,20 +26,11 @@ String normalizeForAmitabha(String s) {
   return t;
 }
 
-
-final RegExp _amituofoStrict = RegExp(r'阿弥陀佛');
-
-
 final RegExp _amituofoTolerant = RegExp(r'阿[弥米咪]陀佛');
-
 
 int countAmitabhaOccurrences(String text) {
   final norm = normalizeForAmitabha(text);
-
-  final strictHits = _amituofoStrict.allMatches(norm).length;
-  if (strictHits > 0) return strictHits;
   return _amituofoTolerant.allMatches(norm).length;
 }
-
 
 bool containsAmitabha(String text) => countAmitabhaOccurrences(text) > 0;
