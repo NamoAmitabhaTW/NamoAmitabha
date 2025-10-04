@@ -128,3 +128,4 @@ app.*.symbols
 *.ipr
 *.iws
 
+ios/Runner.xcworkspace/
