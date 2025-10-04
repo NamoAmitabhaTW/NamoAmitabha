@@ -1,6 +1,3 @@
-// TODO: add Amitabha hit-counter tests
-// 目的：驗證阿彌陀佛的辨識是否正確
-// 涵蓋：基準用例、口音變體、空白/標點去除、多次命中、無命中、正規化字形映射。
 import 'package:flutter_test/flutter_test.dart';
 import 'package:amitabha/amitabha_normalizer.dart';
 
