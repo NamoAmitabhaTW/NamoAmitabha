@@ -1,0 +1,33 @@
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as p;
+
+class AppPaths {
+  static Future<Directory> _root() async {
+    final doc = await getApplicationDocumentsDirectory();
+    final dir = Directory(p.join(doc.path, 'namo'));
+    if (!await dir.exists()) await dir.create(recursive: true);
+    return dir;
+  }
+
+  static Future<File> sessionSnapshot(String sessionId) async {
+    final r = await _root();
+    final file = File(p.join(r.path, 'data', 'sessions', '$sessionId.json'));
+    await file.parent.create(recursive: true);
+    return file;
+  }
+
+  static Future<File> sessionHits(String sessionId, {int part = 1}) async {
+    final r = await _root();
+    final file = File(p.join(r.path, 'data', 'sessions', '$sessionId-hits-$part.ndjson'));
+    await file.parent.create(recursive: true);
+    return file;
+  }
+
+  static Future<File> daily(String yyyymmdd) async {
+    final r = await _root();
+    final file = File(p.join(r.path, 'data', 'daily', '$yyyymmdd.json'));
+    await file.parent.create(recursive: true);
+    return file;
+  }
+}

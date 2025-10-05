@@ -13,6 +13,7 @@ import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 import 'widgets/download_progress_dialog.dart';
 
 Float32List convertBytesToFloat32(Uint8List bytes, [Endian endian = Endian.little]) {
@@ -309,4 +310,8 @@ Future<void> _unzipDownloadedFile(
     Navigator.of(context).pop();
     _showSuccessDialog(context);
   }
+}
+
+String nowYmdLocal() {
+  return DateFormat('yyyyMMdd').format(DateTime.now()); // 本地時區
 }

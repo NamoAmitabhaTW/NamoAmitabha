@@ -14,6 +14,20 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:record/record.dart';
 import 'package:sherpa_onnx/sherpa_onnx.dart' as sherpa_onnx;
+import 'package:amitabha/storage/hit_logger.dart';
+import 'package:amitabha/storage/session_repo.dart';
+import 'package:amitabha/storage/daily_repo.dart';
+import 'package:amitabha/storage/buffered_hits.dart';
+import 'package:amitabha/storage/models.dart';
+
+late final SessionRepository _sessionRepo;
+late final DailyRepository _dailyRepo;
+late final HitLogger _hitLogger;
+late final BufferedHits _buffer;
+late final String _sessionId;
+final String _userId = 'local';
+final String _userName = '使用者';
+late DateTime _sessionStartedAt;
 
 Future<sherpa_onnx.OnlineRecognizer> createOnlineRecognizer(
   String modelName,
@@ -41,7 +55,7 @@ class StreamingAsrScreen extends StatefulWidget {
 }
 
 class _StreamingAsrScreenState extends State<StreamingAsrScreen> {
-  late final TextEditingController _controller;
+  final TextEditingController _controller = TextEditingController();
   late final AudioRecorder _audioRecorder;
   String _last = '';
   int _index = 0;
@@ -60,16 +74,20 @@ class _StreamingAsrScreenState extends State<StreamingAsrScreen> {
   @override
   void initState() {
     super.initState();
+    _initAndStart();
+  }
+
+  Future<void> _initAndStart() async {
+    await _initStorage();
+    
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<DownloadModel>().useAsr(
         'sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20',
       );
     });
+
     _audioRecorder = AudioRecorder();
-    _controller = TextEditingController();
-    _recordSub = _audioRecorder.onStateChanged().listen((recordState) {
-      _updateRecordState(recordState);
-    });
+    _recordSub = _audioRecorder.onStateChanged().listen(_updateRecordState);
   }
 
   Future<void> _start() async {
@@ -164,6 +182,9 @@ class _StreamingAsrScreenState extends State<StreamingAsrScreen> {
                       '[ASR] 阿彌陀佛 HIT=$hitAdd Count = $_asrHitCount '
                       ' Time = ${_asrLastHitAt!.toIso8601String()}',
                     );
+                    for (int i = 0; i < hitAdd; i++) {
+                      _buffer.add(DateTime.now());
+                    }
                   });
                 }
               }
@@ -185,9 +206,9 @@ class _StreamingAsrScreenState extends State<StreamingAsrScreen> {
   }
 
   Future<void> _stop() async {
+    await _buffer.close();
     _stream!.free();
     _stream = _recognizer!.createStream();
-
     await _audioRecorder.stop();
   }
 
@@ -210,6 +231,42 @@ class _StreamingAsrScreenState extends State<StreamingAsrScreen> {
     }
 
     return isSupported;
+  }
+
+  Future<void> _initStorage() async {
+    _sessionRepo = SessionRepository();
+    _dailyRepo = DailyRepository();
+
+    _sessionId = DateTime.now().toUtc().millisecondsSinceEpoch.toString();
+    _sessionStartedAt = DateTime.now().toUtc();
+
+    _hitLogger = HitLogger(_sessionId, rotateEvery: 5000);
+    await _hitLogger.initFromDisk();
+
+    _buffer = BufferedHits(
+      flushEvery: const Duration(seconds: 3),
+      maxBuffer: 200,
+      onFlush: (hits) async {
+        final hitsUtc = hits.map((e) => e.toUtc()).toList(growable: false);
+        final lastHit = hitsUtc.isNotEmpty
+            ? hitsUtc.last
+            : DateTime.now().toUtc();
+        await _hitLogger.appendMany(hitsUtc);
+
+        final snapshot = SessionSnapshot(
+          sessionId: _sessionId,
+          userId: _userId,
+          userName: _userName,
+          startedAt: _sessionStartedAt,
+          lastAt: lastHit,
+          amitabhaCount: _asrHitCount,
+        );
+        await _sessionRepo.upsertSnapshot(snapshot);
+
+        final ymd = nowYmdLocal();
+        await _dailyRepo.addCount(ymd, _userId, _userName, hits.length);
+      },
+    );
   }
 
   @override
@@ -240,6 +297,7 @@ class _StreamingAsrScreenState extends State<StreamingAsrScreen> {
     _audioRecorder.dispose();
     _stream?.free();
     _recognizer?.free();
+    _buffer.close();
     super.dispose();
   }
 
@@ -279,13 +337,13 @@ class _StreamingAsrScreenState extends State<StreamingAsrScreen> {
 
   Widget _asrCounterPanel() {
     final ts = _asrLastHitAt != null
-      ? _asrLastHitAt!
-          .toLocal()
-          .toIso8601String()
-          .replaceFirst('T', ' ')
-          .split('.')
-          .first 
-      : '—';
+        ? _asrLastHitAt!
+              .toLocal()
+              .toIso8601String()
+              .replaceFirst('T', ' ')
+              .split('.')
+              .first
+        : '—';
     return Card(
       elevation: 0,
       color: Colors.amber.withOpacity(0.08),
