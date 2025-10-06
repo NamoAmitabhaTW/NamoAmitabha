@@ -19,15 +19,11 @@ import 'package:amitabha/storage/session_repo.dart';
 import 'package:amitabha/storage/daily_repo.dart';
 import 'package:amitabha/storage/buffered_hits.dart';
 import 'package:amitabha/storage/models.dart';
+import 'features/asr/widgets/save_button.dart';
+import 'features/asr/widgets/record_toggle_button.dart';
+import 'storage/firestore_syncToCloudBatch.dart';
 
-late final SessionRepository _sessionRepo;
-late final DailyRepository _dailyRepo;
-late final HitLogger _hitLogger;
-late final BufferedHits _buffer;
-late final String _sessionId;
-final String _userId = 'local';
-final String _userName = '使用者';
-late DateTime _sessionStartedAt;
+enum SessionState { idle, recording }
 
 Future<sherpa_onnx.OnlineRecognizer> createOnlineRecognizer(
   String modelName,
@@ -54,13 +50,13 @@ class StreamingAsrScreen extends StatefulWidget {
   State<StreamingAsrScreen> createState() => _StreamingAsrScreenState();
 }
 
-class _StreamingAsrScreenState extends State<StreamingAsrScreen> {
+class _StreamingAsrScreenState extends State<StreamingAsrScreen>
+    with WidgetsBindingObserver {
   final TextEditingController _controller = TextEditingController();
   late final AudioRecorder _audioRecorder;
   String _last = '';
   int _index = 0;
   bool _isInitialized = false;
-
   sherpa_onnx.OnlineRecognizer? _recognizer;
   sherpa_onnx.OnlineStream? _stream;
   int _sampleRate = 16000;
@@ -71,15 +67,30 @@ class _StreamingAsrScreenState extends State<StreamingAsrScreen> {
   int _asrHitCount = 0;
   DateTime? _asrLastHitAt;
 
+  late final SessionRepository _sessionRepo;
+  late final DailyRepository _dailyRepo;
+  HitLogger? _hitLogger;
+  BufferedHits? _buffer;
+  late String _sessionId;
+  late DateTime _sessionStartedAt;
+  SessionState _sessionState = SessionState.idle;
+
+  final String _userId = 'local';
+  final String _userName = '使用者';
+
+  bool _committing = false;
+  bool get _saveEnabled => _asrHitCount > 0 && !_committing;
+
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _initAndStart();
   }
 
   Future<void> _initAndStart() async {
     await _initStorage();
-    
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<DownloadModel>().useAsr(
         'sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20',
@@ -123,6 +134,11 @@ class _StreamingAsrScreenState extends State<StreamingAsrScreen> {
       _stream = _recognizer?.createStream();
 
       _isInitialized = true;
+    }
+
+    if (_sessionState == SessionState.idle) {
+      await _beginNewSession();
+      _sessionState = SessionState.recording;
     }
 
     try {
@@ -183,7 +199,7 @@ class _StreamingAsrScreenState extends State<StreamingAsrScreen> {
                       ' Time = ${_asrLastHitAt!.toIso8601String()}',
                     );
                     for (int i = 0; i < hitAdd; i++) {
-                      _buffer.add(DateTime.now());
+                      _buffer?.add(DateTime.now());
                     }
                   });
                 }
@@ -206,9 +222,9 @@ class _StreamingAsrScreenState extends State<StreamingAsrScreen> {
   }
 
   Future<void> _stop() async {
-    await _buffer.close();
-    _stream!.free();
-    _stream = _recognizer!.createStream();
+    await _buffer?.close();
+    _stream?.free();
+    _stream = _recognizer?.createStream();
     await _audioRecorder.stop();
   }
 
@@ -236,37 +252,115 @@ class _StreamingAsrScreenState extends State<StreamingAsrScreen> {
   Future<void> _initStorage() async {
     _sessionRepo = SessionRepository();
     _dailyRepo = DailyRepository();
+  }
 
+  Future<void> _beginNewSession() async {
     _sessionId = DateTime.now().toUtc().millisecondsSinceEpoch.toString();
     _sessionStartedAt = DateTime.now().toUtc();
 
+    _asrHitCount = 0;
+    _asrLastHitAt = null;
+    _last = '';
+    _index = 0;
+
     _hitLogger = HitLogger(_sessionId, rotateEvery: 5000);
-    await _hitLogger.initFromDisk();
+    await _hitLogger!.initFromDisk();
 
     _buffer = BufferedHits(
       flushEvery: const Duration(seconds: 3),
       maxBuffer: 200,
       onFlush: (hits) async {
+        if (hits.isEmpty) return;
         final hitsUtc = hits.map((e) => e.toUtc()).toList(growable: false);
-        final lastHit = hitsUtc.isNotEmpty
-            ? hitsUtc.last
-            : DateTime.now().toUtc();
-        await _hitLogger.appendMany(hitsUtc);
-
-        final snapshot = SessionSnapshot(
-          sessionId: _sessionId,
-          userId: _userId,
-          userName: _userName,
-          startedAt: _sessionStartedAt,
-          lastAt: lastHit,
-          amitabhaCount: _asrHitCount,
-        );
-        await _sessionRepo.upsertSnapshot(snapshot);
-
-        final ymd = nowYmdLocal();
-        await _dailyRepo.addCount(ymd, _userId, _userName, hits.length);
+        final logger = _hitLogger;
+        if (logger != null) {
+          await logger.appendMany(hitsUtc);
+        }
       },
     );
+  }
+
+  Future<void> _commitSession({String reason = 'user_action'}) async {
+    await _buffer?.close();
+
+    if (_asrHitCount <= 0) {
+      return;
+    }
+
+    await _audioRecorder.stop();
+    _sessionState = SessionState.idle;
+
+    final lastAt = (_asrLastHitAt ?? DateTime.now()).toUtc();
+
+    final snapshot = SessionSnapshot(
+      sessionId: _sessionId,
+      userId: _userId,
+      userName: _userName,
+      startedAt: _sessionStartedAt,
+      lastAt: lastAt,
+      amitabhaCount: _asrHitCount,
+    );
+    await _sessionRepo.upsertSnapshot(snapshot);
+
+    final ymd = nowYmdLocal();
+    await _dailyRepo.addCount(ymd, _userId, _userName, _asrHitCount);
+
+    try {
+      await syncToCloudBatch(snapshot, ymd, _asrHitCount);
+    } catch (e) {
+      debugPrint('cloud sync failed: $e');
+    }
+
+    setState(() {
+      _asrHitCount = 0;
+      _asrLastHitAt = null;
+      _last = '';
+      _index = 0;
+    });
+
+    _buffer = null;
+    _hitLogger = null;
+  }
+
+  Future<void> _onSavePressed() async {
+    if (_committing) return;
+    setState(() => _committing = true);
+    try {
+      await _commitSession(reason: 'user_save');
+    } catch (e) {
+      debugPrint('Save failed: $e');
+    } finally {
+      if (mounted) setState(() => _committing = false);
+    }
+  }
+
+  Future<void> _commitIfPending({String reason = 'auto'}) async {
+    if (_committing) return;
+    if (_asrHitCount > 0) {
+      try {
+        await _commitSession(reason: reason);
+      } catch (_) {}
+    }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.detached) {
+      _commitIfPending(reason: 'lifecycle_${state.name}');
+    }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _commitIfPending(reason: 'dispose');
+    _recordSub?.cancel();
+    _audioRecorder.dispose();
+    _stream?.free();
+    _recognizer?.free();
+    _buffer?.close();
+    super.dispose();
   }
 
   @override
@@ -282,48 +376,23 @@ class _StreamingAsrScreenState extends State<StreamingAsrScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            _buildRecordStopControl(),
+            RecordToggleButton(
+              isRecording: _recordState != RecordState.stop,
+              onStart: _start,
+              onStop: _stop,
+              disabled: _committing,
+            ),
             const SizedBox(width: 20),
             _buildText(),
+            const SizedBox(width: 20),
+            SaveButton(
+              enabled: _saveEnabled,
+              loading: _committing,
+              onPressed: _onSavePressed,
+            ),
           ],
         ),
       ],
-    );
-  }
-
-  @override
-  void dispose() {
-    _recordSub?.cancel();
-    _audioRecorder.dispose();
-    _stream?.free();
-    _recognizer?.free();
-    _buffer.close();
-    super.dispose();
-  }
-
-  Widget _buildRecordStopControl() {
-    late Icon icon;
-    late Color color;
-
-    if (_recordState != RecordState.stop) {
-      icon = const Icon(Icons.stop, color: Colors.red, size: 30);
-      color = Colors.red.withOpacity(0.1);
-    } else {
-      final theme = Theme.of(context);
-      icon = Icon(Icons.mic, color: theme.primaryColor, size: 30);
-      color = theme.primaryColor.withOpacity(0.1);
-    }
-
-    return ClipOval(
-      child: Material(
-        color: color,
-        child: InkWell(
-          child: SizedBox(width: 56, height: 56, child: icon),
-          onTap: () {
-            (_recordState != RecordState.stop) ? _stop() : _start();
-          },
-        ),
-      ),
     );
   }
 

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "498910711963",
+    "project_id": "amitabha-91bdb",
+    "storage_bucket": "amitabha-91bdb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:498910711963:android:ded4b125bfdc587f9bf63e",
+        "android_client_info": {
+          "package_name": "com.earth.amitabha"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBh2GPqQJr6BOt9rQGWJvYdvFb-QNv5Lqc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
