@@ -4,8 +4,8 @@ import 'package:path/path.dart' as p;
 
 class AppPaths {
   static Future<Directory> _root() async {
-    final doc = await getApplicationDocumentsDirectory();
-    final dir = Directory(p.join(doc.path, 'namo'));
+    final doc = await getApplicationSupportDirectory();
+    final dir = Directory(p.join(doc.path, 'amitabha'));
     if (!await dir.exists()) await dir.create(recursive: true);
     return dir;
   }
