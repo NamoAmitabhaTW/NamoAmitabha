@@ -30,4 +30,7 @@ class AuthFacade {
     }
     return cred;
   }
+
+  Stream<fb.User?> authStateChanges() => auth.authStateChanges();
+  Future<void> signOut() => auth.signOut();
 }
