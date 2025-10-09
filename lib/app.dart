@@ -7,6 +7,7 @@ import 'pages/my_home_page.dart';
 import 'features/auth/application/auth_facade.dart';
 import 'features/auth/data/firebase_auth_repository.dart';
 import 'features/auth/data/firestore_user_repository.dart';
+import 'l10n/generated/app_localizations.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -34,8 +35,10 @@ class App extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        title: F.title,
+        onGenerateTitle: (ctx) => AppLocalizations.of(ctx)!.amitabha,
         theme: ThemeData(primarySwatch: Colors.blue),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         home: _flavorBanner(child: const MyHomePage(), show: kDebugMode),
       ),
     );

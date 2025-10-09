@@ -1,0 +1,23 @@
+{
+  "zh": [
+    "amitabha",
+    "start",
+    "pause",
+    "save",
+    "logIn",
+    "logOut",
+    "total",
+    "totalCount"
+  ],
+
+  "zh_Hant": [
+    "amitabha",
+    "start",
+    "pause",
+    "save",
+    "logIn",
+    "logOut",
+    "total",
+    "totalCount"
+  ]
+}

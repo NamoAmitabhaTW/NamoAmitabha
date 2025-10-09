@@ -276,7 +276,7 @@ Future<void> _unzipDownloadedFile(
 
     processedFiles++;
     double progress = 0.4 + (0.6 * processedFiles / totalFiles);
-    // Add a small delay to allow UI updates
+    
     if (processedFiles % 10 == 0) {
       await Future.delayed(Duration(milliseconds: 1));
     }
@@ -294,7 +294,7 @@ Future<void> _unzipDownloadedFile(
     }
   } catch (_) {}
 
-  // …前面進度設為 1.0 並刪壓縮檔
+  
   final modelRootName = basenameWithoutExtension(
     basenameWithoutExtension(zipFilePath), // 去 .bz2 再去 .tar
   );
@@ -303,7 +303,7 @@ Future<void> _unzipDownloadedFile(
   await deleteSpecificFilesForModel(
     modelName: downloadModel.modelName,
     modelRoot: modelRoot,
-    dryRun: false, // 初次建議先 dryRun 看 log，確認無誤再移除
+    dryRun: false, 
   );
 
   if (Navigator.canPop(context)) {
@@ -313,5 +313,10 @@ Future<void> _unzipDownloadedFile(
 }
 
 String nowYmdLocal() {
-  return DateFormat('yyyyMMdd').format(DateTime.now()); // 本地時區
+  return DateFormat('yyyyMMdd').format(DateTime.now());
+}
+
+String formatYMd(BuildContext context, DateTime dt) {
+  final locale = Localizations.localeOf(context).toString(); 
+  return DateFormat.yMd(locale).format(dt);
 }

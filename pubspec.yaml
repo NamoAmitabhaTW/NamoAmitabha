@@ -31,6 +31,8 @@ dependencies:
   flutter:
     sdk: flutter
   
+  flutter_localizations:
+    sdk: flutter 
   
   sherpa_onnx: ^1.10.45
   record: ^6.1.0           
@@ -49,7 +51,7 @@ dependencies:
   cloud_firestore: ^5.5.1
   firebase_auth: ^5.3.1
   connectivity_plus: ^6.1.0
-  sign_in_with_apple: ^5.0.0
+  sign_in_with_apple: ^7.0.0
   google_sign_in: ^7.2.0
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -98,6 +100,8 @@ flavorizr:
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter packages.
 flutter:
+  generate: true 
+
   assets:
     - assets/keywords_zh.txt
     - assets/hotwords_zh.txt
