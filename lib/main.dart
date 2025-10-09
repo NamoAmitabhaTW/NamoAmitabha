@@ -9,7 +9,7 @@ void main() async {
   await Firebase.initializeApp();
   await FirebaseAuth.instance.signInAnonymously();
 
-  const flavorName = String.fromEnvironment('appFlavor', defaultValue: 'staging');
+  const flavorName = String.fromEnvironment('appFlavor', defaultValue: 'debug');
   F.appFlavor = Flavor.values.firstWhere(
     (e) => e.name == flavorName,
     orElse: () => Flavor.dev, 
