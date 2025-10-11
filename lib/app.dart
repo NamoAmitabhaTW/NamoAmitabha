@@ -35,7 +35,7 @@ class App extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        onGenerateTitle: (ctx) => AppLocalizations.of(ctx)!.amitabha,
+        onGenerateTitle: (ctx) => AppLocalizations.of(ctx).amitabha,
         theme: ThemeData(primarySwatch: Colors.blue),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
