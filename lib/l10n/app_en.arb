@@ -1,0 +1,28 @@
+{
+  "amitabha": "Amitabha",
+  "@amitabha": { "description": "Buddha name label" },
+
+  "start": "Start",
+  "@start": { "description": "Start button" },
+
+  "pause": "Pause",
+  "@pause": { "description": "Pause button" },
+
+  "save": "Save",
+  "@save": { "description": "Save button" },
+
+  "logIn": "Log in",
+  "@logIn": { "description": "Sign-in button" },
+
+  "logOut": "Log Out",
+  "@logOut": { "description": "Sign-out button" },
+
+  "total": "Total",
+  "@total": { "description": "Summary label (text only)" },
+
+  "totalCount": "Total count: {count}",
+  "@totalCount": {
+    "description": "Total count with value",
+    "placeholders": { "count": { "type": "int", "example": "108" } }
+  }
+}

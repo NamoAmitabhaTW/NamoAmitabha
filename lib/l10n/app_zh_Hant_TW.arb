@@ -1,0 +1,28 @@
+{
+  "amitabha": "阿彌陀佛",
+  "@amitabha": { "description": "佛號顯示文字" },
+
+  "start": "開始",
+  "@start": { "description": "開始按鈕" },
+
+  "pause": "暫停",
+  "@pause": { "description": "暫停按鈕" },
+
+  "save": "儲存",
+  "@save": { "description": "儲存按鈕" },
+
+  "logIn": "登入",
+  "@logIn": { "description": "登入按鈕" },
+
+  "logOut": "登出",
+  "@logOut": { "description": "登出按鈕" },
+
+  "total": "累計",
+  "@total": { "description": "統計標題" },
+
+  "totalCount": "累計次數：{count}",
+  "@totalCount": {
+    "description": "帶數值的累計次數",
+    "placeholders": { "count": { "type": "int", "example": "108" } }
+  }
+}

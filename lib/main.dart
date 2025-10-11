@@ -9,10 +9,18 @@ void main() async {
   await Firebase.initializeApp();
   await FirebaseAuth.instance.signInAnonymously();
 
+  try {
+    if (FirebaseAuth.instance.currentUser == null) {
+      await FirebaseAuth.instance.signInAnonymously();
+    }
+  } catch (e) {
+    debugPrint('[Auth] Anonymous sign-in failed: $e');
+  }
+
   const flavorName = String.fromEnvironment('appFlavor', defaultValue: 'debug');
   F.appFlavor = Flavor.values.firstWhere(
     (e) => e.name == flavorName,
-    orElse: () => Flavor.dev, 
+    orElse: () => Flavor.dev,
   );
   runApp(const App());
 }
