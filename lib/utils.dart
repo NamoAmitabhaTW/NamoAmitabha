@@ -11,14 +11,17 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'widgets/download_progress_dialog.dart';
+import 'package:amitabha/storage/model_paths.dart';
 
-Float32List convertBytesToFloat32(Uint8List bytes, [Endian endian = Endian.little]) {
-  final pairCount = bytes.length >> 1;        
-  if (pairCount == 0) return Float32List(0);  
+Float32List convertBytesToFloat32(
+  Uint8List bytes, [
+  Endian endian = Endian.little,
+]) {
+  final pairCount = bytes.length >> 1;
+  if (pairCount == 0) return Float32List(0);
 
   final out = Float32List(pairCount);
   final data = ByteData.sublistView(bytes);
@@ -40,11 +43,14 @@ Future<void> downloadModelAndUnZip(
       'https://github.com/k2-fsa/sherpa-onnx/releases/download/$channel/$modelName.tar.bz2';
   final downloadModel = Provider.of<DownloadModel>(context, listen: false);
 
-  final Directory directory = await getApplicationDocumentsDirectory();
-  final modulePath = join(directory.path, modelName);
-  bool moduleExists = await Directory(modulePath).exists();
-  final moduleZipFilePath = join(directory.path, '$modelName.tar.bz2');
-  bool moduleZipExists = await File(moduleZipFilePath).exists();
+  final destinationRoot = (await ModelPaths.root()).path;
+  final modulePath = join(destinationRoot, modelName);
+
+  final archive = await ModelPaths.archiveFile(modelName);
+  final moduleZipFilePath = archive.path;
+
+  final moduleExists = await Directory(modulePath).exists();
+  final moduleZipExists = await File(moduleZipFilePath).exists();
 
   if (moduleExists) {
     return;
@@ -72,8 +78,7 @@ Future<void> downloadModelAndUnZip(
       int totalBytes = response.contentLength ?? 0;
       int receivedBytes = 0;
 
-      final file = File(moduleZipFilePath);
-      final sink = file.openWrite();
+      final sink = File(moduleZipFilePath).openWrite();
 
       await response.stream.forEach((List<int> chunk) {
         sink.add(chunk);
@@ -85,7 +90,7 @@ Future<void> downloadModelAndUnZip(
       await sink.flush();
       await sink.close();
 
-      _unzipDownloadedFile(moduleZipFilePath, directory.path, context);
+      await _unzipDownloadedFile(moduleZipFilePath, destinationRoot, context);
     } catch (e) {
       if (Navigator.canPop(context)) {
         Navigator.of(context).pop();
@@ -108,11 +113,11 @@ Future<void> downloadModelAndUnZip(
           );
         },
       );
-
-      final partialFile = File(moduleZipFilePath);
-      if (await partialFile.exists()) {
-        await partialFile.delete();
-      }
+      try {
+        if (await File(moduleZipFilePath).exists()) {
+          await File(moduleZipFilePath).delete();
+        }
+      } catch (_) {}
     }
   }
 }
@@ -157,40 +162,46 @@ Future<void> unzipModelFile(BuildContext context, String modelName) async {
       return DownloadProgressDialog();
     },
   );
-  final Directory directory = await getApplicationDocumentsDirectory();
-  final moduleZipFilePath = join(directory.path, '$modelName.tar.bz2');
+  final moduleZipFilePath = (await ModelPaths.archiveFile(modelName)).path;
   final downloadModel = Provider.of<DownloadModel>(context, listen: false);
   try {
-    await _unzipDownloadedFile(moduleZipFilePath, directory.path, context);
+    final destinationRoot = (await ModelPaths.root()).path;
+    await _unzipDownloadedFile(moduleZipFilePath, destinationRoot, context);
   } catch (e) {
     downloadModel.setUnzipProgress(0.0);
     Navigator.of(context).pop();
 
-    if (await File(moduleZipFilePath).exists()) {
-      await File(moduleZipFilePath).delete();
-    }
+    try {
+      final f = File(moduleZipFilePath);
+      if (await f.exists()) await f.delete();
+    } catch (_) {}
 
     downloadModelAndUnZip(context, modelName);
   }
 }
 
 Future<bool> needsDownload(String modelName) async {
-  final Directory directory = await getApplicationDocumentsDirectory();
-  final modulePath = join(directory.path, modelName);
-  bool moduleExists = await Directory(modulePath).exists();
-  final moduleZipFilePath = join(directory.path, '$modelName.tar.bz2');
-  bool moduleZipExists = await File(moduleZipFilePath).exists();
-  print('needsDownload:moduleExists: $moduleExists');
-  print('needsDownload:moduleZipExists: $moduleZipExists');
+  final destinationRoot = (await ModelPaths.root()).path;
+  final modulePath = join(destinationRoot, modelName);
+  final moduleZipFilePath = (await ModelPaths.archiveFile(modelName)).path;
+
+  final moduleExists = await Directory(modulePath).exists();
+  final moduleZipExists = await File(moduleZipFilePath).exists();
+
+  debugPrint(
+    'needsDownload: moduleExists=$moduleExists, moduleZipExists=$moduleZipExists',
+  );
   return !moduleExists && !moduleZipExists;
 }
 
 Future<bool> needsUnZip(String modelName) async {
-  final Directory directory = await getApplicationDocumentsDirectory();
-  final modulePath = join(directory.path, modelName);
-  bool moduleExists = await Directory(modulePath).exists();
-  final moduleZipFilePath = join(directory.path, '$modelName.tar.bz2');
-  bool moduleZipExists = await File(moduleZipFilePath).exists();
+  final destinationRoot = (await ModelPaths.root()).path;
+  final modulePath = join(destinationRoot, modelName);
+  final moduleZipFilePath = (await ModelPaths.archiveFile(modelName)).path;
+
+  final moduleExists = await Directory(modulePath).exists();
+  final moduleZipExists = await File(moduleZipFilePath).exists();
+
   return moduleZipExists && !moduleExists;
 }
 
@@ -276,7 +287,7 @@ Future<void> _unzipDownloadedFile(
 
     processedFiles++;
     double progress = 0.4 + (0.6 * processedFiles / totalFiles);
-    
+
     if (processedFiles % 10 == 0) {
       await Future.delayed(Duration(milliseconds: 1));
     }
@@ -289,21 +300,18 @@ Future<void> _unzipDownloadedFile(
 
   try {
     final f = File(zipFilePath);
-    if (await f.exists()) {
-      await f.delete();
-    }
+    if (await f.exists()) await f.delete();
   } catch (_) {}
 
-  
   final modelRootName = basenameWithoutExtension(
-    basenameWithoutExtension(zipFilePath), // 去 .bz2 再去 .tar
+    basenameWithoutExtension(zipFilePath),
   );
   final modelRoot = join(destinationPath, modelRootName);
 
   await deleteSpecificFilesForModel(
     modelName: downloadModel.modelName,
     modelRoot: modelRoot,
-    dryRun: false, 
+    dryRun: false,
   );
 
   if (Navigator.canPop(context)) {
@@ -317,6 +325,6 @@ String nowYmdLocal() {
 }
 
 String formatYMd(BuildContext context, DateTime dt) {
-  final locale = Localizations.localeOf(context).toString(); 
+  final locale = Localizations.localeOf(context).toString();
   return DateFormat.yMd(locale).format(dt);
 }

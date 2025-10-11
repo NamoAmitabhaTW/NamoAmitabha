@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:amitabha/flavors.dart';
 import 'package:amitabha/streaming_asr.dart';
-import 'package:amitabha/streaming_kws.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
 
 class MyHomePage extends StatelessWidget {
@@ -9,10 +7,8 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = AppLocalizations.of(context)!; // 取得翻譯器
-    final screen = (F.appFlavor == Flavor.dev)
-        ? const StreamingAsrScreen()
-        : const StreamingKwsScreen();
+    final t = AppLocalizations.of(context); 
+    final screen = const StreamingAsrScreen();
 
     return Scaffold(
       appBar: AppBar(
