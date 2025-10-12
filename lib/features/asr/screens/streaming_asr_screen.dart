@@ -1,4 +1,5 @@
 // features/asr/screens/streaming_asr_screen.dart
+export 'package:amitabha/streaming_asr.dart' show StreamingAsrScreen;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:amitabha/app/application/app_state.dart';

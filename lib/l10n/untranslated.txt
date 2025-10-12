@@ -27,7 +27,15 @@
     "confirm",
     "cancel",
     "done",
-    "confirmDeleteAccount"
+    "confirmDeleteAccount",
+    "pleaseWait",
+    "downloading",
+    "unzipping",
+    "completed",
+    "preparing",
+    "preparingPleaseWait",
+    "doNotOperateDuring",
+    "ok"
   ],
 
   "zh_Hant": [
@@ -58,6 +66,14 @@
     "confirm",
     "cancel",
     "done",
-    "confirmDeleteAccount"
+    "confirmDeleteAccount",
+    "pleaseWait",
+    "downloading",
+    "unzipping",
+    "completed",
+    "preparing",
+    "preparingPleaseWait",
+    "doNotOperateDuring",
+    "ok"
   ]
 }

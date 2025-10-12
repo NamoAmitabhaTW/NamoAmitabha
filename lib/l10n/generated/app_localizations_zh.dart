@@ -39,7 +39,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get times => 'times';
 
   @override
-  String get noRecords => 'No records yet';
+  String get noRecords => 'No records';
 
   @override
   String get logIn => 'Log in';
@@ -94,6 +94,32 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String get confirmDeleteAccount =>
       'Are you sure you want to delete your account and data? This action cannot be undone.';
+
+  @override
+  String get pleaseWait => 'Please wait';
+
+  @override
+  String get downloading => 'Downloading';
+
+  @override
+  String get unzipping => 'Unzipping';
+
+  @override
+  String get completed => 'Completed';
+
+  @override
+  String get preparing => 'Preparing';
+
+  @override
+  String get preparingPleaseWait => 'Please wait while preparing...';
+
+  @override
+  String doNotOperateDuring(Object label) {
+    return 'Please do not perform any operations during $label';
+  }
+
+  @override
+  String get ok => 'OK';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -136,7 +162,7 @@ class AppLocalizationsZhHantTw extends AppLocalizationsZh {
   String get times => '次';
 
   @override
-  String get noRecords => '目前沒有記錄';
+  String get noRecords => '尚無紀錄';
 
   @override
   String get logIn => '登入';
@@ -190,4 +216,30 @@ class AppLocalizationsZhHantTw extends AppLocalizationsZh {
 
   @override
   String get confirmDeleteAccount => '確定要刪除帳號與資料？此動作無法復原。';
+
+  @override
+  String get pleaseWait => '請稍候';
+
+  @override
+  String get downloading => '下載中';
+
+  @override
+  String get unzipping => '解壓縮中';
+
+  @override
+  String get completed => '已完成';
+
+  @override
+  String get preparing => '準備中';
+
+  @override
+  String get preparingPleaseWait => '正在準備，請稍候…';
+
+  @override
+  String doNotOperateDuring(Object label) {
+    return '「$label」過程中請勿進行任何操作';
+  }
+
+  @override
+  String get ok => '確定';
 }

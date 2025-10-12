@@ -39,7 +39,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get times => 'times';
 
   @override
-  String get noRecords => 'No records yet';
+  String get noRecords => 'No records';
 
   @override
   String get logIn => 'Log in';
@@ -94,4 +94,30 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get confirmDeleteAccount =>
       'Are you sure you want to delete your account and data? This action cannot be undone.';
+
+  @override
+  String get pleaseWait => 'Please wait';
+
+  @override
+  String get downloading => 'Downloading';
+
+  @override
+  String get unzipping => 'Unzipping';
+
+  @override
+  String get completed => 'Completed';
+
+  @override
+  String get preparing => 'Preparing';
+
+  @override
+  String get preparingPleaseWait => 'Please wait while preparing...';
+
+  @override
+  String doNotOperateDuring(Object label) {
+    return 'Please do not perform any operations during $label';
+  }
+
+  @override
+  String get ok => 'OK';
 }

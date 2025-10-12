@@ -167,7 +167,7 @@ abstract class AppLocalizations {
   /// Records page empty state
   ///
   /// In en, this message translates to:
-  /// **'No records yet'**
+  /// **'No records'**
   String get noRecords;
 
   /// General login label (use enableCloudSync for the cloud-sync CTA)
@@ -271,6 +271,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Are you sure you want to delete your account and data? This action cannot be undone.'**
   String get confirmDeleteAccount;
+
+  /// No description provided for @pleaseWait.
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait'**
+  String get pleaseWait;
+
+  /// No description provided for @downloading.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading'**
+  String get downloading;
+
+  /// No description provided for @unzipping.
+  ///
+  /// In en, this message translates to:
+  /// **'Unzipping'**
+  String get unzipping;
+
+  /// No description provided for @completed.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get completed;
+
+  /// No description provided for @preparing.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing'**
+  String get preparing;
+
+  /// No description provided for @preparingPleaseWait.
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait while preparing...'**
+  String get preparingPleaseWait;
+
+  /// Shown like: Please do not perform any operations during Downloading/Unzipping
+  ///
+  /// In en, this message translates to:
+  /// **'Please do not perform any operations during {label}'**
+  String doNotOperateDuring(Object label);
+
+  /// No description provided for @ok.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get ok;
 }
 
 class _AppLocalizationsDelegate

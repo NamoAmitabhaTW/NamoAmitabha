@@ -1,3 +1,4 @@
+//amitabha/lib/streaming_asr.dart
 // This file is modified based on the open-source project:
 // Flutter-EasySpeechRecognition (https://github.com/Jason-chen-coder/Flutter-EasySpeechRecognition)
 // Original copyright (c) 2024 Xiaomi Corporation
@@ -21,7 +22,7 @@ import 'package:amitabha/storage/buffered_hits.dart';
 import 'package:amitabha/storage/models.dart';
 import 'features/asr/widgets/save_button.dart';
 import 'features/asr/widgets/record_toggle_button.dart';
-import 'storage/firestore_syncToCloudBatch.dart';
+//import 'storage/firestore_syncToCloudBatch.dart';
 
 enum SessionState { idle, recording }
 
@@ -306,7 +307,7 @@ class _StreamingAsrScreenState extends State<StreamingAsrScreen>
     await _dailyRepo.addCount(ymd, _userId, _userName, _asrHitCount);
 
     try {
-      await syncToCloudBatch(snapshot, ymd, _asrHitCount);
+      //await syncToCloudBatch(snapshot, ymd, _asrHitCount);
     } catch (e) {
       debugPrint('cloud sync failed: $e');
     }

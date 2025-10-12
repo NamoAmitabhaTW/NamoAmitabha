@@ -86,5 +86,23 @@
   "@done": { "description": "通用完成提示" },
 
   "confirmDeleteAccount": "確定要刪除帳號與資料？此動作無法復原。",
-  "@confirmDeleteAccount": { "description": "刪除帳號確認訊息" }
+  "@confirmDeleteAccount": { "description": "刪除帳號確認訊息" },
+
+  "pleaseWait": "請稍候",
+  "downloading": "下載中",
+  "unzipping": "解壓縮中",
+  "completed": "已完成",
+  "preparing": "準備中",
+  "preparingPleaseWait": "正在準備，請稍候…",
+  "doNotOperateDuring": "「{label}」過程中請勿進行任何操作",
+  "@doNotOperateDuring": {
+    "placeholders": {
+      "label": {}
+    },
+    "description": "顯示為：下載中/解壓縮中 等過程請勿操作"
+  },
+  "ok": "確定",
+  "noRecords": "尚無紀錄"
+
+
 }
