@@ -1,6 +1,17 @@
 {
+  "@@locale": "en",
+
   "amitabha": "Amitabha",
-  "@amitabha": { "description": "Buddha name label" },
+  "@amitabha": { "description": "App title / Buddha name label" },
+
+  "chant": "Chant",
+  "@chant": { "description": "Can be used for bottom tab label and screen title" },
+
+  "records": "Records",
+  "@records": { "description": "Bottom nav: Records tab" },
+
+  "settings": "Settings",
+  "@settings": { "description": "Bottom nav: Settings tab" },
 
   "start": "Start",
   "@start": { "description": "Start button" },
@@ -9,20 +20,71 @@
   "@pause": { "description": "Pause button" },
 
   "save": "Save",
-  "@save": { "description": "Save button" },
-
-  "logIn": "Log in",
-  "@logIn": { "description": "Sign-in button" },
-
-  "logOut": "Log Out",
-  "@logOut": { "description": "Sign-out button" },
+  "@save": { "description": "Save current session count" },
 
   "total": "Total",
-  "@total": { "description": "Summary label (text only)" },
+  "@total": { "description": "Stats: total accumulated count" },
 
-  "totalCount": "Total count: {count}",
-  "@totalCount": {
-    "description": "Total count with value",
-    "placeholders": { "count": { "type": "int", "example": "108" } }
-  }
+  "days": "Days",
+  "@days": { "description": "Stats: number of practice days (unique dates from records)" },
+
+  "times": "times",
+  "@times": { "description": "Unit text for counts" },
+
+  "noRecords": "No records yet",
+  "@noRecords": { "description": "Records page empty state" },
+
+  "logIn": "Log in",
+  "@logIn": { "description": "General login label (use enableCloudSync for the cloud-sync CTA)" },
+
+  "logOut": "Log out",
+  "@logOut": { "description": "Sign-out button" },
+
+  "enableCloudSync": "Enable Cloud Sync",
+  "@enableCloudSync": { "description": "Enable backup & sync (lazily initialize Firebase)" },
+
+  "account": "Account",
+  "@account": { "description": "Settings: account section title" },
+
+  "accountStatus": "Sign-in status",
+  "@accountStatus": { "description": "Settings: sign-in status label" },
+
+  "statusSignedIn": "Signed in",
+  "@statusSignedIn": { "description": "Signed-in state label" },
+
+  "statusSignedOut": "Not signed in",
+  "@statusSignedOut": { "description": "Signed-out state label" },
+
+  "language": "Language",
+  "@language": { "description": "Settings: language switch" },
+
+  "currentLanguage": "Current language: {lang}",
+  "@currentLanguage": {
+    "description": "Display the currently active language name",
+    "placeholders": { "lang": { "type": "String", "example": "English" } }
+  },
+
+  "langZhHant": "Chinese (Traditional)",
+  "@langZhHant": { "description": "Language option: Traditional Chinese" },
+
+  "langEn": "English",
+  "@langEn": { "description": "Language option: English" },
+
+  "feedback": "Feedback",
+  "@feedback": { "description": "Settings: feedback item" },
+
+  "deleteAccount": "Delete account",
+  "@deleteAccount": { "description": "Settings: delete account" },
+
+  "confirm": "Confirm",
+  "@confirm": { "description": "Dialog title: confirm" },
+
+  "cancel": "Cancel",
+  "@cancel": { "description": "Dialog button: cancel" },
+
+  "done": "Done",
+  "@done": { "description": "Generic completion toast" },
+
+  "confirmDeleteAccount": "Are you sure you want to delete your account and data? This action cannot be undone.",
+  "@confirmDeleteAccount": { "description": "Delete account confirmation message" }
 }

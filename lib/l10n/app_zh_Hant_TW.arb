@@ -1,6 +1,17 @@
 {
+  "@@locale": "zh_Hant_TW",
+
   "amitabha": "阿彌陀佛",
-  "@amitabha": { "description": "佛號顯示文字" },
+  "@amitabha": { "description": "App 標題／佛號顯示文字" },
+
+  "chant": "念佛",
+  "@chant": { "description": "可用於底部導覽與頁面標題" },
+
+  "records": "記錄",
+  "@records": { "description": "底部導覽：記錄頁" },
+
+  "settings": "設定",
+  "@settings": { "description": "底部導覽：設定頁" },
 
   "start": "開始",
   "@start": { "description": "開始按鈕" },
@@ -9,20 +20,71 @@
   "@pause": { "description": "暫停按鈕" },
 
   "save": "儲存",
-  "@save": { "description": "儲存按鈕" },
+  "@save": { "description": "儲存本次計數按鈕" },
+
+  "total": "總累計",
+  "@total": { "description": "統計卡：累計總次數" },
+
+  "days": "天",
+  "@days": { "description": "統計卡：已修行天數（依記錄的不重複日期數）" },
+
+  "times": "次",
+  "@times": { "description": "計數單位文字" },
+
+  "noRecords": "目前沒有記錄",
+  "@noRecords": { "description": "記錄頁空狀態" },
 
   "logIn": "登入",
-  "@logIn": { "description": "登入按鈕" },
+  "@logIn": { "description": "一般登入文案（若要顯示「開啟同步雲端」請用 enableCloudSync）" },
 
   "logOut": "登出",
   "@logOut": { "description": "登出按鈕" },
 
-  "total": "累計",
-  "@total": { "description": "統計標題" },
+  "enableCloudSync": "開啟同步雲端",
+  "@enableCloudSync": { "description": "啟用雲端備份與同步（按需初始化 Firebase）" },
 
-  "totalCount": "累計次數：{count}",
-  "@totalCount": {
-    "description": "帶數值的累計次數",
-    "placeholders": { "count": { "type": "int", "example": "108" } }
-  }
+  "account": "帳號",
+  "@account": { "description": "設定：帳號區塊標題" },
+
+  "accountStatus": "登入狀態",
+  "@accountStatus": { "description": "設定：登入狀態標籤" },
+
+  "statusSignedIn": "已登入",
+  "@statusSignedIn": { "description": "登入狀態：已登入" },
+
+  "statusSignedOut": "尚未登入",
+  "@statusSignedOut": { "description": "登入狀態：未登入" },
+
+  "language": "語言",
+  "@language": { "description": "設定：語言切換" },
+
+  "currentLanguage": "目前語言：{lang}",
+  "@currentLanguage": {
+    "description": "顯示目前語言名稱",
+    "placeholders": { "lang": { "type": "String", "example": "繁體中文" } }
+  },
+
+  "langZhHant": "繁體中文",
+  "@langZhHant": { "description": "語言選項：繁體中文" },
+
+  "langEn": "English",
+  "@langEn": { "description": "語言選項：英文" },
+
+  "feedback": "意見回饋",
+  "@feedback": { "description": "設定：回饋項目" },
+
+  "deleteAccount": "刪除帳號",
+  "@deleteAccount": { "description": "設定：刪除帳號" },
+
+  "confirm": "確認",
+  "@confirm": { "description": "對話框標題：確認" },
+
+  "cancel": "取消",
+  "@cancel": { "description": "對話框按鈕：取消" },
+
+  "done": "已完成",
+  "@done": { "description": "通用完成提示" },
+
+  "confirmDeleteAccount": "確定要刪除帳號與資料？此動作無法復原。",
+  "@confirmDeleteAccount": { "description": "刪除帳號確認訊息" }
 }
