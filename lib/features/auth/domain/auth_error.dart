@@ -1,3 +1,4 @@
+//amitabha/lib/features/auth/domain/auth_error.dart
 enum AuthError {
   network,   
   cancelled, 

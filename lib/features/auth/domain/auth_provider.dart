@@ -1,3 +1,4 @@
+//amitabha/lib/features/auth/domain/auth_provider.dart
 enum AuthProvider {
   google,
   apple,
