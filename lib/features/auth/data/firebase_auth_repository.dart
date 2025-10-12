@@ -10,7 +10,7 @@ import '../domain/auth_error.dart';
 import '../domain/auth_repository.dart';
 
 class FirebaseAuthRepository implements AuthRepository {
-  final fb.FirebaseAuth _auth = fb.FirebaseAuth.instance;
+  fb.FirebaseAuth get _auth => fb.FirebaseAuth.instance; 
   final gsi.GoogleSignIn _gsi = gsi.GoogleSignIn.instance;
   
   // ===== Google =====

@@ -1,13 +1,17 @@
+//app.dart
+import 'package:amitabha/core/core/theme/brand.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'flavors.dart';
 import 'download_model.dart';
-import 'pages/my_home_page.dart';
-import 'features/auth/application/auth_facade.dart';
+/* import 'features/auth/application/auth_facade.dart';
 import 'features/auth/data/firebase_auth_repository.dart';
-import 'features/auth/data/firestore_user_repository.dart';
+import 'features/auth/data/firestore_user_repository.dart'; */
 import 'l10n/generated/app_localizations.dart';
+import 'package:amitabha/home/presentation/home_shell.dart';
+import 'package:amitabha/app/application/app_state.dart';
+import 'core/localization/locale_controller.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -19,27 +23,32 @@ class App extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) {
             final m = DownloadModel();
-            if (F.appFlavor == Flavor.dev) {
-              m.useAsr();
-            } else {
-              m.useKws();
-            }
+            m.useAsr();
             return m;
           },
         ),
-        Provider<AuthFacade>(
+        ChangeNotifierProvider(create: (_) => AppState()),
+        ChangeNotifierProvider(create: (_) => LocaleController()),
+        /* Provider<AuthFacade>(
           create: (_) => AuthFacade(
             auth: FirebaseAuthRepository(),
             users: FirestoreUserRepository(),
           ),
-        ),
+        ), */
       ],
-      child: MaterialApp(
-        onGenerateTitle: (ctx) => AppLocalizations.of(ctx).amitabha,
-        theme: ThemeData(primarySwatch: Colors.blue),
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        home: _flavorBanner(child: const MyHomePage(), show: kDebugMode),
+
+      child: Builder(
+        builder: (context) {
+          final locale = context.watch<LocaleController>().locale;
+          return MaterialApp(
+            locale: locale,
+            onGenerateTitle: (ctx) => AppLocalizations.of(ctx).amitabha,
+            theme: Brand.light(),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: _flavorBanner(child: const HomeShell(), show: kDebugMode),
+          );
+        },
       ),
     );
   }

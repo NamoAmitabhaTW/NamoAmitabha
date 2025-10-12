@@ -104,11 +104,29 @@ abstract class AppLocalizations {
     Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant'),
   ];
 
-  /// Buddha name label
+  /// App title / Buddha name label
   ///
   /// In en, this message translates to:
   /// **'Amitabha'**
   String get amitabha;
+
+  /// Can be used for bottom tab label and screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Chant'**
+  String get chant;
+
+  /// Bottom nav: Records tab
+  ///
+  /// In en, this message translates to:
+  /// **'Records'**
+  String get records;
+
+  /// Bottom nav: Settings tab
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
 
   /// Start button
   ///
@@ -122,13 +140,37 @@ abstract class AppLocalizations {
   /// **'Pause'**
   String get pause;
 
-  /// Save button
+  /// Save current session count
   ///
   /// In en, this message translates to:
   /// **'Save'**
   String get save;
 
-  /// Sign-in button
+  /// Stats: total accumulated count
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get total;
+
+  /// Stats: number of practice days (unique dates from records)
+  ///
+  /// In en, this message translates to:
+  /// **'Days'**
+  String get days;
+
+  /// Unit text for counts
+  ///
+  /// In en, this message translates to:
+  /// **'times'**
+  String get times;
+
+  /// Records page empty state
+  ///
+  /// In en, this message translates to:
+  /// **'No records yet'**
+  String get noRecords;
+
+  /// General login label (use enableCloudSync for the cloud-sync CTA)
   ///
   /// In en, this message translates to:
   /// **'Log in'**
@@ -137,20 +179,98 @@ abstract class AppLocalizations {
   /// Sign-out button
   ///
   /// In en, this message translates to:
-  /// **'Log Out'**
+  /// **'Log out'**
   String get logOut;
 
-  /// Summary label (text only)
+  /// Enable backup & sync (lazily initialize Firebase)
   ///
   /// In en, this message translates to:
-  /// **'Total'**
-  String get total;
+  /// **'Enable Cloud Sync'**
+  String get enableCloudSync;
 
-  /// Total count with value
+  /// Settings: account section title
   ///
   /// In en, this message translates to:
-  /// **'Total count: {count}'**
-  String totalCount(int count);
+  /// **'Account'**
+  String get account;
+
+  /// Settings: sign-in status label
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-in status'**
+  String get accountStatus;
+
+  /// Signed-in state label
+  ///
+  /// In en, this message translates to:
+  /// **'Signed in'**
+  String get statusSignedIn;
+
+  /// Signed-out state label
+  ///
+  /// In en, this message translates to:
+  /// **'Not signed in'**
+  String get statusSignedOut;
+
+  /// Settings: language switch
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// Display the currently active language name
+  ///
+  /// In en, this message translates to:
+  /// **'Current language: {lang}'**
+  String currentLanguage(String lang);
+
+  /// Language option: Traditional Chinese
+  ///
+  /// In en, this message translates to:
+  /// **'Chinese (Traditional)'**
+  String get langZhHant;
+
+  /// Language option: English
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get langEn;
+
+  /// Settings: feedback item
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback'**
+  String get feedback;
+
+  /// Settings: delete account
+  ///
+  /// In en, this message translates to:
+  /// **'Delete account'**
+  String get deleteAccount;
+
+  /// Dialog title: confirm
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
+
+  /// Dialog button: cancel
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// Generic completion toast
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get done;
+
+  /// Delete account confirmation message
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete your account and data? This action cannot be undone.'**
+  String get confirmDeleteAccount;
 }
 
 class _AppLocalizationsDelegate

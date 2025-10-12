@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../domain/app_user.dart';
 
 class FirestoreUserRepository {
-  final _db = FirebaseFirestore.instance;
+  FirebaseFirestore get _db => FirebaseFirestore.instance;
 
   Future<void> upsertUserDocFromModel(AppUser user) async {
     final ref = _db.collection('users').doc(user.uid);

@@ -1,3 +1,4 @@
+//flavors.dart
 enum Flavor {
   dev,
   staging,
