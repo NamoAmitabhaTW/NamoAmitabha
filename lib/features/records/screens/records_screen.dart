@@ -10,6 +10,10 @@ import 'package:amitabha/storage/app_paths.dart';
 import 'package:amitabha/storage/atomic_io.dart';
 import 'package:amitabha/storage/models.dart';
 
+import 'package:provider/provider.dart'; 
+import 'package:amitabha/app/application/app_state.dart'; 
+
+
 class RecordsScreen extends StatelessWidget {
   const RecordsScreen({super.key});
 
@@ -19,8 +23,13 @@ class RecordsScreen extends StatelessWidget {
     final locale = Localizations.localeOf(context).toString();
     final df = DateFormat.yMd(locale);
 
+    // ★ 監聽 AppState.dataVersion，只要版本變了就讓 FutureBuilder 重新建立
+    final ver = context.select<AppState, int>((s) => s.dataVersion);
+    final isVertical = _isTraditionalChinese(context);
+
     return FutureBuilder<_DailyLoadResult>(
-      future: _loadAllDaily(),
+      key: ValueKey(ver),       // ★ 以版本號當 key，強制刷新
+      future: _loadAllDaily(),   // 會重新 hit 檔案系統，拿到最新 daily JSON
       builder: (context, snap) {
         if (!snap.hasData) {
           return const Center(child: CircularProgressIndicator());
@@ -30,6 +39,7 @@ class RecordsScreen extends StatelessWidget {
           totalText: '${data.total}',
           practiceDaysText: '${data.practiceDays}',
           verticalTitle: t.amitabha,
+          isVertical: isVertical, 
           t: t,
         );
 
@@ -134,6 +144,7 @@ class _HeaderCards extends StatelessWidget {
   final String totalText;
   final String practiceDaysText;
   final String verticalTitle;
+  final bool isVertical;   
   final AppLocalizations t;
 
   const _HeaderCards({
@@ -141,6 +152,7 @@ class _HeaderCards extends StatelessWidget {
     required this.practiceDaysText,
     required this.verticalTitle,
     required this.t,
+    this.isVertical = true, 
   });
 
   @override
@@ -163,7 +175,7 @@ class _HeaderCards extends StatelessWidget {
                 ),
               ),
               const _VDivider(),
-              Expanded(child: _VerticalTitle(title: verticalTitle)),
+              Expanded(child: _VerticalTitle(title: verticalTitle, vertical: isVertical)),
               const _VDivider(),
               Expanded(
                 child: _StatCol(
@@ -225,22 +237,44 @@ class _StatCol extends StatelessWidget {
 
 class _VerticalTitle extends StatelessWidget {
   final String title;
-  const _VerticalTitle({required this.title});
+  final bool vertical; // zh-Hant 直排；其他橫排
+  const _VerticalTitle({required this.title, this.vertical = true});
 
   @override
   Widget build(BuildContext context) {
     final style = Theme.of(context).textTheme.titleLarge;
-    final chars = title.characters.toList();
+
+    if (vertical) {
+      // 直排：逐字換行
+      final chars = title.characters.toList();
+      return Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            for (final c in chars)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2),
+                child: Text(c, style: style),
+              ),
+          ],
+        ),
+      );
+    }
+
+    // 橫排（英文）：單行 + FittedBox 縮放不超框 + 省略號保護
     return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          for (final c in chars)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 2),
-              child: Text(c, style: style),
-            ),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: FittedBox(
+          fit: BoxFit.scaleDown, // 文字太寬會自動縮小
+          child: Text(
+            title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: style,
+            textAlign: TextAlign.center,
+          ),
+        ),
       ),
     );
   }
@@ -257,4 +291,13 @@ class _VDivider extends StatelessWidget {
       color: color,
     );
   }
+}
+
+bool _isTraditionalChinese(BuildContext context) {
+  final l = Localizations.localeOf(context);
+  return l.languageCode == 'zh' &&
+      (l.scriptCode == 'Hant' ||
+       l.countryCode == 'TW' ||
+       l.countryCode == 'HK' ||
+       l.countryCode == 'MO');
 }

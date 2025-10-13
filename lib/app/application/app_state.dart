@@ -12,6 +12,7 @@ class AppState extends ChangeNotifier {
   bool isRecording = false;
   int sessionCount = 0;
   DateTime? lastHitAt;
+  int dataVersion = 0;
 
   final List<DailyRecord> _records = [];
   List<DailyRecord> get records => List.unmodifiable(_records);
@@ -49,6 +50,7 @@ class AppState extends ChangeNotifier {
     sessionCount = 0;
     lastHitAt = null;
     isRecording = false; // 提交後視情況同步為非錄音
+    dataVersion++;
     notifyListeners();
   }
 
