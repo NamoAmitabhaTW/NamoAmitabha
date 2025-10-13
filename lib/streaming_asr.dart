@@ -38,6 +38,9 @@ Future<sherpa_onnx.OnlineRecognizer> createOnlineRecognizer(
     decodingMethod: 'modified_beam_search',
     hotwordsFile: hotwordsPath,
     hotwordsScore: 6,
+    enableEndpoint: true,
+    rule2MinTrailingSilence: 0.8,
+    rule3MinUtteranceLength: 3
   );
 
   return sherpa_onnx.OnlineRecognizer(config);
@@ -282,9 +285,6 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
         }
       },
     );
-
-    try { context.read<AppState>().setAsrTempProgress(count: 0, last: null); } catch (_) {}
-
   }
 
   Future<void> _commitSession({String reason = 'user_action'}) async {
