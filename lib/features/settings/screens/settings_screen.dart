@@ -118,7 +118,7 @@ class SettingsScreen extends StatelessWidget {
 
     String? error;
     try {
-      await DeleteAccountRunner.run();
+      //await DeleteAccountRunner.run();
     } catch (e) {
       error = e.toString();
     } finally {

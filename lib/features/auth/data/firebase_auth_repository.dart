@@ -1,4 +1,4 @@
-//amitabha/lib/features/auth/data/firebase_auth_repository.dart
+/* //amitabha/lib/features/auth/data/firebase_auth_repository.dart
 import 'dart:convert';
 import 'dart:math';
 import 'package:crypto/crypto.dart';
@@ -110,3 +110,4 @@ class FirebaseAuthRepository implements AuthRepository {
 
   Stream<fb.User?> authStateChanges() => _auth.authStateChanges();
 }
+ */

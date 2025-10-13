@@ -1,4 +1,4 @@
-// lib/features/auth/application/delete_account_usecase.dart
+/* // lib/features/auth/application/delete_account_usecase.dart
 import 'package:amitabha/storage/application/storage_cleaner.dart';
 import 'auth_facade.dart';
 
@@ -14,4 +14,4 @@ class DeleteAccountUseCase {
     await _auth.deleteAccountAndData();          
     await _cleaner.purgeAllLocal(keepModels: true); 
   }
-}
+} */

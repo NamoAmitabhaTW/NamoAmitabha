@@ -1,4 +1,4 @@
-//amitabha/lib/features/auth/domain/app_user.dart
+/* //amitabha/lib/features/auth/domain/app_user.dart
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:cloud_firestore/cloud_firestore.dart' show Timestamp;
 import 'auth_provider.dart';
@@ -116,3 +116,4 @@ class AppUser {
     );
   }
 }
+ */

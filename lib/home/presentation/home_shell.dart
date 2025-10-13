@@ -1,8 +1,7 @@
 //amitabha/lib/home/presentation/home_shell.dart
 import 'package:flutter/material.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
-import 'package:amitabha/features/asr/screens/streaming_asr_screen.dart'
-    show StreamingAsrScreen;
+import 'package:amitabha/features/asr/screens/streaming_asr_screen.dart';
 import 'package:amitabha/features/records/screens/records_screen.dart';
 import 'package:amitabha/features/settings/screens/settings_screen.dart';
 
@@ -19,7 +18,7 @@ class _HomeShellState extends State<HomeShell> {
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
     final pages = <Widget>[
-      const StreamingAsrScreen(), // ← 舊版（真正串 ASR）
+      const StreamingAsrScreen(), 
       const RecordsScreen(),
       const SettingsScreen(),
     ];
