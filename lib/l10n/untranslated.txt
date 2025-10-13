@@ -35,7 +35,14 @@
     "preparing",
     "preparingPleaseWait",
     "doNotOperateDuring",
-    "ok"
+    "ok",
+    "downloadRequiredTitle",
+    "downloadRequiredBody",
+    "download",
+    "downloadFailedTitle",
+    "downloadFailedBody",
+    "successTitle",
+    "successBody"
   ],
 
   "zh_Hant": [
@@ -74,6 +81,13 @@
     "preparing",
     "preparingPleaseWait",
     "doNotOperateDuring",
-    "ok"
+    "ok",
+    "downloadRequiredTitle",
+    "downloadRequiredBody",
+    "download",
+    "downloadFailedTitle",
+    "downloadFailedBody",
+    "successTitle",
+    "successBody"
   ]
 }

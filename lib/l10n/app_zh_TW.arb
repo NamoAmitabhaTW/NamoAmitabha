@@ -1,5 +1,5 @@
 {
-  "@@locale": "zh_Hant_TW",
+  "@@locale": "zh_TW",
 
   "amitabha": "阿彌陀佛",
   "@amitabha": { "description": "App 標題／佛號顯示文字" },
@@ -102,7 +102,35 @@
     "description": "顯示為：下載中/解壓縮中 等過程請勿操作"
   },
   "ok": "確定",
-  "noRecords": "尚無紀錄"
+  "noRecords": "尚無紀錄",
 
+  "downloadRequiredTitle": "需要下載",
+  "downloadRequiredBody": "語音辨識模型（{modelName}）目前不在本機。是否要立刻下載？",
+  "@downloadRequiredBody": {
+    "placeholders": { "modelName": { "type": "String" } }
+  },
 
+  "cancel": "取消",
+  "download": "下載",
+
+  "downloadFailedTitle": "下載失敗",
+  "downloadFailedBody": "模型下載失敗：{error}",
+  "@downloadFailedBody": {
+    "placeholders": { "error": { "type": "String" } }
+  },
+
+  "successTitle": "成功",
+  "successBody": "模型已成功下載並解壓完成。",
+
+  "pleaseWait": "請稍候",
+  "preparing": "準備中",
+  "preparingPleaseWait": "正在準備中，請稍候…",
+  "downloading": "下載中",
+  "unzipping": "解壓中",
+  "completed": "完成",
+  "doNotOperateDuring": "「{phase}」過程中請勿進行任何操作",
+  "@doNotOperateDuring": {
+    "placeholders": { "phase": { "type": "String" } }
+  },
+  "ok": "確定"
 }
