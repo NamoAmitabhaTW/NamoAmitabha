@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:amitabha/core/localization/locale_controller.dart';
-import 'package:amitabha/features/auth/application/delete_account_runner.dart';
 /* import 'package:amitabha/features/auth/application/auth_facade.dart';
 import 'package:amitabha/features/auth/data/firebase_auth_repository.dart';
 import 'package:amitabha/features/auth/data/firestore_user_repository.dart';
@@ -87,7 +86,7 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  Future<void> _onDeleteAccount(BuildContext context) async {
+  /* Future<void> _onDeleteAccount(BuildContext context) async {
     final t = AppLocalizations.of(context);
 
     final ok = await showDialog<bool>(
@@ -135,7 +134,7 @@ class SettingsScreen extends StatelessWidget {
         context,
       ).showSnackBar(SnackBar(content: Text(t.done)));
     }
-  }
+  } */
 
   void _sendFeedbackEmail(BuildContext context) {
     // 你可以換成自己的收件者
