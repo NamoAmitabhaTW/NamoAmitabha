@@ -47,12 +47,16 @@ class SettingsScreen extends StatelessWidget {
   }
 
   String _languageLabel(BuildContext context) {
-    final l = Localizations.localeOf(context);
-    if (l.languageCode == 'zh' &&
-        (l.countryCode == 'TW' || l.scriptCode == 'Hant')) {
-      return '繁體中文';
+    final ctrl = context.watch<LocaleController>();
+    final eff = ctrl.locale; // null = 跟隨系統
+    if (eff == null) {
+      final sys = Localizations.maybeLocaleOf(context);
+      final isZh =
+          sys?.languageCode == 'zh' &&
+          (sys?.countryCode == 'TW' || sys?.scriptCode == 'Hant');
+      return isZh ? '跟隨系統（繁體中文）' : '跟隨系統（English）';
     }
-    return 'English';
+    return eff.languageCode == 'zh' ? '繁體中文' : 'English';
   }
 
   void _chooseLanguage(BuildContext context) {
@@ -63,12 +67,18 @@ class SettingsScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
+              leading: const Icon(Icons.settings_backup_restore),
+              title: const Text('跟隨系統'),
+              onTap: () {
+                context.read<LocaleController>().useSystem();
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
               leading: const Icon(Icons.translate),
               title: const Text('繁體中文'),
               onTap: () {
-                context
-                    .read<LocaleController>()
-                    .useTraditionalChinese(); // zh-TW 或 zh-Hant
+                context.read<LocaleController>().useTraditionalChinese();
                 Navigator.pop(context);
               },
             ),

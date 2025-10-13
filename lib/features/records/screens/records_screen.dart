@@ -25,7 +25,6 @@ class RecordsScreen extends StatelessWidget {
 
     // ★ 監聽 AppState.dataVersion，只要版本變了就讓 FutureBuilder 重新建立
     final ver = context.select<AppState, int>((s) => s.dataVersion);
-    final isVertical = _isTraditionalChinese(context);
 
     return FutureBuilder<_DailyLoadResult>(
       key: ValueKey(ver),       // ★ 以版本號當 key，強制刷新
@@ -38,8 +37,7 @@ class RecordsScreen extends StatelessWidget {
         final header = _HeaderCards(
           totalText: '${data.total}',
           practiceDaysText: '${data.practiceDays}',
-          verticalTitle: t.amitabha,
-          isVertical: isVertical, 
+          verticalTitle: t.amitabha, 
           t: t,
         );
 
@@ -143,8 +141,7 @@ Future<_DailyLoadResult> _loadAllDaily() async {
 class _HeaderCards extends StatelessWidget {
   final String totalText;
   final String practiceDaysText;
-  final String verticalTitle;
-  final bool isVertical;   
+  final String verticalTitle;  
   final AppLocalizations t;
 
   const _HeaderCards({
@@ -152,7 +149,6 @@ class _HeaderCards extends StatelessWidget {
     required this.practiceDaysText,
     required this.verticalTitle,
     required this.t,
-    this.isVertical = true, 
   });
 
   @override
@@ -175,7 +171,7 @@ class _HeaderCards extends StatelessWidget {
                 ),
               ),
               const _VDivider(),
-              Expanded(child: _VerticalTitle(title: verticalTitle, vertical: isVertical)),
+              Expanded(child: _VerticalTitle(title: verticalTitle)),
               const _VDivider(),
               Expanded(
                 child: _StatCol(
@@ -237,15 +233,20 @@ class _StatCol extends StatelessWidget {
 
 class _VerticalTitle extends StatelessWidget {
   final String title;
-  final bool vertical; // zh-Hant 直排；其他橫排
-  const _VerticalTitle({required this.title, this.vertical = true});
+  const _VerticalTitle({required this.title});
+
+  bool _isLatin(String s) {
+    // 只要全部是 ASCII（英數符號），就視為橫排
+    final r = RegExp(r'^[\x00-\x7F]+$');
+    return r.hasMatch(s);
+  }
 
   @override
   Widget build(BuildContext context) {
     final style = Theme.of(context).textTheme.titleLarge;
+    final isLatin = _isLatin(title);
 
-    if (vertical) {
-      // 直排：逐字換行
+    if (!isLatin) {
       final chars = title.characters.toList();
       return Center(
         child: Column(
@@ -261,24 +262,19 @@ class _VerticalTitle extends StatelessWidget {
       );
     }
 
-    // 橫排（英文）：單行 + FittedBox 縮放不超框 + 省略號保護
+    // 英文：單行、可縮放、不超框
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: FittedBox(
-          fit: BoxFit.scaleDown, // 文字太寬會自動縮小
-          child: Text(
-            title,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: style,
-            textAlign: TextAlign.center,
-          ),
+          fit: BoxFit.scaleDown,
+          child: Text(title, maxLines: 1, overflow: TextOverflow.ellipsis, style: style),
         ),
       ),
     );
   }
 }
+
 
 class _VDivider extends StatelessWidget {
   const _VDivider();
@@ -291,13 +287,4 @@ class _VDivider extends StatelessWidget {
       color: color,
     );
   }
-}
-
-bool _isTraditionalChinese(BuildContext context) {
-  final l = Localizations.localeOf(context);
-  return l.languageCode == 'zh' &&
-      (l.scriptCode == 'Hant' ||
-       l.countryCode == 'TW' ||
-       l.countryCode == 'HK' ||
-       l.countryCode == 'MO');
 }
