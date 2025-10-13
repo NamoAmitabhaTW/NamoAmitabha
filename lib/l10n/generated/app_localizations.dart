@@ -102,6 +102,7 @@ abstract class AppLocalizations {
     ),
     Locale('zh'),
     Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant'),
+    Locale('zh', 'TW'),
   ];
 
   /// App title / Buddha name label
@@ -305,20 +306,62 @@ abstract class AppLocalizations {
   /// No description provided for @preparingPleaseWait.
   ///
   /// In en, this message translates to:
-  /// **'Please wait while preparing...'**
+  /// **'Preparing, please wait…'**
   String get preparingPleaseWait;
 
-  /// Shown like: Please do not perform any operations during Downloading/Unzipping
+  /// No description provided for @doNotOperateDuring.
   ///
   /// In en, this message translates to:
-  /// **'Please do not perform any operations during {label}'**
-  String doNotOperateDuring(Object label);
+  /// **'Do not operate during {phase}'**
+  String doNotOperateDuring(String phase);
 
   /// No description provided for @ok.
   ///
   /// In en, this message translates to:
   /// **'OK'**
   String get ok;
+
+  /// No description provided for @downloadRequiredTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Download Required'**
+  String get downloadRequiredTitle;
+
+  /// No description provided for @downloadRequiredBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The speech recognition model ({modelName}) is not available locally. Do you want to download it?'**
+  String downloadRequiredBody(String modelName);
+
+  /// No description provided for @download.
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get download;
+
+  /// No description provided for @downloadFailedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Download Failed'**
+  String get downloadFailedTitle;
+
+  /// No description provided for @downloadFailedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to download the model: {error}'**
+  String downloadFailedBody(String error);
+
+  /// No description provided for @successTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Success'**
+  String get successTitle;
+
+  /// No description provided for @successBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The model has been downloaded and extracted successfully.'**
+  String get successBody;
 }
 
 class _AppLocalizationsDelegate
@@ -339,12 +382,6 @@ class _AppLocalizationsDelegate
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
-  // Lookup logic when language+script+country codes are specified.
-  switch (locale.toString()) {
-    case 'zh_Hant_TW':
-      return AppLocalizationsZhHantTw();
-  }
-
   // Lookup logic when language+script codes are specified.
   switch (locale.languageCode) {
     case 'zh':
@@ -352,6 +389,18 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
         switch (locale.scriptCode) {
           case 'Hant':
             return AppLocalizationsZhHant();
+        }
+        break;
+      }
+  }
+
+  // Lookup logic when language+country codes are specified.
+  switch (locale.languageCode) {
+    case 'zh':
+      {
+        switch (locale.countryCode) {
+          case 'TW':
+            return AppLocalizationsZhTw();
         }
         break;
       }

@@ -111,15 +111,41 @@ class AppLocalizationsZh extends AppLocalizations {
   String get preparing => 'Preparing';
 
   @override
-  String get preparingPleaseWait => 'Please wait while preparing...';
+  String get preparingPleaseWait => 'Preparing, please wait…';
 
   @override
-  String doNotOperateDuring(Object label) {
-    return 'Please do not perform any operations during $label';
+  String doNotOperateDuring(String phase) {
+    return 'Do not operate during $phase';
   }
 
   @override
   String get ok => 'OK';
+
+  @override
+  String get downloadRequiredTitle => 'Download Required';
+
+  @override
+  String downloadRequiredBody(String modelName) {
+    return 'The speech recognition model ($modelName) is not available locally. Do you want to download it?';
+  }
+
+  @override
+  String get download => 'Download';
+
+  @override
+  String get downloadFailedTitle => 'Download Failed';
+
+  @override
+  String downloadFailedBody(String error) {
+    return 'Failed to download the model: $error';
+  }
+
+  @override
+  String get successTitle => 'Success';
+
+  @override
+  String get successBody =>
+      'The model has been downloaded and extracted successfully.';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -127,9 +153,9 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   AppLocalizationsZhHant() : super('zh_Hant');
 }
 
-/// The translations for Chinese, as used in Taiwan, using the Han script (`zh_Hant_TW`).
-class AppLocalizationsZhHantTw extends AppLocalizationsZh {
-  AppLocalizationsZhHantTw() : super('zh_Hant_TW');
+/// The translations for Chinese, as used in Taiwan (`zh_TW`).
+class AppLocalizationsZhTw extends AppLocalizationsZh {
+  AppLocalizationsZhTw() : super('zh_TW');
 
   @override
   String get amitabha => '阿彌陀佛';
@@ -224,22 +250,47 @@ class AppLocalizationsZhHantTw extends AppLocalizationsZh {
   String get downloading => '下載中';
 
   @override
-  String get unzipping => '解壓縮中';
+  String get unzipping => '解壓中';
 
   @override
-  String get completed => '已完成';
+  String get completed => '完成';
 
   @override
   String get preparing => '準備中';
 
   @override
-  String get preparingPleaseWait => '正在準備，請稍候…';
+  String get preparingPleaseWait => '正在準備中，請稍候…';
 
   @override
-  String doNotOperateDuring(Object label) {
-    return '「$label」過程中請勿進行任何操作';
+  String doNotOperateDuring(String phase) {
+    return '「$phase」過程中請勿進行任何操作';
   }
 
   @override
   String get ok => '確定';
+
+  @override
+  String get downloadRequiredTitle => '需要下載';
+
+  @override
+  String downloadRequiredBody(String modelName) {
+    return '語音辨識模型（$modelName）目前不在本機。是否要立刻下載？';
+  }
+
+  @override
+  String get download => '下載';
+
+  @override
+  String get downloadFailedTitle => '下載失敗';
+
+  @override
+  String downloadFailedBody(String error) {
+    return '模型下載失敗：$error';
+  }
+
+  @override
+  String get successTitle => '成功';
+
+  @override
+  String get successBody => '模型已成功下載並解壓完成。';
 }

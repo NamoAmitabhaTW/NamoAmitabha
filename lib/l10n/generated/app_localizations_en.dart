@@ -111,13 +111,39 @@ class AppLocalizationsEn extends AppLocalizations {
   String get preparing => 'Preparing';
 
   @override
-  String get preparingPleaseWait => 'Please wait while preparing...';
+  String get preparingPleaseWait => 'Preparing, please wait…';
 
   @override
-  String doNotOperateDuring(Object label) {
-    return 'Please do not perform any operations during $label';
+  String doNotOperateDuring(String phase) {
+    return 'Do not operate during $phase';
   }
 
   @override
   String get ok => 'OK';
+
+  @override
+  String get downloadRequiredTitle => 'Download Required';
+
+  @override
+  String downloadRequiredBody(String modelName) {
+    return 'The speech recognition model ($modelName) is not available locally. Do you want to download it?';
+  }
+
+  @override
+  String get download => 'Download';
+
+  @override
+  String get downloadFailedTitle => 'Download Failed';
+
+  @override
+  String downloadFailedBody(String error) {
+    return 'Failed to download the model: $error';
+  }
+
+  @override
+  String get successTitle => 'Success';
+
+  @override
+  String get successBody =>
+      'The model has been downloaded and extracted successfully.';
 }
