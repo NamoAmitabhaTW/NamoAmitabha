@@ -1,9 +1,9 @@
 // features/asr/screens/streaming_asr_screen.dart
-export 'package:amitabha/streaming_asr.dart' show StreamingAsrScreen;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:amitabha/app/application/app_state.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
+import 'package:amitabha/streaming_asr.dart' show StreamingAsrRunner;
 import 'dart:ui' show lerpDouble;
 import 'dart:math' as math;
 
@@ -47,6 +47,9 @@ class StreamingAsrScreen extends StatelessWidget {
 
     return Stack(
       children: [
+
+        const StreamingAsrRunner(),
+
         // 聖號水印（可見且偏上）
         PositionedFillWatermark(
           t: t,
@@ -90,17 +93,24 @@ class StreamingAsrScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: FilledButton.icon(
-                      onPressed: () => s.toggleRecording(),
+                      onPressed: () {
+                        if (s.isRecording) {
+                          s.stopAsr?.call();
+                        } else {
+                          s.startAsr?.call();
+                        }
+                      },
                       icon: Icon(
                         s.isRecording ? Icons.pause : Icons.play_arrow,
                       ),
                       label: Text(s.isRecording ? t.pause : t.start),
                     ),
                   ),
-                  const SizedBox(width: 12),
+
+                  // 儲存（實際會呼叫 _onSavePressed -> _commitSession -> 寫入 repo）
                   Expanded(
                     child: OutlinedButton.icon(
-                      onPressed: s.sessionCount > 0 ? s.saveSession : null,
+                      onPressed: s.sessionCount > 0 ? s.saveAsr : null,
                       icon: const Icon(Icons.save),
                       label: Text(t.save),
                     ),

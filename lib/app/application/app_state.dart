@@ -11,8 +11,9 @@ class DailyRecord {
 class AppState extends ChangeNotifier {
   bool isRecording = false;
   int sessionCount = 0;
-  final List<DailyRecord> _records = [];
+  DateTime? lastHitAt;
 
+  final List<DailyRecord> _records = [];
   List<DailyRecord> get records => List.unmodifiable(_records);
 
   int get totalCount =>
@@ -27,20 +28,41 @@ class AppState extends ChangeNotifier {
     return set.length;
   }
 
-  void hit() {
-    sessionCount++;
+  // ==== 提供給 ASR（或其他邏輯層）呼叫的 API ====
+
+  /// 錄音狀態（開始/暫停/停止）
+  void setRecording(bool recording) {
+    if (isRecording == recording) return;
+    isRecording = recording;
     notifyListeners();
   }
 
-  void toggleRecording() {
-    isRecording = !isRecording;
+  /// ASR 命中即時更新（UI 立即反映）
+  void setAsrTempProgress({required int count, DateTime? last}) {
+    sessionCount = count;
+    lastHitAt = last;
     notifyListeners();
   }
 
-  void saveSession() {
-    if (sessionCount <= 0) return;
-    _records.insert(0, DailyRecord(date: DateTime.now(), count: sessionCount));
+  /// 本輪提交完成（資料已寫入 repo，由邏輯層處理），這裡只負責把 UI 歸零
+  void onSessionCommitted() {
     sessionCount = 0;
+    lastHitAt = null;
+    isRecording = false; // 提交後視情況同步為非錄音
     notifyListeners();
+  }
+
+  VoidCallback? startAsr;
+  VoidCallback? stopAsr;
+  VoidCallback? saveAsr;
+
+  void bindAsrHandlers({
+    VoidCallback? onStart,
+    VoidCallback? onStop,
+    VoidCallback? onSave,
+  }) {
+    startAsr = onStart;
+    stopAsr = onStop;
+    saveAsr = onSave;
   }
 }

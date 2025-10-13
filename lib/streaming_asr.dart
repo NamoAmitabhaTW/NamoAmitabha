@@ -20,8 +20,7 @@ import 'package:amitabha/storage/session_repo.dart';
 import 'package:amitabha/storage/daily_repo.dart';
 import 'package:amitabha/storage/buffered_hits.dart';
 import 'package:amitabha/storage/models.dart';
-import 'features/asr/widgets/save_button.dart';
-import 'features/asr/widgets/record_toggle_button.dart';
+import 'package:amitabha/app/application/app_state.dart';
 //import 'storage/firestore_syncToCloudBatch.dart';
 
 enum SessionState { idle, recording }
@@ -44,16 +43,15 @@ Future<sherpa_onnx.OnlineRecognizer> createOnlineRecognizer(
   return sherpa_onnx.OnlineRecognizer(config);
 }
 
-class StreamingAsrScreen extends StatefulWidget {
-  const StreamingAsrScreen({super.key});
+class StreamingAsrRunner extends StatefulWidget {
+  const StreamingAsrRunner({super.key});
 
   @override
-  State<StreamingAsrScreen> createState() => _StreamingAsrScreenState();
+  State<StreamingAsrRunner> createState() => _StreamingAsrRunnerState();
 }
 
-class _StreamingAsrScreenState extends State<StreamingAsrScreen>
+class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
     with WidgetsBindingObserver {
-  final TextEditingController _controller = TextEditingController();
   late final AudioRecorder _audioRecorder;
   String _last = '';
   int _index = 0;
@@ -61,9 +59,6 @@ class _StreamingAsrScreenState extends State<StreamingAsrScreen>
   sherpa_onnx.OnlineRecognizer? _recognizer;
   sherpa_onnx.OnlineStream? _stream;
   int _sampleRate = 16000;
-
-  StreamSubscription<RecordState>? _recordSub;
-  RecordState _recordState = RecordState.stop;
 
   int _asrHitCount = 0;
   DateTime? _asrLastHitAt;
@@ -80,13 +75,22 @@ class _StreamingAsrScreenState extends State<StreamingAsrScreen>
   final String _userName = '使用者';
 
   bool _committing = false;
-  bool get _saveEnabled => _asrHitCount > 0 && !_committing;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _initAndStart();
+    // 🔗 綁定 ASR 控制指令到 AppState（UI 會呼叫這些）
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      try {
+        context.read<AppState>().bindAsrHandlers(
+          onStart: _start,
+          onStop: _stop,
+          onSave: _onSavePressed, // 內部會呼叫 _commitSession()
+        );
+      } catch (_) {}
+    });
   }
 
   Future<void> _initAndStart() async {
@@ -99,7 +103,6 @@ class _StreamingAsrScreenState extends State<StreamingAsrScreen>
     });
 
     _audioRecorder = AudioRecorder();
-    _recordSub = _audioRecorder.onStateChanged().listen(_updateRecordState);
   }
 
   Future<void> _start() async {
@@ -161,6 +164,8 @@ class _StreamingAsrScreenState extends State<StreamingAsrScreen>
 
         final stream = await _audioRecorder.startStream(config);
 
+        context.read<AppState>().setRecording(true);
+
         stream.listen(
           (data) {
             final samplesFloat32 = convertBytesToFloat32(
@@ -203,14 +208,15 @@ class _StreamingAsrScreenState extends State<StreamingAsrScreen>
                       _buffer?.add(DateTime.now());
                     }
                   });
+                  try {
+                    context.read<AppState>().setAsrTempProgress(
+                      count: _asrHitCount,
+                      last: _asrLastHitAt,
+                    );
+                  } catch (_) {}
                 }
               }
             }
-
-            _controller.value = TextEditingValue(
-              text: textToDisplay,
-              selection: TextSelection.collapsed(offset: textToDisplay.length),
-            );
           },
           onDone: () {
             print('stream stopped.');
@@ -227,10 +233,7 @@ class _StreamingAsrScreenState extends State<StreamingAsrScreen>
     _stream?.free();
     _stream = _recognizer?.createStream();
     await _audioRecorder.stop();
-  }
-
-  void _updateRecordState(RecordState recordState) {
-    setState(() => _recordState = recordState);
+    context.read<AppState>().setRecording(false);
   }
 
   Future<bool> _isEncoderSupported(AudioEncoder encoder) async {
@@ -279,6 +282,9 @@ class _StreamingAsrScreenState extends State<StreamingAsrScreen>
         }
       },
     );
+
+    try { context.read<AppState>().setAsrTempProgress(count: 0, last: null); } catch (_) {}
+
   }
 
   Future<void> _commitSession({String reason = 'user_action'}) async {
@@ -311,6 +317,10 @@ class _StreamingAsrScreenState extends State<StreamingAsrScreen>
     } catch (e) {
       debugPrint('cloud sync failed: $e');
     }
+
+    try {
+      context.read<AppState>().onSessionCommitted();
+    } catch (_) {}
 
     setState(() {
       _asrHitCount = 0;
@@ -356,94 +366,23 @@ class _StreamingAsrScreenState extends State<StreamingAsrScreen>
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _commitIfPending(reason: 'dispose');
-    _recordSub?.cancel();
     _audioRecorder.dispose();
     _stream?.free();
     _recognizer?.free();
     _buffer?.close();
+    try {
+      context.read<AppState>().bindAsrHandlers(
+        onStart: null,
+        onStop: null,
+        onSave: null,
+      );
+    } catch (_) {}
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const SizedBox(height: 50),
-        TextField(maxLines: 5, controller: _controller, readOnly: true),
-        const SizedBox(height: 12),
-        _asrCounterPanel(),
-        const SizedBox(height: 38),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            RecordToggleButton(
-              isRecording: _recordState != RecordState.stop,
-              onStart: _start,
-              onStop: _stop,
-              disabled: _committing,
-            ),
-            const SizedBox(width: 20),
-            _buildText(),
-            const SizedBox(width: 20),
-            SaveButton(
-              enabled: _saveEnabled,
-              loading: _committing,
-              onPressed: _onSavePressed,
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildText() {
-    if (_recordState == RecordState.stop) {
-      return const Text("Start");
-    } else {
-      return const Text("Stop");
-    }
-  }
-
-  Widget _asrCounterPanel() {
-    final ts = _asrLastHitAt != null
-        ? _asrLastHitAt!
-              .toLocal()
-              .toIso8601String()
-              .replaceFirst('T', ' ')
-              .split('.')
-              .first
-        : '—';
-    return Card(
-      elevation: 0,
-      color: Colors.amber.withOpacity(0.08),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text(
-              'ASR 阿彌陀佛',
-              style: TextStyle(fontWeight: FontWeight.w600),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  '累計：$_asrHitCount 聲',
-                  style: const TextStyle(fontSize: 16),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  '最後：$ts',
-                  style: const TextStyle(fontSize: 12, color: Colors.black54),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
+    //Runner 不出畫面
+    return const SizedBox.shrink();
   }
 }
