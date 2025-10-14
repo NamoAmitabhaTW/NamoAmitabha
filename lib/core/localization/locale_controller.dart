@@ -8,7 +8,11 @@ class LocaleController extends ChangeNotifier {
   Locale? get locale => _locale;
 
   LocaleController() {
-    restore();
+    // 原本直接呼叫 restore();
+    // 改成讓第一禎先畫，再非阻塞地做復原。
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      restore();
+    });
   }
 
   Future<void> restore() async {

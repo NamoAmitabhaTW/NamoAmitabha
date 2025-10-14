@@ -1,4 +1,4 @@
-//amitabha/lib/features/auth/domain/auth_error.dart
+/* //amitabha/lib/features/auth/domain/auth_error.dart
 enum AuthError {
   network,   
   cancelled, 
@@ -12,4 +12,4 @@ class AuthException implements Exception {
 
   @override
   String toString() => 'AuthException($code, $message)';
-}
+} */

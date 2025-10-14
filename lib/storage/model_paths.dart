@@ -4,6 +4,9 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
 class ModelPaths {
+  static String archiveFileName(String modelName) =>
+      modelName.endsWith('.tar.bz2') ? modelName : '$modelName.tar.bz2';
+
   static Future<Directory> root() async {
     final sup = await getApplicationSupportDirectory();
     final dir = Directory(p.join(sup.path, 'amitabha', 'models'));
@@ -13,7 +16,7 @@ class ModelPaths {
 
   static Future<File> archiveFile(String modelName) async {
     final cache = await getTemporaryDirectory();
-    final f = File(p.join(cache.path, '$modelName.tar.bz2'));
+    final f = File(p.join(cache.path, archiveFileName(modelName)));
     return f;
   }
 

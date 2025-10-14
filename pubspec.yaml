@@ -74,25 +74,25 @@ flavorizr:
       app:
         name: "念佛app Dev"
       android:
-        applicationId: "com.example.amitabha.dev"
+        applicationId: "com.earth.amitabha.dev"
       ios:
-        bundleId: "com.example.amitabha.dev"
+        bundleId: "com.earth.amitabha.dev"
 
     staging:
       app:
         name: "念佛app Staging"
       android:
-        applicationId: "com.example.amitabha.staging"
+        applicationId: "com.earth.amitabha.staging"
       ios:
-        bundleId: "com.example.amitabha.staging"
+        bundleId: "com.earth.amitabha.staging"
 
     prod:
       app:
         name: "念佛app"
       android:
-        applicationId: "com.example.amitabha"
+        applicationId: "com.earth.amitabha"
       ios:
-        bundleId: "com.example.amitabha"
+        bundleId: "com.earth.amitabha"
 
 
 # For information on the generic Dart part of this file, see the

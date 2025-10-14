@@ -20,7 +20,7 @@ class DownloadModel with ChangeNotifier {
   void useAsr([String? name]) {
     _kind = ModelKind.asr;
     _modelName = name ??
-        'icefall-asr-zipformer-streaming-wenetspeech-20230615.tar.bz2';
+        'icefall-asr-zipformer-streaming-wenetspeech-20230615';
     notifyListeners();
   }
 

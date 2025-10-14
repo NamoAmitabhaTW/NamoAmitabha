@@ -24,9 +24,6 @@ class _HomeShellState extends State<HomeShell> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-       context.read<DownloadModel>().useAsr();
-    });
   }
 
   Widget _buildStaticPage(int i) {
