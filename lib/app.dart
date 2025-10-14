@@ -50,7 +50,8 @@ class App extends StatelessWidget {
             theme: Brand.light(),
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
-            home: _flavorBanner(child: const HomeShell(), show: kDebugMode),
+            home: const HomeShell(),
+            debugShowCheckedModeBanner: false,
           );
         },
       ),
