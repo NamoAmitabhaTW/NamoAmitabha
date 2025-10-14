@@ -39,7 +39,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get times => 'times';
 
   @override
-  String get noRecords => 'No records yet';
+  String get noRecords => 'No records';
 
   @override
   String get logIn => 'Log in';
@@ -94,6 +94,58 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String get confirmDeleteAccount =>
       'Are you sure you want to delete your account and data? This action cannot be undone.';
+
+  @override
+  String get pleaseWait => 'Please wait';
+
+  @override
+  String get downloading => 'Downloading';
+
+  @override
+  String get unzipping => 'Unzipping';
+
+  @override
+  String get completed => 'Completed';
+
+  @override
+  String get preparing => 'Preparing';
+
+  @override
+  String get preparingPleaseWait => 'Preparing, please wait…';
+
+  @override
+  String doNotOperateDuring(String phase) {
+    return 'Do not operate during $phase';
+  }
+
+  @override
+  String get ok => 'OK';
+
+  @override
+  String get downloadRequiredTitle => 'Download Required';
+
+  @override
+  String downloadRequiredBody(String modelName) {
+    return 'The speech recognition model ($modelName) is not available locally. Do you want to download it?';
+  }
+
+  @override
+  String get download => 'Download';
+
+  @override
+  String get downloadFailedTitle => 'Download Failed';
+
+  @override
+  String downloadFailedBody(String error) {
+    return 'Failed to download the model: $error';
+  }
+
+  @override
+  String get successTitle => 'Success';
+
+  @override
+  String get successBody =>
+      'The model has been downloaded and extracted successfully.';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -101,9 +153,9 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   AppLocalizationsZhHant() : super('zh_Hant');
 }
 
-/// The translations for Chinese, as used in Taiwan, using the Han script (`zh_Hant_TW`).
-class AppLocalizationsZhHantTw extends AppLocalizationsZh {
-  AppLocalizationsZhHantTw() : super('zh_Hant_TW');
+/// The translations for Chinese, as used in Taiwan (`zh_TW`).
+class AppLocalizationsZhTw extends AppLocalizationsZh {
+  AppLocalizationsZhTw() : super('zh_TW');
 
   @override
   String get amitabha => '阿彌陀佛';
@@ -136,7 +188,7 @@ class AppLocalizationsZhHantTw extends AppLocalizationsZh {
   String get times => '次';
 
   @override
-  String get noRecords => '目前沒有記錄';
+  String get noRecords => '尚無紀錄';
 
   @override
   String get logIn => '登入';
@@ -190,4 +242,55 @@ class AppLocalizationsZhHantTw extends AppLocalizationsZh {
 
   @override
   String get confirmDeleteAccount => '確定要刪除帳號與資料？此動作無法復原。';
+
+  @override
+  String get pleaseWait => '請稍候';
+
+  @override
+  String get downloading => '下載中';
+
+  @override
+  String get unzipping => '解壓中';
+
+  @override
+  String get completed => '完成';
+
+  @override
+  String get preparing => '準備中';
+
+  @override
+  String get preparingPleaseWait => '正在準備中，請稍候…';
+
+  @override
+  String doNotOperateDuring(String phase) {
+    return '「$phase」過程中請勿進行任何操作';
+  }
+
+  @override
+  String get ok => '確定';
+
+  @override
+  String get downloadRequiredTitle => '需要下載';
+
+  @override
+  String downloadRequiredBody(String modelName) {
+    return '語音辨識模型（$modelName）目前不在本機。是否要立刻下載？';
+  }
+
+  @override
+  String get download => '下載';
+
+  @override
+  String get downloadFailedTitle => '下載失敗';
+
+  @override
+  String downloadFailedBody(String error) {
+    return '模型下載失敗：$error';
+  }
+
+  @override
+  String get successTitle => '成功';
+
+  @override
+  String get successBody => '模型已成功下載並解壓完成。';
 }

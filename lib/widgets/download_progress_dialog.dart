@@ -1,18 +1,18 @@
-// This file is modified based on the open-source project:
-// Flutter-EasySpeechRecognition (https://github.com/Jason-chen-coder/Flutter-EasySpeechRecognition)
-// Original copyright (c) 2024 Xiaomi Corporation
-
+// lib/widgets/download_progress_dialog.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:amitabha/download_model.dart';
+import 'package:amitabha/l10n/generated/app_localizations.dart';
 
 class DownloadProgressDialog extends StatelessWidget {
   const DownloadProgressDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context);
+
     return AlertDialog(
-      title: const Text('Please wait patiently'),
+      title: Text(t.pleaseWait),
       content: Consumer<DownloadModel>(
         builder: (context, m, child) {
           final downloading = m.progress > 0.0 && m.progress < 1.0;
@@ -25,8 +25,8 @@ class DownloadProgressDialog extends StatelessWidget {
               : (unzipping ? m.unzipProgress : 0.0);
 
           final label = downloading
-              ? 'downloading'
-              : (unzipping ? 'unzipping' : (done ? 'completed' : 'preparing'));
+              ? t.downloading
+              : (unzipping ? t.unzipping : (done ? t.completed : t.preparing));
 
           return Column(
             mainAxisSize: MainAxisSize.min,
@@ -35,8 +35,8 @@ class DownloadProgressDialog extends StatelessWidget {
               const SizedBox(height: 16),
               Text(
                 idle
-                    ? 'Please wait while preparing...'
-                    : 'Please do not perform any operations during $label',
+                    ? t.preparingPleaseWait
+                    : t.doNotOperateDuring(label),
               ),
               const SizedBox(height: 8),
               if (!idle) Text('${(showingValue * 100).toStringAsFixed(2)}%'),
@@ -57,12 +57,12 @@ class DownloadProgressDialog extends StatelessWidget {
                 if (!busy)
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('OK'),
+                    child: Text(t.ok),
                   )
                 else ...[
                   TextButton(
                     onPressed: null,
-                    child: Text(downloading ? 'Downloading' : 'Unzipping'),
+                    child: Text(downloading ? t.downloading : t.unzipping),
                   ),
                   const SizedBox(width: 12),
                   const SizedBox(

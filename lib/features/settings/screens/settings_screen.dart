@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:amitabha/core/localization/locale_controller.dart';
-import 'package:amitabha/features/auth/application/delete_account_runner.dart';
 /* import 'package:amitabha/features/auth/application/auth_facade.dart';
 import 'package:amitabha/features/auth/data/firebase_auth_repository.dart';
 import 'package:amitabha/features/auth/data/firestore_user_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:amitabha/core/ui/busy_dialog.dart';
 import 'package:amitabha/core/firebase_bootstrap.dart'; */
+import 'package:url_launcher/url_launcher_string.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -23,7 +23,6 @@ class SettingsScreen extends StatelessWidget {
         const SizedBox(height: 8),
 
         //_AccountTile(),
-
         const Divider(),
         ListTile(
           leading: const Icon(Icons.language),
@@ -34,8 +33,9 @@ class SettingsScreen extends StatelessWidget {
         ListTile(
           leading: const Icon(Icons.feedback_outlined),
           title: Text(t.feedback),
-          onTap: () {}, 
+          onTap: () => _sendFeedbackEmail(context),
         ),
+
         /* const SizedBox(height: 12),
         ListTile(
           leading: const Icon(Icons.delete_forever, color: Colors.red),
@@ -47,12 +47,16 @@ class SettingsScreen extends StatelessWidget {
   }
 
   String _languageLabel(BuildContext context) {
-    final l = Localizations.localeOf(context);
-    if (l.languageCode == 'zh' &&
-        (l.countryCode == 'TW' || l.scriptCode == 'Hant')) {
-      return '繁體中文';
+    final ctrl = context.watch<LocaleController>();
+    final eff = ctrl.locale; // null = 跟隨系統
+    if (eff == null) {
+      final sys = Localizations.maybeLocaleOf(context);
+      final isZh =
+          sys?.languageCode == 'zh' &&
+          (sys?.countryCode == 'TW' || sys?.scriptCode == 'Hant');
+      return isZh ? '跟隨系統（繁體中文）' : '跟隨系統（English）';
     }
-    return 'English';
+    return eff.languageCode == 'zh' ? '繁體中文' : 'English';
   }
 
   void _chooseLanguage(BuildContext context) {
@@ -63,12 +67,18 @@ class SettingsScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
+              leading: const Icon(Icons.settings_backup_restore),
+              title: const Text('跟隨系統'),
+              onTap: () {
+                context.read<LocaleController>().useSystem();
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
               leading: const Icon(Icons.translate),
               title: const Text('繁體中文'),
               onTap: () {
-                context
-                    .read<LocaleController>()
-                    .useTraditionalChinese(); // zh-TW 或 zh-Hant
+                context.read<LocaleController>().useTraditionalChinese();
                 Navigator.pop(context);
               },
             ),
@@ -86,7 +96,7 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  Future<void> _onDeleteAccount(BuildContext context) async {
+  /* Future<void> _onDeleteAccount(BuildContext context) async {
     final t = AppLocalizations.of(context);
 
     final ok = await showDialog<bool>(
@@ -117,7 +127,7 @@ class SettingsScreen extends StatelessWidget {
 
     String? error;
     try {
-      await DeleteAccountRunner.run();
+      //await DeleteAccountRunner.run();
     } catch (e) {
       error = e.toString();
     } finally {
@@ -134,6 +144,15 @@ class SettingsScreen extends StatelessWidget {
         context,
       ).showSnackBar(SnackBar(content: Text(t.done)));
     }
+  } */
+
+  void _sendFeedbackEmail(BuildContext context) {
+    // 你可以換成自己的收件者
+    final to = 'namoamitabha1995@gmail.com';
+    final subject = Uri.encodeComponent('[念佛App] 意見回饋');
+    final body = Uri.encodeComponent('描述問題/建議：\n\n裝置與系統版本：\nApp 版本：\n(可附上截圖)');
+    final uri = 'mailto:$to?subject=$subject&body=$body';
+    launchUrlString(uri);
   }
 }
 
@@ -142,7 +161,6 @@ class SettingsScreen extends StatelessWidget {
   @override
   State<_AccountTile> createState() => _AccountTileState();
 } */
-
 
 /* class _AccountTileState extends State<_AccountTile> {
   AuthFacade? _facade;

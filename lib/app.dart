@@ -20,33 +20,38 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (_) {
-            final m = DownloadModel();
-            m.useAsr();
-            return m;
-          },
-        ),
+        ChangeNotifierProvider(create: (_) => DownloadModel()),
         ChangeNotifierProvider(create: (_) => AppState()),
         ChangeNotifierProvider(create: (_) => LocaleController()),
-        /* Provider<AuthFacade>(
-          create: (_) => AuthFacade(
-            auth: FirebaseAuthRepository(),
-            users: FirestoreUserRepository(),
-          ),
-        ), */
       ],
-
       child: Builder(
         builder: (context) {
+          // 由 LocaleController 取得目前選擇；null 代表「跟隨系統」
           final locale = context.watch<LocaleController>().locale;
+
           return MaterialApp(
-            locale: locale,
+            locale: locale, // null => 跟隨系統
+            // 把所有「繁體」系統語系統一映射到 zh_TW
+            localeListResolutionCallback: (locales, supported) {
+              for (final l in locales ?? const <Locale>[]) {
+                if (l.languageCode == 'zh') {
+                  if (l.scriptCode == 'Hant' ||
+                      l.countryCode == 'TW' ||
+                      l.countryCode == 'HK' ||
+                      l.countryCode == 'MO') {
+                    return const Locale('zh', 'TW');
+                  }
+                }
+              }
+              // 交回 Flutter 預設處理
+              return null;
+            },
             onGenerateTitle: (ctx) => AppLocalizations.of(ctx).amitabha,
             theme: Brand.light(),
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
-            home: _flavorBanner(child: const HomeShell(), show: kDebugMode),
+            home: const HomeShell(),
+            debugShowCheckedModeBanner: false,
           );
         },
       ),

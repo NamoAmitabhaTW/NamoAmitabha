@@ -86,5 +86,52 @@
   "@done": { "description": "Generic completion toast" },
 
   "confirmDeleteAccount": "Are you sure you want to delete your account and data? This action cannot be undone.",
-  "@confirmDeleteAccount": { "description": "Delete account confirmation message" }
+  "@confirmDeleteAccount": { "description": "Delete account confirmation message" },
+
+  "pleaseWait": "Please wait",
+  "downloading": "Downloading",
+  "unzipping": "Unzipping",
+  "completed": "Completed",
+  "preparing": "Preparing",
+  "preparingPleaseWait": "Please wait while preparing...",
+  "doNotOperateDuring": "Please do not perform any operations during {label}",
+  "@doNotOperateDuring": {
+  "placeholders": {
+    "label": {}
+    },
+    "description": "Shown like: Please do not perform any operations during Downloading/Unzipping"
+    },
+    "ok": "OK",
+    "noRecords": "No records",
+  
+  "downloadRequiredTitle": "Download Required",
+  "downloadRequiredBody": "The speech recognition model ({modelName}) is not available locally. Do you want to download it?",
+  "@downloadRequiredBody": {
+    "placeholders": { "modelName": { "type": "String" } }
+  },
+
+  "cancel": "Cancel",
+  "download": "Download",
+
+  "downloadFailedTitle": "Download Failed",
+  "downloadFailedBody": "Failed to download the model: {error}",
+  "@downloadFailedBody": {
+    "placeholders": { "error": { "type": "String" } }
+  },
+
+  "successTitle": "Success",
+  "successBody": "The model has been downloaded and extracted successfully.",
+
+  "pleaseWait": "Please wait",
+  "preparing": "Preparing",
+  "preparingPleaseWait": "Preparing, please wait…",
+  "downloading": "Downloading",
+  "unzipping": "Unzipping",
+  "completed": "Completed",
+  "doNotOperateDuring": "Do not operate during {phase}",
+  "@doNotOperateDuring": {
+    "placeholders": { "phase": { "type": "String" } }
+  },
+  "ok": "OK"
+
 }

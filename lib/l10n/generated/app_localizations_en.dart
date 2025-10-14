@@ -39,7 +39,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get times => 'times';
 
   @override
-  String get noRecords => 'No records yet';
+  String get noRecords => 'No records';
 
   @override
   String get logIn => 'Log in';
@@ -94,4 +94,56 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get confirmDeleteAccount =>
       'Are you sure you want to delete your account and data? This action cannot be undone.';
+
+  @override
+  String get pleaseWait => 'Please wait';
+
+  @override
+  String get downloading => 'Downloading';
+
+  @override
+  String get unzipping => 'Unzipping';
+
+  @override
+  String get completed => 'Completed';
+
+  @override
+  String get preparing => 'Preparing';
+
+  @override
+  String get preparingPleaseWait => 'Preparing, please wait…';
+
+  @override
+  String doNotOperateDuring(String phase) {
+    return 'Do not operate during $phase';
+  }
+
+  @override
+  String get ok => 'OK';
+
+  @override
+  String get downloadRequiredTitle => 'Download Required';
+
+  @override
+  String downloadRequiredBody(String modelName) {
+    return 'The speech recognition model ($modelName) is not available locally. Do you want to download it?';
+  }
+
+  @override
+  String get download => 'Download';
+
+  @override
+  String get downloadFailedTitle => 'Download Failed';
+
+  @override
+  String downloadFailedBody(String error) {
+    return 'Failed to download the model: $error';
+  }
+
+  @override
+  String get successTitle => 'Success';
+
+  @override
+  String get successBody =>
+      'The model has been downloaded and extracted successfully.';
 }

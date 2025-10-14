@@ -16,6 +16,7 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'widgets/download_progress_dialog.dart';
 import 'package:amitabha/storage/model_paths.dart';
+import 'package:amitabha/l10n/generated/app_localizations.dart';
 
 Float32List convertBytesToFloat32(
   Uint8List bytes, [
@@ -100,9 +101,10 @@ Future<void> downloadModelAndUnZip(
       showDialog(
         context: context,
         builder: (BuildContext context) {
+          final t = AppLocalizations.of(context);
           return AlertDialog(
-            title: Text('Download Failed'),
-            content: Text('Failed to download the model: ${e.toString()}'),
+            title: Text(t.downloadFailedTitle),
+            content: Text(t.downloadFailedBody(e.toString())),
             actions: <Widget>[
               TextButton(
                 child: Text('OK'),
@@ -130,20 +132,19 @@ Future<bool> _showDownloadConfirmationDialog(BuildContext context) async {
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
+          final t = AppLocalizations.of(context); // 防止父層 context 失效
           return AlertDialog(
-            title: Text('Download Required'),
-            content: Text(
-              'The speech recognition model(${modelName}) is not available locally. Do you want to download it?',
-            ),
+            title: Text(t.downloadRequiredTitle),
+            content: Text(t.downloadRequiredBody(modelName)),
             actions: <Widget>[
               TextButton(
-                child: Text('Cancel'),
+                child: Text(t.cancel),
                 onPressed: () {
                   Navigator.of(context).pop(false);
                 },
               ),
               TextButton(
-                child: Text('Download'),
+                child: Text(t.download),
                 onPressed: () {
                   Navigator.of(context).pop(true);
                 },
@@ -211,11 +212,10 @@ void _showSuccessDialog(BuildContext context) {
     context: context,
     barrierDismissible: true,
     builder: (BuildContext context) {
+      final t = AppLocalizations.of(context);
       return AlertDialog(
-        title: Text('Success'),
-        content: Text(
-          'The model has been downloaded and extracted successfully.',
-        ),
+        title: Text(t.successTitle),
+        content: Text(t.successBody),
         actions: <Widget>[
           TextButton(
             child: Text('OK'),

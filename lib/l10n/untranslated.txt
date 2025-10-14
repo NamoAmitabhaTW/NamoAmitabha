@@ -27,7 +27,22 @@
     "confirm",
     "cancel",
     "done",
-    "confirmDeleteAccount"
+    "confirmDeleteAccount",
+    "pleaseWait",
+    "downloading",
+    "unzipping",
+    "completed",
+    "preparing",
+    "preparingPleaseWait",
+    "doNotOperateDuring",
+    "ok",
+    "downloadRequiredTitle",
+    "downloadRequiredBody",
+    "download",
+    "downloadFailedTitle",
+    "downloadFailedBody",
+    "successTitle",
+    "successBody"
   ],
 
   "zh_Hant": [
@@ -58,6 +73,21 @@
     "confirm",
     "cancel",
     "done",
-    "confirmDeleteAccount"
+    "confirmDeleteAccount",
+    "pleaseWait",
+    "downloading",
+    "unzipping",
+    "completed",
+    "preparing",
+    "preparingPleaseWait",
+    "doNotOperateDuring",
+    "ok",
+    "downloadRequiredTitle",
+    "downloadRequiredBody",
+    "download",
+    "downloadFailedTitle",
+    "downloadFailedBody",
+    "successTitle",
+    "successBody"
   ]
 }
