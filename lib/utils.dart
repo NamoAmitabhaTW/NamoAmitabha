@@ -41,8 +41,9 @@ Future<void> downloadModelAndUnZip(
 ) async {
   final store = Provider.of<DownloadModel>(context, listen: false);
   final channel = store.channel;
+  final fileName = ModelPaths.archiveFileName(modelName);
   final downLoadUrl =
-      'https://github.com/k2-fsa/sherpa-onnx/releases/download/$channel/$modelName.tar.bz2';
+      'https://github.com/k2-fsa/sherpa-onnx/releases/download/$channel/$fileName';
   final downloadModel = Provider.of<DownloadModel>(context, listen: false);
 
   final destinationRoot = (await ModelPaths.root()).path;

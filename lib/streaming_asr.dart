@@ -40,7 +40,7 @@ Future<sherpa_onnx.OnlineRecognizer> createOnlineRecognizer(
     hotwordsScore: 6,
     enableEndpoint: true,
     rule2MinTrailingSilence: 0.8,
-    rule3MinUtteranceLength: 3
+    rule3MinUtteranceLength: 3,
   );
 
   return sherpa_onnx.OnlineRecognizer(config);
@@ -104,8 +104,6 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
         'sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20',
       );
     });
-
-    _audioRecorder = AudioRecorder();
   }
 
   Future<void> _start() async {
@@ -117,6 +115,13 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
     final downloading = progress > 0 && progress < 1;
     bool needsDownloadVal = await needsDownload(modelName);
     bool needsUnZipVal = await needsUnZip(modelName);
+
+    if (_audioRecorder == null) {
+      // 讓第一禎先畫出來
+      await Future<void>.delayed(Duration.zero);
+      _audioRecorder = AudioRecorder();
+    }
+
     if (downloading || unziping) {
       showDialog(
         context: context,
@@ -149,14 +154,14 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
     }
 
     try {
-      if (await _audioRecorder.hasPermission()) {
+      if (await _audioRecorder!.hasPermission()) {
         const encoder = AudioEncoder.pcm16bits;
 
         if (!await _isEncoderSupported(encoder)) {
           return;
         }
 
-        final devs = await _audioRecorder.listInputDevices();
+        final devs = await _audioRecorder!.listInputDevices();
         debugPrint(devs.toString());
 
         const config = RecordConfig(
@@ -165,7 +170,7 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
           numChannels: 1,
         );
 
-        final stream = await _audioRecorder.startStream(config);
+        final stream = await _audioRecorder!.startStream(config);
 
         context.read<AppState>().setRecording(true);
 
@@ -235,19 +240,19 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
     await _buffer?.close();
     _stream?.free();
     _stream = _recognizer?.createStream();
-    await _audioRecorder.stop();
+    await _audioRecorder!.stop();
     context.read<AppState>().setRecording(false);
   }
 
   Future<bool> _isEncoderSupported(AudioEncoder encoder) async {
-    final isSupported = await _audioRecorder.isEncoderSupported(encoder);
+    final isSupported = await _audioRecorder!.isEncoderSupported(encoder);
 
     if (!isSupported) {
       debugPrint('${encoder.name} is not supported on this platform.');
       debugPrint('Supported encoders are:');
 
       for (final e in AudioEncoder.values) {
-        if (await _audioRecorder.isEncoderSupported(e)) {
+        if (await _audioRecorder!.isEncoderSupported(e)) {
           debugPrint('- ${encoder.name}');
         }
       }
@@ -294,7 +299,7 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
       return;
     }
 
-    await _audioRecorder.stop();
+    await _audioRecorder!.stop();
     _sessionState = SessionState.idle;
 
     final lastAt = (_asrLastHitAt ?? DateTime.now()).toUtc();
@@ -366,7 +371,7 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _commitIfPending(reason: 'dispose');
-    _audioRecorder.dispose();
+    _audioRecorder!.dispose();
     _stream?.free();
     _recognizer?.free();
     _buffer?.close();
