@@ -577,7 +577,7 @@
 			baseConfigurationReference = 01C800FBFDE3A9D2F5F04AB6 /* prodProfile.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "$(ASSET_PREFIX)AppIcon";
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -778,7 +778,7 @@
 			baseConfigurationReference = E2C110518646ED7250E4D94A /* devRelease.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "$(ASSET_PREFIX)AppIcon";
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -849,7 +849,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9764F441BD52078D2E507440 /* devProfile.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = AVYQMB3ZB3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = "Profile-dev";
@@ -930,7 +929,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E06629A1518ED088D5F78C2E /* prodDebug.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = AVYQMB3ZB3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = "Debug-prod";
@@ -939,7 +937,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A73FA05D90C330114CD3C02E /* stagingDebug.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = AVYQMB3ZB3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = "Debug-staging";
@@ -949,7 +946,7 @@
 			baseConfigurationReference = E06629A1518ED088D5F78C2E /* prodDebug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "$(ASSET_PREFIX)AppIcon";
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1023,7 +1020,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 648C2F0C2EFB4FCA4F952AB3 /* stagingProfile.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = AVYQMB3ZB3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = "Profile-staging";
@@ -1032,7 +1028,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 057DB6BB0C68EDF7C7CC2793 /* stagingRelease.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = AVYQMB3ZB3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = "Release-staging";
@@ -1211,7 +1206,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8C548BFB194C7AF43EA1D89C /* devDebug.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = AVYQMB3ZB3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = "Debug-dev";
@@ -1221,7 +1215,7 @@
 			baseConfigurationReference = 057DB6BB0C68EDF7C7CC2793 /* stagingRelease.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "$(ASSET_PREFIX)AppIcon";
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1293,7 +1287,7 @@
 			baseConfigurationReference = 9764F441BD52078D2E507440 /* devProfile.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "$(ASSET_PREFIX)AppIcon";
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1363,7 +1357,7 @@
 			baseConfigurationReference = 3DB80C693716B06F9FF00CE4 /* prodRelease.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "$(ASSET_PREFIX)AppIcon";
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1434,7 +1428,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E2C110518646ED7250E4D94A /* devRelease.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = AVYQMB3ZB3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = "Release-dev";
@@ -1444,7 +1437,7 @@
 			baseConfigurationReference = 648C2F0C2EFB4FCA4F952AB3 /* stagingProfile.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "$(ASSET_PREFIX)AppIcon";
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1514,7 +1507,7 @@
 			baseConfigurationReference = A73FA05D90C330114CD3C02E /* stagingDebug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "$(ASSET_PREFIX)AppIcon";
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1588,7 +1581,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3DB80C693716B06F9FF00CE4 /* prodRelease.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = AVYQMB3ZB3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = "Release-prod";
@@ -1598,7 +1590,7 @@
 			baseConfigurationReference = 8C548BFB194C7AF43EA1D89C /* devDebug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "$(ASSET_PREFIX)AppIcon";
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1672,7 +1664,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 01C800FBFDE3A9D2F5F04AB6 /* prodProfile.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = AVYQMB3ZB3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = "Profile-prod";
