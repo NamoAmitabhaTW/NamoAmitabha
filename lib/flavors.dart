@@ -12,11 +12,11 @@ class F {
   static String get title {
     switch (appFlavor) {
       case Flavor.dev:
-        return '念佛app Dev';
+        return '念佛 Dev';
       case Flavor.staging:
-        return '念佛app Staging';
+        return '念佛 Staging';
       case Flavor.prod:
-        return '念佛app';
+        return '念佛';
     }
   }
 

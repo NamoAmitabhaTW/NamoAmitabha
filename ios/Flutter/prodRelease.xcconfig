@@ -2,5 +2,5 @@
 #include "Generated.xcconfig"
 
 ASSET_PREFIX=prod
-BUNDLE_NAME=念佛app
-BUNDLE_DISPLAY_NAME=念佛app
+BUNDLE_NAME=念佛
+BUNDLE_DISPLAY_NAME=念佛
