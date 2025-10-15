@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.0+1
+version: 1.0.1+4
 
 environment:
   sdk: ^3.8.1
@@ -73,7 +73,7 @@ flavorizr:
   flavors:
     dev:
       app:
-        name: "念佛app Dev"
+        name: "念佛 Dev"
       android:
         applicationId: "com.earth.amitabha.dev"
       ios:
@@ -81,7 +81,7 @@ flavorizr:
 
     staging:
       app:
-        name: "念佛app Staging"
+        name: "念佛 Staging"
       android:
         applicationId: "com.earth.amitabha.staging"
       ios:
@@ -89,7 +89,7 @@ flavorizr:
 
     prod:
       app:
-        name: "念佛app"
+        name: "念佛"
       android:
         applicationId: "com.earth.amitabha"
       ios:
