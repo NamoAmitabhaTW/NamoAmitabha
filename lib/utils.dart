@@ -4,6 +4,7 @@
 // Original copyright (c) 2024 Xiaomi Corporation
 
 import "dart:io";
+import 'dart:async';
 import 'package:archive/archive.dart';
 import 'package:archive/archive_io.dart';
 import 'download_model.dart';
@@ -75,53 +76,47 @@ Future<void> downloadModelAndUnZip(
 
     try {
       final client = http.Client();
-      final request = http.Request('GET', Uri.parse(downLoadUrl));
-      final response = await client.send(request);
+      try {
+        final request = http.Request('GET', Uri.parse(downLoadUrl));
+        request.headers['User-Agent'] = 'AmitabhaApp/1.0';
+        final response = await client.send(request);
 
-      int totalBytes = response.contentLength ?? 0;
-      int receivedBytes = 0;
+        int totalBytes = response.contentLength ?? 0;
+        int receivedBytes = 0;
 
-      final sink = File(moduleZipFilePath).openWrite();
+        final sink = File(moduleZipFilePath).openWrite();
 
-      await response.stream.forEach((List<int> chunk) {
-        sink.add(chunk);
-        receivedBytes += chunk.length;
-        double progress = totalBytes > 0 ? receivedBytes / totalBytes : 0;
-        downloadModel.setProgress(progress);
-      });
+        await response.stream.forEach((List<int> chunk) {
+          sink.add(chunk);
+          receivedBytes += chunk.length;
+          double progress = totalBytes > 0 ? receivedBytes / totalBytes : 0;
+          downloadModel.setProgress(progress);
+        });
 
-      await sink.flush();
-      await sink.close();
+        await sink.flush();
+        await sink.close();
 
-      await _unzipDownloadedFile(moduleZipFilePath, destinationRoot, context);
+        await _unzipDownloadedFile(moduleZipFilePath, destinationRoot, context);
+      } finally {
+        client.close();
+      }
     } catch (e) {
       if (Navigator.canPop(context)) {
         Navigator.of(context).pop();
       }
 
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          final t = AppLocalizations.of(context);
-          return AlertDialog(
-            title: Text(t.downloadFailedTitle),
-            content: Text(t.downloadFailedBody(e.toString())),
-            actions: <Widget>[
-              TextButton(
-                child: Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
       try {
         if (await File(moduleZipFilePath).exists()) {
           await File(moduleZipFilePath).delete();
         }
       } catch (_) {}
+
+      downloadModel.reset();
+
+      await _showRetryDownloadDialog(
+        context,
+        onRetryDownload: () => downloadModelAndUnZip(context, modelName),
+      );
     }
   }
 }
@@ -171,15 +166,28 @@ Future<void> unzipModelFile(BuildContext context, String modelName) async {
     final destinationRoot = (await ModelPaths.root()).path;
     await _unzipDownloadedFile(moduleZipFilePath, destinationRoot, context);
   } catch (e) {
-    downloadModel.setUnzipProgress(0.0);
-    Navigator.of(context).pop();
+    if (Navigator.canPop(context)) {
+      Navigator.of(context).pop();
+    }
 
-    try {
-      final f = File(moduleZipFilePath);
-      if (await f.exists()) await f.delete();
-    } catch (_) {}
-
-    downloadModelAndUnZip(context, modelName);
+    if (_looksLikeDiskFull(e)) {
+      downloadModel.setUnzipProgress(0.0);
+      final destinationRoot = (await ModelPaths.root()).path;
+      await _showRetryUnzipOnlyDialog(
+        context,
+        zipFilePath: moduleZipFilePath,
+        destinationRoot: destinationRoot,
+      );
+    } else {
+      downloadModel.reset();
+      try {
+        await File(moduleZipFilePath).delete();
+      } catch (_) {}
+      await _showRetryDownloadDialog(
+        context,
+        onRetryDownload: () => downloadModelAndUnZip(context, modelName),
+      );
+    }
   }
 }
 
@@ -230,6 +238,74 @@ void _showSuccessDialog(BuildContext context) {
   );
 }
 
+//確認磁碟儲存空間是否足夠
+bool _looksLikeDiskFull(Object e) {
+  if (e is FileSystemException) {
+    final msg = (e.osError?.message ?? e.message).toLowerCase();
+    return msg.contains('no space left') || msg.contains('enospc');
+  }
+  // Android 有時候訊息會不同，可再擴充
+  return false;
+}
+
+Future<void> _showRetryUnzipOnlyDialog(
+  BuildContext context, {
+  required String zipFilePath,
+  required String destinationRoot,
+}) async {
+  final t = AppLocalizations.of(context);
+  await showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (_) => AlertDialog(
+      title: Text(t.unzipFailedTitle), // 例：解壓縮失敗
+      content: Text(t.unzipFailedLowSpaceBody), // 例：可能是空間不足...
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(t.close),
+        ),
+        TextButton(
+          onPressed: () async {
+            Navigator.of(context).pop();
+            // 直接再解壓一次（保留 zip）
+            await _unzipDownloadedFile(zipFilePath, destinationRoot, context);
+          },
+          child: Text(t.retryUnzip), // 例：重試解壓
+        ),
+      ],
+    ),
+  );
+}
+
+Future<void> _showRetryDownloadDialog(
+  BuildContext context, {
+  required VoidCallback onRetryDownload,
+}) async {
+  final t = AppLocalizations.of(context);
+  await showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (_) => AlertDialog(
+      title: Text(t.downloadFailedTitle), // 下載失敗
+      content: Text(t.downloadFailedShort), // 模型下載失敗，請重試或稍後再試
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(t.close),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+            onRetryDownload();
+          },
+          child: Text(t.retry), // 重新下載
+        ),
+      ],
+    ),
+  );
+}
+
 class UnzipParams {
   final String zipFilePath;
   final String destinationPath;
@@ -268,57 +344,75 @@ Future<void> _unzipDownloadedFile(
   BuildContext context,
 ) async {
   final downloadModel = Provider.of<DownloadModel>(context, listen: false);
-  downloadModel.setUnzipProgress(0.1);
+  downloadModel.setUnzipProgress(0.01);
 
-  final result = await compute(
-    _decompressInIsolate,
-    UnzipParams(zipFilePath, destinationPath),
-  );
-
-  downloadModel.setUnzipProgress(0.4);
-
-  final files = result[1] as List<ArchiveFile>;
-  final totalFiles = files.length;
-  int processedFiles = 0;
-
-  for (final file in files) {
-    await compute(_extractFileInIsolate, {
-      'file': file,
-      'destinationPath': destinationPath,
-    });
-
-    processedFiles++;
-    double progress = 0.4 + (0.6 * processedFiles / totalFiles);
-
-    if (processedFiles % 10 == 0) {
-      await Future.delayed(Duration(milliseconds: 1));
+  // === 平滑假進度：0.10 → 0.39，每秒 +0.01 ===
+  Timer? smoothTimer;
+  smoothTimer = Timer.periodic(const Duration(seconds: 2), (_) {
+    final cur = downloadModel.unzipProgress;
+    // 如果已經被真實進度推到 0.39 以上，就停掉
+    if (cur >= 0.39) {
+      smoothTimer?.cancel();
+      return;
     }
-
-    downloadModel.setUnzipProgress(progress);
-  }
-
-  downloadModel.setProgress(1.0);
-  downloadModel.setUnzipProgress(1.0);
+    final next = (cur + 0.01);
+    downloadModel.setUnzipProgress(next >= 0.39 ? 0.39 : next);
+  });
 
   try {
-    final f = File(zipFilePath);
-    if (await f.exists()) await f.delete();
-  } catch (_) {}
+    final result = await compute(
+      _decompressInIsolate,
+      UnzipParams(zipFilePath, destinationPath),
+    );
 
-  final modelRootName = basenameWithoutExtension(
-    basenameWithoutExtension(zipFilePath),
-  );
-  final modelRoot = join(destinationPath, modelRootName);
+    // 進入可量測階段，先停掉假進度，直接切到 0.4
+    smoothTimer?.cancel();
+    downloadModel.setUnzipProgress(0.4);
 
-  await deleteSpecificFilesForModel(
-    modelName: downloadModel.modelName,
-    modelRoot: modelRoot,
-    dryRun: false,
-  );
+    final files = result[1] as List<ArchiveFile>;
+    final totalFiles = files.length;
+    int processedFiles = 0;
 
-  if (Navigator.canPop(context)) {
-    Navigator.of(context).pop();
-    _showSuccessDialog(context);
+    for (final file in files) {
+      await compute(_extractFileInIsolate, {
+        'file': file,
+        'destinationPath': destinationPath,
+      });
+
+      processedFiles++;
+      final progress = 0.4 + (0.6 * processedFiles / totalFiles);
+      if (processedFiles % 10 == 0) {
+        await Future.delayed(const Duration(milliseconds: 1));
+      }
+      downloadModel.setUnzipProgress(progress);
+    }
+
+    downloadModel.setProgress(1.0);
+    downloadModel.setUnzipProgress(1.0);
+
+    try {
+      final f = File(zipFilePath);
+      if (await f.exists()) await f.delete();
+    } catch (_) {}
+
+    final modelRootName = basenameWithoutExtension(
+      basenameWithoutExtension(zipFilePath),
+    );
+    final modelRoot = join(destinationPath, modelRootName);
+
+    await deleteSpecificFilesForModel(
+      modelName: downloadModel.modelName,
+      modelRoot: modelRoot,
+      dryRun: false,
+    );
+
+    if (Navigator.canPop(context)) {
+      Navigator.of(context).pop();
+      _showSuccessDialog(context);
+    }
+  } finally {
+    // 防止任何例外時計時器沒被關
+    smoothTimer?.cancel();
   }
 }
 

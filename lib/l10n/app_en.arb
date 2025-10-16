@@ -120,7 +120,7 @@
   },
 
   "successTitle": "Success",
-  "successBody": "The model has been downloaded and extracted successfully.",
+  "successBody": "The model has been installed successfully.",
 
   "pleaseWait": "Please wait",
   "preparing": "Preparing",
@@ -132,6 +132,30 @@
   "@doNotOperateDuring": {
     "placeholders": { "phase": { "type": "String" } }
   },
-  "ok": "OK"
+  "ok": "OK",
 
-}
+  "unzipFailedTitle": "Unzip failed",
+  "unzipFailedLowSpaceBody": "Likely due to low storage space. Please free up some space and try unzipping again.",
+  "close": "Close",
+  "retryUnzip": "Retry unzip",
+  "downloadFailedTitle": "Download Failed",
+  "downloadFailedShort": "Model download failed. Please try again later.",
+  "retry": "Retry",
+  "feedbackOpenMailAppFailed": "Could not open mail app",
+
+   "appName": "Amitabha Buddha",
+
+  "feedbackEmailSubject": "[{app}] Feedback",
+  "@feedbackEmailSubject": {
+    "description": "Subject for user feedback email to developer",
+    "placeholders": { "app": { "type": "String", "example": "Amitabha" } }
+  },
+
+  "feedbackEmailBody": "Issue/Suggestion:\n\n(You may attach a screenshot)",
+
+  "micPermissionTitle": "Microphone Permission Required",
+  "micPermissionRationale": "To count chants, please enable Microphone in System Settings > Amitabha.",
+  "openSettings": "Open Settings",
+  "microphonePermissionDenied": "Microphone permission not granted."
+
+}  

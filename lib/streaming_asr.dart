@@ -21,6 +21,8 @@ import 'package:amitabha/storage/daily_repo.dart';
 import 'package:amitabha/storage/buffered_hits.dart';
 import 'package:amitabha/storage/models.dart';
 import 'package:amitabha/app/application/app_state.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:amitabha/l10n/generated/app_localizations.dart';
 //import 'storage/firestore_syncToCloudBatch.dart';
 
 enum SessionState { idle, recording }
@@ -55,7 +57,7 @@ class StreamingAsrRunner extends StatefulWidget {
 
 class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
     with WidgetsBindingObserver {
-  late final AudioRecorder _audioRecorder;
+  late final AudioRecorder _audioRecorder = AudioRecorder();
   String _last = '';
   int _index = 0;
   bool _isInitialized = false;
@@ -116,12 +118,6 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
     bool needsDownloadVal = await needsDownload(modelName);
     bool needsUnZipVal = await needsUnZip(modelName);
 
-    if (_audioRecorder == null) {
-      // 讓第一禎先畫出來
-      await Future<void>.delayed(Duration.zero);
-      _audioRecorder = AudioRecorder();
-    }
-
     if (downloading || unziping) {
       showDialog(
         context: context,
@@ -140,6 +136,17 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
       unzipModelFile(context, modelName);
       return;
     }
+
+    // 先用 record 觸發系統原生權限（第一次會跳 iOS/Android 原生彈窗）
+    bool granted = await _audioRecorder.hasPermission();
+
+    // 若沒拿到，就視平台做一次補救；仍沒拿到就顯示「前往設定」
+    if (!granted) {
+      if (!mounted) return;
+      await _showOpenSettingsDialog(context); // 第二次才看到你的自家 dialog
+      return;
+    }
+
     if (!_isInitialized) {
       sherpa_onnx.initBindings();
       _recognizer = await createOnlineRecognizer(modelName);
@@ -154,14 +161,14 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
     }
 
     try {
-      if (await _audioRecorder!.hasPermission()) {
+      if (await _audioRecorder.hasPermission()) {
         const encoder = AudioEncoder.pcm16bits;
 
         if (!await _isEncoderSupported(encoder)) {
           return;
         }
 
-        final devs = await _audioRecorder!.listInputDevices();
+        final devs = await _audioRecorder.listInputDevices();
         debugPrint(devs.toString());
 
         const config = RecordConfig(
@@ -170,7 +177,7 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
           numChannels: 1,
         );
 
-        final stream = await _audioRecorder!.startStream(config);
+        final stream = await _audioRecorder.startStream(config);
 
         context.read<AppState>().setRecording(true);
 
@@ -240,19 +247,19 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
     await _buffer?.close();
     _stream?.free();
     _stream = _recognizer?.createStream();
-    await _audioRecorder!.stop();
+    await _audioRecorder.stop();
     context.read<AppState>().setRecording(false);
   }
 
   Future<bool> _isEncoderSupported(AudioEncoder encoder) async {
-    final isSupported = await _audioRecorder!.isEncoderSupported(encoder);
+    final isSupported = await _audioRecorder.isEncoderSupported(encoder);
 
     if (!isSupported) {
       debugPrint('${encoder.name} is not supported on this platform.');
       debugPrint('Supported encoders are:');
 
       for (final e in AudioEncoder.values) {
-        if (await _audioRecorder!.isEncoderSupported(e)) {
+        if (await _audioRecorder.isEncoderSupported(e)) {
           debugPrint('- ${encoder.name}');
         }
       }
@@ -299,7 +306,7 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
       return;
     }
 
-    await _audioRecorder!.stop();
+    await _audioRecorder.stop();
     _sessionState = SessionState.idle;
 
     final lastAt = (_asrLastHitAt ?? DateTime.now()).toUtc();
@@ -367,11 +374,36 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
     }
   }
 
+  Future<void> _showOpenSettingsDialog(BuildContext context) async {
+    final t = AppLocalizations.of(context);
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => AlertDialog(
+        title: Text(t.micPermissionTitle), // i18n (見下方 ARB)
+        content: Text(t.micPermissionRationale), // i18n
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(t.cancel),
+          ),
+          FilledButton(
+            onPressed: () async {
+              Navigator.pop(context);
+              await openAppSettings(); // 由 permission_handler 提供
+            },
+            child: Text(t.openSettings),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _commitIfPending(reason: 'dispose');
-    _audioRecorder!.dispose();
+    _audioRecorder.dispose();
     _stream?.free();
     _recognizer?.free();
     _buffer?.close();

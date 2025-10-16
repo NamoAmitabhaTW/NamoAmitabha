@@ -42,7 +42,21 @@
     "downloadFailedTitle",
     "downloadFailedBody",
     "successTitle",
-    "successBody"
+    "successBody",
+    "unzipFailedTitle",
+    "unzipFailedLowSpaceBody",
+    "close",
+    "retryUnzip",
+    "downloadFailedShort",
+    "retry",
+    "feedbackOpenMailAppFailed",
+    "appName",
+    "feedbackEmailSubject",
+    "feedbackEmailBody",
+    "micPermissionTitle",
+    "micPermissionRationale",
+    "openSettings",
+    "microphonePermissionDenied"
   ],
 
   "zh_Hant": [
@@ -88,6 +102,20 @@
     "downloadFailedTitle",
     "downloadFailedBody",
     "successTitle",
-    "successBody"
+    "successBody",
+    "unzipFailedTitle",
+    "unzipFailedLowSpaceBody",
+    "close",
+    "retryUnzip",
+    "downloadFailedShort",
+    "retry",
+    "feedbackOpenMailAppFailed",
+    "appName",
+    "feedbackEmailSubject",
+    "feedbackEmailBody",
+    "micPermissionTitle",
+    "micPermissionRationale",
+    "openSettings",
+    "microphonePermissionDenied"
   ]
 }

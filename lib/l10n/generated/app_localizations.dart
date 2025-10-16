@@ -360,8 +360,92 @@ abstract class AppLocalizations {
   /// No description provided for @successBody.
   ///
   /// In en, this message translates to:
-  /// **'The model has been downloaded and extracted successfully.'**
+  /// **'The model has been installed successfully.'**
   String get successBody;
+
+  /// No description provided for @unzipFailedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unzip failed'**
+  String get unzipFailedTitle;
+
+  /// No description provided for @unzipFailedLowSpaceBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Likely due to low storage space. Please free up some space and try unzipping again.'**
+  String get unzipFailedLowSpaceBody;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// No description provided for @retryUnzip.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry unzip'**
+  String get retryUnzip;
+
+  /// No description provided for @downloadFailedShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Model download failed. Please try again later.'**
+  String get downloadFailedShort;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// No description provided for @feedbackOpenMailAppFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open mail app'**
+  String get feedbackOpenMailAppFailed;
+
+  /// No description provided for @appName.
+  ///
+  /// In en, this message translates to:
+  /// **'Amitabha Buddha'**
+  String get appName;
+
+  /// Subject for user feedback email to developer
+  ///
+  /// In en, this message translates to:
+  /// **'[{app}] Feedback'**
+  String feedbackEmailSubject(String app);
+
+  /// No description provided for @feedbackEmailBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Issue/Suggestion:\n\n(You may attach a screenshot)'**
+  String get feedbackEmailBody;
+
+  /// No description provided for @micPermissionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Microphone Permission Required'**
+  String get micPermissionTitle;
+
+  /// No description provided for @micPermissionRationale.
+  ///
+  /// In en, this message translates to:
+  /// **'To count chants, please enable Microphone in System Settings > Amitabha.'**
+  String get micPermissionRationale;
+
+  /// No description provided for @openSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Settings'**
+  String get openSettings;
+
+  /// No description provided for @microphonePermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Microphone permission not granted.'**
+  String get microphonePermissionDenied;
 }
 
 class _AppLocalizationsDelegate

@@ -1,9 +1,8 @@
 //app.dart
 import 'package:amitabha/core/core/theme/brand.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'flavors.dart';
+/* import 'flavors.dart'; */
 import 'download_model.dart';
 /* import 'features/auth/application/auth_facade.dart';
 import 'features/auth/data/firebase_auth_repository.dart';
@@ -58,7 +57,7 @@ class App extends StatelessWidget {
     );
   }
 
-  Widget _flavorBanner({required Widget child, bool show = true}) => show
+  /* Widget _flavorBanner({required Widget child, bool show = true}) => show
       ? Banner(
           location: BannerLocation.topStart,
           message: F.name,
@@ -71,7 +70,7 @@ class App extends StatelessWidget {
           textDirection: TextDirection.ltr,
           child: child,
         )
-      : child;
+      : child; */
 }
 
 typedef MyApp = App;

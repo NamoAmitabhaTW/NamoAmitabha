@@ -6,7 +6,6 @@ import 'package:amitabha/app/application/app_state.dart';
 import 'package:amitabha/features/asr/screens/streaming_asr_screen.dart';
 import 'package:amitabha/features/records/screens/records_screen.dart';
 import 'package:amitabha/features/settings/screens/settings_screen.dart';
-import 'package:amitabha/download_model.dart';
 
 
 class HomeShell extends StatefulWidget {

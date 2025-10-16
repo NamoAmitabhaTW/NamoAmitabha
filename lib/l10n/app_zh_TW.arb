@@ -120,7 +120,7 @@
   },
 
   "successTitle": "成功",
-  "successBody": "模型已成功下載並解壓完成。",
+  "successBody":  "模型已安裝完成。",
 
   "pleaseWait": "請稍候",
   "preparing": "準備中",
@@ -132,5 +132,30 @@
   "@doNotOperateDuring": {
     "placeholders": { "phase": { "type": "String" } }
   },
-  "ok": "確定"
+  "ok": "確定",
+
+  "unzipFailedTitle": "解壓縮失敗",
+  "unzipFailedLowSpaceBody": "可能是儲存空間不足，請清出空間後再嘗試解壓。",
+  "close": "關閉",
+  "retryUnzip": "重試解壓",
+  "downloadFailedShort": "模型下載失敗，請稍後再試或重試。",
+  "retry": "重試",
+  "feedbackOpenMailAppFailed": "無法開啟郵件 App",
+
+  "appName": "念佛",
+
+ "feedbackEmailSubject": "[{app}] 意見回饋",
+  "@feedbackEmailSubject": {
+    "description": "寄給開發者的意見回饋郵件主旨",
+    "placeholders": { "app": { "type": "String", "example": "念佛" } }
+  },
+
+  "feedbackEmailBody": "描述問題/建議：\n\n（可附上截圖）",
+
+  "micPermissionTitle": "需要麥克風權限",
+  "micPermissionRationale": "語音辨識計算佛號數量，請前往系統「設定」>「念佛」>「麥克風」將權限開啟。",
+  "openSettings": "前往設定",
+  "microphonePermissionDenied": "未取得麥克風權限。"
+
+
 }
