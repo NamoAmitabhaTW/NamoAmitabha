@@ -144,6 +144,53 @@ class AppLocalizationsEn extends AppLocalizations {
   String get successTitle => 'Success';
 
   @override
-  String get successBody =>
-      'The model has been downloaded and extracted successfully.';
+  String get successBody => 'The model has been installed successfully.';
+
+  @override
+  String get unzipFailedTitle => 'Unzip failed';
+
+  @override
+  String get unzipFailedLowSpaceBody =>
+      'Likely due to low storage space. Please free up some space and try unzipping again.';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get retryUnzip => 'Retry unzip';
+
+  @override
+  String get downloadFailedShort =>
+      'Model download failed. Please try again later.';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get feedbackOpenMailAppFailed => 'Could not open mail app';
+
+  @override
+  String get appName => 'Amitabha Buddha';
+
+  @override
+  String feedbackEmailSubject(String app) {
+    return '[$app] Feedback';
+  }
+
+  @override
+  String get feedbackEmailBody =>
+      'Issue/Suggestion:\n\n(You may attach a screenshot)';
+
+  @override
+  String get micPermissionTitle => 'Microphone Permission Required';
+
+  @override
+  String get micPermissionRationale =>
+      'To count chants, please enable Microphone in System Settings > Amitabha.';
+
+  @override
+  String get openSettings => 'Open Settings';
+
+  @override
+  String get microphonePermissionDenied => 'Microphone permission not granted.';
 }

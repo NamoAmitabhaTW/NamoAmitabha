@@ -144,8 +144,55 @@ class AppLocalizationsZh extends AppLocalizations {
   String get successTitle => 'Success';
 
   @override
-  String get successBody =>
-      'The model has been downloaded and extracted successfully.';
+  String get successBody => 'The model has been installed successfully.';
+
+  @override
+  String get unzipFailedTitle => 'Unzip failed';
+
+  @override
+  String get unzipFailedLowSpaceBody =>
+      'Likely due to low storage space. Please free up some space and try unzipping again.';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get retryUnzip => 'Retry unzip';
+
+  @override
+  String get downloadFailedShort =>
+      'Model download failed. Please try again later.';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get feedbackOpenMailAppFailed => 'Could not open mail app';
+
+  @override
+  String get appName => 'Amitabha Buddha';
+
+  @override
+  String feedbackEmailSubject(String app) {
+    return '[$app] Feedback';
+  }
+
+  @override
+  String get feedbackEmailBody =>
+      'Issue/Suggestion:\n\n(You may attach a screenshot)';
+
+  @override
+  String get micPermissionTitle => 'Microphone Permission Required';
+
+  @override
+  String get micPermissionRationale =>
+      'To count chants, please enable Microphone in System Settings > Amitabha.';
+
+  @override
+  String get openSettings => 'Open Settings';
+
+  @override
+  String get microphonePermissionDenied => 'Microphone permission not granted.';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -292,5 +339,49 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get successTitle => '成功';
 
   @override
-  String get successBody => '模型已成功下載並解壓完成。';
+  String get successBody => '模型已安裝完成。';
+
+  @override
+  String get unzipFailedTitle => '解壓縮失敗';
+
+  @override
+  String get unzipFailedLowSpaceBody => '可能是儲存空間不足，請清出空間後再嘗試解壓。';
+
+  @override
+  String get close => '關閉';
+
+  @override
+  String get retryUnzip => '重試解壓';
+
+  @override
+  String get downloadFailedShort => '模型下載失敗，請稍後再試或重試。';
+
+  @override
+  String get retry => '重試';
+
+  @override
+  String get feedbackOpenMailAppFailed => '無法開啟郵件 App';
+
+  @override
+  String get appName => '念佛';
+
+  @override
+  String feedbackEmailSubject(String app) {
+    return '[$app] 意見回饋';
+  }
+
+  @override
+  String get feedbackEmailBody => '描述問題/建議：\n\n（可附上截圖）';
+
+  @override
+  String get micPermissionTitle => '需要麥克風權限';
+
+  @override
+  String get micPermissionRationale => '語音辨識計算佛號數量，請前往系統「設定」>「念佛」>「麥克風」將權限開啟。';
+
+  @override
+  String get openSettings => '前往設定';
+
+  @override
+  String get microphonePermissionDenied => '未取得麥克風權限。';
 }

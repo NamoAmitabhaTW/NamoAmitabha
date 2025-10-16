@@ -1,1 +1,2 @@
 "CFBundleDisplayName" = "Amitabha Buddha";
+"NSMicrophoneUsageDescription" = "To count chants automatically, the app needs microphone access for speech recognition.";

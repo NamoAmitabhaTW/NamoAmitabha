@@ -1,1 +1,2 @@
 "CFBundleDisplayName" = "念佛";
+"NSMicrophoneUsageDescription" = "為了自動計算佛號數量，念佛 App 需要使用麥克風進行語音辨識。";

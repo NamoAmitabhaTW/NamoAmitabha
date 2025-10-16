@@ -52,4 +52,11 @@ class DownloadModel with ChangeNotifier {
     }
     notifyListeners();
   }
+
+  void reset() {
+    _progress = 0.0;
+    _unzipProgress = 0.0;
+    notifyListeners();
+  } 
+
 }

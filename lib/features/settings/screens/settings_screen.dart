@@ -9,7 +9,7 @@ import 'package:amitabha/features/auth/data/firestore_user_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:amitabha/core/ui/busy_dialog.dart';
 import 'package:amitabha/core/firebase_bootstrap.dart'; */
-import 'package:url_launcher/url_launcher_string.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -33,7 +33,7 @@ class SettingsScreen extends StatelessWidget {
         ListTile(
           leading: const Icon(Icons.feedback_outlined),
           title: Text(t.feedback),
-          onTap: () => _sendFeedbackEmail(context),
+          onTap: () => sendFeedbackEmail(context),
         ),
 
         /* const SizedBox(height: 12),
@@ -146,13 +146,31 @@ class SettingsScreen extends StatelessWidget {
     }
   } */
 
-  void _sendFeedbackEmail(BuildContext context) {
-    // 你可以換成自己的收件者
-    final to = 'namoamitabha1995@gmail.com';
-    final subject = Uri.encodeComponent('[念佛App] 意見回饋');
-    final body = Uri.encodeComponent('描述問題/建議：\n\n裝置與系統版本：\nApp 版本：\n(可附上截圖)');
-    final uri = 'mailto:$to?subject=$subject&body=$body';
-    launchUrlString(uri);
+  Future<void> sendFeedbackEmail(BuildContext context) async {
+    final t = AppLocalizations.of(context);
+    final messeger = ScaffoldMessenger.of(context);
+
+    // 多語主旨與內文（以 i18n 字串組合）
+    // 這裡把 App 名字當參數帶進去（若有 appName 的 i18n 也可以帶 t.appName）
+    final subject = t.feedbackEmailSubject(t.appName);
+    final body = t.feedbackEmailBody;
+
+    // 收件者可抽成設定或常數
+    const to = 'namoamitabha1995@gmail.com';
+
+    final uri = Uri.parse(
+      'mailto:$to'
+      '?subject=${Uri.encodeComponent(subject)}'
+      '&body=${Uri.encodeComponent(body)}',
+    );
+
+    // 用 Uri 物件比較不會有編碼問題
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      // 無法開啟郵件 App 的 fallback（可改成顯示對話框）
+      messeger.showSnackBar(
+        SnackBar(content: Text(t.feedbackOpenMailAppFailed)),
+      );
+    }
   }
 }
 
