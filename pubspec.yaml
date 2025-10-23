@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.1+4
+version: 1.0.1+5
 
 environment:
   sdk: ^3.8.1
@@ -141,16 +141,39 @@ flutter:
 
 
 flutter_launcher_icons:
-  android: true
+  # 頂層一定要宣告平台
+  android: "app"   # 你的 Android module 名稱
   ios: true
   remove_alpha_ios: true
-  # 佔位圖，讓解析器通過；實際各 flavor 會覆蓋
-  image_path: assets/icons/prod.png
+  remove_existing: true
+
+  # 為了通過舊版驗證，給一個備用圖（實際會被 flavor 覆蓋）
+  image_path: assets/icons/prod_ios.png
+  adaptive_icon_foreground: assets/icons/prod_android_fg.png
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_monochrome: assets/icons/prod_android_mono.png
 
   flavors:
     dev:
-      image_path: assets/icons/dev.png
+      ios: true
+      android: "app"
+      image_path_ios: assets/icons/dev_ios.png
+      adaptive_icon_foreground: assets/icons/dev_android_fg.png
+      adaptive_icon_background: "#FFFFFF"
+      adaptive_icon_monochrome: assets/icons/dev_android_mono.png
+
     staging:
-      image_path: assets/icons/staging.png
+      ios: true
+      android: "app"
+      image_path_ios: assets/icons/staging_ios.png
+      adaptive_icon_foreground: assets/icons/staging_android_fg.png
+      adaptive_icon_background: "#FFFFFF"
+      adaptive_icon_monochrome: assets/icons/staging_android_mono.png
+
     prod:
-      image_path: assets/icons/prod.png
+      ios: true
+      android: "app"
+      image_path_ios: assets/icons/prod_ios.png
+      adaptive_icon_foreground: assets/icons/prod_android_fg.png
+      adaptive_icon_background: "#FFFFFF"
+      adaptive_icon_monochrome: assets/icons/prod_android_mono.png

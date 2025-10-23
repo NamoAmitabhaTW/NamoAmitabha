@@ -1,4 +1,4 @@
-package com.example.amitabha
+package com.earth.amitabha
 
 import io.flutter.embedding.android.FlutterActivity
 
