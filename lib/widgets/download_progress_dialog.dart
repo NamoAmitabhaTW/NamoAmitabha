@@ -34,11 +34,7 @@ class DownloadProgressDialog extends StatelessWidget {
             children: [
               LinearProgressIndicator(value: idle ? null : showingValue),
               const SizedBox(height: 16),
-              Text(
-                idle
-                    ? t.preparingPleaseWait
-                    : t.doNotOperateDuring(label),
-              ),
+              Text(idle ? t.preparingPleaseWait : t.doNotOperateDuring(label)),
               const SizedBox(height: 8),
               if (!idle) Text('${(showingValue * 100).toStringAsFixed(2)}%'),
             ],
@@ -56,9 +52,21 @@ class DownloadProgressDialog extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 if (!busy)
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: Text(t.ok),
+                  SizedBox(
+                    // 給寬度，讓命中區更好按（可依需要調整 160~240）
+                    width: 200,
+                    height: 60,
+                    child: TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      style: TextButton.styleFrom(
+                        // 關鍵：設定最小命中區（高度 60）
+                        minimumSize: const Size(200, 60),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: Text(t.ok),
+                    )
                   )
                 else ...[
                   TextButton(

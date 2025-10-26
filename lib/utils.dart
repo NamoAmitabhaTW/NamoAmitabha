@@ -348,15 +348,15 @@ Future<void> _unzipDownloadedFile(
 
   // === 平滑假進度：0.10 → 0.39，每秒 +0.01 ===
   Timer? smoothTimer;
-  smoothTimer = Timer.periodic(const Duration(seconds: 2), (_) {
+  smoothTimer = Timer.periodic(const Duration(seconds: 4), (_) {
     final cur = downloadModel.unzipProgress;
     // 如果已經被真實進度推到 0.39 以上，就停掉
-    if (cur >= 0.39) {
+    if (cur >= 0.59) {
       smoothTimer?.cancel();
       return;
     }
     final next = (cur + 0.01);
-    downloadModel.setUnzipProgress(next >= 0.39 ? 0.39 : next);
+    downloadModel.setUnzipProgress(next >= 0.59 ? 0.59 : next);
   });
 
   try {
@@ -367,7 +367,7 @@ Future<void> _unzipDownloadedFile(
 
     // 進入可量測階段，先停掉假進度，直接切到 0.4
     smoothTimer?.cancel();
-    downloadModel.setUnzipProgress(0.4);
+    downloadModel.setUnzipProgress(0.6);
 
     final files = result[1] as List<ArchiveFile>;
     final totalFiles = files.length;

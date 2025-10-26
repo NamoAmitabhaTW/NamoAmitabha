@@ -44,83 +44,180 @@ class StreamingAsrScreen extends StatelessWidget {
     final theme = Theme.of(context);
     final numberColor = theme.colorScheme.primary;
     final unitColor = theme.colorScheme.primary;
+    // 放在 build() 裡、theme 之後
+    final labelTextStyle = Theme.of(context).textTheme.titleLarge?.copyWith(
+      fontSize: 20, // ← 想更大就改這裡
+      fontWeight: FontWeight.w700,
+      letterSpacing: 0.2,
+    );
 
-    return Stack(
-      children: [
+    // 讓按鈕有較寬舒的內距，避免字變大後擠在一起
+    const buttonPadding = EdgeInsets.symmetric(horizontal: 20, vertical: 14);
 
-        const StreamingAsrRunner(),
+    // ===== 共用按鈕樣式（含 hover / focus / pressed 與 hit target）=====
+    ButtonStyle commonButtonStyle(Color overlayOnColor) {
+      return ButtonStyle(
+        minimumSize: WidgetStateProperty.all(
+          const Size(60, 60),
+        ), // hit target >=60
+        mouseCursor: WidgetStateProperty.resolveWith((states) {
+          return states.contains(WidgetState.disabled)
+              ? SystemMouseCursors.forbidden
+              : SystemMouseCursors.click;
+        }),
+        overlayColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.pressed)) {
+            return overlayOnColor.withOpacity(0.12);
+          }
+          if (states.contains(WidgetState.focused)) {
+            return overlayOnColor.withOpacity(0.10);
+          }
+          if (states.contains(WidgetState.hovered)) {
+            return overlayOnColor.withOpacity(0.06);
+          }
+          return null;
+        }),
+        elevation: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.pressed)) return 3;
+          if (states.contains(WidgetState.focused)) return 2;
+          if (states.contains(WidgetState.hovered)) return 1;
+          return 0;
+        }),
+        shape: WidgetStateProperty.resolveWith((states) {
+          final focused =
+              states.contains(WidgetState.focused) &&
+              !states.contains(WidgetState.disabled);
+          return RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+            side: focused
+                ? BorderSide(
+                    color: Theme.of(context).colorScheme.outline,
+                    width: 2,
+                  )
+                : const BorderSide(color: Colors.transparent, width: 2),
+          );
+        }),
+      );
+    }
 
-        // 聖號水印（可見且偏上）
-        PositionedFillWatermark(
-          t: t,
-          verticalBias: -0.6,
-          opacity: 0.12,
-          textStyle: watermarkBaseStyle,
-        ),
+    final filledStyle = commonButtonStyle(
+      Theme.of(context).colorScheme.onPrimary,
+    );
 
-        // 前景內容
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              const Spacer(),
+    final outlinedBaseSide = BorderSide(
+      color: Theme.of(context).colorScheme.outline,
+    );
+    final outlinedStyle =
+        commonButtonStyle(Theme.of(context).colorScheme.primary).copyWith(
+          side: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.focused)) {
+              return BorderSide(
+                color: Theme.of(context).colorScheme.primary,
+                width: 2,
+              );
+            }
+            if (states.contains(WidgetState.hovered)) {
+              return outlinedBaseSide.copyWith(width: 1.5);
+            }
+            return outlinedBaseSide;
+          }),
+          shape: WidgetStatePropertyAll(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          ),
+        );
 
-              // 「0 次」分色排版
-              FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Text.rich(
-                  TextSpan(
-                    children: [
-                      TextSpan(
-                        text: '${s.sessionCount} ',
-                        style: countStyle?.copyWith(color: numberColor),
-                      ),
-                      TextSpan(
-                        text: t.times,
-                        style: countStyle?.copyWith(
-                          color: unitColor,
-                          fontWeight: FontWeight.w600,
+    // ===== 以 FocusTraversalGroup 包住，提供穩定焦點導覽 =====
+    return FocusTraversalGroup(
+      child: Stack(
+        children: [
+          const StreamingAsrRunner(),
+
+          // 聖號水印（可見且偏上）
+          PositionedFillWatermark(
+            t: t,
+            verticalBias: -0.6,
+            opacity: 0.12,
+            textStyle: watermarkBaseStyle,
+          ),
+
+          // 前景內容
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                const Spacer(),
+
+                // 「0 次」分色排版
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: '${s.sessionCount} ',
+                          style: countStyle?.copyWith(color: numberColor),
                         ),
-                      ),
-                    ],
+                        TextSpan(
+                          text: t.times,
+                          style: countStyle?.copyWith(
+                            color: unitColor,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
 
-              const Spacer(),
+                const Spacer(),
 
-              Row(
-                children: [
-                  Expanded(
-                    child: FilledButton.icon(
-                      onPressed: () {
-                        if (s.isRecording) {
-                          s.stopAsr?.call();
-                        } else {
-                          s.startAsr?.call();
-                        }
-                      },
-                      icon: Icon(
-                        s.isRecording ? Icons.pause : Icons.play_arrow,
+                Row(
+                  children: [
+                    Expanded(
+                      child: FilledButton.icon(
+                        onPressed: () {
+                          if (s.isRecording) {
+                            s.stopAsr?.call();
+                          } else {
+                            s.startAsr?.call();
+                          }
+                        },
+                        icon: Icon(
+                          s.isRecording ? Icons.pause : Icons.play_arrow,
+                          size: 20, // ← 圖示大小
+                        ),
+                        label: Text(s.isRecording ? t.pause : t.start),
+                        style: filledStyle.copyWith(
+                          textStyle: WidgetStatePropertyAll(
+                            labelTextStyle,
+                          ), // ← 文字大小
+                          padding: const WidgetStatePropertyAll(
+                            buttonPadding,
+                          ),
+                        ),
                       ),
-                      label: Text(s.isRecording ? t.pause : t.start),
                     ),
-                  ),
 
-                  // 儲存（實際會呼叫 _onSavePressed -> _commitSession -> 寫入 repo）
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      onPressed: s.sessionCount > 0 ? s.saveAsr : null,
-                      icon: const Icon(Icons.save),
-                      label: Text(t.save),
+                    const SizedBox(width: 16), // ← 中間間隔
+
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        onPressed: s.sessionCount > 0 ? s.saveAsr : null,
+                        icon: const Icon(Icons.save, size: 20),
+                        label: Text(t.save),
+                        style: outlinedStyle.copyWith(
+                          textStyle: WidgetStatePropertyAll(labelTextStyle), // ← 文字大小
+                          padding: const WidgetStatePropertyAll(buttonPadding),
+                        ),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
