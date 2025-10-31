@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:amitabha/download_model.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
-import 'package:intl/intl.dart';
 
 class DownloadProgressDialog extends StatelessWidget {
   const DownloadProgressDialog({super.key});

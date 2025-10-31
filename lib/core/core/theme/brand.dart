@@ -13,7 +13,6 @@ class Brand {
     );
 
     final scheme = base.copyWith(
-      background: cream,
       surface: cream,
       surfaceContainerLowest: cream,
       surfaceContainerLow: cream,
@@ -40,7 +39,7 @@ class Brand {
         surfaceTintColor: Colors.transparent,
       ),
       bottomAppBarTheme:
-          const BottomAppBarTheme(surfaceTintColor: Colors.transparent),
+          const BottomAppBarThemeData(surfaceTintColor: Colors.transparent),
     );
   }
 
@@ -51,7 +50,6 @@ class Brand {
     );
 
     final scheme = base.copyWith(
-      background: cream,
       surface: cream,
       surfaceContainerLowest: cream,
       surfaceContainerLow: cream,
@@ -78,7 +76,7 @@ class Brand {
         surfaceTintColor: Colors.transparent,
       ),
       bottomAppBarTheme:
-          const BottomAppBarTheme(surfaceTintColor: Colors.transparent),
+          const BottomAppBarThemeData(surfaceTintColor: Colors.transparent),
     );
   }
 }

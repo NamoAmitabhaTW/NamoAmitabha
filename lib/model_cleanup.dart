@@ -35,7 +35,7 @@ Future<void> deleteSpecificFiles(
 const Map<String, List<String>> _deleteMap = {
   // 雙語 ASR（2023-02-20）
   'sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20': [
-    'encoder-epoch-99-avg-1.onnx', 
+    'encoder-epoch-99-avg-1.int8.onnx', 
     'decoder-epoch-99-avg-1.int8.onnx',
     'joiner-epoch-99-avg-1.int8.onnx',
   ],

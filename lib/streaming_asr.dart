@@ -39,10 +39,10 @@ Future<sherpa_onnx.OnlineRecognizer> createOnlineRecognizer(
     ruleFsts: '',
     decodingMethod: 'modified_beam_search',
     hotwordsFile: hotwordsPath,
-    hotwordsScore: 6,
+    hotwordsScore: 3,
     enableEndpoint: true,
-    rule2MinTrailingSilence: 0.8,
-    rule3MinUtteranceLength: 3,
+    rule2MinTrailingSilence: 0.4,
+    rule3MinUtteranceLength: 10,
   );
 
   return sherpa_onnx.OnlineRecognizer(config);
@@ -137,6 +137,8 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
       return;
     }
 
+     await ensureModelReady(context, modelName);
+
     // 先用 record 觸發系統原生權限（第一次會跳 iOS/Android 原生彈窗）
     bool granted = await _audioRecorder.hasPermission();
 
@@ -209,7 +211,7 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
               if (text != '') {
                 _last = textToDisplay;
                 _index += 1;
-
+                debugPrint('[ASR] =$text');
                 final hitAdd = countAmitabhaOccurrences(text);
                 if (hitAdd > 0) {
                   setState(() {

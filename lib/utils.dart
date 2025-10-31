@@ -8,7 +8,6 @@ import 'dart:async';
 import 'package:archive/archive.dart';
 import 'package:archive/archive_io.dart';
 import 'download_model.dart';
-import 'model_cleanup.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -366,7 +365,7 @@ Future<void> _unzipDownloadedFile(
     );
 
     // 進入可量測階段，先停掉假進度，直接切到 0.4
-    smoothTimer?.cancel();
+    smoothTimer.cancel();
     downloadModel.setUnzipProgress(0.6);
 
     final files = result[1] as List<ArchiveFile>;
@@ -395,16 +394,16 @@ Future<void> _unzipDownloadedFile(
       if (await f.exists()) await f.delete();
     } catch (_) {}
 
-    final modelRootName = basenameWithoutExtension(
+   /*  final modelRootName = basenameWithoutExtension(
       basenameWithoutExtension(zipFilePath),
-    );
-    final modelRoot = join(destinationPath, modelRootName);
+    ); */
+    /* final modelRoot = join(destinationPath, modelRootName); */
 
-    await deleteSpecificFilesForModel(
+    /* await deleteSpecificFilesForModel(
       modelName: downloadModel.modelName,
       modelRoot: modelRoot,
       dryRun: false,
-    );
+    ); */
 
     if (Navigator.canPop(context)) {
       Navigator.of(context).pop();
@@ -412,7 +411,7 @@ Future<void> _unzipDownloadedFile(
     }
   } finally {
     // 防止任何例外時計時器沒被關
-    smoothTimer?.cancel();
+    smoothTimer.cancel();
   }
 }
 
@@ -423,4 +422,62 @@ String nowYmdLocal() {
 String formatYMd(BuildContext context, DateTime dt) {
   final locale = Localizations.localeOf(context).toString();
   return DateFormat.yMd(locale).format(dt);
+}
+
+Future<bool> modelFilesComplete(String modelName) async {
+  final root = (await ModelPaths.root()).path;
+  final dir = join(root, modelName);
+
+  // 這個模型常見的必要檔名（浮點 or int8 擇一存在即可）
+  final encoder = join(dir, 'encoder-epoch-99-avg-1.onnx');
+  final encoderInt8 = join(dir, 'encoder-epoch-99-avg-1.int8.onnx');
+
+  final decoderFloat = join(dir, 'decoder-epoch-99-avg-1.onnx');
+  final decoderInt8  = join(dir, 'decoder-epoch-99-avg-1.int8.onnx');
+
+  final joinerFloat = join(dir, 'joiner-epoch-99-avg-1.onnx');
+  final joinerInt8  = join(dir, 'joiner-epoch-99-avg-1.int8.onnx');
+
+  final tokens = join(dir, 'tokens.txt');
+
+  final okEncoder = await File(encoder).exists() || await File(encoderInt8).exists();
+  final okDecoder = await File(decoderFloat).exists() || await File(decoderInt8).exists();
+  final okJoiner  = await File(joinerFloat).exists() || await File(joinerInt8).exists();
+  final okTokens  = await File(tokens).exists();
+
+  return okEncoder && okDecoder && okJoiner && okTokens;
+}
+
+/// 若資料夾存在但缺檔，優先嘗試：
+/// 1) 若 zip 還在 → 直接「只解壓」
+/// 2) 若 zip 不在 → 重新下載
+Future<void> ensureModelReady(BuildContext context, String modelName) async {
+  final destinationRoot = (await ModelPaths.root()).path;
+  final modulePath = join(destinationRoot, modelName);
+  final moduleZipFilePath = (await ModelPaths.archiveFile(modelName)).path;
+
+  final moduleExists = await Directory(modulePath).exists();
+  final zipExists = await File(moduleZipFilePath).exists();
+
+  if (!moduleExists && !zipExists) {
+    // 和 needsDownload 一致：完全沒有 → 下載
+    await downloadModelAndUnZip(context, modelName);
+    return;
+  }
+
+  if (!moduleExists && zipExists) {
+    // 只有 zip → 解壓
+    await unzipModelFile(context, modelName);
+    return;
+  }
+
+  // 兩者皆有或資料夾存在 → 進一步檢查檔案是否完整
+  final ok = await modelFilesComplete(modelName);
+  if (!ok) {
+    if (zipExists) {
+      await unzipModelFile(context, modelName);  // 優先用原 zip 補齊
+    } else {
+      await downloadModelAndUnZip(context, modelName);
+    }
+  }
 }
