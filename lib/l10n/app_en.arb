@@ -94,7 +94,7 @@
   "completed": "Completed",
   "preparing": "Preparing",
   "preparingPleaseWait": "Please wait while preparing...",
-  "doNotOperateDuring": "Please do not perform any operations during {label}",
+  "doNotOperateDuring": "Please stay on this screen during \"{label}\". Do not switch apps or turn off the screen.",
   "@doNotOperateDuring": {
   "placeholders": {
     "label": {}
@@ -128,7 +128,7 @@
   "downloading": "Downloading",
   "unzipping": "Unzipping",
   "completed": "Completed",
-  "doNotOperateDuring": "Do not operate during {phase}",
+  "doNotOperateDuring": "Please stay on this screen during \"{phase}\". Do not switch apps or turn off the screen.",
   "@doNotOperateDuring": {
     "placeholders": { "phase": { "type": "String" } }
   },

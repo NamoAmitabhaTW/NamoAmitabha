@@ -26,7 +26,7 @@ String normalizeForAmitabha(String s) {
   return t;
 }
 
-final RegExp _amituofoTolerant = RegExp(r'[阿啊喔欧奥哦噢]?[密秘弥米咪][陀斗度的岛朵都投捣德道达][佛会吧巴]?');
+final RegExp _amituofoTolerant = RegExp(r'[阿啊喔欧奥哦噢][密妹秘弥米咪][陀斗度的岛朵都投捣德道达]?[佛会吧巴]?');
 
 int countAmitabhaOccurrences(String text) {
   final norm = normalizeForAmitabha(text);

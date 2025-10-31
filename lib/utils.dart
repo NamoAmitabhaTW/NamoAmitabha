@@ -8,6 +8,7 @@ import 'dart:async';
 import 'package:archive/archive.dart';
 import 'package:archive/archive_io.dart';
 import 'download_model.dart';
+import 'model_cleanup.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -17,6 +18,7 @@ import 'package:intl/intl.dart';
 import 'widgets/download_progress_dialog.dart';
 import 'package:amitabha/storage/model_paths.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 Float32List convertBytesToFloat32(
   Uint8List bytes, [
@@ -39,85 +41,91 @@ Future<void> downloadModelAndUnZip(
   BuildContext context,
   String modelName,
 ) async {
-  final store = Provider.of<DownloadModel>(context, listen: false);
-  final channel = store.channel;
-  final fileName = ModelPaths.archiveFileName(modelName);
-  final downLoadUrl =
-      'https://github.com/k2-fsa/sherpa-onnx/releases/download/$channel/$fileName';
-  final downloadModel = Provider.of<DownloadModel>(context, listen: false);
+  await _withWakelock(() async {
+    final store = Provider.of<DownloadModel>(context, listen: false);
+    final channel = store.channel;
+    final fileName = ModelPaths.archiveFileName(modelName);
+    final downLoadUrl =
+        'https://github.com/k2-fsa/sherpa-onnx/releases/download/$channel/$fileName';
+    final downloadModel = Provider.of<DownloadModel>(context, listen: false);
 
-  final destinationRoot = (await ModelPaths.root()).path;
-  final modulePath = join(destinationRoot, modelName);
+    final destinationRoot = (await ModelPaths.root()).path;
+    final modulePath = join(destinationRoot, modelName);
 
-  final archive = await ModelPaths.archiveFile(modelName);
-  final moduleZipFilePath = archive.path;
+    final archive = await ModelPaths.archiveFile(modelName);
+    final moduleZipFilePath = archive.path;
 
-  final moduleExists = await Directory(modulePath).exists();
-  final moduleZipExists = await File(moduleZipFilePath).exists();
+    final moduleExists = await Directory(modulePath).exists();
+    final moduleZipExists = await File(moduleZipFilePath).exists();
 
-  if (moduleExists) {
-    return;
-  }
-
-  if (!moduleExists && !moduleZipExists) {
-    bool confirmed = await _showDownloadConfirmationDialog(context);
-    if (!confirmed) {
+    if (moduleExists) {
       return;
     }
 
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return DownloadProgressDialog();
-      },
-    );
-
-    try {
-      final client = http.Client();
-      try {
-        final request = http.Request('GET', Uri.parse(downLoadUrl));
-        request.headers['User-Agent'] = 'AmitabhaApp/1.0';
-        final response = await client.send(request);
-
-        int totalBytes = response.contentLength ?? 0;
-        int receivedBytes = 0;
-
-        final sink = File(moduleZipFilePath).openWrite();
-
-        await response.stream.forEach((List<int> chunk) {
-          sink.add(chunk);
-          receivedBytes += chunk.length;
-          double progress = totalBytes > 0 ? receivedBytes / totalBytes : 0;
-          downloadModel.setProgress(progress);
-        });
-
-        await sink.flush();
-        await sink.close();
-
-        await _unzipDownloadedFile(moduleZipFilePath, destinationRoot, context);
-      } finally {
-        client.close();
-      }
-    } catch (e) {
-      if (Navigator.canPop(context)) {
-        Navigator.of(context).pop();
+    if (!moduleExists && !moduleZipExists) {
+      bool confirmed = await _showDownloadConfirmationDialog(context);
+      if (!confirmed) {
+        return;
       }
 
-      try {
-        if (await File(moduleZipFilePath).exists()) {
-          await File(moduleZipFilePath).delete();
-        }
-      } catch (_) {}
-
-      downloadModel.reset();
-
-      await _showRetryDownloadDialog(
-        context,
-        onRetryDownload: () => downloadModelAndUnZip(context, modelName),
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return DownloadProgressDialog();
+        },
       );
+
+      try {
+        final client = http.Client();
+        try {
+          final request = http.Request('GET', Uri.parse(downLoadUrl));
+          request.headers['User-Agent'] = 'AmitabhaApp/1.0';
+          final response = await client.send(request);
+
+          int totalBytes = response.contentLength ?? 0;
+          int receivedBytes = 0;
+
+          final sink = File(moduleZipFilePath).openWrite();
+
+          await response.stream.forEach((List<int> chunk) {
+            sink.add(chunk);
+            receivedBytes += chunk.length;
+            double progress = totalBytes > 0 ? receivedBytes / totalBytes : 0;
+            downloadModel.setProgress(progress);
+          });
+
+          await sink.flush();
+          await sink.close();
+
+          await _unzipDownloadedFile(
+            moduleZipFilePath,
+            destinationRoot,
+            context,
+          );
+        } finally {
+          client.close();
+        }
+      } catch (e) {
+        if (Navigator.canPop(context)) {
+          Navigator.of(context).pop();
+        }
+
+        try {
+          if (await File(moduleZipFilePath).exists()) {
+            await File(moduleZipFilePath).delete();
+          }
+        } catch (_) {}
+
+        downloadModel.reset();
+
+        await _showRetryDownloadDialog(
+          context,
+          onRetryDownload: () => downloadModelAndUnZip(context, modelName),
+        );
+      }
     }
-  }
+  });
 }
 
 Future<bool> _showDownloadConfirmationDialog(BuildContext context) async {
@@ -152,42 +160,44 @@ Future<bool> _showDownloadConfirmationDialog(BuildContext context) async {
 }
 
 Future<void> unzipModelFile(BuildContext context, String modelName) async {
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext context) {
-      return DownloadProgressDialog();
-    },
-  );
-  final moduleZipFilePath = (await ModelPaths.archiveFile(modelName)).path;
-  final downloadModel = Provider.of<DownloadModel>(context, listen: false);
-  try {
-    final destinationRoot = (await ModelPaths.root()).path;
-    await _unzipDownloadedFile(moduleZipFilePath, destinationRoot, context);
-  } catch (e) {
-    if (Navigator.canPop(context)) {
-      Navigator.of(context).pop();
-    }
-
-    if (_looksLikeDiskFull(e)) {
-      downloadModel.setUnzipProgress(0.0);
+  await _withWakelock(() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return DownloadProgressDialog();
+      },
+    );
+    final moduleZipFilePath = (await ModelPaths.archiveFile(modelName)).path;
+    final downloadModel = Provider.of<DownloadModel>(context, listen: false);
+    try {
       final destinationRoot = (await ModelPaths.root()).path;
-      await _showRetryUnzipOnlyDialog(
-        context,
-        zipFilePath: moduleZipFilePath,
-        destinationRoot: destinationRoot,
-      );
-    } else {
-      downloadModel.reset();
-      try {
-        await File(moduleZipFilePath).delete();
-      } catch (_) {}
-      await _showRetryDownloadDialog(
-        context,
-        onRetryDownload: () => downloadModelAndUnZip(context, modelName),
-      );
+      await _unzipDownloadedFile(moduleZipFilePath, destinationRoot, context);
+    } catch (e) {
+      if (Navigator.canPop(context)) {
+        Navigator.of(context).pop();
+      }
+
+      if (_looksLikeDiskFull(e)) {
+        downloadModel.setUnzipProgress(0.0);
+        final destinationRoot = (await ModelPaths.root()).path;
+        await _showRetryUnzipOnlyDialog(
+          context,
+          zipFilePath: moduleZipFilePath,
+          destinationRoot: destinationRoot,
+        );
+      } else {
+        downloadModel.reset();
+        try {
+          await File(moduleZipFilePath).delete();
+        } catch (_) {}
+        await _showRetryDownloadDialog(
+          context,
+          onRetryDownload: () => downloadModelAndUnZip(context, modelName),
+        );
+      }
     }
-  }
+  });
 }
 
 Future<bool> needsDownload(String modelName) async {
@@ -394,16 +404,16 @@ Future<void> _unzipDownloadedFile(
       if (await f.exists()) await f.delete();
     } catch (_) {}
 
-   /*  final modelRootName = basenameWithoutExtension(
+    final modelRootName = basenameWithoutExtension(
       basenameWithoutExtension(zipFilePath),
-    ); */
-    /* final modelRoot = join(destinationPath, modelRootName); */
+    );
+    final modelRoot = join(destinationPath, modelRootName);
 
-    /* await deleteSpecificFilesForModel(
+    await deleteSpecificFilesForModel(
       modelName: downloadModel.modelName,
       modelRoot: modelRoot,
       dryRun: false,
-    ); */
+    );
 
     if (Navigator.canPop(context)) {
       Navigator.of(context).pop();
@@ -433,17 +443,20 @@ Future<bool> modelFilesComplete(String modelName) async {
   final encoderInt8 = join(dir, 'encoder-epoch-99-avg-1.int8.onnx');
 
   final decoderFloat = join(dir, 'decoder-epoch-99-avg-1.onnx');
-  final decoderInt8  = join(dir, 'decoder-epoch-99-avg-1.int8.onnx');
+  final decoderInt8 = join(dir, 'decoder-epoch-99-avg-1.int8.onnx');
 
   final joinerFloat = join(dir, 'joiner-epoch-99-avg-1.onnx');
-  final joinerInt8  = join(dir, 'joiner-epoch-99-avg-1.int8.onnx');
+  final joinerInt8 = join(dir, 'joiner-epoch-99-avg-1.int8.onnx');
 
   final tokens = join(dir, 'tokens.txt');
 
-  final okEncoder = await File(encoder).exists() || await File(encoderInt8).exists();
-  final okDecoder = await File(decoderFloat).exists() || await File(decoderInt8).exists();
-  final okJoiner  = await File(joinerFloat).exists() || await File(joinerInt8).exists();
-  final okTokens  = await File(tokens).exists();
+  final okEncoder =
+      await File(encoder).exists() || await File(encoderInt8).exists();
+  final okDecoder =
+      await File(decoderFloat).exists() || await File(decoderInt8).exists();
+  final okJoiner =
+      await File(joinerFloat).exists() || await File(joinerInt8).exists();
+  final okTokens = await File(tokens).exists();
 
   return okEncoder && okDecoder && okJoiner && okTokens;
 }
@@ -475,9 +488,25 @@ Future<void> ensureModelReady(BuildContext context, String modelName) async {
   final ok = await modelFilesComplete(modelName);
   if (!ok) {
     if (zipExists) {
-      await unzipModelFile(context, modelName);  // 優先用原 zip 補齊
+      await unzipModelFile(context, modelName); // 優先用原 zip 補齊
     } else {
       await downloadModelAndUnZip(context, modelName);
+    }
+  }
+}
+
+Future<T> _withWakelock<T>(Future<T> Function() action) async {
+  // 記住原狀態，結束後還原
+  final wasEnabled = await WakelockPlus.enabled;
+  try {
+    if (!wasEnabled) {
+      await WakelockPlus.enable();
+    }
+    return await action();
+  } finally {
+    // 僅在原本未開時才關閉，避免誤關掉別處開啟的 wakelock
+    if (!wasEnabled) {
+      await WakelockPlus.disable();
     }
   }
 }

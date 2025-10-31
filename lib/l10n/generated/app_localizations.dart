@@ -312,7 +312,7 @@ abstract class AppLocalizations {
   /// No description provided for @doNotOperateDuring.
   ///
   /// In en, this message translates to:
-  /// **'Do not operate during {phase}'**
+  /// **'Please stay on this screen during \"{phase}\". Do not switch apps or turn off the screen.'**
   String doNotOperateDuring(String phase);
 
   /// No description provided for @ok.

@@ -25,7 +25,7 @@ Future<sherpa_onnx.OnlineModelConfig> getModelConfigByModelName(
     case "sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20":
       return sherpa_onnx.OnlineModelConfig(
         transducer: sherpa_onnx.OnlineTransducerModelConfig(
-          encoder: '$modelDir/encoder-epoch-99-avg-1.onnx',
+          encoder: '$modelDir/encoder-epoch-99-avg-1.int8.onnx',
           decoder: '$modelDir/decoder-epoch-99-avg-1.onnx',
           joiner: '$modelDir/joiner-epoch-99-avg-1.onnx',
         ),
