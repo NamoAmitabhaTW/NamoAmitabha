@@ -10,9 +10,8 @@ import 'package:amitabha/storage/app_paths.dart';
 import 'package:amitabha/storage/atomic_io.dart';
 import 'package:amitabha/storage/models.dart';
 
-import 'package:provider/provider.dart'; 
-import 'package:amitabha/app/application/app_state.dart'; 
-
+import 'package:provider/provider.dart';
+import 'package:amitabha/app/application/app_state.dart';
 
 class RecordsScreen extends StatelessWidget {
   const RecordsScreen({super.key});
@@ -27,8 +26,8 @@ class RecordsScreen extends StatelessWidget {
     final ver = context.select<AppState, int>((s) => s.dataVersion);
 
     return FutureBuilder<_DailyLoadResult>(
-      key: ValueKey(ver),       // ★ 以版本號當 key，強制刷新
-      future: _loadAllDaily(),   // 會重新 hit 檔案系統，拿到最新 daily JSON
+      key: ValueKey(ver), // ★ 以版本號當 key，強制刷新
+      future: _loadAllDaily(), // 會重新 hit 檔案系統，拿到最新 daily JSON
       builder: (context, snap) {
         if (!snap.hasData) {
           return const Center(child: CircularProgressIndicator());
@@ -37,26 +36,34 @@ class RecordsScreen extends StatelessWidget {
         final header = _HeaderCards(
           totalText: '${data.total}',
           practiceDaysText: '${data.practiceDays}',
-          verticalTitle: t.amitabha, 
+          verticalTitle: t.amitabha,
           t: t,
         );
 
         if (data.items.isEmpty) {
-          return ListView(
-            children: [
-              header,
-              const Divider(height: 0),
-              Padding(
-                padding: const EdgeInsets.all(24),
-                child: Center(child: Text(t.noRecords)),
-              ),
-            ],
+          return SafeArea(
+            top: true,
+            bottom: false,
+            child: ListView(
+              children: [
+                header,
+                const Divider(height: 0),
+                Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Center(child: Text(t.noRecords)),
+                ),
+              ],
+            ),
           );
         }
 
         return CustomScrollView(
           slivers: [
-            SliverToBoxAdapter(child: header),
+            SliverSafeArea(
+              top: true,
+              bottom: false,
+              sliver: SliverToBoxAdapter(child: header),
+            ),
             const SliverToBoxAdapter(child: Divider(height: 0)),
             SliverList.builder(
               itemCount: data.items.length,
@@ -70,8 +77,10 @@ class RecordsScreen extends StatelessWidget {
                 final dt = DateTime(y, m, d);
 
                 return ListTile(
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 8,
+                  ),
                   leading: const Icon(Icons.calendar_month, size: 24),
                   title: Text(
                     df.format(dt), // ← 使用轉出的日期
@@ -79,10 +88,9 @@ class RecordsScreen extends StatelessWidget {
                   ),
                   trailing: Text(
                     '${r.amitabhaCount} ${t.times}', // ← 使用正確欄位
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium
-                        ?.copyWith(fontWeight: FontWeight.w600),
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 );
               },
@@ -141,7 +149,7 @@ Future<_DailyLoadResult> _loadAllDaily() async {
 class _HeaderCards extends StatelessWidget {
   final String totalText;
   final String practiceDaysText;
-  final String verticalTitle;  
+  final String verticalTitle;
   final AppLocalizations t;
 
   const _HeaderCards({
@@ -201,13 +209,14 @@ class _StatCol extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final title =
-        Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700);
+    final title = Theme.of(
+      context,
+    ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700);
     final unit = Theme.of(context).textTheme.titleMedium;
     final numTx = Theme.of(context).textTheme.displayLarge?.copyWith(
-          fontWeight: FontWeight.w800,
-          height: 1.0,
-        );
+      fontWeight: FontWeight.w800,
+      height: 1.0,
+    );
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
@@ -220,7 +229,11 @@ class _StatCol extends StatelessWidget {
             child: Center(
               child: FittedBox(
                 fit: BoxFit.scaleDown,
-                child: Text(valueText, style: numTx, textAlign: TextAlign.center),
+                child: Text(
+                  valueText,
+                  style: numTx,
+                  textAlign: TextAlign.center,
+                ),
               ),
             ),
           ),
@@ -268,13 +281,17 @@ class _VerticalTitle extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: FittedBox(
           fit: BoxFit.scaleDown,
-          child: Text(title, maxLines: 1, overflow: TextOverflow.ellipsis, style: style),
+          child: Text(
+            title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: style,
+          ),
         ),
       ),
     );
   }
 }
-
 
 class _VDivider extends StatelessWidget {
   const _VDivider();

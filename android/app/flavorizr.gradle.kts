@@ -18,12 +18,14 @@ android.apply {
         }
         create("prod") {
             dimension = "app"
+            minSdk = 23
             applicationId = "com.earth.amitabha"
             resValue(type = "string", name = "app_name", value = "念佛")
         }
         create("prodMeta") {
             dimension = "app"
             applicationId = "com.earth.amitabha"
+            minSdk = 29
             targetSdk = 32    
             resValue(type = "string", name = "app_name", value = "念佛")
         }   

@@ -23,6 +23,7 @@ import 'package:amitabha/storage/models.dart';
 import 'package:amitabha/app/application/app_state.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 //import 'storage/firestore_syncToCloudBatch.dart';
 
 enum SessionState { idle, recording }
@@ -39,10 +40,10 @@ Future<sherpa_onnx.OnlineRecognizer> createOnlineRecognizer(
     ruleFsts: '',
     decodingMethod: 'modified_beam_search',
     hotwordsFile: hotwordsPath,
-    hotwordsScore: 6,
+    hotwordsScore: 3,
     enableEndpoint: true,
-    rule2MinTrailingSilence: 0.8,
-    rule3MinUtteranceLength: 3,
+    rule2MinTrailingSilence: 1.2,
+    rule3MinUtteranceLength: 30,
   );
 
   return sherpa_onnx.OnlineRecognizer(config);
@@ -137,6 +138,8 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
       return;
     }
 
+    await ensureModelReady(context, modelName);
+
     // 先用 record 觸發系統原生權限（第一次會跳 iOS/Android 原生彈窗）
     bool granted = await _audioRecorder.hasPermission();
 
@@ -160,6 +163,10 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
       _sessionState = SessionState.recording;
     }
 
+    if (!(await WakelockPlus.enabled)) {
+      await WakelockPlus.enable();
+    }
+
     try {
       if (await _audioRecorder.hasPermission()) {
         const encoder = AudioEncoder.pcm16bits;
@@ -180,6 +187,7 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
         final stream = await _audioRecorder.startStream(config);
 
         context.read<AppState>().setRecording(true);
+        await WakelockPlus.enable();
 
         stream.listen(
           (data) {
@@ -209,7 +217,7 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
               if (text != '') {
                 _last = textToDisplay;
                 _index += 1;
-
+                debugPrint('[ASR] =$text');
                 final hitAdd = countAmitabhaOccurrences(text);
                 if (hitAdd > 0) {
                   setState(() {
@@ -249,6 +257,7 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
     _stream = _recognizer?.createStream();
     await _audioRecorder.stop();
     context.read<AppState>().setRecording(false);
+    await WakelockPlus.disable();
   }
 
   Future<bool> _isEncoderSupported(AudioEncoder encoder) async {
@@ -343,6 +352,7 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
 
     _buffer = null;
     _hitLogger = null;
+    await WakelockPlus.disable();
   }
 
   Future<void> _onSavePressed() async {
@@ -367,10 +377,17 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+ void  didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.paused ||
         state == AppLifecycleState.detached) {
-      _commitIfPending(reason: 'lifecycle_${state.name}');
+      await _commitIfPending(reason: 'lifecycle_${state.name}');
+
+      if (_sessionState == SessionState.recording) {
+      try { await _audioRecorder.stop(); } catch (_) {}
+      try { await WakelockPlus.disable(); } catch (_) {}
+      context.read<AppState>().setRecording(false);
+      _sessionState = SessionState.idle;
+      }
     }
   }
 
@@ -403,6 +420,7 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _commitIfPending(reason: 'dispose');
+    WakelockPlus.disable();
     _audioRecorder.dispose();
     _stream?.free();
     _recognizer?.free();

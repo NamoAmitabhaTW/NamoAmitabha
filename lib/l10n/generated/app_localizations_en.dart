@@ -115,7 +115,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String doNotOperateDuring(String phase) {
-    return 'Do not operate during $phase';
+    return 'Please stay on this screen during \"$phase\". Do not switch apps or turn off the screen.';
   }
 
   @override

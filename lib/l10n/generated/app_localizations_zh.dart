@@ -115,7 +115,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String doNotOperateDuring(String phase) {
-    return 'Do not operate during $phase';
+    return 'Please stay on this screen during \"$phase\". Do not switch apps or turn off the screen.';
   }
 
   @override
@@ -310,7 +310,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String doNotOperateDuring(String phase) {
-    return '「$phase」過程中請勿進行任何操作';
+    return '「$phase」過程請保持在此畫面，\n請勿進行切換 App、關閉螢幕等操作。';
   }
 
   @override
@@ -321,7 +321,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String downloadRequiredBody(String modelName) {
-    return '語音辨識模型（$modelName）目前不在本機。是否要立刻下載？';
+    return '語音辨識模型（$modelName）目前不在本機。\n是否要立刻下載？';
   }
 
   @override

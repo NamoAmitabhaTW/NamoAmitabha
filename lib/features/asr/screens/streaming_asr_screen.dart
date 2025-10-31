@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:amitabha/app/application/app_state.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:amitabha/streaming_asr.dart' show StreamingAsrRunner;
+/* import 'package:amitabha/features/asr/widgets/floating_lotus_field.dart'; */
 import 'dart:ui' show lerpDouble;
 import 'dart:math' as math;
 
@@ -132,6 +133,38 @@ class StreamingAsrScreen extends StatelessWidget {
         children: [
           const StreamingAsrRunner(),
 
+          /* Positioned.fill(
+            child: IgnorePointer(
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 250),
+                child: s.isRecording
+                    ? const FloatingLotusField(
+                        isActive: true,
+
+                        // 下面三個就是你要的「位置」控制點
+                        spawnY: 0.82, // 在儲存鍵上方附近生成（越大越靠下）
+                        spawnXMin: 0.3, // 靠右生成範圍
+                        spawnXMax: 0.7,
+
+                        // 這個控制「接近聖號」時淡出/回收
+                        topExitY: 0.6,
+
+                        // 覺得太快/太慢就調這兩個
+                        minSpeed: 0.05,
+                        maxSpeed: 0.09,
+
+                        // 覺得飄太歪就縮小這兩個
+                        minDrift: -0.010,
+                        maxDrift: 0.010,
+
+                        minOpacity: 0.4,
+                        maxOpacity: 0.8,
+                      )
+                    : const SizedBox.shrink(),
+              ),
+            ),
+          ), */
+
           // 聖號水印（可見且偏上）
           PositionedFillWatermark(
             t: t,
@@ -191,9 +224,7 @@ class StreamingAsrScreen extends StatelessWidget {
                           textStyle: WidgetStatePropertyAll(
                             labelTextStyle,
                           ), // ← 文字大小
-                          padding: const WidgetStatePropertyAll(
-                            buttonPadding,
-                          ),
+                          padding: const WidgetStatePropertyAll(buttonPadding),
                         ),
                       ),
                     ),
@@ -206,7 +237,9 @@ class StreamingAsrScreen extends StatelessWidget {
                         icon: const Icon(Icons.save, size: 20),
                         label: Text(t.save),
                         style: outlinedStyle.copyWith(
-                          textStyle: WidgetStatePropertyAll(labelTextStyle), // ← 文字大小
+                          textStyle: WidgetStatePropertyAll(
+                            labelTextStyle,
+                          ), // ← 文字大小
                           padding: const WidgetStatePropertyAll(buttonPadding),
                         ),
                       ),
