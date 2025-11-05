@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 夜間 + API 35+：啟動畫面 -->
+    <style name="LaunchTheme" parent="@style/Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowBackground">@drawable/launch_background</item>
+        <item name="android:windowLayoutInDisplayCutoutMode">always</item>
+        <!-- 不要設定 status/navigation 顏色；讓系統預設透明，交給內容 + insets -->
+    </style>
+
+    <!-- 夜間 + API 35+：正式主題 -->
+    <style name="NormalTheme" parent="@style/Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowBackground">?android:colorBackground</item>
+        <item name="android:windowLayoutInDisplayCutoutMode">always</item>
+    </style>
+</resources>
