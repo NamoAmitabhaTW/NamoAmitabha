@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 啟動畫面 Theme（35+）: 不再設定系統列顏色 -->
+    <style name="LaunchTheme" parent="@style/Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowBackground">@drawable/launch_background</item>
+        <!-- 35+ 預設就是透明/edge-to-edge，不再指定 status/navigation bar 顏色 -->
+        <item name="android:windowLayoutInDisplayCutoutMode">always</item>
+    </style>
+
+    <!-- App 實際運行 Theme（35+）: 僅保留必要項 -->
+    <style name="NormalTheme" parent="@style/Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowBackground">?android:colorBackground</item>
+        <item name="android:windowLayoutInDisplayCutoutMode">always</item>
+        <!-- 不再設定以下舊屬性（35+ 會被棄用或無效）：
+             android:statusBarColor
+             android:navigationBarColor
+             android:enforceStatusBarContrast
+             android:enforceNavigationBarContrast -->
+    </style>
+
+</resources>

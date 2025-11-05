@@ -128,12 +128,15 @@ class StreamingAsrScreen extends StatelessWidget {
         );
 
     // ===== 以 FocusTraversalGroup 包住，提供穩定焦點導覽 =====
-    return FocusTraversalGroup(
-      child: Stack(
-        children: [
-          const StreamingAsrRunner(),
+    return SafeArea(
+      top: true,
+      bottom: true,
+      child: FocusTraversalGroup(
+        child: Stack(
+          children: [
+            const StreamingAsrRunner(),
 
-          /* Positioned.fill(
+            /* Positioned.fill(
             child: IgnorePointer(
               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 250),
@@ -165,91 +168,96 @@ class StreamingAsrScreen extends StatelessWidget {
             ),
           ), */
 
-          // 聖號水印（可見且偏上）
-          PositionedFillWatermark(
-            t: t,
-            verticalBias: -0.6,
-            opacity: 0.12,
-            textStyle: watermarkBaseStyle,
-          ),
+            // 聖號水印（可見且偏上）
+            PositionedFillWatermark(
+              t: t,
+              verticalBias: -0.6,
+              opacity: 0.12,
+              textStyle: watermarkBaseStyle,
+            ),
 
-          // 前景內容
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                const Spacer(),
+            // 前景內容
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  const Spacer(),
 
-                // 「0 次」分色排版
-                FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text.rich(
-                    TextSpan(
-                      children: [
-                        TextSpan(
-                          text: '${s.sessionCount} ',
-                          style: countStyle?.copyWith(color: numberColor),
-                        ),
-                        TextSpan(
-                          text: t.times,
-                          style: countStyle?.copyWith(
-                            color: unitColor,
-                            fontWeight: FontWeight.w600,
+                  // 「0 次」分色排版
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: '${s.sessionCount} ',
+                            style: countStyle?.copyWith(color: numberColor),
                           ),
-                        ),
-                      ],
+                          TextSpan(
+                            text: t.times,
+                            style: countStyle?.copyWith(
+                              color: unitColor,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
 
-                const Spacer(),
+                  const Spacer(),
 
-                Row(
-                  children: [
-                    Expanded(
-                      child: FilledButton.icon(
-                        onPressed: () {
-                          if (s.isRecording) {
-                            s.stopAsr?.call();
-                          } else {
-                            s.startAsr?.call();
-                          }
-                        },
-                        icon: Icon(
-                          s.isRecording ? Icons.pause : Icons.play_arrow,
-                          size: 20, // ← 圖示大小
-                        ),
-                        label: Text(s.isRecording ? t.pause : t.start),
-                        style: filledStyle.copyWith(
-                          textStyle: WidgetStatePropertyAll(
-                            labelTextStyle,
-                          ), // ← 文字大小
-                          padding: const WidgetStatePropertyAll(buttonPadding),
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(width: 16), // ← 中間間隔
-
-                    Expanded(
-                      child: OutlinedButton.icon(
-                        onPressed: s.sessionCount > 0 ? s.saveAsr : null,
-                        icon: const Icon(Icons.save, size: 20),
-                        label: Text(t.save),
-                        style: outlinedStyle.copyWith(
-                          textStyle: WidgetStatePropertyAll(
-                            labelTextStyle,
-                          ), // ← 文字大小
-                          padding: const WidgetStatePropertyAll(buttonPadding),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: FilledButton.icon(
+                          onPressed: () {
+                            if (s.isRecording) {
+                              s.stopAsr?.call();
+                            } else {
+                              s.startAsr?.call();
+                            }
+                          },
+                          icon: Icon(
+                            s.isRecording ? Icons.pause : Icons.play_arrow,
+                            size: 20, // ← 圖示大小
+                          ),
+                          label: Text(s.isRecording ? t.pause : t.start),
+                          style: filledStyle.copyWith(
+                            textStyle: WidgetStatePropertyAll(
+                              labelTextStyle,
+                            ), // ← 文字大小
+                            padding: const WidgetStatePropertyAll(
+                              buttonPadding,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+
+                      const SizedBox(width: 16), // ← 中間間隔
+
+                      Expanded(
+                        child: OutlinedButton.icon(
+                          onPressed: s.sessionCount > 0 ? s.saveAsr : null,
+                          icon: const Icon(Icons.save, size: 20),
+                          label: Text(t.save),
+                          style: outlinedStyle.copyWith(
+                            textStyle: WidgetStatePropertyAll(
+                              labelTextStyle,
+                            ), // ← 文字大小
+                            padding: const WidgetStatePropertyAll(
+                              buttonPadding,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
