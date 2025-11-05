@@ -12,11 +12,6 @@
     <style name="NormalTheme" parent="@style/Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowBackground">?android:colorBackground</item>
         <item name="android:windowLayoutInDisplayCutoutMode">always</item>
-        <!-- 不再設定以下舊屬性（35+ 會被棄用或無效）：
-             android:statusBarColor
-             android:navigationBarColor
-             android:enforceStatusBarContrast
-             android:enforceNavigationBarContrast -->
     </style>
 
 </resources>
