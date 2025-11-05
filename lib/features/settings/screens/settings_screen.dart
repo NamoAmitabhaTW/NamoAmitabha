@@ -17,36 +17,36 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
+    final vp = MediaQuery.of(context).viewPadding;
+    return ListView(
+      padding: EdgeInsets.only(
+        top: vp.top + 8, // 原本的 const SizedBox(height: 8) 也可保留
+        bottom: vp.bottom + 12, // 讓最尾列不被手勢列擠住
+      ),
+      children: [
+        const SizedBox(height: 8),
 
-    return SafeArea(
-      top: true,
-      bottom: true,
-      child: ListView(
-        children: [
-          const SizedBox(height: 8),
+        //_AccountTile(),
+        const Divider(),
+        ListTile(
+          leading: const Icon(Icons.language),
+          title: Text(t.language),
+          subtitle: Text(_languageLabel(context)),
+          onTap: () => _chooseLanguage(context),
+        ),
+        ListTile(
+          leading: const Icon(Icons.feedback_outlined),
+          title: Text(t.feedback),
+          onTap: () => sendFeedbackEmail(context),
+        ),
 
-          //_AccountTile(),
-          const Divider(),
-          ListTile(
-            leading: const Icon(Icons.language),
-            title: Text(t.language),
-            subtitle: Text(_languageLabel(context)),
-            onTap: () => _chooseLanguage(context),
-          ),
-          ListTile(
-            leading: const Icon(Icons.feedback_outlined),
-            title: Text(t.feedback),
-            onTap: () => sendFeedbackEmail(context),
-          ),
-
-          /* const SizedBox(height: 12),
+        /* const SizedBox(height: 12),
         ListTile(
           leading: const Icon(Icons.delete_forever, color: Colors.red),
           title: Text(t.deleteAccount),
           onTap: () => _onDeleteAccount(context),
         ), */
-        ],
-      ),
+      ],
     );
   }
 

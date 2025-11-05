@@ -127,48 +127,18 @@ class StreamingAsrScreen extends StatelessWidget {
           ),
         );
 
+    // 取得系統可視安全區（特別是底部手勢列的高度）
+    final viewPadding = MediaQuery.of(context).viewPadding;
     // ===== 以 FocusTraversalGroup 包住，提供穩定焦點導覽 =====
-    return SafeArea(
-      top: true,
-      bottom: true,
-      child: FocusTraversalGroup(
+    return FocusTraversalGroup(
+      child: Padding(
+        // 只保底部安全區（多 +12 看起來更舒服）
+        padding: EdgeInsets.only(bottom: viewPadding.bottom + 12),
         child: Stack(
           children: [
             const StreamingAsrRunner(),
 
-            /* Positioned.fill(
-            child: IgnorePointer(
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 250),
-                child: s.isRecording
-                    ? const FloatingLotusField(
-                        isActive: true,
-
-                        // 下面三個就是你要的「位置」控制點
-                        spawnY: 0.82, // 在儲存鍵上方附近生成（越大越靠下）
-                        spawnXMin: 0.3, // 靠右生成範圍
-                        spawnXMax: 0.7,
-
-                        // 這個控制「接近聖號」時淡出/回收
-                        topExitY: 0.6,
-
-                        // 覺得太快/太慢就調這兩個
-                        minSpeed: 0.05,
-                        maxSpeed: 0.09,
-
-                        // 覺得飄太歪就縮小這兩個
-                        minDrift: -0.010,
-                        maxDrift: 0.010,
-
-                        minOpacity: 0.4,
-                        maxOpacity: 0.8,
-                      )
-                    : const SizedBox.shrink(),
-              ),
-            ),
-          ), */
-
-            // 聖號水印（可見且偏上）
+            // 聖號水印（保留）
             PositionedFillWatermark(
               t: t,
               verticalBias: -0.6,
@@ -176,37 +146,31 @@ class StreamingAsrScreen extends StatelessWidget {
               textStyle: watermarkBaseStyle,
             ),
 
-            // 前景內容
+            // 前景內容（保留）
             Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
                   const Spacer(),
-
-                  // 「0 次」分色排版
                   FittedBox(
                     fit: BoxFit.scaleDown,
                     child: Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                            text: '${s.sessionCount} ',
-                            style: countStyle?.copyWith(color: numberColor),
+                      TextSpan(children: [
+                        TextSpan(
+                          text: '${s.sessionCount} ',
+                          style: countStyle?.copyWith(color: numberColor),
+                        ),
+                        TextSpan(
+                          text: t.times,
+                          style: countStyle?.copyWith(
+                            color: unitColor,
+                            fontWeight: FontWeight.w600,
                           ),
-                          TextSpan(
-                            text: t.times,
-                            style: countStyle?.copyWith(
-                              color: unitColor,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ]),
                     ),
                   ),
-
                   const Spacer(),
-
                   Row(
                     children: [
                       Expanded(
@@ -218,36 +182,23 @@ class StreamingAsrScreen extends StatelessWidget {
                               s.startAsr?.call();
                             }
                           },
-                          icon: Icon(
-                            s.isRecording ? Icons.pause : Icons.play_arrow,
-                            size: 20, // ← 圖示大小
-                          ),
+                          icon: Icon(s.isRecording ? Icons.pause : Icons.play_arrow, size: 20),
                           label: Text(s.isRecording ? t.pause : t.start),
                           style: filledStyle.copyWith(
-                            textStyle: WidgetStatePropertyAll(
-                              labelTextStyle,
-                            ), // ← 文字大小
-                            padding: const WidgetStatePropertyAll(
-                              buttonPadding,
-                            ),
+                            textStyle: WidgetStatePropertyAll(labelTextStyle),
+                            padding: const WidgetStatePropertyAll(buttonPadding),
                           ),
                         ),
                       ),
-
-                      const SizedBox(width: 16), // ← 中間間隔
-
+                      const SizedBox(width: 16),
                       Expanded(
                         child: OutlinedButton.icon(
                           onPressed: s.sessionCount > 0 ? s.saveAsr : null,
                           icon: const Icon(Icons.save, size: 20),
                           label: Text(t.save),
                           style: outlinedStyle.copyWith(
-                            textStyle: WidgetStatePropertyAll(
-                              labelTextStyle,
-                            ), // ← 文字大小
-                            padding: const WidgetStatePropertyAll(
-                              buttonPadding,
-                            ),
+                            textStyle: WidgetStatePropertyAll(labelTextStyle),
+                            padding: const WidgetStatePropertyAll(buttonPadding),
                           ),
                         ),
                       ),
