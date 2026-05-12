@@ -26,7 +26,7 @@ import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 //import 'storage/firestore_syncToCloudBatch.dart';
 
-enum SessionState { idle, recording }
+enum SessionState { idle, recording, paused }
 
 Future<sherpa_onnx.OnlineRecognizer> createOnlineRecognizer(
   String modelName,
@@ -160,8 +160,8 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
 
     if (_sessionState == SessionState.idle) {
       await _beginNewSession();
-      _sessionState = SessionState.recording;
     }
+    _sessionState = SessionState.recording;
 
     if (!(await WakelockPlus.enabled)) {
       await WakelockPlus.enable();
@@ -220,23 +220,24 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
                 debugPrint('[ASR] =$text');
                 final hitAdd = countAmitabhaOccurrences(text);
                 if (hitAdd > 0) {
-                  setState(() {
-                    _asrHitCount += hitAdd;
-                    _asrLastHitAt = DateTime.now();
-                    debugPrint(
-                      '[ASR] 阿彌陀佛 HIT=$hitAdd Count = $_asrHitCount '
-                      ' Time = ${_asrLastHitAt!.toIso8601String()}',
-                    );
-                    for (int i = 0; i < hitAdd; i++) {
-                      _buffer?.add(DateTime.now());
-                    }
-                  });
-                  try {
-                    context.read<AppState>().setAsrTempProgress(
-                      count: _asrHitCount,
-                      last: _asrLastHitAt,
-                    );
-                  } catch (_) {}
+                  _asrHitCount += hitAdd;
+                  _asrLastHitAt = DateTime.now();
+                  debugPrint(
+                    '[ASR] 阿彌陀佛 HIT=$hitAdd Count = $_asrHitCount '
+                    ' Time = ${_asrLastHitAt!.toIso8601String()}',
+                  );
+                  for (int i = 0; i < hitAdd; i++) {
+                    _buffer?.add(DateTime.now());
+                  }
+
+                  if (mounted) {
+                    try {
+                      context.read<AppState>().setAsrTempProgress(
+                        count: _asrHitCount,
+                        last: _asrLastHitAt,
+                      );
+                    } catch (_) {}
+                  }
                 }
               }
             }
@@ -252,12 +253,14 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
   }
 
   Future<void> _stop() async {
-    await _buffer?.close();
     _stream?.free();
     _stream = _recognizer?.createStream();
-    await _audioRecorder.stop();
+    try {
+      await _audioRecorder.stop();
+    } catch (_) {}
     context.read<AppState>().setRecording(false);
     await WakelockPlus.disable();
+    _sessionState = SessionState.paused;
   }
 
   Future<bool> _isEncoderSupported(AudioEncoder encoder) async {
@@ -309,61 +312,66 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
   }
 
   Future<void> _commitSession({String reason = 'user_action'}) async {
-    await _buffer?.close();
+    final currentCount = _asrHitCount;
+    final lastHitAt = _asrLastHitAt;
 
     if (_asrHitCount <= 0) {
       return;
     }
 
-    await _audioRecorder.stop();
+    _asrHitCount = 0;
+    _asrLastHitAt = null;
+    _last = '';
+    _index = 0;
     _sessionState = SessionState.idle;
-
-    final lastAt = (_asrLastHitAt ?? DateTime.now()).toUtc();
 
     final snapshot = SessionSnapshot(
       sessionId: _sessionId,
       userId: _userId,
       userName: _userName,
       startedAt: _sessionStartedAt,
-      lastAt: lastAt,
-      amitabhaCount: _asrHitCount,
+      lastAt: (lastHitAt ?? DateTime.now()).toUtc(),
+      amitabhaCount: currentCount,
     );
-    await _sessionRepo.upsertSnapshot(snapshot);
-
-    final ymd = nowYmdLocal();
-    await _dailyRepo.addCount(ymd, _userId, _userName, _asrHitCount);
 
     try {
-      //await syncToCloudBatch(snapshot, ymd, _asrHitCount);
+      await _sessionRepo.upsertSnapshot(snapshot);
+      final ymd = nowYmdLocal();
+      await _dailyRepo.addCount(ymd, _userId, _userName, currentCount);
     } catch (e) {
       debugPrint('cloud sync failed: $e');
     }
 
     try {
-      context.read<AppState>().onSessionCommitted();
+      await _buffer?.close();
+    } catch (_) {}
+    try {
+      await _audioRecorder.stop();
+    } catch (_) {}
+    try {
+      await WakelockPlus.disable();
     } catch (_) {}
 
-    setState(() {
-      _asrHitCount = 0;
-      _asrLastHitAt = null;
-      _last = '';
-      _index = 0;
-    });
+    if (mounted) {
+      try {
+        context.read<AppState>().onSessionCommitted();
+        context.read<AppState>().setRecording(false);
+      } catch (_) {}
+    }
 
     _buffer = null;
     _hitLogger = null;
-    await WakelockPlus.disable();
   }
 
   Future<void> _onSavePressed() async {
     if (_committing) return;
-    setState(() => _committing = true);
+    _committing = true;
     try {
       await _commitSession(reason: 'user_save');
     } catch (e) {
       debugPrint('Save failed: $e');
     } finally {
-      if (mounted) setState(() => _committing = false);
+      _committing = false;
     }
   }
 
@@ -377,17 +385,15 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
   }
 
   @override
- void  didChangeAppLifecycleState(AppLifecycleState state) async {
-    if (state == AppLifecycleState.paused ||
-        state == AppLifecycleState.detached) {
-      await _commitIfPending(reason: 'lifecycle_${state.name}');
-
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.paused) {
       if (_sessionState == SessionState.recording) {
-      try { await _audioRecorder.stop(); } catch (_) {}
-      try { await WakelockPlus.disable(); } catch (_) {}
-      context.read<AppState>().setRecording(false);
-      _sessionState = SessionState.idle;
+        await _stop();
       }
+    }
+
+    if (state == AppLifecycleState.detached) {
+      await _commitIfPending(reason: 'app_killed');
     }
   }
 
@@ -419,7 +425,6 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    _commitIfPending(reason: 'dispose');
     WakelockPlus.disable();
     _audioRecorder.dispose();
     _stream?.free();

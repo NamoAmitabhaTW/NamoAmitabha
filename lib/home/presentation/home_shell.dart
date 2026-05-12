@@ -6,6 +6,7 @@ import 'package:amitabha/app/application/app_state.dart';
 import 'package:amitabha/features/asr/screens/streaming_asr_screen.dart';
 import 'package:amitabha/features/records/screens/records_screen.dart';
 import 'package:amitabha/features/settings/screens/settings_screen.dart';
+import 'package:amitabha/streaming_asr.dart';
 
 
 class HomeShell extends StatefulWidget {
@@ -51,7 +52,12 @@ class _HomeShellState extends State<HomeShell> {
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
     return Scaffold(
-      body: _pageFor(_index),
+      body: Stack(
+        children: [
+          _pageFor(_index),
+          const StreamingAsrRunner(),
+        ],
+      ), 
       bottomNavigationBar: NavigationBar(
         selectedIndex: _index,
         onDestinationSelected: (i) => setState(() => _index = i),
