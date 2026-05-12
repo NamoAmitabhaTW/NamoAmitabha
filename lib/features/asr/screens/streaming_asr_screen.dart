@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:amitabha/app/application/app_state.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
-import 'package:amitabha/streaming_asr.dart' show StreamingAsrRunner;
 /* import 'package:amitabha/features/asr/widgets/floating_lotus_field.dart'; */
 import 'dart:ui' show lerpDouble;
 import 'dart:math' as math;
@@ -136,7 +135,6 @@ class StreamingAsrScreen extends StatelessWidget {
         padding: EdgeInsets.only(bottom: viewPadding.bottom + 12),
         child: Stack(
           children: [
-            const StreamingAsrRunner(),
 
             // 聖號水印（保留）
             PositionedFillWatermark(
