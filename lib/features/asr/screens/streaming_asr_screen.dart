@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:amitabha/app/application/app_state.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
-/* import 'package:amitabha/features/asr/widgets/floating_lotus_field.dart'; */
-import 'dart:ui' show lerpDouble;
-import 'dart:math' as math;
+import 'package:amitabha/features/asr/widgets/chanting_background.dart';
+import 'package:amitabha/features/asr/widgets/liuli_button.dart';
 
 class StreamingAsrScreen extends StatelessWidget {
   const StreamingAsrScreen({super.key});
@@ -29,150 +28,81 @@ class StreamingAsrScreen extends StatelessWidget {
       letterSpacing: navLabelBase.letterSpacing,
     );
 
-    // 水印字樣式：很淡、加字距
-    final watermarkBaseStyle =
-        (Theme.of(context).textTheme.displayLarge ??
-                const TextStyle(fontSize: 48))
-            .copyWith(
-              fontFamily: navLabelBase.fontFamily,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 4,
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.06),
-            );
-
     // 顏色：數字用主色，單位用 onSurface 降不透明
-    final theme = Theme.of(context);
-    final numberColor = theme.colorScheme.primary;
-    final unitColor = theme.colorScheme.primary;
-    // 放在 build() 裡、theme 之後
-    final labelTextStyle = Theme.of(context).textTheme.titleLarge?.copyWith(
-      fontSize: 20, // ← 想更大就改這裡
-      fontWeight: FontWeight.w700,
-      letterSpacing: 0.2,
-    );
-
-    // 讓按鈕有較寬舒的內距，避免字變大後擠在一起
-    const buttonPadding = EdgeInsets.symmetric(horizontal: 20, vertical: 14);
-
-    // ===== 共用按鈕樣式（含 hover / focus / pressed 與 hit target）=====
-    ButtonStyle commonButtonStyle(Color overlayOnColor) {
-      return ButtonStyle(
-        minimumSize: WidgetStateProperty.all(
-          const Size(60, 60),
-        ), // hit target >=60
-        mouseCursor: WidgetStateProperty.resolveWith((states) {
-          return states.contains(WidgetState.disabled)
-              ? SystemMouseCursors.forbidden
-              : SystemMouseCursors.click;
-        }),
-        overlayColor: WidgetStateProperty.resolveWith((states) {
-          if (states.contains(WidgetState.pressed)) {
-            return overlayOnColor.withOpacity(0.12);
-          }
-          if (states.contains(WidgetState.focused)) {
-            return overlayOnColor.withOpacity(0.10);
-          }
-          if (states.contains(WidgetState.hovered)) {
-            return overlayOnColor.withOpacity(0.06);
-          }
-          return null;
-        }),
-        elevation: WidgetStateProperty.resolveWith((states) {
-          if (states.contains(WidgetState.pressed)) return 3;
-          if (states.contains(WidgetState.focused)) return 2;
-          if (states.contains(WidgetState.hovered)) return 1;
-          return 0;
-        }),
-        shape: WidgetStateProperty.resolveWith((states) {
-          final focused =
-              states.contains(WidgetState.focused) &&
-              !states.contains(WidgetState.disabled);
-          return RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
-            side: focused
-                ? BorderSide(
-                    color: Theme.of(context).colorScheme.outline,
-                    width: 2,
-                  )
-                : const BorderSide(color: Colors.transparent, width: 2),
-          );
-        }),
-      );
-    }
-
-    final filledStyle = commonButtonStyle(
-      Theme.of(context).colorScheme.onPrimary,
-    );
-
-    final outlinedBaseSide = BorderSide(
-      color: Theme.of(context).colorScheme.outline,
-    );
-    final outlinedStyle =
-        commonButtonStyle(Theme.of(context).colorScheme.primary).copyWith(
-          side: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.focused)) {
-              return BorderSide(
-                color: Theme.of(context).colorScheme.primary,
-                width: 2,
-              );
-            }
-            if (states.contains(WidgetState.hovered)) {
-              return outlinedBaseSide.copyWith(width: 1.5);
-            }
-            return outlinedBaseSide;
-          }),
-          shape: WidgetStatePropertyAll(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-          ),
-        );
+    final numberColor = Colors.white;
+    final unitColor = Colors.white;
 
     // 取得系統可視安全區（特別是底部手勢列的高度）
     final viewPadding = MediaQuery.of(context).viewPadding;
     // ===== 以 FocusTraversalGroup 包住，提供穩定焦點導覽 =====
     return FocusTraversalGroup(
-      child: Padding(
-        // 只保底部安全區（多 +12 看起來更舒服）
-        padding: EdgeInsets.only(bottom: viewPadding.bottom + 12),
-        child: Stack(
-          children: [
+      child: Stack(
+        children: [
+          // ① 滿版背景（影片或圖片）— 不受安全區內縮，墊到螢幕最底
+          const Positioned.fill(
+            child: ChantingBackground(type: BackgroundType.video),
+            // ↑ 之後接設定頁時，改成 type: s.backgroundType 即可
+          ),
 
-            // 聖號水印（保留）
-            PositionedFillWatermark(
-              t: t,
-              verticalBias: -0.6,
-              opacity: 0.12,
-              textStyle: watermarkBaseStyle,
-            ),
-
-            // 前景內容（保留）
-            Padding(
+          // ② 前景內容 — 只保留底部安全區
+          Padding(
+            padding: EdgeInsets.only(bottom: viewPadding.bottom + 120),
+            child: Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
                   const Spacer(),
+
+                  Image.asset(
+                    'assets/images/amitabha_calligraphy.png',
+                    width:
+                        MediaQuery.of(context).size.width *
+                        0.72, // 佔螢幕寬 72%，想大小自己調
+                    fit: BoxFit.contain,
+                  ),
+                  const SizedBox(height: 24),
+
                   FittedBox(
                     fit: BoxFit.scaleDown,
                     child: Text.rich(
-                      TextSpan(children: [
-                        TextSpan(
-                          text: '${s.sessionCount} ',
-                          style: countStyle?.copyWith(color: numberColor),
-                        ),
-                        TextSpan(
-                          text: t.times,
-                          style: countStyle?.copyWith(
-                            color: unitColor,
-                            fontWeight: FontWeight.w600,
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: '${s.sessionCount} ',
+                            style: countStyle?.copyWith(
+                              color: numberColor,
+                              shadows: [
+                              Shadow(
+                                color: Colors.black.withValues(alpha: 0.4),
+                                blurRadius: 6,
+                                offset: const Offset(0, 1),
+                              ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ]),
+                          TextSpan(
+                            text: t.times,
+                            style: countStyle?.copyWith(
+                              color: unitColor,
+                              fontWeight: FontWeight.w600,
+                              shadows: [
+                              Shadow(
+                                color: Colors.black.withValues(alpha: 0.4),
+                                blurRadius: 6,
+                                offset: const Offset(0, 1),
+                              ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   const Spacer(),
                   Row(
                     children: [
                       Expanded(
-                        child: FilledButton.icon(
+                        child: LiuliButton(
                           onPressed: () {
                             if (s.isRecording) {
                               s.stopAsr?.call();
@@ -180,24 +110,28 @@ class StreamingAsrScreen extends StatelessWidget {
                               s.startAsr?.call();
                             }
                           },
-                          icon: Icon(s.isRecording ? Icons.pause : Icons.play_arrow, size: 20),
-                          label: Text(s.isRecording ? t.pause : t.start),
-                          style: filledStyle.copyWith(
-                            textStyle: WidgetStatePropertyAll(labelTextStyle),
-                            padding: const WidgetStatePropertyAll(buttonPadding),
-                          ),
+                          icon: s.isRecording ? Icons.pause : Icons.play_arrow,
+                          label: s.isRecording ? t.pause : t.start,
+                          gradientColors: [
+                            Colors.white.withValues(
+                              alpha: 0.22,
+                            ), // 上緣：極淡白，像玻璃反光
+                            Colors.white.withValues(alpha: 0.10), // 下緣：更透
+                          ],
                         ),
                       ),
                       const SizedBox(width: 16),
                       Expanded(
-                        child: OutlinedButton.icon(
+                        child: LiuliButton(
                           onPressed: s.sessionCount > 0 ? s.saveAsr : null,
-                          icon: const Icon(Icons.save, size: 20),
-                          label: Text(t.save),
-                          style: outlinedStyle.copyWith(
-                            textStyle: WidgetStatePropertyAll(labelTextStyle),
-                            padding: const WidgetStatePropertyAll(buttonPadding),
-                          ),
+                          icon: Icons.save,
+                          label: t.save,
+                          gradientColors: [
+                            Colors.white.withValues(
+                              alpha: 0.22,
+                            ), // 上緣：極淡白，像玻璃反光
+                            Colors.white.withValues(alpha: 0.10), // 下緣：更透
+                          ],
                         ),
                       ),
                     ],
@@ -205,8 +139,8 @@ class StreamingAsrScreen extends StatelessWidget {
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -255,101 +189,6 @@ class PositionedFillWatermark extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: style,
                 ),
-              );
-            },
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class BreathingWatermark extends StatelessWidget {
-  const BreathingWatermark({
-    super.key,
-    required this.t,
-    this.verticalBias = -0.25,
-    this.minOpacity = 0.04,
-    this.maxOpacity = 0.09,
-    this.period = const Duration(seconds: 4),
-    this.textStyle,
-  });
-
-  final AppLocalizations t;
-  final double verticalBias;
-  final double minOpacity;
-  final double maxOpacity;
-  final Duration period;
-  final TextStyle? textStyle;
-
-  @override
-  Widget build(BuildContext context) {
-    return TweenAnimationBuilder<double>(
-      tween: Tween(begin: 0, end: 1),
-      duration: period,
-      curve: Curves.easeInOut,
-      builder: (ctx, v, _) {
-        final op = lerpDouble(
-          minOpacity,
-          maxOpacity,
-          (math.sin(v * math.pi * 2) + 1) / 2,
-        )!;
-        return PositionedFillWatermark(
-          t: t,
-          verticalBias: verticalBias,
-          opacity: op,
-          textStyle: textStyle,
-        );
-      },
-      onEnd: () {},
-    );
-  }
-}
-
-class GradientWatermark extends StatelessWidget {
-  const GradientWatermark({
-    super.key,
-    required this.t,
-    this.verticalBias = -0.25,
-    this.textStyle,
-  });
-
-  final AppLocalizations t;
-  final double verticalBias;
-  final TextStyle? textStyle;
-
-  @override
-  Widget build(BuildContext context) {
-    return Positioned.fill(
-      child: IgnorePointer(
-        child: Align(
-          alignment: Alignment(0, verticalBias),
-          child: LayoutBuilder(
-            builder: (ctx, c) {
-              final size = (c.biggest.shortestSide) * 0.22;
-              final base =
-                  (textStyle ??
-                          Theme.of(context).textTheme.displayLarge ??
-                          const TextStyle())
-                      .copyWith(fontSize: size);
-
-              final gradient = LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  (base.color ??
-                          Theme.of(
-                            context,
-                          ).colorScheme.onSurface.withOpacity(0.06))
-                      .withOpacity(0.06),
-                  Theme.of(context).colorScheme.primary.withOpacity(0.06),
-                ],
-              );
-
-              return ShaderMask(
-                shaderCallback: (rect) => gradient.createShader(rect),
-                blendMode: BlendMode.srcIn,
-                child: FittedBox(child: Text(t.amitabha, style: base)),
               );
             },
           ),

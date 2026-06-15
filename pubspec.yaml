@@ -51,6 +51,8 @@ dependencies:
 
   wakelock_plus: ^1.2.8
 
+  video_player: ^2.9.0
+
   # firebase_core: ^3.6.0
   # cloud_firestore: ^5.5.1
   # firebase_auth: ^5.3.1
@@ -110,6 +112,11 @@ flutter:
     - assets/keywords_zh.txt
     - assets/hotwords_zh.txt
     - assets/images/lotus.png
+    - assets/images/sun.png
+    - assets/images/amitabha_calligraphy.png
+    - assets/videos/river.mp4
+    - assets/videos/rain.mp4
+    - assets/videos/stream.mp4
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
