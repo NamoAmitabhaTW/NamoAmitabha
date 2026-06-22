@@ -155,7 +155,34 @@
   "micPermissionTitle": "需要麥克風權限",
   "micPermissionRationale": "語音辨識計算佛號數量，請前往系統「設定」>「念佛」>「麥克風」將權限開啟。",
   "openSettings": "前往設定",
-  "microphonePermissionDenied": "未取得麥克風權限。"
+  "microphonePermissionDenied": "未取得麥克風權限。",
 
+  "bgScreenTitle": "念佛背景",
+  "bgUse": "使用",
+  "bgUpdate": "更新",
+  "bgDelete": "刪除",
+  "bgInUse": "使用中",
+  "bgDefault": "預設背景",
+  "bgTypeVideo": "影片",
+  "bgTypeImage": "圖片",
+
+  "bgDeleteTitle": "刪除背景",
+  "bgDeleteConfirm": "確定要刪除「{name}」嗎？\n刪除後，仍可重新下載。",
+  "@bgDeleteConfirm": { "placeholders": { "name": { "type": "String" } } },
+
+  "bgClearedTitle": "背景「{name}」已被系統清除",
+  "@bgClearedTitle": { "placeholders": { "name": { "type": "String" } } },
+  "bgClearedBody": "當手機儲存空間不足，或你清除了 App 暫存，系統可能會清掉先前下載的背景以釋放空間。已暫時切回預設背景，需要時可重新下載。",
+
+  "bgOfflineTitle": "目前處於離線狀態",
+  "bgOfflineBody": "連接網路，即可下載背景素材。",
+  "bgDownloadErrorNetwork": "網路未連線，無法下載背景。",
+  "bgDownloadErrorGeneric": "下載失敗，請稍後再試。",
+
+  "bgSettingSubtitle": "自訂頁面背景",
+
+  "langFollowSystem": "跟隨系統",
+  "langFollowSystemWith": "跟隨系統（{name}）",
+  "@langFollowSystemWith": { "placeholders": { "name": { "type": "String" } } }
 
 }

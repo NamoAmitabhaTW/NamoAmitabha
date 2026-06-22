@@ -6,6 +6,8 @@ import 'package:amitabha/features/background/background_prefs.dart';
 import 'package:amitabha/features/background/background_repo.dart';
 import 'dart:io'; // for SocketException
 
+enum BackgroundDownloadError { network, unknown }
+
 class BackgroundController extends ChangeNotifier {
   BackgroundController({BackgroundRepo? repo})
     : _repo = repo ?? BackgroundRepo();
@@ -21,16 +23,16 @@ class BackgroundController extends ChangeNotifier {
   List<BackgroundItem> items = [];
   String? activeId;
   bool isLoading = false;
-  String? lastDownloadError; // 給使用者看的下載失敗文案,SnackBar用
+  BackgroundDownloadError? lastDownloadError; 
 
   // 目前背景來源的快取:同步讀取,避免在 build 裡跑 Future 造成影片重建/閃爍。
   BackgroundSource? _currentSource;
   BackgroundSource? get currentSource => _currentSource;
 
   // 偵測到「使用中的背景被系統清掉」時,記下名稱供 UI 顯示一次提醒。
-  String? clearedNoticeName;
+  BackgroundItem? clearedNoticeItem;
   void consumeClearedNotice() {
-    clearedNoticeName = null;
+    clearedNoticeItem = null;
     notifyListeners();
   }
 
@@ -76,7 +78,7 @@ class BackgroundController extends ChangeNotifier {
     // 偵測:使用中是「非內建、但本地檔已不在」→ 被系統清掉了
     final cur = activeItem;
     if (cur != null && !cur.isBuiltin && !cur.isDownloaded) {
-      clearedNoticeName = cur.name;
+      clearedNoticeItem = cur;            // 原 clearedNoticeName = cur.name;
       final fb = _defaultBuiltin;
       activeId = fb?.id;
       if (fb != null) await _saveActive(fb);
@@ -139,10 +141,9 @@ class BackgroundController extends ChangeNotifier {
       if (_cancelling.contains(item.id)) {
         return false; // 使用者主動取消,不算失敗、不提示
       }
-      // 區分離線與其他錯誤,給 UI 更精準的文案
       lastDownloadError = e is SocketException
-          ? '網路未連線,無法下載背景。'
-          : '下載失敗,請稍後再試。';
+          ? BackgroundDownloadError.network
+          : BackgroundDownloadError.unknown;
       return false; // ← 失敗
     } finally {
       item.isDownloading = false;

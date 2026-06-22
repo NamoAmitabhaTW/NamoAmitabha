@@ -35,10 +35,8 @@ class SettingsScreen extends StatelessWidget {
             ),
             _SettingTile(
               icon: Icons.image_outlined,
-              title: '念佛背景',
-              // TODO: 換成目前選用的背景名稱，例如
-              // context.watch<BackgroundController>().current.displayName
-              value: '輕觸以選擇背景',
+              title: t.bgScreenTitle,
+              value: t.bgSettingSubtitle,
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -53,6 +51,7 @@ class SettingsScreen extends StatelessWidget {
   }
 
   String _languageLabel(BuildContext context) {
+    final t = AppLocalizations.of(context);
     final ctrl = context.watch<LocaleController>();
     final eff = ctrl.locale; // null = 跟隨系統
     if (eff == null) {
@@ -60,12 +59,14 @@ class SettingsScreen extends StatelessWidget {
       final isZh =
           sys?.languageCode == 'zh' &&
           (sys?.countryCode == 'TW' || sys?.scriptCode == 'Hant');
-      return isZh ? '跟隨系統（繁體中文）' : '跟隨系統（English）';
+      final autonym = isZh ? '繁體中文' : 'English'; // 自稱名,不隨 UI 語系翻譯
+      return t.langFollowSystemWith(autonym);
     }
     return eff.languageCode == 'zh' ? '繁體中文' : 'English';
   }
 
   void _chooseLanguage(BuildContext context) {
+    final t = AppLocalizations.of(context);
     showModalBottomSheet(
       context: context,
       builder: (_) => SafeArea(
@@ -74,7 +75,7 @@ class SettingsScreen extends StatelessWidget {
           children: [
             ListTile(
               leading: const Icon(Icons.settings_backup_restore),
-              title: const Text('跟隨系統'),
+              title: Text(t.langFollowSystem),
               onTap: () {
                 context.read<LocaleController>().useSystem();
                 Navigator.pop(context);

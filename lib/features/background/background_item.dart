@@ -16,6 +16,7 @@ enum BackgroundUiState {
 class BackgroundItem {
   final String id;
   final String name;
+  final String? nameEn;
   final BackgroundType type;
 
   /// 預覽縮圖:builtin 為 asset 路徑,遠端為 jsDelivr 網址。
@@ -47,6 +48,7 @@ class BackgroundItem {
     required this.name,
     required this.type,
     required this.thumbnail,
+    this.nameEn,
     this.fileUrl = '',
     this.fileSize = 0,
     this.version = 1,
@@ -62,6 +64,7 @@ class BackgroundItem {
     return BackgroundItem(
       id: json['id'] as String,
       name: json['name'] as String,
+      nameEn: json['nameEn'] as String?, 
       type: (json['type'] as String) == 'image'
           ? BackgroundType.image
           : BackgroundType.video,
@@ -87,12 +90,25 @@ class BackgroundItem {
         : BackgroundUiState.idleDownloaded;
   }
 
+  /// 依語系取顯示名:en → nameEn(選填) ?? 由 id 推導;其餘 → 中文 name。
+  String displayName(String languageCode) {
+    if (languageCode == 'en') return nameEn ?? _prettifyId(id);
+    return name;
+  }
+
+  // cherry_blossom → Cherry Blossom(用空格,當標籤比 CherryBlossom 好讀)
+  static String _prettifyId(String id) => id
+      .split('_')
+      .where((w) => w.isNotEmpty)
+      .map((w) => w[0].toUpperCase() + w.substring(1))
+      .join(' ');
+
   /// 內建預設背景(隨 App 打包,用程式碼宣告)。
   /// 這裡先接上你 pubspec 既有的影片素材;縮圖請放幾張小圖到
   /// assets/thumbnails/ 並在 pubspec 註冊後替換下方 thumbnail 路徑。
   static List<BackgroundItem> builtinDefaults() => [
         BackgroundItem(
-        id: 'leisurely_flow',
+        id: 'mountain_stream',
         name: '清流明澈',
         type: BackgroundType.video,
         thumbnail: 'assets/images/bg_mountain_stream.png', // 內建縮圖,記得加進 pubspec

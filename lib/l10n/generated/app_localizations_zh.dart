@@ -193,6 +193,73 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get microphonePermissionDenied => 'Microphone permission not granted.';
+
+  @override
+  String get bgScreenTitle => 'Chanting Background';
+
+  @override
+  String get bgUse => 'Use';
+
+  @override
+  String get bgUpdate => 'Update';
+
+  @override
+  String get bgDelete => 'Delete';
+
+  @override
+  String get bgInUse => 'In use';
+
+  @override
+  String get bgDefault => 'Default';
+
+  @override
+  String get bgTypeVideo => 'Video';
+
+  @override
+  String get bgTypeImage => 'Image';
+
+  @override
+  String get bgDeleteTitle => 'Delete background';
+
+  @override
+  String bgDeleteConfirm(String name) {
+    return 'Delete \"$name\"? You can download it again anytime.';
+  }
+
+  @override
+  String bgClearedTitle(String name) {
+    return 'Background \"$name\" was cleared by the system';
+  }
+
+  @override
+  String get bgClearedBody =>
+      'When storage runs low, or you clear the app\'s cache, the system may remove downloaded backgrounds to free up space. We\'ve switched back to the default for now — you can re-download anytime.';
+
+  @override
+  String get bgOfflineTitle => 'You\'re offline';
+
+  @override
+  String get bgOfflineBody =>
+      'Connect to the internet to download backgrounds.';
+
+  @override
+  String get bgDownloadErrorNetwork =>
+      'No internet connection. Can\'t download the background.';
+
+  @override
+  String get bgDownloadErrorGeneric =>
+      'Download failed. Please try again later.';
+
+  @override
+  String get bgSettingSubtitle => 'Customize chanting background';
+
+  @override
+  String get langFollowSystem => 'Follow system';
+
+  @override
+  String langFollowSystemWith(String name) {
+    return 'Follow system ($name)';
+  }
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -384,4 +451,68 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get microphonePermissionDenied => '未取得麥克風權限。';
+
+  @override
+  String get bgScreenTitle => '念佛背景';
+
+  @override
+  String get bgUse => '使用';
+
+  @override
+  String get bgUpdate => '更新';
+
+  @override
+  String get bgDelete => '刪除';
+
+  @override
+  String get bgInUse => '使用中';
+
+  @override
+  String get bgDefault => '預設背景';
+
+  @override
+  String get bgTypeVideo => '影片';
+
+  @override
+  String get bgTypeImage => '圖片';
+
+  @override
+  String get bgDeleteTitle => '刪除背景';
+
+  @override
+  String bgDeleteConfirm(String name) {
+    return '確定要刪除「$name」嗎？\n刪除後，仍可重新下載。';
+  }
+
+  @override
+  String bgClearedTitle(String name) {
+    return '背景「$name」已被系統清除';
+  }
+
+  @override
+  String get bgClearedBody =>
+      '當手機儲存空間不足，或你清除了 App 暫存，系統可能會清掉先前下載的背景以釋放空間。已暫時切回預設背景，需要時可重新下載。';
+
+  @override
+  String get bgOfflineTitle => '目前處於離線狀態';
+
+  @override
+  String get bgOfflineBody => '連接網路，即可下載背景素材。';
+
+  @override
+  String get bgDownloadErrorNetwork => '網路未連線，無法下載背景。';
+
+  @override
+  String get bgDownloadErrorGeneric => '下載失敗，請稍後再試。';
+
+  @override
+  String get bgSettingSubtitle => '自訂頁面背景';
+
+  @override
+  String get langFollowSystem => '跟隨系統';
+
+  @override
+  String langFollowSystemWith(String name) {
+    return '跟隨系統（$name）';
+  }
 }

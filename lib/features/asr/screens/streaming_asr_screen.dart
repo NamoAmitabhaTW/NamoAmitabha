@@ -15,6 +15,7 @@ class StreamingAsrScreen extends StatelessWidget {
     final t = AppLocalizations.of(context);
     final s = context.watch<AppState>();
     final bg = context.watch<BackgroundController>();
+    final lang = Localizations.localeOf(context).languageCode;
 
     // 拿底部導航的字型做為基礎
     final navLabelBase =
@@ -54,12 +55,11 @@ class StreamingAsrScreen extends StatelessWidget {
               child: Column(
                 children: [
                   const Spacer(flex: 4),
-
                   Image.asset(
-                    'assets/images/amitabha_calligraphy.png',
-                    width:
-                        MediaQuery.of(context).size.width *
-                        0.8, // 佔螢幕寬 72%，想大小自己調
+                    lang == 'en'
+                        ? 'assets/images/amitabha_calligraphy_en.png'
+                        : 'assets/images/amitabha_calligraphy.png',
+                    width: MediaQuery.of(context).size.width * 0.8,
                     fit: BoxFit.contain,
                   ),
                   const SizedBox(height: 320),
@@ -89,7 +89,7 @@ class StreamingAsrScreen extends StatelessWidget {
                             style: countStyle?.copyWith(
                               color: unitColor,
                               fontWeight: FontWeight.w400,
-                              fontSize: (countStyle?.fontSize ?? 57.0) * 0.62,
+                              fontSize: (countStyle.fontSize ?? 57.0) * 0.62,
                               shadows: [
                                 Shadow(
                                   color: Colors.black.withValues(alpha: 0.4),

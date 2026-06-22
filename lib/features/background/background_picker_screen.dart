@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:amitabha/features/background/background_controller.dart';
 import 'package:amitabha/features/background/background_item.dart';
 import 'package:amitabha/features/background/widgets/background_card.dart';
+import 'package:amitabha/l10n/generated/app_localizations.dart';
 
 class BackgroundPickerScreen extends StatefulWidget {
   const BackgroundPickerScreen({super.key});
@@ -19,8 +20,6 @@ class _BackgroundPickerScreenState extends State<BackgroundPickerScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       final c = context.read<BackgroundController>();
-      // 只在「上次沒載到遠端清單」時自動重抓;成功過就不重複打網路。
-      // 手動重試 / 下拉刷新仍可隨時觸發 c.load()。
       if (c.manifestLoadFailed) {
         c.load();
       }
@@ -29,8 +28,10 @@ class _BackgroundPickerScreenState extends State<BackgroundPickerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context);
+    final lang = Localizations.localeOf(context).languageCode;
     return Scaffold(
-      appBar: AppBar(title: const Text('念佛背景')),
+      appBar: AppBar(title: Text(t.bgScreenTitle)),
       body: Consumer<BackgroundController>(
         builder: (context, c, _) {
           if (c.isLoading && c.items.isEmpty) {
@@ -38,12 +39,14 @@ class _BackgroundPickerScreenState extends State<BackgroundPickerScreen> {
           }
           return Column(
             children: [
-              if (c.clearedNoticeName != null)
+              if (c.clearedNoticeItem != null)
                 _ClearedNoticeBanner(
-                  name: c.clearedNoticeName!,
+                  t: t,
+                  name: c.clearedNoticeItem!.displayName(lang),
                   onDismiss: c.consumeClearedNotice,
                 ),
-              if (c.manifestLoadFailed) _OfflineNoticeBanner(onRetry: c.load),
+              if (c.manifestLoadFailed)
+                _OfflineNoticeBanner(t: t, onRetry: c.load),
               Expanded(
                 child: RefreshIndicator(
                   onRefresh: c.load,
@@ -77,19 +80,21 @@ class _BackgroundPickerScreenState extends State<BackgroundPickerScreen> {
     BackgroundController c,
     BackgroundItem item,
   ) async {
+    final t = AppLocalizations.of(context);
+    final lang = Localizations.localeOf(context).languageCode;
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('刪除背景'),
-        content: Text('確定要刪除「${item.name}」嗎? \n刪除後，仍可重新下載。'),
+        title: Text(t.bgDeleteTitle),
+        content: Text(t.bgDeleteConfirm(item.displayName(lang))),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('取消'),
+            child: Text(t.cancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('刪除', style: TextStyle(color: Colors.red)),
+            child: Text(t.bgDelete, style: const TextStyle(color: Colors.red)),
           ),
         ],
       ),
@@ -104,24 +109,34 @@ class _BackgroundPickerScreenState extends State<BackgroundPickerScreen> {
   ) async {
     final ok = await c.download(item);
     if (!ok && c.lastDownloadError != null && context.mounted) {
+      final t = AppLocalizations.of(context);
+      final msg = switch (c.lastDownloadError!) {
+        BackgroundDownloadError.network => t.bgDownloadErrorNetwork,
+        BackgroundDownloadError.unknown => t.bgDownloadErrorGeneric,
+      };
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(c.lastDownloadError!),
+          content: Text(msg),
           behavior: SnackBarBehavior.floating,
           action: SnackBarAction(
-            label: '重試',
+            label: t.retry,
             onPressed: () => _handleDownload(context, c, item),
           ),
         ),
       );
     }
   }
-}
+} // ← 這個大括號就是原本漏掉的:關閉 _BackgroundPickerScreenState
 
 /// 偵測到使用中背景被系統清掉時,在選擇頁頂端顯示的說明橫幅。
 class _ClearedNoticeBanner extends StatelessWidget {
-  const _ClearedNoticeBanner({required this.name, required this.onDismiss});
+  const _ClearedNoticeBanner({
+    required this.t,
+    required this.name,
+    required this.onDismiss,
+  });
 
+  final AppLocalizations t;
   final String name;
   final VoidCallback onDismiss;
 
@@ -145,16 +160,16 @@ class _ClearedNoticeBanner extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '背景「$name」已被系統清除',
+                  t.bgClearedTitle(name),
                   style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
                 const SizedBox(height: 4),
-                const Text(
-                  '當手機儲存空間不足,或你清除了 App 暫存,系統可能會清掉先前下載的背景以釋放空間。已暫時切回預設背景,需要時可重新下載。',
-                  style: TextStyle(fontSize: 12.5, height: 1.4),
+                Text( // ← 拿掉 const(內含 t.bgClearedBody)
+                  t.bgClearedBody,
+                  style: const TextStyle(fontSize: 12.5, height: 1.4),
                 ),
               ],
             ),
@@ -171,10 +186,10 @@ class _ClearedNoticeBanner extends StatelessWidget {
 }
 
 /// 抓不到遠端背景清單(多半是無網路)時,在頂端顯示的提示。
-/// 不蓋掉列表——內建背景仍可正常使用。
 class _OfflineNoticeBanner extends StatelessWidget {
-  const _OfflineNoticeBanner({required this.onRetry});
+  const _OfflineNoticeBanner({required this.t, required this.onRetry});
 
+  final AppLocalizations t;
   final Future<void> Function() onRetry;
 
   @override
@@ -192,28 +207,31 @@ class _OfflineNoticeBanner extends StatelessWidget {
         children: [
           const Icon(Icons.cloud_off_outlined, size: 20, color: Colors.amber),
           const SizedBox(width: 10),
-          const Expanded(
+          Expanded( // ← 拿掉 const(內含 t.bgOfflineTitle/Body)
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '目前處於離線狀態',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                  t.bgOfflineTitle,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Text(
-                  '連接網路，即可下載背景素材。',
-                  style: TextStyle(fontSize: 12.5, height: 1.4),
+                  t.bgOfflineBody,
+                  style: const TextStyle(fontSize: 12.5, height: 1.4),
                 ),
               ],
             ),
           ),
           TextButton.icon(
-            onPressed: onRetry,
+            onPressed: onRetry,        // ← 原本誤寫成 t.retry
             icon: const Icon(Icons.refresh, size: 20),
-            label: const Text('重試'),
+            label: Text(t.retry),      // ← 原本誤寫成 const Text('重試')
             style: TextButton.styleFrom(
-              foregroundColor: const Color(0xFF6F5C44), // 暖褐,與卡片按鈕一致
+              foregroundColor: const Color(0xFF6F5C44),
               textStyle: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,

@@ -446,6 +446,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Microphone permission not granted.'**
   String get microphonePermissionDenied;
+
+  /// No description provided for @bgScreenTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Chanting Background'**
+  String get bgScreenTitle;
+
+  /// No description provided for @bgUse.
+  ///
+  /// In en, this message translates to:
+  /// **'Use'**
+  String get bgUse;
+
+  /// No description provided for @bgUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Update'**
+  String get bgUpdate;
+
+  /// No description provided for @bgDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get bgDelete;
+
+  /// No description provided for @bgInUse.
+  ///
+  /// In en, this message translates to:
+  /// **'In use'**
+  String get bgInUse;
+
+  /// No description provided for @bgDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Default'**
+  String get bgDefault;
+
+  /// No description provided for @bgTypeVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Video'**
+  String get bgTypeVideo;
+
+  /// No description provided for @bgTypeImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Image'**
+  String get bgTypeImage;
+
+  /// No description provided for @bgDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete background'**
+  String get bgDeleteTitle;
+
+  /// No description provided for @bgDeleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete \"{name}\"? You can download it again anytime.'**
+  String bgDeleteConfirm(String name);
+
+  /// No description provided for @bgClearedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Background \"{name}\" was cleared by the system'**
+  String bgClearedTitle(String name);
+
+  /// No description provided for @bgClearedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'When storage runs low, or you clear the app\'s cache, the system may remove downloaded backgrounds to free up space. We\'ve switched back to the default for now — you can re-download anytime.'**
+  String get bgClearedBody;
+
+  /// No description provided for @bgOfflineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline'**
+  String get bgOfflineTitle;
+
+  /// No description provided for @bgOfflineBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect to the internet to download backgrounds.'**
+  String get bgOfflineBody;
+
+  /// No description provided for @bgDownloadErrorNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection. Can\'t download the background.'**
+  String get bgDownloadErrorNetwork;
+
+  /// No description provided for @bgDownloadErrorGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Download failed. Please try again later.'**
+  String get bgDownloadErrorGeneric;
+
+  /// No description provided for @bgSettingSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Customize chanting background'**
+  String get bgSettingSubtitle;
+
+  /// No description provided for @langFollowSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow system'**
+  String get langFollowSystem;
+
+  /// No description provided for @langFollowSystemWith.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow system ({name})'**
+  String langFollowSystemWith(String name);
 }
 
 class _AppLocalizationsDelegate

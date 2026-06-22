@@ -113,6 +113,7 @@ flutter:
     - assets/keywords_zh.txt
     - assets/hotwords_zh.txt
     - assets/images/amitabha_calligraphy.png
+    - assets/images/amitabha_calligraphy_en.png
     - assets/videos/bg_mountain_stream.mp4
     - assets/images/bg_mountain_stream.png
 

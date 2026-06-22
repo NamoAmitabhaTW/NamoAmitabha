@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as p;
-import 'package:characters/characters.dart';
 
 import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:amitabha/storage/app_paths.dart';
