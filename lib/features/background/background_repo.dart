@@ -10,7 +10,7 @@ class BackgroundRepo {
   // 遠端 manifest(JSON 清單);更新素材時記得發新 tag 並同步這裡的版號。
   // 帳號務必全小寫。
   static const String manifestUrl =
-      'https://raw.githubusercontent.com/Aaron-Tsai-iosDeveloper/NamoAmitabha/main/app-backgrounds/manifest.json';
+      'https://cdn.jsdelivr.net/gh/Aaron-Tsai-iosDeveloper/NamoAmitabha@main/app-backgrounds/manifest.json';
 
   final Map<String, http.Client> _clients = {};
 
