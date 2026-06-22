@@ -5,6 +5,7 @@ import 'package:amitabha/app/application/app_state.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:amitabha/features/asr/widgets/chanting_background.dart';
 import 'package:amitabha/features/asr/widgets/liuli_button.dart';
+import 'package:amitabha/features/background/background_controller.dart';
 
 class StreamingAsrScreen extends StatelessWidget {
   const StreamingAsrScreen({super.key});
@@ -13,6 +14,7 @@ class StreamingAsrScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
     final s = context.watch<AppState>();
+    final bg = context.watch<BackgroundController>();
 
     // 拿底部導航的字型做為基礎
     final navLabelBase =
@@ -23,7 +25,7 @@ class StreamingAsrScreen extends StatelessWidget {
     // 計數字樣式：放大、粗一點、沿用底部導航字型
     final countStyle = Theme.of(context).textTheme.displayLarge?.copyWith(
       fontFamily: navLabelBase.fontFamily,
-      fontWeight: FontWeight.w800,
+      fontWeight: FontWeight.w600,
       height: 1.05,
       letterSpacing: navLabelBase.letterSpacing,
     );
@@ -39,8 +41,8 @@ class StreamingAsrScreen extends StatelessWidget {
       child: Stack(
         children: [
           // ① 滿版背景（影片或圖片）— 不受安全區內縮，墊到螢幕最底
-          const Positioned.fill(
-            child: ChantingBackground(type: BackgroundType.video),
+          Positioned.fill(
+            child: ChantingBackground(source: bg.currentSource, active: true),
             // ↑ 之後接設定頁時，改成 type: s.backgroundType 即可
           ),
 
@@ -48,49 +50,52 @@ class StreamingAsrScreen extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(bottom: viewPadding.bottom + 120),
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
-                  const Spacer(),
+                  const Spacer(flex: 4),
 
                   Image.asset(
                     'assets/images/amitabha_calligraphy.png',
                     width:
                         MediaQuery.of(context).size.width *
-                        0.72, // 佔螢幕寬 72%，想大小自己調
+                        0.8, // 佔螢幕寬 72%，想大小自己調
                     fit: BoxFit.contain,
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 320),
 
                   FittedBox(
                     fit: BoxFit.scaleDown,
                     child: Text.rich(
                       TextSpan(
                         children: [
+                          // 數字:沿用 countStyle 的 w600,不再覆寫
                           TextSpan(
                             text: '${s.sessionCount} ',
                             style: countStyle?.copyWith(
                               color: numberColor,
                               shadows: [
-                              Shadow(
-                                color: Colors.black.withValues(alpha: 0.4),
-                                blurRadius: 6,
-                                offset: const Offset(0, 1),
-                              ),
+                                Shadow(
+                                  color: Colors.black.withValues(alpha: 0.4),
+                                  blurRadius: 6,
+                                  offset: const Offset(0, 1),
+                                ),
                               ],
                             ),
                           ),
+                          // 單位「次」:較輕(w400)、較小(約 0.62 倍),退一步
                           TextSpan(
                             text: t.times,
                             style: countStyle?.copyWith(
                               color: unitColor,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w400,
+                              fontSize: (countStyle?.fontSize ?? 57.0) * 0.62,
                               shadows: [
-                              Shadow(
-                                color: Colors.black.withValues(alpha: 0.4),
-                                blurRadius: 6,
-                                offset: const Offset(0, 1),
-                              ),
+                                Shadow(
+                                  color: Colors.black.withValues(alpha: 0.4),
+                                  blurRadius: 6,
+                                  offset: const Offset(0, 1),
+                                ),
                               ],
                             ),
                           ),
@@ -98,7 +103,7 @@ class StreamingAsrScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const Spacer(),
+                  const Spacer(flex: 10),
                   Row(
                     children: [
                       Expanded(

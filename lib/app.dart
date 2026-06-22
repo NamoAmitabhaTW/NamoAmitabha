@@ -1,5 +1,6 @@
 //app.dart
 import 'package:amitabha/core/core/theme/theme_controller.dart';
+import 'package:amitabha/features/background/background_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 /* import 'flavors.dart'; */
@@ -23,6 +24,7 @@ class App extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AppState()),
         ChangeNotifierProvider(create: (_) => LocaleController()),
         ChangeNotifierProvider(create: (_) => ThemeController()),
+        ChangeNotifierProvider(create: (_) => BackgroundController()..load(), lazy: false),
       ],
       child: Builder(
         builder: (context) {

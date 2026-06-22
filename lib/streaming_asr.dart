@@ -243,12 +243,12 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
             }
           },
           onDone: () {
-            print('stream stopped.');
+            debugPrint('stream stopped.');
           },
         );
       }
     } catch (e) {
-      print(e);
+      debugPrint('[ASR] startStream error: $e');
     }
   }
 
