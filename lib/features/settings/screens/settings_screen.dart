@@ -1,15 +1,18 @@
 //amitabha/lib/features/settings/screens/settings_screen.dart
+import 'package:amitabha/features/background/background_picker_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:amitabha/core/localization/locale_controller.dart';
-/* import 'package:amitabha/features/auth/application/auth_facade.dart';
-import 'package:amitabha/features/auth/data/firebase_auth_repository.dart';
-import 'package:amitabha/features/auth/data/firestore_user_repository.dart';
-import 'package:firebase_auth/firebase_auth.dart' as fb;
-import 'package:amitabha/core/ui/busy_dialog.dart';
-import 'package:amitabha/core/firebase_bootstrap.dart'; */
-import 'package:url_launcher/url_launcher.dart';
+
+// 暖棕色系（建議日後抽到 theme / AppColors 統一管理）
+const _kBrown = Color(0xFF6F4E37); // 主要暖棕
+const _kBrownSoft = Color(0xFF9A7B66); // 副標題 / 箭頭
+const _kTitle = Color(0xFF3A2E25); // 標題深棕
+const _kCardBg = Color(0xFFFDF8EE); // 暖白卡片，與米底同色溫
+const _kIconBg = Color(0x1A6F4E37); // 暖棕 10%，圖示圓底
+const _kDivider = Color(0x14000000); // 卡片內分隔線
+const _kShadow = Color(0x0A000000); // 卡片陰影
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -18,39 +21,37 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
     final vp = MediaQuery.of(context).viewPadding;
+
     return ListView(
-      padding: EdgeInsets.only(
-        top: vp.top + 8, // 原本的 const SizedBox(height: 8) 也可保留
-        bottom: vp.bottom + 12, // 讓最尾列不被手勢列擠住
-      ),
+      padding: EdgeInsets.fromLTRB(16, vp.top + 16, 16, vp.bottom + 16),
       children: [
-        const SizedBox(height: 8),
-
-        //_AccountTile(),
-        const Divider(),
-        ListTile(
-          leading: const Icon(Icons.language),
-          title: Text(t.language),
-          subtitle: Text(_languageLabel(context)),
-          onTap: () => _chooseLanguage(context),
+        _SettingsGroup(
+          children: [
+            _SettingTile(
+              icon: Icons.language,
+              title: t.language,
+              value: _languageLabel(context),
+              onTap: () => _chooseLanguage(context),
+            ),
+            _SettingTile(
+              icon: Icons.image_outlined,
+              title: t.bgScreenTitle,
+              value: t.bgSettingSubtitle,
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const BackgroundPickerScreen(),
+                ),
+              ),
+            ),
+          ],
         ),
-        ListTile(
-          leading: const Icon(Icons.feedback_outlined),
-          title: Text(t.feedback),
-          onTap: () => sendFeedbackEmail(context),
-        ),
-
-        /* const SizedBox(height: 12),
-        ListTile(
-          leading: const Icon(Icons.delete_forever, color: Colors.red),
-          title: Text(t.deleteAccount),
-          onTap: () => _onDeleteAccount(context),
-        ), */
       ],
     );
   }
 
   String _languageLabel(BuildContext context) {
+    final t = AppLocalizations.of(context);
     final ctrl = context.watch<LocaleController>();
     final eff = ctrl.locale; // null = 跟隨系統
     if (eff == null) {
@@ -58,12 +59,14 @@ class SettingsScreen extends StatelessWidget {
       final isZh =
           sys?.languageCode == 'zh' &&
           (sys?.countryCode == 'TW' || sys?.scriptCode == 'Hant');
-      return isZh ? '跟隨系統（繁體中文）' : '跟隨系統（English）';
+      final autonym = isZh ? '繁體中文' : 'English'; // 自稱名,不隨 UI 語系翻譯
+      return t.langFollowSystemWith(autonym);
     }
     return eff.languageCode == 'zh' ? '繁體中文' : 'English';
   }
 
   void _chooseLanguage(BuildContext context) {
+    final t = AppLocalizations.of(context);
     showModalBottomSheet(
       context: context,
       builder: (_) => SafeArea(
@@ -72,7 +75,7 @@ class SettingsScreen extends StatelessWidget {
           children: [
             ListTile(
               leading: const Icon(Icons.settings_backup_restore),
-              title: const Text('跟隨系統'),
+              title: Text(t.langFollowSystem),
               onTap: () {
                 context.read<LocaleController>().useSystem();
                 Navigator.pop(context);
@@ -99,202 +102,109 @@ class SettingsScreen extends StatelessWidget {
       ),
     );
   }
-
-  /* Future<void> _onDeleteAccount(BuildContext context) async {
-    final t = AppLocalizations.of(context);
-
-    final ok = await showDialog<bool>(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: Text(t.confirm),
-        content: Text(t.confirmDeleteAccount),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(t.cancel),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: Text(t.deleteAccount),
-          ),
-        ],
-      ),
-    );
-    if (ok != true) return;
-
-    // UI：loading
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (_) => const Center(child: CircularProgressIndicator()),
-    );
-
-    String? error;
-    try {
-      //await DeleteAccountRunner.run();
-    } catch (e) {
-      error = e.toString();
-    } finally {
-      if (context.mounted) Navigator.pop(context); // 關 loading
-    }
-
-    if (!context.mounted) return;
-    if (error != null) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('刪除失敗：$error')));
-    } else {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(t.done)));
-    }
-  } */
-
-  Future<void> sendFeedbackEmail(BuildContext context) async {
-    final t = AppLocalizations.of(context);
-    final messeger = ScaffoldMessenger.of(context);
-
-    // 多語主旨與內文（以 i18n 字串組合）
-    // 這裡把 App 名字當參數帶進去（若有 appName 的 i18n 也可以帶 t.appName）
-    final subject = t.feedbackEmailSubject(t.appName);
-    final body = t.feedbackEmailBody;
-
-    // 收件者可抽成設定或常數
-    const to = 'namoamitabha1995@gmail.com';
-
-    final uri = Uri.parse(
-      'mailto:$to'
-      '?subject=${Uri.encodeComponent(subject)}'
-      '&body=${Uri.encodeComponent(body)}',
-    );
-
-    // 用 Uri 物件比較不會有編碼問題
-    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
-      // 無法開啟郵件 App 的 fallback（可改成顯示對話框）
-      messeger.showSnackBar(
-        SnackBar(content: Text(t.feedbackOpenMailAppFailed)),
-      );
-    }
-  }
 }
 
-/* class _AccountTile extends StatefulWidget {
-  const _AccountTile();
-  @override
-  State<_AccountTile> createState() => _AccountTileState();
-} */
-
-/* class _AccountTileState extends State<_AccountTile> {
-  AuthFacade? _facade;
+/// 圓角卡片群組，內部自動補分隔線
+class _SettingsGroup extends StatelessWidget {
+  const _SettingsGroup({required this.children});
+  final List<Widget> children;
 
   @override
   Widget build(BuildContext context) {
-    final t = AppLocalizations.of(context);
-
-    // A. 未初始化 → 只顯示按鈕
-    if (!FirebaseBootstrap.isReady) {
-      return ListTile(
-        leading: const Icon(Icons.person),
-        title: Text(t.account),
-        subtitle: Text(t.statusSignedOut),
-        trailing: FilledButton.icon(
-          icon: const Icon(Icons.cloud_upload),
-          label: Text(t.enableCloudSync),
-          onPressed: () async {
-            showBusyDialog(context, t.enableCloudSync, 'Initializing cloud…');
-            var toast = ''; 
-            try {
-              toast = t.done; 
-              await FirebaseBootstrap.ensureReady();
-              setState(() {
-                _facade = AuthFacade(
-                  // ← 初始化完成後才 new
-                  auth: FirebaseAuthRepository(),
-                  users: FirestoreUserRepository(),
-                );
-              });
-              // （可選）匿名登入
-              // await FirebaseBootstrap.ensureAnonymousSignedIn();
-              toast = t.done;
-            } catch (e) {
-              toast = '初始化失敗：$e';
-            } finally {
-              if (context.mounted) {
-                Navigator.of(context, rootNavigator: true).pop();
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(SnackBar(content: Text(toast)));
-              }
-            }
-            if (mounted) {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text(toast)));
-            }
-          },
-        ),
-      );
-    }
-
-    // B. 已初始化 → 確保 facade 存在
-    _facade ??= AuthFacade(
-      auth: FirebaseAuthRepository(),
-      users: FirestoreUserRepository(),
-    );
-
-    return StreamBuilder<fb.User?>(
-      stream: _facade!.authStateChanges(),
-      builder: (context, snap) {
-        final user = snap.data;
-        final isSignedIn = user != null && !user.isAnonymous;
-        final status = isSignedIn ? t.statusSignedIn : t.statusSignedOut;
-        final email = (user?.email ?? '').trim();
-        final subtitle = email.isNotEmpty ? '$status\n$email' : status;
-
-        final trailing = isSignedIn
-            ? OutlinedButton.icon(
-                icon: const Icon(Icons.logout),
-                label: Text(t.logOut),
-                onPressed: () async {
-                  await _facade!.signOut();
-                  if (mounted) {
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(SnackBar(content: Text(t.done)));
-                  }
-                },
-              )
-            : FilledButton.icon(
-                icon: const Icon(Icons.login),
-                label: Text(t.logIn),
-                onPressed: () async {
-                  await showBusyDialog(context, t.logIn, 'Signing in…');
-                  String? toast;
-                  try {
-                    final cred = await _facade!.signInWithGoogle();
-                    final who = cred.user?.email ?? cred.user?.uid ?? '';
-                    toast = '已登入：$who';
-                  } catch (e) {
-                    toast = '登入失敗：$e';
-                  } finally {
-                    if (mounted) Navigator.pop(context);
-                  }
-                  if (mounted) {
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(SnackBar(content: Text(toast)));
-                  }
-                },
-              );
-
-        return ListTile(
-          leading: const Icon(Icons.person),
-          title: Text(t.account),
-          subtitle: Text(subtitle),
-          isThreeLine: subtitle.contains('\n'),
-          trailing: trailing,
+    final tiles = <Widget>[];
+    for (var i = 0; i < children.length; i++) {
+      tiles.add(children[i]);
+      if (i != children.length - 1) {
+        tiles.add(
+          const Divider(
+            height: 1,
+            thickness: 1,
+            indent: 72, // 對齊文字起點，分隔線不切過圖示
+            color: _kDivider,
+          ),
         );
-      },
+      }
+    }
+    return Container(
+      decoration: BoxDecoration(
+        color: _kCardBg,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: const [
+          BoxShadow(color: _kShadow, blurRadius: 10, offset: Offset(0, 2)),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: Column(children: tiles),
+      ),
     );
   }
-} */
+}
+
+/// 單一設定列：圓底圖示 + 標題 + 目前值 + 箭頭 + 漣漪
+class _SettingTile extends StatelessWidget {
+  const _SettingTile({
+    required this.icon,
+    required this.title,
+    required this.onTap,
+    this.value,
+  });
+
+  final IconData icon;
+  final String title;
+  final String? value;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          child: Row(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: const BoxDecoration(
+                  color: _kIconBg,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(icon, color: _kBrown, size: 22),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: _kTitle,
+                      ),
+                    ),
+                    if (value != null) ...[
+                      const SizedBox(height: 4),
+                      Text(
+                        value!,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: _kBrownSoft,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              const Icon(Icons.chevron_right, color: _kBrownSoft, size: 24),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

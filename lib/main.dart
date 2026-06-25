@@ -19,7 +19,7 @@ void main() async {
     ),
   );
 
-  const flavorName = String.fromEnvironment('appFlavor', defaultValue: 'debug');
+  const flavorName = String.fromEnvironment('appFlavor', defaultValue: 'dev');
   F.appFlavor = Flavor.values.firstWhere(
     (e) => e.name == flavorName,
     orElse: () => Flavor.dev,

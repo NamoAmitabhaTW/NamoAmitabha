@@ -1,5 +1,6 @@
 //app.dart
-import 'package:amitabha/core/core/theme/brand.dart';
+import 'package:amitabha/core/core/theme/theme_controller.dart';
+import 'package:amitabha/features/background/background_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 /* import 'flavors.dart'; */
@@ -22,12 +23,14 @@ class App extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => DownloadModel()),
         ChangeNotifierProvider(create: (_) => AppState()),
         ChangeNotifierProvider(create: (_) => LocaleController()),
+        ChangeNotifierProvider(create: (_) => ThemeController()),
+        ChangeNotifierProvider(create: (_) => BackgroundController()..load(), lazy: false),
       ],
       child: Builder(
         builder: (context) {
           // 由 LocaleController 取得目前選擇；null 代表「跟隨系統」
           final locale = context.watch<LocaleController>().locale;
-
+          final themeData = context.watch<ThemeController>().themeData;
           return MaterialApp(
             locale: locale, // null => 跟隨系統
             // 把所有「繁體」系統語系統一映射到 zh_TW
@@ -46,7 +49,7 @@ class App extends StatelessWidget {
               return null;
             },
             onGenerateTitle: (ctx) => AppLocalizations.of(ctx).amitabha,
-            theme: Brand.light(),
+            theme: themeData,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
             home: const HomeShell(),

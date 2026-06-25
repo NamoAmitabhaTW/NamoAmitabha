@@ -193,4 +193,71 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get microphonePermissionDenied => 'Microphone permission not granted.';
+
+  @override
+  String get bgScreenTitle => 'Chanting Background';
+
+  @override
+  String get bgUse => 'Use';
+
+  @override
+  String get bgUpdate => 'Update';
+
+  @override
+  String get bgDelete => 'Delete';
+
+  @override
+  String get bgInUse => 'In use';
+
+  @override
+  String get bgDefault => 'Default';
+
+  @override
+  String get bgTypeVideo => 'Video';
+
+  @override
+  String get bgTypeImage => 'Image';
+
+  @override
+  String get bgDeleteTitle => 'Delete background';
+
+  @override
+  String bgDeleteConfirm(String name) {
+    return 'Delete \"$name\"? You can download it again anytime.';
+  }
+
+  @override
+  String bgClearedTitle(String name) {
+    return 'Background \"$name\" was cleared by the system';
+  }
+
+  @override
+  String get bgClearedBody =>
+      'When storage runs low, or you clear the app\'s cache, the system may remove downloaded backgrounds to free up space. We\'ve switched back to the default for now — you can re-download anytime.';
+
+  @override
+  String get bgOfflineTitle => 'You\'re offline';
+
+  @override
+  String get bgOfflineBody =>
+      'Connect to the internet to download backgrounds.';
+
+  @override
+  String get bgDownloadErrorNetwork =>
+      'No internet connection. Can\'t download the background.';
+
+  @override
+  String get bgDownloadErrorGeneric =>
+      'Download failed. Please try again later.';
+
+  @override
+  String get bgSettingSubtitle => 'Customize chanting background';
+
+  @override
+  String get langFollowSystem => 'Follow system';
+
+  @override
+  String langFollowSystemWith(String name) {
+    return 'Follow system ($name)';
+  }
 }

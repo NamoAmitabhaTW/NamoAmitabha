@@ -156,6 +156,33 @@
   "micPermissionTitle": "Microphone Permission Required",
   "micPermissionRationale": "To count chants, please enable Microphone in System Settings > Amitabha.",
   "openSettings": "Open Settings",
-  "microphonePermissionDenied": "Microphone permission not granted."
+  "microphonePermissionDenied": "Microphone permission not granted.",
+  
+  "bgScreenTitle": "Chanting Background",
+  "bgUse": "Use",
+  "bgUpdate": "Update",
+  "bgDelete": "Delete",
+  "bgInUse": "In use",
+  "bgDefault": "Default",
+  "bgTypeVideo": "Video",
+  "bgTypeImage": "Image",
 
+  "bgDeleteTitle": "Delete background",
+  "bgDeleteConfirm": "Delete \"{name}\"? You can download it again anytime.",
+  "@bgDeleteConfirm": { "placeholders": { "name": { "type": "String" } } },
+
+  "bgClearedTitle": "Background \"{name}\" was cleared by the system",
+  "@bgClearedTitle": { "placeholders": { "name": { "type": "String" } } },
+  "bgClearedBody": "When storage runs low, or you clear the app's cache, the system may remove downloaded backgrounds to free up space. We've switched back to the default for now — you can re-download anytime.",
+
+  "bgOfflineTitle": "You're offline",
+  "bgOfflineBody": "Connect to the internet to download backgrounds.",
+  "bgDownloadErrorNetwork": "No internet connection. Can't download the background.",
+  "bgDownloadErrorGeneric": "Download failed. Please try again later.",
+
+  "bgSettingSubtitle": "Customize chanting background",
+
+  "langFollowSystem": "Follow system",
+  "langFollowSystemWith": "Follow system ({name})",
+  "@langFollowSystemWith": { "placeholders": { "name": { "type": "String" } } }
 }  

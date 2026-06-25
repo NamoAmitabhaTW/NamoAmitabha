@@ -7,7 +7,9 @@ import 'package:amitabha/features/asr/screens/streaming_asr_screen.dart';
 import 'package:amitabha/features/records/screens/records_screen.dart';
 import 'package:amitabha/features/settings/screens/settings_screen.dart';
 import 'package:amitabha/streaming_asr.dart';
-
+import 'package:amitabha/core/core/theme/brand.dart';
+import 'package:amitabha/core/core/theme/theme_controller.dart';
+import 'package:amitabha/home/widgets/glass_nav_bar.dart';
 
 class HomeShell extends StatefulWidget {
   const HomeShell({super.key});
@@ -51,27 +53,34 @@ class _HomeShellState extends State<HomeShell> {
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
-    return Scaffold(
-      body: Stack(
-        children: [
-          _pageFor(_index),
-          const StreamingAsrRunner(),
-        ],
-      ), 
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _index,
-        onDestinationSelected: (i) => setState(() => _index = i),
-        destinations: [
-          NavigationDestination(icon: const Icon(Icons.mic), label: t.chant),
-          NavigationDestination(
-            icon: const Icon(Icons.list_alt),
-            label: t.records,
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.settings),
-            label: t.settings,
-          ),
-        ],
+    final currentStyle = context.watch<ThemeController>().style;
+    // 念佛頁(深影片背景)→ 白；其他頁(淺 cream)→ 深木色
+    final navFg = _index == 0
+        ? Colors.white
+        : Theme.of(context).colorScheme.primary;
+        
+    return Container(
+      decoration: Brand.getBackgroundDecoration(currentStyle),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        extendBody: true, // ← 新增：讓 body（含背景影片）延伸到 tabbar 後面
+        body: Stack(children: [_pageFor(_index), const StreamingAsrRunner()]),
+        bottomNavigationBar: GlassNavBar(
+          selectedIndex: _index,
+          onDestinationSelected: (i) => setState(() => _index = i),
+          foreground: navFg,
+          destinations: [
+            NavigationDestination(icon: const Icon(Icons.mic), label: t.chant),
+            NavigationDestination(
+              icon: const Icon(Icons.list_alt),
+              label: t.records,
+            ),
+            NavigationDestination(
+              icon: const Icon(Icons.settings),
+              label: t.settings,
+            ),
+          ],
+        ),
       ),
     );
   }
