@@ -39,7 +39,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get times => 'times';
 
   @override
-  String get noRecords => 'No records';
+  String get noRecords => 'No records yet';
 
   @override
   String get logIn => 'Log in';

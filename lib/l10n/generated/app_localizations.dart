@@ -168,7 +168,7 @@ abstract class AppLocalizations {
   /// Records page empty state
   ///
   /// In en, this message translates to:
-  /// **'No records'**
+  /// **'No records yet'**
   String get noRecords;
 
   /// General login label (use enableCloudSync for the cloud-sync CTA)
@@ -309,7 +309,7 @@ abstract class AppLocalizations {
   /// **'Preparing, please wait…'**
   String get preparingPleaseWait;
 
-  /// No description provided for @doNotOperateDuring.
+  /// Shown like: Please do not perform any operations during Downloading/Unzipping
   ///
   /// In en, this message translates to:
   /// **'Please stay on this screen during \"{phase}\". Do not switch apps or turn off the screen.'**
