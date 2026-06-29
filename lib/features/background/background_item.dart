@@ -15,8 +15,13 @@ enum BackgroundUiState {
 
 class BackgroundItem {
   final String id;
-  final String name;
+  final String name; // 中文原名(必填)
   final String? nameEn;
+
+  /// 其餘語系名稱:key 為語系碼(ja/ko/de/fr…),value 為該語名稱。
+  /// 來自 manifest 的 nameJa / nameKo… 欄位,缺漏時走 displayName 的 fallback。
+  final Map<String, String> names;
+
   final BackgroundType type;
 
   /// 預覽縮圖:builtin 為 asset 路徑,遠端為 jsDelivr 網址。
@@ -49,6 +54,7 @@ class BackgroundItem {
     required this.type,
     required this.thumbnail,
     this.nameEn,
+    this.names = const {},
     this.fileUrl = '',
     this.fileSize = 0,
     this.version = 1,
@@ -61,10 +67,25 @@ class BackgroundItem {
   });
 
   factory BackgroundItem.fromJson(Map<String, dynamic> json) {
+    // 收集所有 nameXx 欄位(nameJa / nameKo / nameDe / nameFr / nameVi…)
+    // 鍵正規化為小寫語系碼:nameJa -> 'ja'
+    final names = <String, String>{};
+    for (final entry in json.entries) {
+      final k = entry.key;
+      if (k.length > 4 &&
+          k.startsWith('name') &&
+          k != 'nameEn' &&
+          entry.value is String) {
+        final code = k.substring(4).toLowerCase(); // 'Ja' -> 'ja'
+        names[code] = entry.value as String;
+      }
+    }
+
     return BackgroundItem(
       id: json['id'] as String,
       name: json['name'] as String,
-      nameEn: json['nameEn'] as String?, 
+      nameEn: json['nameEn'] as String?,
+      names: names,
       type: (json['type'] as String) == 'image'
           ? BackgroundType.image
           : BackgroundType.video,
@@ -90,10 +111,34 @@ class BackgroundItem {
         : BackgroundUiState.idleDownloaded;
   }
 
-  /// 依語系取顯示名:en → nameEn(選填) ?? 由 id 推導;其餘 → 中文 name。
+  /// 依語系取顯示名,fallback 規則:
+  ///  - ja/ko/vi:有對應 nameXx 就用;沒有 → 退回中文原名(漢字/漢越圈,比英文貼近)。
+  ///  - de/fr:有對應 nameXx 就用;沒有 → 退回 nameEn(依設計,德法用英文名即可)。
+  ///  - en:nameEn ?? 由 id 推導。
+  ///  - 其餘 / 找不到:nameEn ?? 中文原名。
   String displayName(String languageCode) {
-    if (languageCode == 'en') return nameEn ?? _prettifyId(id);
-    return name;
+    final lang = languageCode.toLowerCase();
+
+    // 1) 該語系有明確翻譯,直接用
+    final explicit = names[lang];
+    if (explicit != null && explicit.isNotEmpty) return explicit;
+
+    // 2) 依語系給 fallback
+    switch (lang) {
+      case 'zh':
+        return name;
+      case 'ja':
+      case 'ko':
+      case 'vi':
+        return name; // 漢字/漢越圈:退中文原名(比英文貼近)
+      case 'de':
+      case 'fr':
+        return nameEn ?? name; // 拉丁語系:退英文
+      case 'en':
+        return nameEn ?? _prettifyId(id);
+      default:
+        return nameEn ?? name;
+    }
   }
 
   // cherry_blossom → Cherry Blossom(用空格,當標籤比 CherryBlossom 好讀)
@@ -104,17 +149,23 @@ class BackgroundItem {
       .join(' ');
 
   /// 內建預設背景(隨 App 打包,用程式碼宣告)。
-  /// 這裡先接上你 pubspec 既有的影片素材;縮圖請放幾張小圖到
-  /// assets/thumbnails/ 並在 pubspec 註冊後替換下方 thumbnail 路徑。
   static List<BackgroundItem> builtinDefaults() => [
         BackgroundItem(
-        id: 'mountain_stream',
-        name: '清流明澈',
-        type: BackgroundType.video,
-        thumbnail: 'assets/images/bg_mountain_stream.png', // 內建縮圖,記得加進 pubspec
-        isBuiltin: true,
-        assetPath: 'assets/videos/bg_mountain_stream.mp4',
-      ),
+          id: 'mountain_stream',
+          name: '清流明澈',
+          nameEn: 'Clear Stream',
+          names: const {
+            'ja': '清流明澈',
+            'ko': '맑은 물줄기',
+            'vi': 'Dòng suối trong',
+            'de': 'Klarer Strom',
+            'fr': 'Courant limpide',
+          },
+          type: BackgroundType.video,
+          thumbnail: 'assets/images/bg_mountain_stream.png',
+          isBuiltin: true,
+          assetPath: 'assets/videos/bg_mountain_stream.mp4',
+        ),
       ];
 }
 
