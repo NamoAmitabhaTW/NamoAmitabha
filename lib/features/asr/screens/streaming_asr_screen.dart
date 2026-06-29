@@ -10,6 +10,30 @@ import 'package:amitabha/features/background/background_controller.dart';
 class StreamingAsrScreen extends StatelessWidget {
   const StreamingAsrScreen({super.key});
 
+  /// 依語系挑選「阿彌陀佛」書法圖。
+  ///  zh → 中文書法
+  ///  ja → 日文
+  ///  vi → 越南文
+  ///  en/de/fr → 梵文/羅馬化版 (_sa)
+  ///  其餘(含 ko)→ 退回中文書法
+  static String _calligraphyAsset(String lang) {
+    switch (lang) {
+      case 'ja':
+        return 'assets/images/amitabha_calligraphy_ja.png';
+      case 'ko':
+        return 'assets/images/amitabha_calligraphy_ko.png';
+      case 'vi':
+        return 'assets/images/amitabha_calligraphy_vi.png';
+      case 'en':
+      case 'de':
+      case 'fr':
+        return 'assets/images/amitabha_calligraphy_sa.png';
+      case 'zh':
+      default:
+        return 'assets/images/amitabha_calligraphy.png';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
@@ -56,9 +80,7 @@ class StreamingAsrScreen extends StatelessWidget {
                 children: [
                   const Spacer(flex: 4),
                   Image.asset(
-                    lang == 'en'
-                        ? 'assets/images/amitabha_calligraphy_en.png'
-                        : 'assets/images/amitabha_calligraphy.png',
+                    _calligraphyAsset(lang),
                     width: MediaQuery.of(context).size.width * 0.8,
                     fit: BoxFit.contain,
                   ),
@@ -171,7 +193,7 @@ class PositionedFillWatermark extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final baseColor =
-        color ?? Theme.of(context).colorScheme.onSurface.withOpacity(opacity);
+        color ?? Theme.of(context).colorScheme.onSurface.withValues(alpha: opacity);
 
     return Positioned.fill(
       child: IgnorePointer(
