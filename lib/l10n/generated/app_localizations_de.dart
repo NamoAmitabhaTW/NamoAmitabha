@@ -1,0 +1,280 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
+import 'app_localizations.dart';
+
+// ignore_for_file: type=lint
+
+/// The translations for German (`de`).
+class AppLocalizationsDe extends AppLocalizations {
+  AppLocalizationsDe([String locale = 'de']) : super(locale);
+
+  @override
+  String get amitabha => 'Amitabha';
+
+  @override
+  String get chant => 'Rezitation';
+
+  @override
+  String get records => 'Verlauf';
+
+  @override
+  String get settings => 'Einstellungen';
+
+  @override
+  String get start => 'Start';
+
+  @override
+  String get pause => 'Pause';
+
+  @override
+  String get save => 'Speichern';
+
+  @override
+  String get total => 'Gesamt';
+
+  @override
+  String get days => 'Tage';
+
+  @override
+  String get times => 'Mal';
+
+  @override
+  String get noRecords => 'Noch keine Einträge';
+
+  @override
+  String get logIn => 'Anmelden';
+
+  @override
+  String get logOut => 'Abmelden';
+
+  @override
+  String get enableCloudSync => 'Cloud-Sync aktivieren';
+
+  @override
+  String get account => 'Konto';
+
+  @override
+  String get accountStatus => 'Anmeldestatus';
+
+  @override
+  String get statusSignedIn => 'Angemeldet';
+
+  @override
+  String get statusSignedOut => 'Nicht angemeldet';
+
+  @override
+  String get language => 'Sprache';
+
+  @override
+  String currentLanguage(String lang) {
+    return 'Aktuelle Sprache: $lang';
+  }
+
+  @override
+  String get langZhHant => '繁體中文';
+
+  @override
+  String get langEn => 'English';
+
+  @override
+  String get langJa => '日本語';
+
+  @override
+  String get langKo => '한국어';
+
+  @override
+  String get langVi => 'Tiếng Việt';
+
+  @override
+  String get langDe => 'Deutsch';
+
+  @override
+  String get langFr => 'Français';
+
+  @override
+  String get feedback => 'Feedback';
+
+  @override
+  String get deleteAccount => 'Konto löschen';
+
+  @override
+  String get confirm => 'Bestätigen';
+
+  @override
+  String get cancel => 'Abbrechen';
+
+  @override
+  String get done => 'Fertig';
+
+  @override
+  String get confirmDeleteAccount =>
+      'Möchten Sie Ihr Konto und Ihre Daten wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.';
+
+  @override
+  String get pleaseWait => 'Bitte warten';
+
+  @override
+  String get downloading => 'Wird heruntergeladen';
+
+  @override
+  String get unzipping => 'Wird entpackt';
+
+  @override
+  String get completed => 'Abgeschlossen';
+
+  @override
+  String get preparing => 'Wird vorbereitet';
+
+  @override
+  String get preparingPleaseWait => 'Wird vorbereitet, bitte warten…';
+
+  @override
+  String doNotOperateDuring(String phase) {
+    return 'Bitte bleiben Sie während \"$phase\" auf diesem Bildschirm.\nWechseln Sie nicht die App und schalten Sie den Bildschirm nicht aus.';
+  }
+
+  @override
+  String get ok => 'OK';
+
+  @override
+  String get downloadRequiredTitle => 'Download erforderlich';
+
+  @override
+  String downloadRequiredBody(String modelName) {
+    return 'Das Spracherkennungsmodell ($modelName) ist nicht lokal verfügbar.\nMöchten Sie es herunterladen?';
+  }
+
+  @override
+  String get download => 'Herunterladen';
+
+  @override
+  String get downloadFailedTitle => 'Download fehlgeschlagen';
+
+  @override
+  String downloadFailedBody(String error) {
+    return 'Modell-Download fehlgeschlagen: $error';
+  }
+
+  @override
+  String get successTitle => 'Erfolg';
+
+  @override
+  String get successBody => 'Das Modell wurde erfolgreich installiert.';
+
+  @override
+  String get unzipFailedTitle => 'Entpacken fehlgeschlagen';
+
+  @override
+  String get unzipFailedLowSpaceBody =>
+      'Möglicherweise zu wenig Speicherplatz. Bitte geben Sie Speicher frei und versuchen Sie es erneut.';
+
+  @override
+  String get close => 'Schließen';
+
+  @override
+  String get retryUnzip => 'Entpacken wiederholen';
+
+  @override
+  String get downloadFailedShort =>
+      'Modell-Download fehlgeschlagen. Bitte versuchen Sie es später erneut.';
+
+  @override
+  String get retry => 'Wiederholen';
+
+  @override
+  String get feedbackOpenMailAppFailed =>
+      'Mail-App konnte nicht geöffnet werden';
+
+  @override
+  String get appName => 'Amitabha';
+
+  @override
+  String feedbackEmailSubject(String app) {
+    return '[$app] Feedback';
+  }
+
+  @override
+  String get feedbackEmailBody =>
+      'Problem/Vorschlag:\n\n(Sie können einen Screenshot anhängen)';
+
+  @override
+  String get micPermissionTitle => 'Mikrofonberechtigung erforderlich';
+
+  @override
+  String get micPermissionRationale =>
+      'Um Rezitationen zu zählen, aktivieren Sie das Mikrofon in den Systemeinstellungen > Amitabha.';
+
+  @override
+  String get openSettings => 'Einstellungen öffnen';
+
+  @override
+  String get microphonePermissionDenied =>
+      'Mikrofonberechtigung nicht erteilt.';
+
+  @override
+  String get bgScreenTitle => 'Rezitations-Hintergrund';
+
+  @override
+  String get bgUse => 'Verwenden';
+
+  @override
+  String get bgUpdate => 'Aktualisieren';
+
+  @override
+  String get bgDelete => 'Löschen';
+
+  @override
+  String get bgInUse => 'In Verwendung';
+
+  @override
+  String get bgDefault => 'Standard';
+
+  @override
+  String get bgTypeVideo => 'Video';
+
+  @override
+  String get bgTypeImage => 'Bild';
+
+  @override
+  String get bgDeleteTitle => 'Hintergrund löschen';
+
+  @override
+  String bgDeleteConfirm(String name) {
+    return '„$name“ löschen? Sie können es jederzeit erneut herunterladen.';
+  }
+
+  @override
+  String bgClearedTitle(String name) {
+    return 'Hintergrund „$name“ wurde vom System entfernt';
+  }
+
+  @override
+  String get bgClearedBody =>
+      'Bei wenig Speicherplatz oder wenn Sie den App-Cache leeren, kann das System heruntergeladene Hintergründe entfernen, um Speicher freizugeben. Wir haben vorerst zum Standard zurückgewechselt — Sie können jederzeit erneut herunterladen.';
+
+  @override
+  String get bgOfflineTitle => 'Sie sind offline';
+
+  @override
+  String get bgOfflineBody =>
+      'Stellen Sie eine Internetverbindung her, um Hintergründe herunterzuladen.';
+
+  @override
+  String get bgDownloadErrorNetwork =>
+      'Keine Internetverbindung. Hintergrund kann nicht heruntergeladen werden.';
+
+  @override
+  String get bgDownloadErrorGeneric =>
+      'Download fehlgeschlagen. Bitte versuchen Sie es später erneut.';
+
+  @override
+  String get bgSettingSubtitle => 'Rezitations-Hintergrund anpassen';
+
+  @override
+  String get langFollowSystem => 'System folgen';
+
+  @override
+  String langFollowSystemWith(String name) {
+    return 'System folgen ($name)';
+  }
+}

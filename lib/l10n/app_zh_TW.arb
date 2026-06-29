@@ -88,11 +88,31 @@
   },
   "langZhHant": "繁體中文",
   "@langZhHant": {
-    "description": "Language option: Traditional Chinese"
+    "description": "Language option: Traditional Chinese (endonym, not translated)"
   },
   "langEn": "English",
   "@langEn": {
-    "description": "Language option: English"
+    "description": "Language option: English (endonym, not translated)"
+  },
+  "langJa": "日本語",
+  "@langJa": {
+    "description": "Language option: Japanese (endonym, not translated)"
+  },
+  "langKo": "한국어",
+  "@langKo": {
+    "description": "Language option: Korean (endonym, not translated)"
+  },
+  "langVi": "Tiếng Việt",
+  "@langVi": {
+    "description": "Language option: Vietnamese (endonym, not translated)"
+  },
+  "langDe": "Deutsch",
+  "@langDe": {
+    "description": "Language option: German (endonym, not translated)"
+  },
+  "langFr": "Français",
+  "@langFr": {
+    "description": "Language option: French (endonym, not translated)"
   },
   "feedback": "意見回饋",
   "@feedback": {

@@ -1,18 +1,18 @@
 {
-  "@@locale": "en",
+  "@@locale": "de",
   "amitabha": "Amitabha",
   "@amitabha": {
     "description": "App title / Buddha name label"
   },
-  "chant": "Chant",
+  "chant": "Rezitation",
   "@chant": {
     "description": "Can be used for bottom tab label and screen title"
   },
-  "records": "Records",
+  "records": "Verlauf",
   "@records": {
     "description": "Bottom nav: Records tab"
   },
-  "settings": "Settings",
+  "settings": "Einstellungen",
   "@settings": {
     "description": "Bottom nav: Settings tab"
   },
@@ -24,59 +24,59 @@
   "@pause": {
     "description": "Pause button"
   },
-  "save": "Save",
+  "save": "Speichern",
   "@save": {
     "description": "Save current session count"
   },
-  "total": "Total",
+  "total": "Gesamt",
   "@total": {
     "description": "Stats: total accumulated count"
   },
-  "days": "Days",
+  "days": "Tage",
   "@days": {
     "description": "Stats: number of practice days (unique dates from records)"
   },
-  "times": "times",
+  "times": "Mal",
   "@times": {
     "description": "Unit text for counts"
   },
-  "noRecords": "No records yet",
+  "noRecords": "Noch keine Einträge",
   "@noRecords": {
     "description": "Records page empty state"
   },
-  "logIn": "Log in",
+  "logIn": "Anmelden",
   "@logIn": {
     "description": "General login label (use enableCloudSync for the cloud-sync CTA)"
   },
-  "logOut": "Log out",
+  "logOut": "Abmelden",
   "@logOut": {
     "description": "Sign-out button"
   },
-  "enableCloudSync": "Enable Cloud Sync",
+  "enableCloudSync": "Cloud-Sync aktivieren",
   "@enableCloudSync": {
     "description": "Enable backup & sync (lazily initialize Firebase)"
   },
-  "account": "Account",
+  "account": "Konto",
   "@account": {
     "description": "Settings: account section title"
   },
-  "accountStatus": "Sign-in status",
+  "accountStatus": "Anmeldestatus",
   "@accountStatus": {
     "description": "Settings: sign-in status label"
   },
-  "statusSignedIn": "Signed in",
+  "statusSignedIn": "Angemeldet",
   "@statusSignedIn": {
     "description": "Signed-in state label"
   },
-  "statusSignedOut": "Not signed in",
+  "statusSignedOut": "Nicht angemeldet",
   "@statusSignedOut": {
     "description": "Signed-out state label"
   },
-  "language": "Language",
+  "language": "Sprache",
   "@language": {
     "description": "Settings: language switch"
   },
-  "currentLanguage": "Current language: {lang}",
+  "currentLanguage": "Aktuelle Sprache: {lang}",
   "@currentLanguage": {
     "description": "Display the currently active language name",
     "placeholders": {
@@ -86,7 +86,7 @@
       }
     }
   },
-  "langZhHant": "Chinese (Traditional)",
+  "langZhHant": "繁體中文",
   "@langZhHant": {
     "description": "Language option: Traditional Chinese (endonym, not translated)"
   },
@@ -118,33 +118,33 @@
   "@feedback": {
     "description": "Settings: feedback item"
   },
-  "deleteAccount": "Delete account",
+  "deleteAccount": "Konto löschen",
   "@deleteAccount": {
     "description": "Settings: delete account"
   },
-  "confirm": "Confirm",
+  "confirm": "Bestätigen",
   "@confirm": {
     "description": "Dialog title: confirm"
   },
-  "cancel": "Cancel",
+  "cancel": "Abbrechen",
   "@cancel": {
     "description": "Dialog button: cancel"
   },
-  "done": "Done",
+  "done": "Fertig",
   "@done": {
     "description": "Generic completion toast"
   },
-  "confirmDeleteAccount": "Are you sure you want to delete your account and data? This action cannot be undone.",
+  "confirmDeleteAccount": "Möchten Sie Ihr Konto und Ihre Daten wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
   "@confirmDeleteAccount": {
     "description": "Delete account confirmation message"
   },
-  "pleaseWait": "Please wait",
-  "downloading": "Downloading",
-  "unzipping": "Unzipping",
-  "completed": "Completed",
-  "preparing": "Preparing",
-  "preparingPleaseWait": "Preparing, please wait…",
-  "doNotOperateDuring": "Please stay on this screen during \"{phase}\". Do not switch apps or turn off the screen.",
+  "pleaseWait": "Bitte warten",
+  "downloading": "Wird heruntergeladen",
+  "unzipping": "Wird entpackt",
+  "completed": "Abgeschlossen",
+  "preparing": "Wird vorbereitet",
+  "preparingPleaseWait": "Wird vorbereitet, bitte warten…",
+  "doNotOperateDuring": "Bitte bleiben Sie während \"{phase}\" auf diesem Bildschirm.\nWechseln Sie nicht die App und schalten Sie den Bildschirm nicht aus.",
   "@doNotOperateDuring": {
     "description": "Shown like: Please do not perform any operations during Downloading/Unzipping",
     "placeholders": {
@@ -154,8 +154,8 @@
     }
   },
   "ok": "OK",
-  "downloadRequiredTitle": "Download Required",
-  "downloadRequiredBody": "The speech recognition model ({modelName}) is not available locally. Do you want to download it?",
+  "downloadRequiredTitle": "Download erforderlich",
+  "downloadRequiredBody": "Das Spracherkennungsmodell ({modelName}) ist nicht lokal verfügbar.\nMöchten Sie es herunterladen?",
   "@downloadRequiredBody": {
     "placeholders": {
       "modelName": {
@@ -163,9 +163,9 @@
       }
     }
   },
-  "download": "Download",
-  "downloadFailedTitle": "Download Failed",
-  "downloadFailedBody": "Failed to download the model: {error}",
+  "download": "Herunterladen",
+  "downloadFailedTitle": "Download fehlgeschlagen",
+  "downloadFailedBody": "Modell-Download fehlgeschlagen: {error}",
   "@downloadFailedBody": {
     "placeholders": {
       "error": {
@@ -173,16 +173,16 @@
       }
     }
   },
-  "successTitle": "Success",
-  "successBody": "The model has been installed successfully.",
-  "unzipFailedTitle": "Unzip failed",
-  "unzipFailedLowSpaceBody": "Likely due to low storage space. Please free up some space and try unzipping again.",
-  "close": "Close",
-  "retryUnzip": "Retry unzip",
-  "downloadFailedShort": "Model download failed. Please try again later.",
-  "retry": "Retry",
-  "feedbackOpenMailAppFailed": "Could not open mail app",
-  "appName": "Amitabha Buddha",
+  "successTitle": "Erfolg",
+  "successBody": "Das Modell wurde erfolgreich installiert.",
+  "unzipFailedTitle": "Entpacken fehlgeschlagen",
+  "unzipFailedLowSpaceBody": "Möglicherweise zu wenig Speicherplatz. Bitte geben Sie Speicher frei und versuchen Sie es erneut.",
+  "close": "Schließen",
+  "retryUnzip": "Entpacken wiederholen",
+  "downloadFailedShort": "Modell-Download fehlgeschlagen. Bitte versuchen Sie es später erneut.",
+  "retry": "Wiederholen",
+  "feedbackOpenMailAppFailed": "Mail-App konnte nicht geöffnet werden",
+  "appName": "Amitabha",
   "feedbackEmailSubject": "[{app}] Feedback",
   "@feedbackEmailSubject": {
     "description": "Subject for user feedback email to developer",
@@ -193,21 +193,21 @@
       }
     }
   },
-  "feedbackEmailBody": "Issue/Suggestion:\n\n(You may attach a screenshot)",
-  "micPermissionTitle": "Microphone Permission Required",
-  "micPermissionRationale": "To count chants, please enable Microphone in System Settings > Amitabha.",
-  "openSettings": "Open Settings",
-  "microphonePermissionDenied": "Microphone permission not granted.",
-  "bgScreenTitle": "Chanting Background",
-  "bgUse": "Use",
-  "bgUpdate": "Update",
-  "bgDelete": "Delete",
-  "bgInUse": "In use",
-  "bgDefault": "Default",
+  "feedbackEmailBody": "Problem/Vorschlag:\n\n(Sie können einen Screenshot anhängen)",
+  "micPermissionTitle": "Mikrofonberechtigung erforderlich",
+  "micPermissionRationale": "Um Rezitationen zu zählen, aktivieren Sie das Mikrofon in den Systemeinstellungen > Amitabha.",
+  "openSettings": "Einstellungen öffnen",
+  "microphonePermissionDenied": "Mikrofonberechtigung nicht erteilt.",
+  "bgScreenTitle": "Rezitations-Hintergrund",
+  "bgUse": "Verwenden",
+  "bgUpdate": "Aktualisieren",
+  "bgDelete": "Löschen",
+  "bgInUse": "In Verwendung",
+  "bgDefault": "Standard",
   "bgTypeVideo": "Video",
-  "bgTypeImage": "Image",
-  "bgDeleteTitle": "Delete background",
-  "bgDeleteConfirm": "Delete \"{name}\"? You can download it again anytime.",
+  "bgTypeImage": "Bild",
+  "bgDeleteTitle": "Hintergrund löschen",
+  "bgDeleteConfirm": "„{name}“ löschen? Sie können es jederzeit erneut herunterladen.",
   "@bgDeleteConfirm": {
     "placeholders": {
       "name": {
@@ -215,7 +215,7 @@
       }
     }
   },
-  "bgClearedTitle": "Background \"{name}\" was cleared by the system",
+  "bgClearedTitle": "Hintergrund „{name}“ wurde vom System entfernt",
   "@bgClearedTitle": {
     "placeholders": {
       "name": {
@@ -223,14 +223,14 @@
       }
     }
   },
-  "bgClearedBody": "When storage runs low, or you clear the app's cache, the system may remove downloaded backgrounds to free up space. We've switched back to the default for now — you can re-download anytime.",
-  "bgOfflineTitle": "You're offline",
-  "bgOfflineBody": "Connect to the internet to download backgrounds.",
-  "bgDownloadErrorNetwork": "No internet connection. Can't download the background.",
-  "bgDownloadErrorGeneric": "Download failed. Please try again later.",
-  "bgSettingSubtitle": "Customize chanting background",
-  "langFollowSystem": "Follow system",
-  "langFollowSystemWith": "Follow system ({name})",
+  "bgClearedBody": "Bei wenig Speicherplatz oder wenn Sie den App-Cache leeren, kann das System heruntergeladene Hintergründe entfernen, um Speicher freizugeben. Wir haben vorerst zum Standard zurückgewechselt — Sie können jederzeit erneut herunterladen.",
+  "bgOfflineTitle": "Sie sind offline",
+  "bgOfflineBody": "Stellen Sie eine Internetverbindung her, um Hintergründe herunterzuladen.",
+  "bgDownloadErrorNetwork": "Keine Internetverbindung. Hintergrund kann nicht heruntergeladen werden.",
+  "bgDownloadErrorGeneric": "Download fehlgeschlagen. Bitte versuchen Sie es später erneut.",
+  "bgSettingSubtitle": "Rezitations-Hintergrund anpassen",
+  "langFollowSystem": "System folgen",
+  "langFollowSystemWith": "System folgen ({name})",
   "@langFollowSystemWith": {
     "placeholders": {
       "name": {

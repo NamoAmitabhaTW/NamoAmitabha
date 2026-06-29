@@ -5,7 +5,12 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
+import 'app_localizations_de.dart';
 import 'app_localizations_en.dart';
+import 'app_localizations_fr.dart';
+import 'app_localizations_ja.dart';
+import 'app_localizations_ko.dart';
+import 'app_localizations_vi.dart';
 import 'app_localizations_zh.dart';
 
 // ignore_for_file: type=lint
@@ -100,6 +105,11 @@ abstract class AppLocalizations {
       countryCode: 'TW',
       scriptCode: 'Hant',
     ),
+    Locale('de'),
+    Locale('fr'),
+    Locale('ja'),
+    Locale('ko'),
+    Locale('vi'),
     Locale('zh'),
     Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant'),
     Locale('zh', 'TW'),
@@ -225,17 +235,47 @@ abstract class AppLocalizations {
   /// **'Current language: {lang}'**
   String currentLanguage(String lang);
 
-  /// Language option: Traditional Chinese
+  /// Language option: Traditional Chinese (endonym, not translated)
   ///
   /// In en, this message translates to:
   /// **'Chinese (Traditional)'**
   String get langZhHant;
 
-  /// Language option: English
+  /// Language option: English (endonym, not translated)
   ///
   /// In en, this message translates to:
   /// **'English'**
   String get langEn;
+
+  /// Language option: Japanese (endonym, not translated)
+  ///
+  /// In en, this message translates to:
+  /// **'日本語'**
+  String get langJa;
+
+  /// Language option: Korean (endonym, not translated)
+  ///
+  /// In en, this message translates to:
+  /// **'한국어'**
+  String get langKo;
+
+  /// Language option: Vietnamese (endonym, not translated)
+  ///
+  /// In en, this message translates to:
+  /// **'Tiếng Việt'**
+  String get langVi;
+
+  /// Language option: German (endonym, not translated)
+  ///
+  /// In en, this message translates to:
+  /// **'Deutsch'**
+  String get langDe;
+
+  /// Language option: French (endonym, not translated)
+  ///
+  /// In en, this message translates to:
+  /// **'Français'**
+  String get langFr;
 
   /// Settings: feedback item
   ///
@@ -572,8 +612,15 @@ class _AppLocalizationsDelegate
   }
 
   @override
-  bool isSupported(Locale locale) =>
-      <String>['en', 'zh'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>[
+    'de',
+    'en',
+    'fr',
+    'ja',
+    'ko',
+    'vi',
+    'zh',
+  ].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -606,8 +653,18 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
 
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
+    case 'de':
+      return AppLocalizationsDe();
     case 'en':
       return AppLocalizationsEn();
+    case 'fr':
+      return AppLocalizationsFr();
+    case 'ja':
+      return AppLocalizationsJa();
+    case 'ko':
+      return AppLocalizationsKo();
+    case 'vi':
+      return AppLocalizationsVi();
     case 'zh':
       return AppLocalizationsZh();
   }

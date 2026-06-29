@@ -83,16 +83,25 @@ class LiuliButton extends StatelessWidget {
                 padding: padding,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(icon, size: 20, color: effForeground),
                     const SizedBox(width: 8),
-                    Text(
-                      label,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 0.2,
-                        color: effForeground,
+                    // 文字可縮放，避免長語系(Enregistrer)撐爆按鈕
+                    Flexible(
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          label,
+                          maxLines: 1,
+                          softWrap: false,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 0.2,
+                            color: effForeground,
+                          ),
+                        ),
                       ),
                     ),
                   ],

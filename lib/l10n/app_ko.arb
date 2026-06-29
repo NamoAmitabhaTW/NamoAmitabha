@@ -1,0 +1,241 @@
+{
+  "@@locale": "ko",
+  "amitabha": "아미타불",
+  "@amitabha": {
+    "description": "App title / Buddha name label"
+  },
+  "chant": "염불",
+  "@chant": {
+    "description": "Can be used for bottom tab label and screen title"
+  },
+  "records": "기록",
+  "@records": {
+    "description": "Bottom nav: Records tab"
+  },
+  "settings": "설정",
+  "@settings": {
+    "description": "Bottom nav: Settings tab"
+  },
+  "start": "시작",
+  "@start": {
+    "description": "Start button"
+  },
+  "pause": "일시정지",
+  "@pause": {
+    "description": "Pause button"
+  },
+  "save": "저장",
+  "@save": {
+    "description": "Save current session count"
+  },
+  "total": "총계",
+  "@total": {
+    "description": "Stats: total accumulated count"
+  },
+  "days": "일",
+  "@days": {
+    "description": "Stats: number of practice days (unique dates from records)"
+  },
+  "times": "회",
+  "@times": {
+    "description": "Unit text for counts"
+  },
+  "noRecords": "아직 기록이 없습니다",
+  "@noRecords": {
+    "description": "Records page empty state"
+  },
+  "logIn": "로그인",
+  "@logIn": {
+    "description": "General login label (use enableCloudSync for the cloud-sync CTA)"
+  },
+  "logOut": "로그아웃",
+  "@logOut": {
+    "description": "Sign-out button"
+  },
+  "enableCloudSync": "클라우드 동기화 사용",
+  "@enableCloudSync": {
+    "description": "Enable backup & sync (lazily initialize Firebase)"
+  },
+  "account": "계정",
+  "@account": {
+    "description": "Settings: account section title"
+  },
+  "accountStatus": "로그인 상태",
+  "@accountStatus": {
+    "description": "Settings: sign-in status label"
+  },
+  "statusSignedIn": "로그인됨",
+  "@statusSignedIn": {
+    "description": "Signed-in state label"
+  },
+  "statusSignedOut": "로그인 안 됨",
+  "@statusSignedOut": {
+    "description": "Signed-out state label"
+  },
+  "language": "언어",
+  "@language": {
+    "description": "Settings: language switch"
+  },
+  "currentLanguage": "현재 언어: {lang}",
+  "@currentLanguage": {
+    "description": "Display the currently active language name",
+    "placeholders": {
+      "lang": {
+        "type": "String",
+        "example": "English"
+      }
+    }
+  },
+  "langZhHant": "繁體中文",
+  "@langZhHant": {
+    "description": "Language option: Traditional Chinese (endonym, not translated)"
+  },
+  "langEn": "English",
+  "@langEn": {
+    "description": "Language option: English (endonym, not translated)"
+  },
+  "langJa": "日本語",
+  "@langJa": {
+    "description": "Language option: Japanese (endonym, not translated)"
+  },
+  "langKo": "한국어",
+  "@langKo": {
+    "description": "Language option: Korean (endonym, not translated)"
+  },
+  "langVi": "Tiếng Việt",
+  "@langVi": {
+    "description": "Language option: Vietnamese (endonym, not translated)"
+  },
+  "langDe": "Deutsch",
+  "@langDe": {
+    "description": "Language option: German (endonym, not translated)"
+  },
+  "langFr": "Français",
+  "@langFr": {
+    "description": "Language option: French (endonym, not translated)"
+  },
+  "feedback": "피드백",
+  "@feedback": {
+    "description": "Settings: feedback item"
+  },
+  "deleteAccount": "계정 삭제",
+  "@deleteAccount": {
+    "description": "Settings: delete account"
+  },
+  "confirm": "확인",
+  "@confirm": {
+    "description": "Dialog title: confirm"
+  },
+  "cancel": "취소",
+  "@cancel": {
+    "description": "Dialog button: cancel"
+  },
+  "done": "완료",
+  "@done": {
+    "description": "Generic completion toast"
+  },
+  "confirmDeleteAccount": "계정과 데이터를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+  "@confirmDeleteAccount": {
+    "description": "Delete account confirmation message"
+  },
+  "pleaseWait": "잠시 기다려 주세요",
+  "downloading": "다운로드 중",
+  "unzipping": "압축 해제 중",
+  "completed": "완료됨",
+  "preparing": "준비 중",
+  "preparingPleaseWait": "준비 중입니다. 잠시만 기다려 주세요…",
+  "doNotOperateDuring": "\"{phase}\" 중에는 이 화면을 유지해 주세요.\n앱 전환이나 화면 끄기 등의 조작을 하지 마세요.",
+  "@doNotOperateDuring": {
+    "description": "Shown like: Please do not perform any operations during Downloading/Unzipping",
+    "placeholders": {
+      "phase": {
+        "type": "String"
+      }
+    }
+  },
+  "ok": "확인",
+  "downloadRequiredTitle": "다운로드 필요",
+  "downloadRequiredBody": "음성 인식 모델({modelName})이 기기에 없습니다.\n지금 다운로드하시겠습니까?",
+  "@downloadRequiredBody": {
+    "placeholders": {
+      "modelName": {
+        "type": "String"
+      }
+    }
+  },
+  "download": "다운로드",
+  "downloadFailedTitle": "다운로드 실패",
+  "downloadFailedBody": "모델 다운로드에 실패했습니다: {error}",
+  "@downloadFailedBody": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "successTitle": "성공",
+  "successBody": "모델이 성공적으로 설치되었습니다.",
+  "unzipFailedTitle": "압축 해제 실패",
+  "unzipFailedLowSpaceBody": "저장 공간이 부족할 수 있습니다. 공간을 확보한 후 다시 압축 해제를 시도해 주세요.",
+  "close": "닫기",
+  "retryUnzip": "압축 해제 다시 시도",
+  "downloadFailedShort": "모델 다운로드에 실패했습니다. 나중에 다시 시도해 주세요.",
+  "retry": "다시 시도",
+  "feedbackOpenMailAppFailed": "메일 앱을 열 수 없습니다",
+  "appName": "염불",
+  "feedbackEmailSubject": "[{app}] 피드백",
+  "@feedbackEmailSubject": {
+    "description": "Subject for user feedback email to developer",
+    "placeholders": {
+      "app": {
+        "type": "String",
+        "example": "Amitabha"
+      }
+    }
+  },
+  "feedbackEmailBody": "문제/제안:\n\n(스크린샷을 첨부할 수 있습니다)",
+  "micPermissionTitle": "마이크 권한 필요",
+  "micPermissionRationale": "염불 횟수를 세려면 시스템 설정 > 염불 > 마이크에서 권한을 켜 주세요.",
+  "openSettings": "설정 열기",
+  "microphonePermissionDenied": "마이크 권한이 허용되지 않았습니다.",
+  "bgScreenTitle": "염불 배경",
+  "bgUse": "사용",
+  "bgUpdate": "업데이트",
+  "bgDelete": "삭제",
+  "bgInUse": "사용 중",
+  "bgDefault": "기본",
+  "bgTypeVideo": "동영상",
+  "bgTypeImage": "이미지",
+  "bgDeleteTitle": "배경 삭제",
+  "bgDeleteConfirm": "\"{name}\"을(를) 삭제하시겠습니까?\n삭제 후 언제든지 다시 다운로드할 수 있습니다.",
+  "@bgDeleteConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "bgClearedTitle": "배경 \"{name}\"이(가) 시스템에 의해 삭제되었습니다",
+  "@bgClearedTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "bgClearedBody": "저장 공간이 부족하거나 앱 캐시를 지우면, 시스템이 공간 확보를 위해 다운로드한 배경을 삭제할 수 있습니다. 현재는 기본 배경으로 되돌렸으며, 필요할 때 다시 다운로드할 수 있습니다.",
+  "bgOfflineTitle": "오프라인 상태입니다",
+  "bgOfflineBody": "인터넷에 연결하면 배경을 다운로드할 수 있습니다.",
+  "bgDownloadErrorNetwork": "인터넷에 연결되어 있지 않아 배경을 다운로드할 수 없습니다.",
+  "bgDownloadErrorGeneric": "다운로드에 실패했습니다. 나중에 다시 시도해 주세요.",
+  "bgSettingSubtitle": "염불 배경 사용자 지정",
+  "langFollowSystem": "시스템 설정 따르기",
+  "langFollowSystemWith": "시스템 설정 따르기 ({name})",
+  "@langFollowSystemWith": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  }
+}
