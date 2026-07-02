@@ -50,57 +50,86 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
+  /// 用 supportedLanguages 表，把目前 locale 對應到自稱名稱。
+  /// 找不到（理論上不會）退回系統第一個語言的自稱或 code 本身。
   String _languageLabel(BuildContext context) {
     final t = AppLocalizations.of(context);
-    final ctrl = context.watch<LocaleController>();
-    final eff = ctrl.locale; // null = 跟隨系統
+    final eff = context.watch<LocaleController>().locale; // null = 跟隨系統
+
     if (eff == null) {
+      // 跟隨系統：顯示「跟隨系統（實際生效語言自稱）」
       final sys = Localizations.maybeLocaleOf(context);
-      final isZh =
-          sys?.languageCode == 'zh' &&
-          (sys?.countryCode == 'TW' || sys?.scriptCode == 'Hant');
-      final autonym = isZh ? '繁體中文' : 'English'; // 自稱名,不隨 UI 語系翻譯
-      return t.langFollowSystemWith(autonym);
+      return t.langFollowSystemWith(_endonymForLocale(sys));
     }
-    return eff.languageCode == 'zh' ? '繁體中文' : 'English';
+    return _endonymForLocale(eff);
+  }
+
+  /// 把一個 Locale 對到 supportedLanguages 裡的自稱。
+  String _endonymForLocale(Locale? locale) {
+    if (locale == null) return 'English';
+    // 先試完全比對（languageCode + countryCode）
+    for (final lang in LocaleController.supportedLanguages) {
+      if (lang.locale.languageCode == locale.languageCode &&
+          lang.locale.countryCode == locale.countryCode) {
+        return lang.endonym;
+      }
+    }
+    // 再退而求其次：只比對 languageCode（例如系統給 zh-CN / zh-HK 等）
+    for (final lang in LocaleController.supportedLanguages) {
+      if (lang.locale.languageCode == locale.languageCode) {
+        return lang.endonym;
+      }
+    }
+    return locale.languageCode; // 完全不認得時的保底
   }
 
   void _chooseLanguage(BuildContext context) {
     final t = AppLocalizations.of(context);
+    final ctrl = context.read<LocaleController>();
+    final current = ctrl.locale; // null = 跟隨系統
+
     showModalBottomSheet(
       context: context,
-      builder: (_) => SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+      builder: (sheetContext) => SafeArea(
+        child: ListView(
+          shrinkWrap: true,
           children: [
+            // 跟隨系統
             ListTile(
               leading: const Icon(Icons.settings_backup_restore),
               title: Text(t.langFollowSystem),
+              trailing: current == null
+                  ? const Icon(Icons.check, color: _kBrown)
+                  : null,
               onTap: () {
-                context.read<LocaleController>().useSystem();
-                Navigator.pop(context);
+                ctrl.useSystem();
+                Navigator.pop(sheetContext);
               },
             ),
-            ListTile(
-              leading: const Icon(Icons.translate),
-              title: const Text('繁體中文'),
-              onTap: () {
-                context.read<LocaleController>().useTraditionalChinese();
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.translate),
-              title: const Text('English'),
-              onTap: () {
-                context.read<LocaleController>().useEnglish();
-                Navigator.pop(context);
-              },
-            ),
+            const Divider(height: 1),
+            // 各語言：用自稱顯示，目前選中的打勾
+            for (final lang in LocaleController.supportedLanguages)
+              ListTile(
+                leading: const Icon(Icons.translate),
+                title: Text(lang.endonym),
+                trailing: _isCurrent(current, lang)
+                    ? const Icon(Icons.check, color: _kBrown)
+                    : null,
+                onTap: () {
+                  ctrl.setLanguage(lang.code);
+                  Navigator.pop(sheetContext);
+                },
+              ),
           ],
         ),
       ),
     );
+  }
+
+  bool _isCurrent(Locale? current, AppLanguage lang) {
+    if (current == null) return false;
+    return current.languageCode == lang.locale.languageCode &&
+        current.countryCode == lang.locale.countryCode;
   }
 }
 

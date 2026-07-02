@@ -39,7 +39,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get times => 'times';
 
   @override
-  String get noRecords => 'No records';
+  String get noRecords => 'No records yet';
 
   @override
   String get logIn => 'Log in';
@@ -75,6 +75,21 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get langEn => 'English';
+
+  @override
+  String get langJa => '日本語';
+
+  @override
+  String get langKo => '한국어';
+
+  @override
+  String get langVi => 'Tiếng Việt';
+
+  @override
+  String get langDe => 'Deutsch';
+
+  @override
+  String get langFr => 'Français';
 
   @override
   String get feedback => 'Feedback';
@@ -302,7 +317,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get times => '次';
 
   @override
-  String get noRecords => '尚無紀錄';
+  String get noRecords => '目前沒有記錄';
 
   @override
   String get logIn => '登入';
@@ -340,6 +355,21 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get langEn => 'English';
 
   @override
+  String get langJa => '日本語';
+
+  @override
+  String get langKo => '한국어';
+
+  @override
+  String get langVi => 'Tiếng Việt';
+
+  @override
+  String get langDe => 'Deutsch';
+
+  @override
+  String get langFr => 'Français';
+
+  @override
   String get feedback => '意見回饋';
 
   @override
@@ -364,7 +394,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get downloading => '下載中';
 
   @override
-  String get unzipping => '解壓中';
+  String get unzipping => '解壓縮中';
 
   @override
   String get completed => '完成';
@@ -373,11 +403,11 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get preparing => '準備中';
 
   @override
-  String get preparingPleaseWait => '正在準備中，請稍候…';
+  String get preparingPleaseWait => '正在準備，請稍候…';
 
   @override
   String doNotOperateDuring(String phase) {
-    return '「$phase」過程請保持在此畫面，\n請勿進行切換 App、關閉螢幕等操作。';
+    return '「$phase」過程請保持在此畫面，\n請勿進行切換 App、關閉螢幕等任何操作。';
   }
 
   @override

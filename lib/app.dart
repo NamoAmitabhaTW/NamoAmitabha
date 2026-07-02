@@ -24,7 +24,10 @@ class App extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AppState()),
         ChangeNotifierProvider(create: (_) => LocaleController()),
         ChangeNotifierProvider(create: (_) => ThemeController()),
-        ChangeNotifierProvider(create: (_) => BackgroundController()..load(), lazy: false),
+        ChangeNotifierProvider(
+          create: (_) => BackgroundController()..load(),
+          lazy: false,
+        ),
       ],
       child: Builder(
         builder: (context) {
@@ -35,7 +38,11 @@ class App extends StatelessWidget {
             locale: locale, // null => 跟隨系統
             // 把所有「繁體」系統語系統一映射到 zh_TW
             localeListResolutionCallback: (locales, supported) {
-              for (final l in locales ?? const <Locale>[]) {
+              final prefs = locales ?? const <Locale>[];
+
+              // 按使用者偏好順序，逐一嘗試匹配
+              for (final l in prefs) {
+                // 中文：統一各種繁體寫法到 zh-TW
                 if (l.languageCode == 'zh') {
                   if (l.scriptCode == 'Hant' ||
                       l.countryCode == 'TW' ||
@@ -43,10 +50,21 @@ class App extends StatelessWidget {
                       l.countryCode == 'MO') {
                     return const Locale('zh', 'TW');
                   }
+                  // 簡體或其他中文變體 → 你只支援繁中，這裡也回繁中（或依你需求）
+                  return const Locale('zh', 'TW');
                 }
+
+                // 非中文：只要語言碼在 supportedLocales 裡，就用它（忽略地區）
+                for (final s in supported) {
+                  if (s.languageCode == l.languageCode) {
+                    return s; // ja_TW → 匹配到 Locale('ja')
+                  }
+                }
+                // 這個偏好語言不支援 → 繼續看下一個偏好
               }
-              // 交回 Flutter 預設處理
-              return null;
+
+              // 全部偏好都不支援 → fallback
+              return const Locale('zh', 'TW');
             },
             onGenerateTitle: (ctx) => AppLocalizations.of(ctx).amitabha,
             theme: themeData,

@@ -223,7 +223,19 @@ class _StatCol extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(topLabel, style: title, textAlign: TextAlign.center),
+          // 標題改為可縮放，避免長字(Rezitation/Récitation)折成孤兒字
+          SizedBox(
+            width: double.infinity,
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                topLabel,
+                style: title,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+              ),
+            ),
+          ),
           Expanded(
             child: Center(
               child: FittedBox(
@@ -247,18 +259,22 @@ class _VerticalTitle extends StatelessWidget {
   final String title;
   const _VerticalTitle({required this.title});
 
-  bool _isLatin(String s) {
-    // 只要全部是 ASCII（英數符號），就視為橫排
-    final r = RegExp(r'^[\x00-\x7F]+$');
-    return r.hasMatch(s);
+  /// 是否為「可逐字直排」的方塊字：只認 CJK 漢字 / 假名 / 諺文。
+  /// 越南文雖是拉丁字母，但帶聲調符號屬非 ASCII，故不能用 ASCII 範圍判斷，
+  /// 改用「是否含 CJK」判斷，讓越南/德/法/英都走橫排。
+  bool _isCjk(String s) {
+    final cjk = RegExp(
+      r'[\u3400-\u4DBF\u4E00-\u9FFF\uF900-\uFAFF\u3040-\u30FF\uAC00-\uD7AF]',
+    );
+    return cjk.hasMatch(s);
   }
 
   @override
   Widget build(BuildContext context) {
     final style = Theme.of(context).textTheme.titleLarge;
-    final isLatin = _isLatin(title);
 
-    if (!isLatin) {
+    // CJK：逐字直排
+    if (_isCjk(title)) {
       final chars = title.characters.toList();
       return Center(
         child: Column(
@@ -274,7 +290,7 @@ class _VerticalTitle extends StatelessWidget {
       );
     }
 
-    // 英文：單行、可縮放、不超框
+    // 其餘(越南/德/法/英…)：橫排、可縮放、最多兩行、不超框
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -282,7 +298,8 @@ class _VerticalTitle extends StatelessWidget {
           fit: BoxFit.scaleDown,
           child: Text(
             title,
-            maxLines: 1,
+            maxLines: 2,
+            textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
             style: style,
           ),
@@ -296,7 +313,7 @@ class _VDivider extends StatelessWidget {
   const _VDivider();
   @override
   Widget build(BuildContext context) {
-    final color = Theme.of(context).dividerColor.withOpacity(0.6);
+    final color = Theme.of(context).dividerColor.withValues(alpha: 0.6);
     return Container(
       width: 1,
       margin: const EdgeInsets.symmetric(vertical: 10),

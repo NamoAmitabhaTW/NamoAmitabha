@@ -1,0 +1,2 @@
+"CFBundleDisplayName" = "염불";
+"NSMicrophoneUsageDescription" = "염불 횟수를 자동으로 세기 위해 음성 인식용 마이크 접근 권한이 필요합니다.";

@@ -19,6 +19,12 @@ const _kPreviewBg = Color(0x1F000000);
 const _kPreviewIcon = Color(0x61000000);
 const _kSubtleText = Color(0x8A000000);
 
+/// 可縮放的按鈕文字：長語系(Verwenden/Löschen)不折行，改為等比縮小。
+Widget _btnLabel(String text) => FittedBox(
+  fit: BoxFit.scaleDown,
+  child: Text(text, maxLines: 1, softWrap: false),
+);
+
 class BackgroundCard extends StatelessWidget {
   const BackgroundCard({
     super.key,
@@ -206,7 +212,7 @@ class BackgroundCard extends StatelessWidget {
   Widget _useBtn(AppLocalizations t) => OutlinedButton.icon(
     onPressed: onUse,
     icon: const Icon(Icons.touch_app_outlined, size: 20),
-    label: Text(t.bgUse), // ← 拿掉 const
+    label: _btnLabel(t.bgUse),
     style: OutlinedButton.styleFrom(
       foregroundColor: _kBrown,
       minimumSize: const Size(0, 50),
@@ -219,7 +225,7 @@ class BackgroundCard extends StatelessWidget {
   Widget _deleteBtn(AppLocalizations t) => OutlinedButton.icon(
     onPressed: onDelete,
     icon: const Icon(Icons.delete_outline, size: 20),
-    label: Text(t.bgDelete),
+    label: _btnLabel(t.bgDelete),
     style: OutlinedButton.styleFrom(
       foregroundColor: _kDangerColor,
       minimumSize: const Size(0, 50),
@@ -232,7 +238,7 @@ class BackgroundCard extends StatelessWidget {
   Widget _downloadBtn(AppLocalizations t) => OutlinedButton.icon(
     onPressed: onDownload,
     icon: const Icon(Icons.download, size: 20),
-    label: Text(t.download),
+    label: _btnLabel(t.download),
     style: OutlinedButton.styleFrom(
       foregroundColor: _kBrown,
       minimumSize: const Size(0, 50),
@@ -245,7 +251,7 @@ class BackgroundCard extends StatelessWidget {
   Widget _updateBtn(AppLocalizations t) => OutlinedButton.icon(
     onPressed: onDownload,
     icon: const Icon(Icons.refresh, size: 20),
-    label: Text(t.bgUpdate),
+    label: _btnLabel(t.bgUpdate),
     style: OutlinedButton.styleFrom(
       foregroundColor: _kBrown,
       minimumSize: const Size(0, 50),
@@ -262,18 +268,26 @@ class BackgroundCard extends StatelessWidget {
       color: _kBrown,
       borderRadius: BorderRadius.circular(25),
     ),
-    padding: const EdgeInsets.symmetric(vertical: 12),
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
     child: Row( // ← 拿掉 const(因為內含 t.bgInUse)
       mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
       children: [
         const Icon(Icons.check_circle, color: _kCream, size: 20),
         const SizedBox(width: 8),
-        Text(
-          t.bgInUse,
-          style: const TextStyle(
-            color: _kCream,
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
+        Flexible(
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              t.bgInUse,
+              maxLines: 1,
+              softWrap: false,
+              style: const TextStyle(
+                color: _kCream,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ),
         ),
       ],

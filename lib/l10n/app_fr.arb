@@ -1,22 +1,22 @@
 {
-  "@@locale": "en",
+  "@@locale": "fr",
   "amitabha": "Amitabha",
   "@amitabha": {
     "description": "App title / Buddha name label"
   },
-  "chant": "Chant",
+  "chant": "Récitation",
   "@chant": {
     "description": "Can be used for bottom tab label and screen title"
   },
-  "records": "Records",
+  "records": "Historique",
   "@records": {
     "description": "Bottom nav: Records tab"
   },
-  "settings": "Settings",
+  "settings": "Réglages",
   "@settings": {
     "description": "Bottom nav: Settings tab"
   },
-  "start": "Start",
+  "start": "Démarrer",
   "@start": {
     "description": "Start button"
   },
@@ -24,7 +24,7 @@
   "@pause": {
     "description": "Pause button"
   },
-  "save": "Save",
+  "save": "Enregistrer",
   "@save": {
     "description": "Save current session count"
   },
@@ -32,51 +32,51 @@
   "@total": {
     "description": "Stats: total accumulated count"
   },
-  "days": "Days",
+  "days": "Jours",
   "@days": {
     "description": "Stats: number of practice days (unique dates from records)"
   },
-  "times": "times",
+  "times": "fois",
   "@times": {
     "description": "Unit text for counts"
   },
-  "noRecords": "No records yet",
+  "noRecords": "Aucun enregistrement",
   "@noRecords": {
     "description": "Records page empty state"
   },
-  "logIn": "Log in",
+  "logIn": "Connexion",
   "@logIn": {
     "description": "General login label (use enableCloudSync for the cloud-sync CTA)"
   },
-  "logOut": "Log out",
+  "logOut": "Déconnexion",
   "@logOut": {
     "description": "Sign-out button"
   },
-  "enableCloudSync": "Enable Cloud Sync",
+  "enableCloudSync": "Activer la synchro cloud",
   "@enableCloudSync": {
     "description": "Enable backup & sync (lazily initialize Firebase)"
   },
-  "account": "Account",
+  "account": "Compte",
   "@account": {
     "description": "Settings: account section title"
   },
-  "accountStatus": "Sign-in status",
+  "accountStatus": "Statut de connexion",
   "@accountStatus": {
     "description": "Settings: sign-in status label"
   },
-  "statusSignedIn": "Signed in",
+  "statusSignedIn": "Connecté",
   "@statusSignedIn": {
     "description": "Signed-in state label"
   },
-  "statusSignedOut": "Not signed in",
+  "statusSignedOut": "Non connecté",
   "@statusSignedOut": {
     "description": "Signed-out state label"
   },
-  "language": "Language",
+  "language": "Langue",
   "@language": {
     "description": "Settings: language switch"
   },
-  "currentLanguage": "Current language: {lang}",
+  "currentLanguage": "Langue actuelle : {lang}",
   "@currentLanguage": {
     "description": "Display the currently active language name",
     "placeholders": {
@@ -86,7 +86,7 @@
       }
     }
   },
-  "langZhHant": "Chinese (Traditional)",
+  "langZhHant": "繁體中文",
   "@langZhHant": {
     "description": "Language option: Traditional Chinese (endonym, not translated)"
   },
@@ -114,37 +114,37 @@
   "@langFr": {
     "description": "Language option: French (endonym, not translated)"
   },
-  "feedback": "Feedback",
+  "feedback": "Commentaires",
   "@feedback": {
     "description": "Settings: feedback item"
   },
-  "deleteAccount": "Delete account",
+  "deleteAccount": "Supprimer le compte",
   "@deleteAccount": {
     "description": "Settings: delete account"
   },
-  "confirm": "Confirm",
+  "confirm": "Confirmer",
   "@confirm": {
     "description": "Dialog title: confirm"
   },
-  "cancel": "Cancel",
+  "cancel": "Annuler",
   "@cancel": {
     "description": "Dialog button: cancel"
   },
-  "done": "Done",
+  "done": "Terminé",
   "@done": {
     "description": "Generic completion toast"
   },
-  "confirmDeleteAccount": "Are you sure you want to delete your account and data? This action cannot be undone.",
+  "confirmDeleteAccount": "Voulez-vous vraiment supprimer votre compte et vos données ? Cette action est irréversible.",
   "@confirmDeleteAccount": {
     "description": "Delete account confirmation message"
   },
-  "pleaseWait": "Please wait",
-  "downloading": "Downloading",
-  "unzipping": "Unzipping",
-  "completed": "Completed",
-  "preparing": "Preparing",
-  "preparingPleaseWait": "Preparing, please wait…",
-  "doNotOperateDuring": "Please stay on this screen during \"{phase}\". Do not switch apps or turn off the screen.",
+  "pleaseWait": "Veuillez patienter",
+  "downloading": "Téléchargement",
+  "unzipping": "Décompression",
+  "completed": "Terminé",
+  "preparing": "Préparation",
+  "preparingPleaseWait": "Préparation, veuillez patienter…",
+  "doNotOperateDuring": "Pendant « {phase} », veuillez rester sur cet écran.\nNe changez pas d'application et n'éteignez pas l'écran.",
   "@doNotOperateDuring": {
     "description": "Shown like: Please do not perform any operations during Downloading/Unzipping",
     "placeholders": {
@@ -154,8 +154,8 @@
     }
   },
   "ok": "OK",
-  "downloadRequiredTitle": "Download Required",
-  "downloadRequiredBody": "The speech recognition model ({modelName}) is not available locally. Do you want to download it?",
+  "downloadRequiredTitle": "Téléchargement requis",
+  "downloadRequiredBody": "Le modèle de reconnaissance vocale ({modelName}) n'est pas disponible localement.\nVoulez-vous le télécharger ?",
   "@downloadRequiredBody": {
     "placeholders": {
       "modelName": {
@@ -163,9 +163,9 @@
       }
     }
   },
-  "download": "Download",
-  "downloadFailedTitle": "Download Failed",
-  "downloadFailedBody": "Failed to download the model: {error}",
+  "download": "Télécharger",
+  "downloadFailedTitle": "Échec du téléchargement",
+  "downloadFailedBody": "Échec du téléchargement du modèle : {error}",
   "@downloadFailedBody": {
     "placeholders": {
       "error": {
@@ -173,17 +173,17 @@
       }
     }
   },
-  "successTitle": "Success",
-  "successBody": "The model has been installed successfully.",
-  "unzipFailedTitle": "Unzip failed",
-  "unzipFailedLowSpaceBody": "Likely due to low storage space. Please free up some space and try unzipping again.",
-  "close": "Close",
-  "retryUnzip": "Retry unzip",
-  "downloadFailedShort": "Model download failed. Please try again later.",
-  "retry": "Retry",
-  "feedbackOpenMailAppFailed": "Could not open mail app",
-  "appName": "Amitabha Buddha",
-  "feedbackEmailSubject": "[{app}] Feedback",
+  "successTitle": "Réussi",
+  "successBody": "Le modèle a été installé avec succès.",
+  "unzipFailedTitle": "Échec de la décompression",
+  "unzipFailedLowSpaceBody": "Espace de stockage probablement insuffisant. Libérez de l'espace puis réessayez la décompression.",
+  "close": "Fermer",
+  "retryUnzip": "Réessayer la décompression",
+  "downloadFailedShort": "Échec du téléchargement du modèle. Veuillez réessayer plus tard.",
+  "retry": "Réessayer",
+  "feedbackOpenMailAppFailed": "Impossible d'ouvrir l'application e-mail",
+  "appName": "Amitabha",
+  "feedbackEmailSubject": "[{app}] Commentaires",
   "@feedbackEmailSubject": {
     "description": "Subject for user feedback email to developer",
     "placeholders": {
@@ -193,21 +193,21 @@
       }
     }
   },
-  "feedbackEmailBody": "Issue/Suggestion:\n\n(You may attach a screenshot)",
-  "micPermissionTitle": "Microphone Permission Required",
-  "micPermissionRationale": "To count chants, please enable Microphone in System Settings > Amitabha.",
-  "openSettings": "Open Settings",
-  "microphonePermissionDenied": "Microphone permission not granted.",
-  "bgScreenTitle": "Chanting Background",
-  "bgUse": "Use",
-  "bgUpdate": "Update",
-  "bgDelete": "Delete",
-  "bgInUse": "In use",
-  "bgDefault": "Default",
-  "bgTypeVideo": "Video",
+  "feedbackEmailBody": "Problème/Suggestion :\n\n(Vous pouvez joindre une capture d'écran)",
+  "micPermissionTitle": "Autorisation du micro requise",
+  "micPermissionRationale": "Pour compter les récitations, activez le micro dans Réglages système > Amitabha.",
+  "openSettings": "Ouvrir les réglages",
+  "microphonePermissionDenied": "Autorisation du micro non accordée.",
+  "bgScreenTitle": "Arrière-plan de récitation",
+  "bgUse": "Utiliser",
+  "bgUpdate": "Mettre à jour",
+  "bgDelete": "Supprimer",
+  "bgInUse": "Utilisé",
+  "bgDefault": "Par défaut",
+  "bgTypeVideo": "Vidéo",
   "bgTypeImage": "Image",
-  "bgDeleteTitle": "Delete background",
-  "bgDeleteConfirm": "Delete \"{name}\"? You can download it again anytime.",
+  "bgDeleteTitle": "Supprimer l'arrière-plan",
+  "bgDeleteConfirm": "Supprimer « {name} » ? Vous pourrez le télécharger à nouveau à tout moment.",
   "@bgDeleteConfirm": {
     "placeholders": {
       "name": {
@@ -215,7 +215,7 @@
       }
     }
   },
-  "bgClearedTitle": "Background \"{name}\" was cleared by the system",
+  "bgClearedTitle": "L'arrière-plan « {name} » a été supprimé par le système",
   "@bgClearedTitle": {
     "placeholders": {
       "name": {
@@ -223,14 +223,14 @@
       }
     }
   },
-  "bgClearedBody": "When storage runs low, or you clear the app's cache, the system may remove downloaded backgrounds to free up space. We've switched back to the default for now — you can re-download anytime.",
-  "bgOfflineTitle": "You're offline",
-  "bgOfflineBody": "Connect to the internet to download backgrounds.",
-  "bgDownloadErrorNetwork": "No internet connection. Can't download the background.",
-  "bgDownloadErrorGeneric": "Download failed. Please try again later.",
-  "bgSettingSubtitle": "Customize chanting background",
-  "langFollowSystem": "Follow system",
-  "langFollowSystemWith": "Follow system ({name})",
+  "bgClearedBody": "Lorsque le stockage est faible ou que vous videz le cache de l'app, le système peut supprimer les arrière-plans téléchargés pour libérer de l'espace. Nous sommes revenus au réglage par défaut pour l'instant — vous pouvez retélécharger à tout moment.",
+  "bgOfflineTitle": "Vous êtes hors ligne",
+  "bgOfflineBody": "Connectez-vous à Internet pour télécharger des arrière-plans.",
+  "bgDownloadErrorNetwork": "Pas de connexion Internet. Impossible de télécharger l'arrière-plan.",
+  "bgDownloadErrorGeneric": "Échec du téléchargement. Veuillez réessayer plus tard.",
+  "bgSettingSubtitle": "Personnaliser l'arrière-plan de récitation",
+  "langFollowSystem": "Suivre le système",
+  "langFollowSystemWith": "Suivre le système ({name})",
   "@langFollowSystemWith": {
     "placeholders": {
       "name": {

@@ -39,7 +39,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get times => 'times';
 
   @override
-  String get noRecords => 'No records';
+  String get noRecords => 'No records yet';
 
   @override
   String get logIn => 'Log in';
@@ -75,6 +75,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get langEn => 'English';
+
+  @override
+  String get langJa => '日本語';
+
+  @override
+  String get langKo => '한국어';
+
+  @override
+  String get langVi => 'Tiếng Việt';
+
+  @override
+  String get langDe => 'Deutsch';
+
+  @override
+  String get langFr => 'Français';
 
   @override
   String get feedback => 'Feedback';
