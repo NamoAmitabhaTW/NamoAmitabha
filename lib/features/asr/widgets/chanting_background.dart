@@ -46,8 +46,14 @@ class _ChantingBackgroundState extends State<ChantingBackground> {
   Future<void> _initVideo(BackgroundSource s) async {
     // 內建走 asset,已下載走 file
     final c = s.file != null
-        ? VideoPlayerController.file(s.file!)
-        : VideoPlayerController.asset(s.assetPath!);
+        ? VideoPlayerController.file(
+            s.file!,
+            videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
+          )
+        : VideoPlayerController.asset(
+            s.assetPath!,
+            videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
+          );
     _controller = c;
     try {
       await c.initialize();
