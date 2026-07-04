@@ -24,7 +24,6 @@ import 'package:amitabha/app/application/app_state.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
-//import 'storage/firestore_syncToCloudBatch.dart';
 
 enum SessionState { idle, recording, paused }
 

@@ -16,7 +16,6 @@ android.apply {
         }
         create("prod") {
             dimension = "app"
-            minSdk = 23
             applicationId = "com.earth.amitabha"
         }
         create("prodMeta") {
