@@ -3,11 +3,7 @@ import 'package:amitabha/core/core/theme/theme_controller.dart';
 import 'package:amitabha/features/background/background_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-/* import 'flavors.dart'; */
 import 'download_model.dart';
-/* import 'features/auth/application/auth_facade.dart';
-import 'features/auth/data/firebase_auth_repository.dart';
-import 'features/auth/data/firestore_user_repository.dart'; */
 import 'l10n/generated/app_localizations.dart';
 import 'package:amitabha/home/presentation/home_shell.dart';
 import 'package:amitabha/app/application/app_state.dart';

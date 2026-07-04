@@ -3,7 +3,7 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:amitabha/storage/app_paths.dart';
 import 'package:path/path.dart' as p;
-import 'brand.dart'; // 為了引用 AppThemeStyle
+import 'brand.dart'; 
 
 class ThemePrefs {
   static Future<File> _file() async {

@@ -1,13 +1,4 @@
-// 背景偏好持久化(使用中背景描述 + 已下載版本)
 // amitabha/lib/features/background/background_prefs.dart
-//
-// 寫法對齊 locale_prefs.dart:寫 JSON 檔到 AppPaths.root()/settings/。
-// 注意:這些檔在 Support 目錄,不在 Caches —— 即使影片快取被系統清掉,
-// 「使用者選過哪個背景」與版本記錄都不會丟。
-//
-// background.json          : {activeId, type, revision} 使用中背景的描述
-//   (連 type 與 revision 一起存,讓下次啟動能「離線、免 manifest」快速還原背景)
-// background_versions.json : {id: version} 各已下載背景的內容版本
 import 'dart:io';
 import 'dart:convert';
 import 'package:amitabha/storage/app_paths.dart';
