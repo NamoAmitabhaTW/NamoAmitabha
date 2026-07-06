@@ -166,7 +166,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get unzipFailedLowSpaceBody =>
-      'Likely due to low storage space. Please free up some space and try unzipping again.';
+      'Extraction failed due to insufficient storage. Please free up space, then tap \"Extract Again\". The downloaded file is kept, so no re-download is needed.';
 
   @override
   String get close => 'Close';
@@ -275,6 +275,37 @@ class AppLocalizationsZh extends AppLocalizations {
   String langFollowSystemWith(String name) {
     return 'Follow system ($name)';
   }
+
+  @override
+  String get cancelling => 'Cancelling…';
+
+  @override
+  String get networkErrorBody =>
+      'Network connection error. Please check your connection and try again.';
+
+  @override
+  String get timeoutErrorBody =>
+      'Connection timed out. Your network may be unstable or the server is temporarily unresponsive. Please try again later.';
+
+  @override
+  String get serverErrorBody =>
+      'The server returned an error. Please try again later.';
+
+  @override
+  String get downloadFailedLowSpaceTitle => 'Insufficient Storage';
+
+  @override
+  String get downloadFailedLowSpaceBody =>
+      'There is not enough storage space on your device to complete the installation. Please free up space, then tap \"Try Again\".';
+
+  @override
+  String get retryAfterFreeSpace => 'Space freed, try again';
+
+  @override
+  String get retryUnzipAfterFreeSpace => 'Space freed, extract again';
+
+  @override
+  String get retryUnzipNote => 'Retrying extraction after insufficient storage';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -442,7 +473,8 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get unzipFailedTitle => '解壓縮失敗';
 
   @override
-  String get unzipFailedLowSpaceBody => '可能是儲存空間不足，請清出空間後再嘗試解壓。';
+  String get unzipFailedLowSpaceBody =>
+      '解壓縮失敗，裝置儲存空間不足。請先清出足夠空間，再點擊「重新解壓縮」。已下載的檔案會保留，不需要重新下載。';
 
   @override
   String get close => '關閉';
@@ -545,4 +577,32 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String langFollowSystemWith(String name) {
     return '跟隨系統（$name）';
   }
+
+  @override
+  String get cancelling => '取消中…';
+
+  @override
+  String get networkErrorBody => '網路連線異常，請確認網路狀態後重試。';
+
+  @override
+  String get timeoutErrorBody => '連線逾時，可能是網路不穩或伺服器暫時無回應，請稍後重試。';
+
+  @override
+  String get serverErrorBody => '伺服器回應異常，請稍後再試。';
+
+  @override
+  String get downloadFailedLowSpaceTitle => '儲存空間不足';
+
+  @override
+  String get downloadFailedLowSpaceBody =>
+      '裝置儲存空間不足，無法完成安裝。請先清出足夠空間，再點擊「重新嘗試」。';
+
+  @override
+  String get retryAfterFreeSpace => '已清出空間，重新嘗試';
+
+  @override
+  String get retryUnzipAfterFreeSpace => '已清出空間，重新解壓縮';
+
+  @override
+  String get retryUnzipNote => '因儲存空間不足，重新嘗試解壓縮中';
 }

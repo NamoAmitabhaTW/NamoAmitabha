@@ -80,7 +80,16 @@
     "bgDownloadErrorGeneric",
     "bgSettingSubtitle",
     "langFollowSystem",
-    "langFollowSystemWith"
+    "langFollowSystemWith",
+    "cancelling",
+    "networkErrorBody",
+    "timeoutErrorBody",
+    "serverErrorBody",
+    "downloadFailedLowSpaceTitle",
+    "downloadFailedLowSpaceBody",
+    "retryAfterFreeSpace",
+    "retryUnzipAfterFreeSpace",
+    "retryUnzipNote"
   ],
 
   "zh_Hant": [
@@ -164,6 +173,15 @@
     "bgDownloadErrorGeneric",
     "bgSettingSubtitle",
     "langFollowSystem",
-    "langFollowSystemWith"
+    "langFollowSystemWith",
+    "cancelling",
+    "networkErrorBody",
+    "timeoutErrorBody",
+    "serverErrorBody",
+    "downloadFailedLowSpaceTitle",
+    "downloadFailedLowSpaceBody",
+    "retryAfterFreeSpace",
+    "retryUnzipAfterFreeSpace",
+    "retryUnzipNote"
   ]
 }

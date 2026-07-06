@@ -176,7 +176,7 @@
   "successTitle": "Erfolg",
   "successBody": "Das Modell wurde erfolgreich installiert.",
   "unzipFailedTitle": "Entpacken fehlgeschlagen",
-  "unzipFailedLowSpaceBody": "Möglicherweise zu wenig Speicherplatz. Bitte geben Sie Speicher frei und versuchen Sie es erneut.",
+  "unzipFailedLowSpaceBody": "Das Entpacken ist wegen unzureichenden Speicherplatzes fehlgeschlagen. Bitte geben Sie Speicherplatz frei und tippen Sie dann auf „Erneut entpacken“. Die heruntergeladene Datei bleibt erhalten – ein erneuter Download ist nicht nötig.",
   "close": "Schließen",
   "retryUnzip": "Entpacken wiederholen",
   "downloadFailedShort": "Modell-Download fehlgeschlagen. Bitte versuchen Sie es später erneut.",
@@ -237,5 +237,14 @@
         "type": "String"
       }
     }
-  }
+  },
+  "cancelling": "Wird abgebrochen …",
+  "networkErrorBody": "Netzwerkverbindungsfehler. Bitte überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
+  "timeoutErrorBody": "Zeitüberschreitung der Verbindung. Das Netzwerk ist möglicherweise instabil oder der Server antwortet vorübergehend nicht. Bitte versuchen Sie es später erneut.",
+  "serverErrorBody": "Der Server hat einen Fehler zurückgegeben. Bitte versuchen Sie es später erneut.",
+  "downloadFailedLowSpaceTitle": "Nicht genügend Speicherplatz",
+  "downloadFailedLowSpaceBody": "Der Speicherplatz auf Ihrem Gerät reicht nicht aus, um die Installation abzuschließen. Bitte geben Sie Speicherplatz frei und tippen Sie dann auf „Erneut versuchen“.",
+  "retryAfterFreeSpace": "Speicher freigegeben, erneut versuchen",
+  "retryUnzipAfterFreeSpace": "Speicher freigegeben, erneut entpacken",
+  "retryUnzipNote": "Entpacken wird wegen Speichermangels erneut versucht"
 }

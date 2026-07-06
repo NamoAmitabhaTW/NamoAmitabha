@@ -166,7 +166,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unzipFailedLowSpaceBody =>
-      'Likely due to low storage space. Please free up some space and try unzipping again.';
+      'Extraction failed due to insufficient storage. Please free up space, then tap \"Extract Again\". The downloaded file is kept, so no re-download is needed.';
 
   @override
   String get close => 'Close';
@@ -275,4 +275,35 @@ class AppLocalizationsEn extends AppLocalizations {
   String langFollowSystemWith(String name) {
     return 'Follow system ($name)';
   }
+
+  @override
+  String get cancelling => 'Cancelling…';
+
+  @override
+  String get networkErrorBody =>
+      'Network connection error. Please check your connection and try again.';
+
+  @override
+  String get timeoutErrorBody =>
+      'Connection timed out. Your network may be unstable or the server is temporarily unresponsive. Please try again later.';
+
+  @override
+  String get serverErrorBody =>
+      'The server returned an error. Please try again later.';
+
+  @override
+  String get downloadFailedLowSpaceTitle => 'Insufficient Storage';
+
+  @override
+  String get downloadFailedLowSpaceBody =>
+      'There is not enough storage space on your device to complete the installation. Please free up space, then tap \"Try Again\".';
+
+  @override
+  String get retryAfterFreeSpace => 'Space freed, try again';
+
+  @override
+  String get retryUnzipAfterFreeSpace => 'Space freed, extract again';
+
+  @override
+  String get retryUnzipNote => 'Retrying extraction after insufficient storage';
 }

@@ -166,7 +166,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get unzipFailedLowSpaceBody =>
-      'Möglicherweise zu wenig Speicherplatz. Bitte geben Sie Speicher frei und versuchen Sie es erneut.';
+      'Das Entpacken ist wegen unzureichenden Speicherplatzes fehlgeschlagen. Bitte geben Sie Speicherplatz frei und tippen Sie dann auf „Erneut entpacken“. Die heruntergeladene Datei bleibt erhalten – ein erneuter Download ist nicht nötig.';
 
   @override
   String get close => 'Schließen';
@@ -277,4 +277,37 @@ class AppLocalizationsDe extends AppLocalizations {
   String langFollowSystemWith(String name) {
     return 'System folgen ($name)';
   }
+
+  @override
+  String get cancelling => 'Wird abgebrochen …';
+
+  @override
+  String get networkErrorBody =>
+      'Netzwerkverbindungsfehler. Bitte überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.';
+
+  @override
+  String get timeoutErrorBody =>
+      'Zeitüberschreitung der Verbindung. Das Netzwerk ist möglicherweise instabil oder der Server antwortet vorübergehend nicht. Bitte versuchen Sie es später erneut.';
+
+  @override
+  String get serverErrorBody =>
+      'Der Server hat einen Fehler zurückgegeben. Bitte versuchen Sie es später erneut.';
+
+  @override
+  String get downloadFailedLowSpaceTitle => 'Nicht genügend Speicherplatz';
+
+  @override
+  String get downloadFailedLowSpaceBody =>
+      'Der Speicherplatz auf Ihrem Gerät reicht nicht aus, um die Installation abzuschließen. Bitte geben Sie Speicherplatz frei und tippen Sie dann auf „Erneut versuchen“.';
+
+  @override
+  String get retryAfterFreeSpace => 'Speicher freigegeben, erneut versuchen';
+
+  @override
+  String get retryUnzipAfterFreeSpace =>
+      'Speicher freigegeben, erneut entpacken';
+
+  @override
+  String get retryUnzipNote =>
+      'Entpacken wird wegen Speichermangels erneut versucht';
 }

@@ -176,7 +176,7 @@
   "successTitle": "成功",
   "successBody": "模型已安裝完成。",
   "unzipFailedTitle": "解壓縮失敗",
-  "unzipFailedLowSpaceBody": "可能是儲存空間不足，請清出空間後再嘗試解壓。",
+  "unzipFailedLowSpaceBody": "解壓縮失敗，裝置儲存空間不足。請先清出足夠空間，再點擊「重新解壓縮」。已下載的檔案會保留，不需要重新下載。",
   "close": "關閉",
   "retryUnzip": "重試解壓",
   "downloadFailedShort": "模型下載失敗，請稍後再試或重試。",
@@ -237,5 +237,14 @@
         "type": "String"
       }
     }
-  }
+  },
+  "cancelling": "取消中…",
+  "networkErrorBody": "網路連線異常，請確認網路狀態後重試。",
+  "timeoutErrorBody": "連線逾時，可能是網路不穩或伺服器暫時無回應，請稍後重試。",
+  "serverErrorBody": "伺服器回應異常，請稍後再試。",
+  "downloadFailedLowSpaceTitle": "儲存空間不足",
+  "downloadFailedLowSpaceBody": "裝置儲存空間不足，無法完成安裝。請先清出足夠空間，再點擊「重新嘗試」。",
+  "retryAfterFreeSpace": "已清出空間，重新嘗試",
+  "retryUnzipAfterFreeSpace": "已清出空間，重新解壓縮",
+  "retryUnzipNote": "因儲存空間不足，重新嘗試解壓縮中"
 }

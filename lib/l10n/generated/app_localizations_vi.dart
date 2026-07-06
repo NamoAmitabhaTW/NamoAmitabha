@@ -166,7 +166,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get unzipFailedLowSpaceBody =>
-      'Có thể do dung lượng lưu trữ thấp. Vui lòng giải phóng dung lượng rồi thử giải nén lại.';
+      'Giải nén thất bại do không đủ dung lượng lưu trữ. Vui lòng giải phóng dung lượng rồi nhấn \"Giải nén lại\". Tệp đã tải xuống vẫn được giữ nguyên nên không cần tải lại.';
 
   @override
   String get close => 'Đóng';
@@ -274,4 +274,37 @@ class AppLocalizationsVi extends AppLocalizations {
   String langFollowSystemWith(String name) {
     return 'Theo hệ thống ($name)';
   }
+
+  @override
+  String get cancelling => 'Đang hủy…';
+
+  @override
+  String get networkErrorBody =>
+      'Kết nối mạng gặp sự cố. Vui lòng kiểm tra kết nối rồi thử lại.';
+
+  @override
+  String get timeoutErrorBody =>
+      'Hết thời gian kết nối. Mạng có thể không ổn định hoặc máy chủ tạm thời không phản hồi. Vui lòng thử lại sau.';
+
+  @override
+  String get serverErrorBody =>
+      'Máy chủ phản hồi bất thường. Vui lòng thử lại sau.';
+
+  @override
+  String get downloadFailedLowSpaceTitle => 'Không đủ dung lượng lưu trữ';
+
+  @override
+  String get downloadFailedLowSpaceBody =>
+      'Thiết bị không đủ dung lượng lưu trữ để hoàn tất cài đặt. Vui lòng giải phóng dung lượng rồi nhấn \"Thử lại\".';
+
+  @override
+  String get retryAfterFreeSpace => 'Đã giải phóng dung lượng, thử lại';
+
+  @override
+  String get retryUnzipAfterFreeSpace =>
+      'Đã giải phóng dung lượng, giải nén lại';
+
+  @override
+  String get retryUnzipNote =>
+      'Đang thử giải nén lại do thiếu dung lượng lưu trữ';
 }

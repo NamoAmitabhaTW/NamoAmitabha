@@ -1,4 +1,5 @@
 // lib/widgets/download_progress_dialog.dart
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:amitabha/download_model.dart';
@@ -34,8 +35,21 @@ class DownloadProgressDialog extends StatelessWidget {
               LinearProgressIndicator(value: idle ? null : showingValue),
               const SizedBox(height: 16),
               Text(idle ? t.preparingPleaseWait : t.doNotOperateDuring(label)),
+              if (m.statusNote != null) ...[
+                const SizedBox(height: 4),
+                Text(
+                  m.statusNote!,
+                  style: Theme.of(context).textTheme.bodySmall,
+                  textAlign: TextAlign.center,
+                ),
+              ],
               const SizedBox(height: 8),
-              if (!idle) Text('${(showingValue * 100).toStringAsFixed(2)}%'),
+              // 下載階段：位元組數是真實進度，顯示精確百分比
+              if (downloading)
+                Text('${(showingValue * 100).toStringAsFixed(2)}%'),
+              // 解壓階段：前段為估算進度，顯示精確數字反而造成「卡住」錯覺，
+              // 改用動態刪節號文字明確傳達「處理中」
+              if (unzipping) _AnimatedDotsText(text: t.unzipping),
             ],
           );
         },
@@ -52,27 +66,30 @@ class DownloadProgressDialog extends StatelessWidget {
               children: [
                 if (!busy)
                   SizedBox(
-                    // 給寬度，讓命中區更好按（可依需要調整 160~240）
                     width: 200,
                     height: 60,
                     child: TextButton(
                       onPressed: () => Navigator.of(context).pop(),
                       style: TextButton.styleFrom(
-                        // 關鍵：設定最小命中區（高度 60）
                         minimumSize: const Size(200, 60),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
                       child: Text(t.ok),
-                    )
+                    ),
                   )
                 else ...[
-                  TextButton(
-                    onPressed: null,
-                    child: Text(downloading ? t.downloading : t.unzipping),
-                  ),
-                  const SizedBox(width: 12),
+                  if (downloading)
+                    TextButton(
+                      onPressed: m.cancelRequested
+                          ? null
+                          : () => m.requestCancel(),
+                      child: Text(
+                        m.cancelRequested ? t.cancelling : t.cancel,
+                      ),
+                    ),
+                  if (downloading) const SizedBox(width: 12),
                   const SizedBox(
                     width: 16,
                     height: 16,
@@ -82,6 +99,55 @@ class DownloadProgressDialog extends StatelessWidget {
               ],
             );
           },
+        ),
+      ],
+    );
+  }
+}
+
+/// 「解壓縮中.」→「解壓縮中...」→「解壓縮中.....」循環動態文字。
+/// 用固定寬度的點數欄位避免文字寬度跳動造成排版位移。
+class _AnimatedDotsText extends StatefulWidget {
+  const _AnimatedDotsText({required this.text});
+
+  final String text;
+
+  @override
+  State<_AnimatedDotsText> createState() => _AnimatedDotsTextState();
+}
+
+class _AnimatedDotsTextState extends State<_AnimatedDotsText> {
+  static const _maxDots = 5;
+  Timer? _timer;
+  int _dotCount = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(const Duration(milliseconds: 400), (_) {
+      if (!mounted) return;
+      setState(() {
+        _dotCount = _dotCount >= _maxDots ? 1 : _dotCount + 1;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(widget.text),
+        // 固定寬度：以最多點數佔位，實際只畫目前的點數，文字不會左右跳動
+        SizedBox(
+          width: _maxDots * 6.0,
+          child: Text('.' * _dotCount),
         ),
       ],
     );

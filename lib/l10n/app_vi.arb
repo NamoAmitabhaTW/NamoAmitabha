@@ -176,7 +176,7 @@
   "successTitle": "Thành công",
   "successBody": "Mô hình đã được cài đặt thành công.",
   "unzipFailedTitle": "Giải nén thất bại",
-  "unzipFailedLowSpaceBody": "Có thể do dung lượng lưu trữ thấp. Vui lòng giải phóng dung lượng rồi thử giải nén lại.",
+  "unzipFailedLowSpaceBody": "Giải nén thất bại do không đủ dung lượng lưu trữ. Vui lòng giải phóng dung lượng rồi nhấn \"Giải nén lại\". Tệp đã tải xuống vẫn được giữ nguyên nên không cần tải lại.",
   "close": "Đóng",
   "retryUnzip": "Thử giải nén lại",
   "downloadFailedShort": "Tải mô hình thất bại. Vui lòng thử lại sau.",
@@ -237,5 +237,14 @@
         "type": "String"
       }
     }
-  }
+  },
+  "cancelling": "Đang hủy…",
+  "networkErrorBody": "Kết nối mạng gặp sự cố. Vui lòng kiểm tra kết nối rồi thử lại.",
+  "timeoutErrorBody": "Hết thời gian kết nối. Mạng có thể không ổn định hoặc máy chủ tạm thời không phản hồi. Vui lòng thử lại sau.",
+  "serverErrorBody": "Máy chủ phản hồi bất thường. Vui lòng thử lại sau.",
+  "downloadFailedLowSpaceTitle": "Không đủ dung lượng lưu trữ",
+  "downloadFailedLowSpaceBody": "Thiết bị không đủ dung lượng lưu trữ để hoàn tất cài đặt. Vui lòng giải phóng dung lượng rồi nhấn \"Thử lại\".",
+  "retryAfterFreeSpace": "Đã giải phóng dung lượng, thử lại",
+  "retryUnzipAfterFreeSpace": "Đã giải phóng dung lượng, giải nén lại",
+  "retryUnzipNote": "Đang thử giải nén lại do thiếu dung lượng lưu trữ"
 }
