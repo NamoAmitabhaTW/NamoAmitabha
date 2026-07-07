@@ -1,8 +1,9 @@
 // Smoke tests:驗證主要畫面能建立、本地化正常、空資料狀態正確。
 //
-// 說明:先不 pump 整個 App()——StreamingAsrRunner 目前在 widget 樹裡
-// 會在 dispose 時碰 record / wakelock 的原生 plugin channel,單元測試環境
-// 沒有這些 plugin。等 P3 把 ASR 抽成 controller 後,再補全 App 的 smoke test。
+// 說明:仍不 pump 整個 App()——ASR 已抽成 controller(P3),但
+// ChantingBackground 的 video_player 在測試環境會碰原生 plugin channel。
+// 完整 App smoke test 留待日後為 video 層加測試接縫時補上;
+// controller 的行為已由 asr_session_controller_test.dart 覆蓋。
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:provider/provider.dart';
 
-import 'package:amitabha/app/app_state.dart';
+import 'package:amitabha/features/asr/application/asr_session_controller.dart';
 import 'package:amitabha/core/localization/locale_controller.dart';
 import 'package:amitabha/features/records/screens/records_screen.dart';
 import 'package:amitabha/features/settings/screens/settings_screen.dart';
@@ -22,7 +23,7 @@ import 'helpers/fake_path_provider.dart';
 Widget _wrap(Widget child) {
   return MultiProvider(
     providers: [
-      ChangeNotifierProvider(create: (_) => AppState()),
+      ChangeNotifierProvider(create: (_) => AsrSessionController()),
       ChangeNotifierProvider(create: (_) => LocaleController()),
     ],
     child: MaterialApp(

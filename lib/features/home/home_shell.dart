@@ -2,11 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
-import 'package:amitabha/app/app_state.dart';
+import 'package:amitabha/features/asr/application/asr_session_controller.dart';
 import 'package:amitabha/features/asr/screens/streaming_asr_screen.dart';
 import 'package:amitabha/features/records/screens/records_screen.dart';
 import 'package:amitabha/features/settings/screens/settings_screen.dart';
-import 'package:amitabha/features/asr/streaming_asr.dart';
 import 'package:amitabha/core/theme/brand.dart';
 import 'package:amitabha/core/theme/theme_controller.dart';
 import 'package:amitabha/features/home/widgets/glass_nav_bar.dart';
@@ -43,7 +42,7 @@ class _HomeShellState extends State<HomeShell> {
   Widget _pageFor(int i) {
     if (i == 1) {
       // 紀錄頁：依 dataVersion 強制重建以拿到最新 daily JSON
-      final ver = context.select<AppState, int>((s) => s.dataVersion);
+      final ver = context.select<AsrSessionController, int>((s) => s.dataVersion);
       return KeyedSubtree(key: ValueKey(ver), child: const RecordsScreen());
     }
     // 其他頁面快取起來（避免每次切頁重建）
@@ -64,7 +63,7 @@ class _HomeShellState extends State<HomeShell> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         extendBody: true, // ← 新增：讓 body（含背景影片）延伸到 tabbar 後面
-        body: Stack(children: [_pageFor(_index), const StreamingAsrRunner()]),
+        body: _pageFor(_index),
         bottomNavigationBar: GlassNavBar(
           selectedIndex: _index,
           onDestinationSelected: (i) => setState(() => _index = i),

@@ -6,7 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:amitabha/features/model_install/install_progress_model.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:amitabha/features/home/home_shell.dart';
-import 'package:amitabha/app/app_state.dart';
+import 'package:amitabha/features/asr/application/asr_session_controller.dart';
+import 'package:amitabha/features/asr/application/sherpa_mic_source.dart';
 import 'package:amitabha/core/localization/locale_controller.dart';
 
 class App extends StatelessWidget {
@@ -17,7 +18,10 @@ class App extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => InstallProgressModel()),
-        ChangeNotifierProvider(create: (_) => AppState()),
+        ChangeNotifierProvider(
+          create: (_) =>
+              AsrSessionController(sourceFactory: () => SherpaMicSource()),
+        ),
         ChangeNotifierProvider(create: (_) => LocaleController()),
         ChangeNotifierProvider(create: (_) => ThemeController()),
         ChangeNotifierProvider(

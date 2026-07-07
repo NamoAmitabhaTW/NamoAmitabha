@@ -10,7 +10,7 @@ import 'package:amitabha/storage/atomic_io.dart';
 import 'package:amitabha/storage/models.dart';
 
 import 'package:provider/provider.dart';
-import 'package:amitabha/app/app_state.dart';
+import 'package:amitabha/features/asr/application/asr_session_controller.dart';
 
 class RecordsScreen extends StatelessWidget {
   const RecordsScreen({super.key});
@@ -22,7 +22,7 @@ class RecordsScreen extends StatelessWidget {
     final df = DateFormat.yMd(locale);
 
     // ★ 監聽 AppState.dataVersion，只要版本變了就讓 FutureBuilder 重新建立
-    final ver = context.select<AppState, int>((s) => s.dataVersion);
+    final ver = context.select<AsrSessionController, int>((s) => s.dataVersion);
 
     return FutureBuilder<_DailyLoadResult>(
       key: ValueKey(ver), // ★ 以版本號當 key，強制刷新

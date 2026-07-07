@@ -42,11 +42,16 @@ class DailySummary {
   final String userName;
   final int amitabhaCount;
 
+  /// 已累計進本日的 sessionId 清單,讓 journal 重放具幂等性
+  /// (同一個 session 重放兩次不會重複加總)。舊檔沒有此欄位 → 空清單。
+  final List<String> sessionIds;
+
   DailySummary({
     required this.yyyymmdd,
     required this.userId,
     required this.userName,
     required this.amitabhaCount,
+    this.sessionIds = const [],
   });
 
   Map<String, dynamic> toJson() => {
@@ -55,6 +60,7 @@ class DailySummary {
     'userId': userId,
     'userName': userName,
     'amitabhaCount': amitabhaCount,
+    'sessionIds': sessionIds,
   };
 
   static DailySummary fromJson(Map<String, dynamic> j) => DailySummary(
@@ -62,5 +68,6 @@ class DailySummary {
     userId: j['userId'],
     userName: j['userName'],
     amitabhaCount: j['amitabhaCount'] ?? 0,
+    sessionIds: (j['sessionIds'] as List?)?.cast<String>() ?? const [],
   );
 }
