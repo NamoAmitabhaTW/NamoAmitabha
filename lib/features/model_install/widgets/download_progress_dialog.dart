@@ -1,8 +1,8 @@
-// lib/widgets/download_progress_dialog.dart
+// lib/features/model_install/widgets/download_progress_dialog.dart
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:amitabha/features/model_install/download_model.dart';
+import 'package:amitabha/features/model_install/install_progress_model.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
 
 class DownloadProgressDialog extends StatelessWidget {
@@ -14,7 +14,7 @@ class DownloadProgressDialog extends StatelessWidget {
 
     return AlertDialog(
       title: Text(t.pleaseWait),
-      content: Consumer<DownloadModel>(
+      content: Consumer<InstallProgressModel>(
         builder: (context, m, child) {
           final downloading = m.progress > 0.0 && m.progress < 1.0;
           final unzipping = m.unzipProgress > 0.0 && m.unzipProgress < 1.0;
@@ -55,7 +55,7 @@ class DownloadProgressDialog extends StatelessWidget {
         },
       ),
       actions: <Widget>[
-        Consumer<DownloadModel>(
+        Consumer<InstallProgressModel>(
           builder: (context, m, child) {
             final downloading = m.progress > 0.0 && m.progress < 1.0;
             final unzipping = m.unzipProgress > 0.0 && m.unzipProgress < 1.0;

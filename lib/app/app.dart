@@ -3,7 +3,7 @@ import 'package:amitabha/core/theme/theme_controller.dart';
 import 'package:amitabha/features/background/background_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:amitabha/features/model_install/download_model.dart';
+import 'package:amitabha/features/model_install/install_progress_model.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:amitabha/features/home/home_shell.dart';
 import 'package:amitabha/app/app_state.dart';
@@ -16,7 +16,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => DownloadModel()),
+        ChangeNotifierProvider(create: (_) => InstallProgressModel()),
         ChangeNotifierProvider(create: (_) => AppState()),
         ChangeNotifierProvider(create: (_) => LocaleController()),
         ChangeNotifierProvider(create: (_) => ThemeController()),

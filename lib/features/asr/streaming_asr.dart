@@ -1,4 +1,4 @@
-//amitabha/lib/streaming_asr.dart
+// lib/features/asr/streaming_asr.dart
 // This file is modified based on the open-source project:
 // Flutter-EasySpeechRecognition (https://github.com/Jason-chen-coder/Flutter-EasySpeechRecognition)
 // Original copyright (c) 2024 Xiaomi Corporation
@@ -7,9 +7,10 @@ import 'dart:async';
 import 'package:amitabha/features/model_install/asr_hotwords.dart';
 import 'package:amitabha/features/asr/domain/amitabha_normalizer.dart';
 import 'package:amitabha/features/model_install/widgets/download_progress_dialog.dart';
-import 'package:amitabha/features/model_install/download_model.dart';
+import 'package:amitabha/features/model_install/install_progress_model.dart';
 import 'package:amitabha/features/model_install/online_model.dart';
-import 'package:amitabha/features/model_install/model_install.dart';
+import 'package:amitabha/features/model_install/model_installer.dart';
+import 'package:amitabha/features/model_install/model_install_flow.dart';
 import 'package:amitabha/core/utils/audio_convert.dart';
 import 'package:amitabha/core/utils/date_format.dart';
 import 'package:flutter/foundation.dart';
@@ -28,6 +29,10 @@ import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 enum SessionState { idle, recording, paused }
+
+/// 本 App 使用的 ASR 模型。
+const String kAsrModelName =
+    'sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20';
 
 Future<sherpa_onnx.OnlineRecognizer> createOnlineRecognizer(
   String modelName,
@@ -102,44 +107,30 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
 
   Future<void> _initAndStart() async {
     await _initStorage();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<DownloadModel>().useAsr(
-        'sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20',
-      );
-    });
   }
 
   Future<void> _start() async {
-    final downloadModel = Provider.of<DownloadModel>(context, listen: false);
-    final modelName = downloadModel.modelName;
-    final progress = downloadModel.progress;
-    final unzipProgress = downloadModel.unzipProgress;
-    final unziping = unzipProgress > 0 && unzipProgress < 1;
-    final downloading = progress > 0 && progress < 1;
-    bool needsDownloadVal = await needsDownload(modelName);
-    bool needsUnZipVal = await needsUnZip(modelName);
-
-    if (downloading || unziping) {
+    // 安裝已在進行中 → 重新開啟進度對話框即可
+    final progressModel = context.read<InstallProgressModel>();
+    if (progressModel.isBusy) {
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (BuildContext context) {
-          return DownloadProgressDialog();
-        },
+        builder: (_) => const DownloadProgressDialog(),
       );
       return;
     }
-    if (needsDownloadVal) {
-      downloadModelAndUnZip(context, modelName);
-      return;
-    }
-    if (needsUnZipVal) {
-      unzipModelFile(context, modelName);
-      return;
-    }
 
-    await ensureModelReady(context, modelName);
+    // 模型缺件 → 走安裝流程(所有對話框都在 ModelInstallFlow 內處理);
+    // 安裝完成後由使用者再按一次「開始」進入錄音。
+    final installer = ModelInstaller();
+    if (await installer.status(kAsrModelName) != InstallStatus.ready) {
+      if (!mounted) return;
+      await ModelInstallFlow(
+        installer: installer,
+      ).ensureReady(context, kAsrModelName);
+      return;
+    }
 
     // 先用 record 觸發系統原生權限（第一次會跳 iOS/Android 原生彈窗）
     bool granted = await _audioRecorder.hasPermission();
@@ -153,7 +144,7 @@ class _StreamingAsrRunnerState extends State<StreamingAsrRunner>
 
     if (!_isInitialized) {
       sherpa_onnx.initBindings();
-      _recognizer = await createOnlineRecognizer(modelName);
+      _recognizer = await createOnlineRecognizer(kAsrModelName);
       _stream = _recognizer?.createStream();
 
       _isInitialized = true;

@@ -1,24 +1,14 @@
-// lib/features/model_install/download_model.dart
+// lib/features/model_install/install_progress_model.dart
+// 安裝進度的 UI 狀態(原 DownloadModel 瘦身改名):
+// 只負責進度數值、狀態文字與取消旗標,模型選擇已移至呼叫端/ModelInstaller。
+//
 // This file is modified based on the open-source project:
 // Flutter-EasySpeechRecognition (https://github.com/Jason-chen-coder/Flutter-EasySpeechRecognition)
 // Original copyright (c) 2024 Xiaomi Corporation
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 
-class DownloadModel with ChangeNotifier {
-  String _modelName =
-      "sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20";
-  String get modelName => _modelName;
-
-  /// sherpa-onnx release 的下載頻道(本 App 只用 ASR 模型)。
-  String get channel => 'asr-models';
-
-  void useAsr([String? name]) {
-    _modelName =
-        name ?? 'sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20';
-    notifyListeners();
-  }
-
+class InstallProgressModel with ChangeNotifier {
   double _progress = 0;
   double get progress => _progress;
   void setProgress(double value) {
@@ -33,7 +23,12 @@ class DownloadModel with ChangeNotifier {
     notifyListeners();
   }
 
-  // ── 狀態提示文字（例如「因空間不足重新嘗試解壓縮中」）──
+  /// 下載或解壓進行中(用來擋重複進入安裝流程)。
+  bool get isBusy =>
+      (_progress > 0 && _progress < 1) ||
+      (_unzipProgress > 0 && _unzipProgress < 1);
+
+  // ── 狀態提示文字(例如「因空間不足重新嘗試解壓縮中」)──
   String? _statusNote;
   String? get statusNote => _statusNote;
   void setStatusNote(String? note) {
@@ -51,7 +46,7 @@ class DownloadModel with ChangeNotifier {
 
   void clearCancel() {
     _cancelRequested = false;
-    // 不 notify：僅內部旗標重置，無畫面變化需求
+    // 不 notify:僅內部旗標重置,無畫面變化需求
   }
 
   void reset({bool notify = false}) {
