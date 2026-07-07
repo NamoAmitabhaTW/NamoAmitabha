@@ -1,32 +1,11 @@
-//amitabha/lib/app/application/app_state.dart
+// lib/app/app_state.dart
 import 'package:flutter/material.dart';
-
-class DailyRecord {
-  final DateTime date;
-  final int count;
-  DailyRecord({required this.date, required this.count});
-}
 
 class AppState extends ChangeNotifier {
   bool isRecording = false;
   int sessionCount = 0;
   DateTime? lastHitAt;
   int dataVersion = 0;
-
-  final List<DailyRecord> _records = [];
-  List<DailyRecord> get records => List.unmodifiable(_records);
-
-  int get totalCount =>
-      _records.fold<int>(0, (sum, r) => sum + r.count) + sessionCount;
-
-
-  int get practiceDays {
-    final set = <DateTime>{};
-    for (final r in _records) {
-      set.add(DateUtils.dateOnly(r.date));
-    }
-    return set.length;
-  }
 
   // ==== 提供給 ASR（或其他邏輯層）呼叫的 API ====
 

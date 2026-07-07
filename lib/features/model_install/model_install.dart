@@ -1,4 +1,5 @@
-//amitabha/lib/utils.dart
+// lib/features/model_install/model_install.dart
+// 模型下載/解壓/完整性驗證主流程(P2 將把 UI 與 IO 拆開)。
 // This file is modified based on the open-source project:
 // Flutter-EasySpeechRecognition (https://github.com/Jason-chen-coder/Flutter-EasySpeechRecognition)
 // Original copyright (c) 2024 Xiaomi Corporation
@@ -13,7 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 import 'widgets/download_progress_dialog.dart';
 import 'package:amitabha/storage/model_paths.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
@@ -30,25 +30,6 @@ class ModelVerificationException implements Exception {
   ModelVerificationException(this.message);
   @override
   String toString() => 'ModelVerificationException: $message';
-}
-
-// ═══════════════════════════ 音訊工具 ═══════════════════════════
-
-Float32List convertBytesToFloat32(
-  Uint8List bytes, [
-  Endian endian = Endian.little,
-]) {
-  final pairCount = bytes.length >> 1;
-  if (pairCount == 0) return Float32List(0);
-
-  final out = Float32List(pairCount);
-  final data = ByteData.sublistView(bytes);
-
-  for (int j = 0, i = 0; j < pairCount; j++, i += 2) {
-    final s = data.getInt16(i, endian);
-    out[j] = s / 32768.0;
-  }
-  return out;
 }
 
 // ═══════════════════════════ 下載主流程 ═══════════════════════════
@@ -709,15 +690,6 @@ Future<void> ensureModelReady(BuildContext context, String modelName) async {
 }
 
 // ═══════════════════════════ 其他工具 ═══════════════════════════
-
-String nowYmdLocal() {
-  return DateFormat('yyyyMMdd').format(DateTime.now());
-}
-
-String formatYMd(BuildContext context, DateTime dt) {
-  final locale = Localizations.localeOf(context).toString();
-  return DateFormat.yMd(locale).format(dt);
-}
 
 Future<T> _withWakelock<T>(Future<T> Function() action) async {
   final wasEnabled = await WakelockPlus.enabled;

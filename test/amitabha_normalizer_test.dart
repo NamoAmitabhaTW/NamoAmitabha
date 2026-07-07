@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:amitabha/amitabha_normalizer.dart';
+import 'package:amitabha/features/asr/domain/amitabha_normalizer.dart';
 
 void main() {
   group('Amitabha detection', () {

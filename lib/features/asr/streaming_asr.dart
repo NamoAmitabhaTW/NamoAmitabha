@@ -4,12 +4,14 @@
 // Original copyright (c) 2024 Xiaomi Corporation
 
 import 'dart:async';
-import 'package:amitabha/ars_hotwords.dart';
-import 'package:amitabha/amitabha_normalizer.dart';
-import 'widgets/download_progress_dialog.dart';
-import 'download_model.dart';
-import 'online_model.dart';
-import 'utils.dart';
+import 'package:amitabha/features/model_install/asr_hotwords.dart';
+import 'package:amitabha/features/asr/domain/amitabha_normalizer.dart';
+import 'package:amitabha/features/model_install/widgets/download_progress_dialog.dart';
+import 'package:amitabha/features/model_install/download_model.dart';
+import 'package:amitabha/features/model_install/online_model.dart';
+import 'package:amitabha/features/model_install/model_install.dart';
+import 'package:amitabha/core/utils/audio_convert.dart';
+import 'package:amitabha/core/utils/date_format.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +22,7 @@ import 'package:amitabha/storage/session_repo.dart';
 import 'package:amitabha/storage/daily_repo.dart';
 import 'package:amitabha/storage/buffered_hits.dart';
 import 'package:amitabha/storage/models.dart';
-import 'package:amitabha/app/application/app_state.dart';
+import 'package:amitabha/app/app_state.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';

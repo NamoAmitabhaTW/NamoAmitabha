@@ -1,7 +1,7 @@
 // features/asr/screens/streaming_asr_screen.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:amitabha/app/application/app_state.dart';
+import 'package:amitabha/app/app_state.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:amitabha/features/asr/widgets/chanting_background.dart';
 import 'package:amitabha/features/asr/widgets/liuli_button.dart';
@@ -168,58 +168,6 @@ class StreamingAsrScreen extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-// 其餘類別維持，僅調整 GradientWatermark 支援外部樣式覆寫
-class PositionedFillWatermark extends StatelessWidget {
-  const PositionedFillWatermark({
-    super.key,
-    required this.t,
-    this.verticalBias = -0.5,
-    this.opacity = 0.06,
-    this.color,
-    this.textStyle,
-  });
-
-  final AppLocalizations t;
-  final double verticalBias;
-  final double opacity;
-  final Color? color;
-  final TextStyle? textStyle;
-
-  @override
-  Widget build(BuildContext context) {
-    final baseColor =
-        color ?? Theme.of(context).colorScheme.onSurface.withValues(alpha: opacity);
-
-    return Positioned.fill(
-      child: IgnorePointer(
-        child: Align(
-          alignment: Alignment(0, verticalBias),
-          child: LayoutBuilder(
-            builder: (ctx, c) {
-              final fontSize = (c.biggest.shortestSide) * 0.22;
-              final style =
-                  (textStyle ??
-                          Theme.of(context).textTheme.displayLarge ??
-                          const TextStyle())
-                      .copyWith(
-                        fontSize: fontSize,
-                        color: (textStyle?.color ?? baseColor),
-                      );
-              return FittedBox(
-                child: Text(
-                  t.amitabha,
-                  textAlign: TextAlign.center,
-                  style: style,
-                ),
-              );
-            },
-          ),
-        ),
       ),
     );
   }

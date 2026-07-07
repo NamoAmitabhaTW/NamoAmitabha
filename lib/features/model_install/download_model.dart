@@ -1,31 +1,21 @@
-//amitabha/lib/download_model.dart
+// lib/features/model_install/download_model.dart
 // This file is modified based on the open-source project:
 // Flutter-EasySpeechRecognition (https://github.com/Jason-chen-coder/Flutter-EasySpeechRecognition)
 // Original copyright (c) 2024 Xiaomi Corporation
 
 import 'package:flutter/cupertino.dart';
 
-enum ModelKind { asr, kws }
-
 class DownloadModel with ChangeNotifier {
-  ModelKind _kind = ModelKind.asr;
-  ModelKind get kind => _kind;
-
   String _modelName =
       "sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20";
   String get modelName => _modelName;
-  String get channel => _kind == ModelKind.kws ? 'kws-models' : 'asr-models';
+
+  /// sherpa-onnx release 的下載頻道(本 App 只用 ASR 模型)。
+  String get channel => 'asr-models';
 
   void useAsr([String? name]) {
-    _kind = ModelKind.asr;
-    _modelName = name ?? 'sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20';
-    notifyListeners();
-  }
-
-  void useKws([String? name]) {
-    _kind = ModelKind.kws;
     _modelName =
-        name ?? 'sherpa-onnx-kws-zipformer-wenetspeech-3.3M-2024-01-01-mobile';
+        name ?? 'sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20';
     notifyListeners();
   }
 

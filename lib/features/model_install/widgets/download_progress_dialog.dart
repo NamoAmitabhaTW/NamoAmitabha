@@ -2,7 +2,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:amitabha/download_model.dart';
+import 'package:amitabha/features/model_install/download_model.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
 
 class DownloadProgressDialog extends StatelessWidget {

@@ -10,7 +10,7 @@ import 'package:amitabha/storage/atomic_io.dart';
 import 'package:amitabha/storage/models.dart';
 
 import 'package:provider/provider.dart';
-import 'package:amitabha/app/application/app_state.dart';
+import 'package:amitabha/app/app_state.dart';
 
 class RecordsScreen extends StatelessWidget {
   const RecordsScreen({super.key});

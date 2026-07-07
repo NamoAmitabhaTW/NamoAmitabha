@@ -10,7 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:provider/provider.dart';
 
-import 'package:amitabha/app/application/app_state.dart';
+import 'package:amitabha/app/app_state.dart';
 import 'package:amitabha/core/localization/locale_controller.dart';
 import 'package:amitabha/features/records/screens/records_screen.dart';
 import 'package:amitabha/features/settings/screens/settings_screen.dart';
