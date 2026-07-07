@@ -12,19 +12,13 @@ import 'package:amitabha/storage/hit_logger.dart';
 import 'package:amitabha/storage/models.dart';
 import 'package:amitabha/storage/session_repo.dart';
 
+import 'helpers/fake_path_provider.dart';
+
 String _nowYmdLocal() {
   final n = DateTime.now();
   return '${n.year.toString().padLeft(4, '0')}'
          '${n.month.toString().padLeft(2, '0')}'
          '${n.day.toString().padLeft(2, '0')}';
-}
-
-/// Mock path_provider
-class _FakePathProvider extends PathProviderPlatform {
-  _FakePathProvider(this.docs);
-  final Directory docs;
-  @override
-  Future<String?> getApplicationDocumentsPath() async => docs.path;
 }
 
 void main() {
@@ -34,7 +28,7 @@ void main() {
 
   setUp(() async {
     tempRoot = await Directory.systemTemp.createTemp('namo_test_');
-    PathProviderPlatform.instance = _FakePathProvider(tempRoot);
+    PathProviderPlatform.instance = FakePathProviderPlatform(tempRoot);
   });
 
   tearDown(() async {
