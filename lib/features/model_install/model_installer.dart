@@ -11,13 +11,14 @@
 
 import 'dart:async';
 import 'dart:io';
+import 'dart:isolate';
 
+import 'package:amitabha/storage/model_paths.dart';
 import 'package:archive/archive.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 
-import 'package:amitabha/storage/model_paths.dart';
 import 'model_cleanup.dart';
 
 // ═══════════════════════════ 狀態與例外 ═══════════════════════════
@@ -274,7 +275,11 @@ class ModelInstaller {
 
   /// 解壓 zip、清理多餘檔案、驗證關鍵檔案,全部通過後才刪除 zip。
   ///
-  /// - [onProgress] 回報「檔案寫入」階段的 0.0~1.0(BZip2/Tar 解碼階段
+  /// 實作為「單一 isolate + 檔案串流」:bz2 先串流解成暫存 tar 檔,
+  /// 再逐項串流寫盤,記憶體峰值僅為緩衝區大小,與模型大小無關
+  /// (舊實作會把整包解壓內容全部載入記憶體,低階裝置有 OOM 風險)。
+  ///
+  /// - [onProgress] 回報「檔案寫入」階段的 0.0~1.0(BZip2 解碼階段
   ///   無法取得真實進度,解碼完成時會先回報 0.0,由 UI 層自行處理估算進度)。
   /// - 失敗處理:磁碟空間不足或使用者取消 → 保留 zip(可只重試解壓);
   ///   zip 損毀或驗證失敗 → 刪除 zip(需重新下載)。
@@ -285,47 +290,29 @@ class ModelInstaller {
   }) async {
     final zipPath = (await ModelPaths.archiveFile(modelName)).path;
     final destinationRoot = (await ModelPaths.root()).path;
+    final tempTarPath = '$zipPath.tar';
 
     try {
-      final files = await compute(
-        _decompressInIsolate,
-        _UnzipParams(zipPath, destinationRoot),
-      );
+      if (isCancelled?.call() ?? false) {
+        throw UserCancelledException();
+      }
 
-      onProgress?.call(0.0); // 解碼完成,進入檔案寫入階段
-
-      // 跳過清單:清理表裡「解壓後本來就要刪掉」的檔案,
-      // 直接不寫入磁碟,省下跨 isolate 複製 + 閃存寫入的時間。
+      // 跳過清單:清理表裡「解壓後本來就要刪掉」的檔案,直接不寫入磁碟
       final modelRootName = basenameWithoutExtension(
         basenameWithoutExtension(zipPath),
       );
       final skipPaths = deleteListFor(
         modelName,
-      ).map((rel) => normalize(join(modelRootName, rel))).toSet();
+      ).map((rel) => normalize(join(modelRootName, rel))).toList();
 
-      final filesToWrite = files.where((f) {
-        return !skipPaths.contains(normalize(f.name));
-      }).toList();
-
-      // 位元組加權進度以「實際要寫入的檔案」計算
-      final totalBytes = filesToWrite.fold<int>(
-        0,
-        (sum, f) => sum + (f.isFile ? f.size : 0),
+      await _runUnzipIsolate(
+        zipPath: zipPath,
+        destinationRoot: destinationRoot,
+        tempTarPath: tempTarPath,
+        skipPaths: skipPaths,
+        onProgress: onProgress,
+        isCancelled: isCancelled,
       );
-      int processedBytes = 0;
-
-      for (final file in filesToWrite) {
-        if (isCancelled?.call() ?? false) {
-          throw UserCancelledException();
-        }
-        await compute(_extractFileInIsolate, {
-          'file': file,
-          'destinationPath': destinationRoot,
-        });
-
-        processedBytes += file.isFile ? file.size : 0;
-        onProgress?.call(totalBytes > 0 ? processedBytes / totalBytes : 1.0);
-      }
 
       // 清理多餘檔案。跳過清單已讓這些檔案不存在,此呼叫通常無事可做,
       // 但萬一未來清單不同步仍能兜底。
@@ -339,31 +326,80 @@ class ModelInstaller {
       // 最終驗證:關鍵模型檔案必須齊全,才能宣告安裝成功
       final isComplete = await modelFilesComplete(modelName);
       if (!isComplete) {
-        throw const FileSystemException(
-          'Required model files missing after extraction',
-        );
+        await _safeDelete(zipPath); // 驗證失敗 → zip 不可信,重新下載
+        throw InstallException(InstallFailureReason.verificationFailed);
       }
 
       // 全部通過才刪 zip
       await _safeDelete(zipPath);
     } on UserCancelledException {
       rethrow; // 取消解壓 → zip 保留,之後可直接再解壓,不用重新下載
+    } on InstallException {
+      rethrow; // 已分類(worker 回報或驗證失敗),不再包一層
     } catch (e) {
       if (_looksLikeDiskFull(e)) {
         // 空間不足 → zip 保留,清出空間後可只重試解壓
         throw InstallException(InstallFailureReason.diskFull, e);
       }
-      // zip 損毀或驗證失敗 → zip 不可信,刪除後需重新下載
-      final verificationFailed = await modelFilesComplete(modelName) == false &&
-          e is FileSystemException &&
-          e.message.contains('missing after extraction');
-      await _safeDelete(zipPath);
-      throw InstallException(
-        verificationFailed
-            ? InstallFailureReason.verificationFailed
-            : InstallFailureReason.corruptedArchive,
-        e,
-      );
+      await _safeDelete(zipPath); // zip 損毀 → 刪除後需重新下載
+      throw InstallException(InstallFailureReason.corruptedArchive, e);
+    } finally {
+      await _safeDelete(tempTarPath); // 暫存 tar 一律清掉(成功時 worker 已自刪)
+    }
+  }
+
+  /// 啟動解壓 isolate 並轉送進度;取消時直接終止 isolate(zip 保留)。
+  Future<void> _runUnzipIsolate({
+    required String zipPath,
+    required String destinationRoot,
+    required String tempTarPath,
+    required List<String> skipPaths,
+    void Function(double progress)? onProgress,
+    bool Function()? isCancelled,
+  }) async {
+    final receivePort = ReceivePort();
+    final isolate = await Isolate.spawn(
+      _unzipWorker,
+      _UnzipWorkerArgs(
+        sendPort: receivePort.sendPort,
+        zipPath: zipPath,
+        destinationRoot: destinationRoot,
+        tempTarPath: tempTarPath,
+        skipPaths: skipPaths,
+      ),
+    );
+
+    try {
+      await for (final message in receivePort) {
+        if (isCancelled?.call() ?? false) {
+          isolate.kill(priority: Isolate.immediate);
+          throw UserCancelledException();
+        }
+        final m = message as List<Object?>;
+        switch (m[0] as String) {
+          case 'progress':
+            onProgress?.call(m[1]! as double);
+          case 'done':
+            return;
+          case 'error':
+            final diskFull = m[1]! as bool;
+            final description = m[2]! as String;
+            if (diskFull) {
+              throw InstallException(
+                InstallFailureReason.diskFull,
+                description,
+              );
+            }
+            throw InstallException(
+              InstallFailureReason.corruptedArchive,
+              description,
+            );
+        }
+      }
+      // port 意外關閉(isolate 崩潰)→ 視為壓縮檔損毀
+      throw InstallException(InstallFailureReason.corruptedArchive);
+    } finally {
+      receivePort.close();
     }
   }
 
@@ -387,33 +423,97 @@ class ModelInstaller {
   }
 }
 
-// ═══════════════════════════ isolate 工作函式 ═══════════════════════════
-// P5 預定改為單一 isolate 串流解壓;目前維持原本 compute 實作。
+// ═══════════════════════════ 解壓 isolate(串流實作) ═══════════════════════════
+// 全程只在單一 isolate 內進行,透過 SendPort 回報進度:
+//   ['progress', double]  ['done']  ['error', bool isDiskFull, String message]
 
-class _UnzipParams {
-  final String zipFilePath;
-  final String destinationPath;
-  _UnzipParams(this.zipFilePath, this.destinationPath);
+class _UnzipWorkerArgs {
+  final SendPort sendPort;
+  final String zipPath;
+  final String destinationRoot;
+  final String tempTarPath;
+  final List<String> skipPaths; // normalize 過的相對路徑
+
+  _UnzipWorkerArgs({
+    required this.sendPort,
+    required this.zipPath,
+    required this.destinationRoot,
+    required this.tempTarPath,
+    required this.skipPaths,
+  });
 }
 
-Future<List<ArchiveFile>> _decompressInIsolate(_UnzipParams params) async {
-  final bytes = File(params.zipFilePath).readAsBytesSync();
-  final tarBytes = BZip2Decoder().decodeBytes(bytes);
-  final tarArchive = TarDecoder().decodeBytes(tarBytes);
-  return tarArchive.files;
-}
+Future<void> _unzipWorker(_UnzipWorkerArgs args) async {
+  final send = args.sendPort;
+  try {
+    // ── 1) bz2 → 暫存 tar(串流,記憶體僅緩衝區大小) ──
+    final bz2Input = InputFileStream(args.zipPath);
+    final tarOutput = OutputFileStream(args.tempTarPath);
+    try {
+      BZip2Decoder().decodeStream(bz2Input, tarOutput);
+    } finally {
+      await bz2Input.close();
+      await tarOutput.close();
+    }
+    send.send(['progress', 0.0]); // 解碼完成,進入檔案寫入階段
 
-Future<void> _extractFileInIsolate(Map<String, dynamic> params) async {
-  final file = params['file'] as ArchiveFile;
-  final destinationPath = params['destinationPath'] as String;
-  final filename = file.name;
+    // ── 2) 讀 tar 目錄(內容惰性引用暫存檔,不載入記憶體) ──
+    final tarInput = InputFileStream(args.tempTarPath);
+    try {
+      final archive = TarDecoder().decodeStream(tarInput);
+      final skipSet = args.skipPaths.toSet();
 
-  if (file.isFile) {
-    final data = file.content as List<int>;
-    File(join(destinationPath, filename))
-      ..createSync(recursive: true)
-      ..writeAsBytesSync(data);
-  } else {
-    Directory(join(destinationPath, filename)).create(recursive: true);
+      final entries = archive.files.where((f) {
+        final name = normalize(f.name);
+        if (skipSet.contains(name)) return false;
+        // 防路徑跳脫:項目不得寫到目的資料夾之外
+        final dest = normalize(join(args.destinationRoot, name));
+        return isWithin(args.destinationRoot, dest);
+      }).toList();
+
+      final totalBytes = entries.fold<int>(
+        0,
+        (sum, f) => sum + (f.isFile ? f.size : 0),
+      );
+      int processedBytes = 0;
+
+      // ── 3) 逐項串流寫盤 ──
+      for (final entry in entries) {
+        final destPath = normalize(join(args.destinationRoot, entry.name));
+        if (!entry.isFile) {
+          await Directory(destPath).create(recursive: true);
+          continue;
+        }
+        await Directory(dirname(destPath)).create(recursive: true);
+        final out = OutputFileStream(destPath);
+        try {
+          entry.writeContent(out); // 從暫存 tar 串流到目的檔
+        } finally {
+          await out.close();
+        }
+        processedBytes += entry.size;
+        send.send([
+          'progress',
+          totalBytes > 0 ? processedBytes / totalBytes : 1.0,
+        ]);
+      }
+      if (totalBytes == 0) send.send(['progress', 1.0]);
+    } finally {
+      await tarInput.close();
+    }
+
+    // 成功:自刪暫存 tar(主 isolate 的 finally 仍會兜底)
+    try {
+      await File(args.tempTarPath).delete();
+    } catch (_) {}
+
+    send.send(['done']);
+  } catch (e) {
+    bool diskFull = false;
+    if (e is FileSystemException) {
+      final msg = (e.osError?.message ?? e.message).toLowerCase();
+      diskFull = msg.contains('no space left') || msg.contains('enospc');
+    }
+    send.send(['error', diskFull, e.toString()]);
   }
 }

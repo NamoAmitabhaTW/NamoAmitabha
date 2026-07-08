@@ -8,11 +8,11 @@
 
 import 'dart:async';
 
+import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
-import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'install_progress_model.dart';
 import 'model_installer.dart';
 import 'widgets/download_progress_dialog.dart';

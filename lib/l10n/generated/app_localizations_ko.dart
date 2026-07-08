@@ -116,7 +116,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get downloading => '다운로드 중';
 
   @override
-  String get unzipping => '압축 해제 중';
+  String get unzipping => '설치 중';
 
   @override
   String get completed => '완료됨';
@@ -258,6 +258,10 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get bgDownloadErrorGeneric => '다운로드에 실패했습니다. 나중에 다시 시도해 주세요.';
+
+  @override
+  String get bgDownloadErrorNotAvailable =>
+      '이 배경은 현재 다운로드할 수 없습니다. 제공이 중단되었거나 교체되었을 수 있습니다.';
 
   @override
   String get bgSettingSubtitle => '염불 배경 사용자 지정';

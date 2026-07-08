@@ -11,6 +11,15 @@ class Brand {
   static const seed  = Color(0xFF8C6A3F);
   static const lotusSeed = Color(0xFF009688); 
   static const lotusSurface = Color(0xFFF0FDF4); 
+
+  // ── 設定頁暖棕色系(原 settings_screen 內的硬編碼常數) ──
+  static const settingsBrown = Color(0xFF6F4E37); // 主要暖棕
+  static const settingsBrownSoft = Color(0xFF9A7B66); // 副標題 / 箭頭
+  static const settingsTitle = Color(0xFF3A2E25); // 標題深棕
+  static const settingsCardBg = Color(0xFFFDF8EE); // 暖白卡片,與米底同色溫
+  static const settingsIconBg = Color(0x1A6F4E37); // 暖棕 10%,圖示圓底
+  static const settingsDivider = Color(0x14000000); // 卡片內分隔線
+  static const settingsShadow = Color(0x0A000000); // 卡片陰影
   
   // 新增：取得對應風格的背景裝飾 (BoxDecoration)
   static BoxDecoration getBackgroundDecoration(AppThemeStyle style) {

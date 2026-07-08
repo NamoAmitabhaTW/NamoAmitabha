@@ -1,16 +1,18 @@
 // features/asr/screens/streaming_asr_screen.dart
-import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:provider/provider.dart';
+import 'dart:async';
+
 import 'package:amitabha/features/asr/application/asr_session_controller.dart';
+import 'package:amitabha/features/asr/widgets/chanting_background.dart';
+import 'package:amitabha/features/asr/widgets/liuli_button.dart';
+import 'package:amitabha/features/background/background_controller.dart';
 import 'package:amitabha/features/model_install/install_progress_model.dart';
 import 'package:amitabha/features/model_install/model_install_flow.dart';
 import 'package:amitabha/features/model_install/model_installer.dart';
 import 'package:amitabha/features/model_install/widgets/download_progress_dialog.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
-import 'package:amitabha/features/asr/widgets/chanting_background.dart';
-import 'package:amitabha/features/asr/widgets/liuli_button.dart';
-import 'package:amitabha/features/background/background_controller.dart';
+import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 
 class StreamingAsrScreen extends StatelessWidget {
   const StreamingAsrScreen({super.key});
@@ -20,13 +22,15 @@ class StreamingAsrScreen extends StatelessWidget {
   Future<void> _handleStart(BuildContext context) async {
     final asr = context.read<AsrSessionController>();
 
-    // 安裝已在進行中 → 重新開啟進度對話框即可
+    // 安裝已在進行中 → 重新開啟進度對話框即可(射後不理,對話框自行收合)
     final progressModel = context.read<InstallProgressModel>();
     if (progressModel.isBusy) {
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (_) => const DownloadProgressDialog(),
+      unawaited(
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (_) => const DownloadProgressDialog(),
+        ),
       );
       return;
     }

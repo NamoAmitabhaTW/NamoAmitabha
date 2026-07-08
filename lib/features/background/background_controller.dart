@@ -1,12 +1,20 @@
 // 背景狀態控制器(ChangeNotifier),對齊 theme_controller / locale_controller
 // amitabha/lib/features/background/background_controller.dart
-import 'package:flutter/foundation.dart';
+import 'dart:io'; // for SocketException
+
 import 'package:amitabha/features/background/background_item.dart';
 import 'package:amitabha/features/background/background_prefs.dart';
 import 'package:amitabha/features/background/background_repo.dart';
-import 'dart:io'; // for SocketException
+import 'package:flutter/foundation.dart';
 
-enum BackgroundDownloadError { network, unknown }
+enum BackgroundDownloadError {
+  network,
+
+  /// 4xx:素材已下架/連結失效等永久性錯誤,重試無意義
+  notAvailable,
+
+  unknown,
+}
 
 class BackgroundController extends ChangeNotifier {
   BackgroundController({BackgroundRepo? repo})
@@ -141,9 +149,7 @@ class BackgroundController extends ChangeNotifier {
       if (_cancelling.contains(item.id)) {
         return false; // 使用者主動取消,不算失敗、不提示
       }
-      lastDownloadError = e is SocketException
-          ? BackgroundDownloadError.network
-          : BackgroundDownloadError.unknown;
+      lastDownloadError = _classifyDownloadError(e);
       return false; // ← 失敗
     } finally {
       item.isDownloading = false;
@@ -151,6 +157,20 @@ class BackgroundController extends ChangeNotifier {
       _cancelling.remove(item.id);
       notifyListeners();
     }
+  }
+
+  /// 4xx(403/404 等)代表素材端的永久性問題,與網路波動區分開,
+  /// UI 才能給正確文案、不引導無意義的重試。
+  static BackgroundDownloadError _classifyDownloadError(Object e) {
+    if (e is SocketException) return BackgroundDownloadError.network;
+    if (e is HttpException) {
+      final match = RegExp(r'HTTP (\d{3})').firstMatch(e.message);
+      final code = int.tryParse(match?.group(1) ?? '');
+      if (code != null && code >= 400 && code < 500) {
+        return BackgroundDownloadError.notAvailable;
+      }
+    }
+    return BackgroundDownloadError.unknown;
   }
 
   void cancelDownload(BackgroundItem item) {

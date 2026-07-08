@@ -1,18 +1,11 @@
 //amitabha/lib/features/settings/screens/settings_screen.dart
+import 'package:amitabha/core/localization/locale_controller.dart';
+import 'package:amitabha/core/theme/brand.dart';
 import 'package:amitabha/features/background/background_picker_screen.dart';
+import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:amitabha/l10n/generated/app_localizations.dart';
-import 'package:amitabha/core/localization/locale_controller.dart';
 
-// 暖棕色系（建議日後抽到 theme / AppColors 統一管理）
-const _kBrown = Color(0xFF6F4E37); // 主要暖棕
-const _kBrownSoft = Color(0xFF9A7B66); // 副標題 / 箭頭
-const _kTitle = Color(0xFF3A2E25); // 標題深棕
-const _kCardBg = Color(0xFFFDF8EE); // 暖白卡片，與米底同色溫
-const _kIconBg = Color(0x1A6F4E37); // 暖棕 10%，圖示圓底
-const _kDivider = Color(0x14000000); // 卡片內分隔線
-const _kShadow = Color(0x0A000000); // 卡片陰影
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -99,7 +92,7 @@ class SettingsScreen extends StatelessWidget {
               leading: const Icon(Icons.settings_backup_restore),
               title: Text(t.langFollowSystem),
               trailing: current == null
-                  ? const Icon(Icons.check, color: _kBrown)
+                  ? const Icon(Icons.check, color: Brand.settingsBrown)
                   : null,
               onTap: () {
                 ctrl.useSystem();
@@ -113,7 +106,7 @@ class SettingsScreen extends StatelessWidget {
                 leading: const Icon(Icons.translate),
                 title: Text(lang.endonym),
                 trailing: _isCurrent(current, lang)
-                    ? const Icon(Icons.check, color: _kBrown)
+                    ? const Icon(Icons.check, color: Brand.settingsBrown)
                     : null,
                 onTap: () {
                   ctrl.setLanguage(lang.code);
@@ -149,17 +142,17 @@ class _SettingsGroup extends StatelessWidget {
             height: 1,
             thickness: 1,
             indent: 72, // 對齊文字起點，分隔線不切過圖示
-            color: _kDivider,
+            color: Brand.settingsDivider,
           ),
         );
       }
     }
     return Container(
       decoration: BoxDecoration(
-        color: _kCardBg,
+        color: Brand.settingsCardBg,
         borderRadius: BorderRadius.circular(16),
         boxShadow: const [
-          BoxShadow(color: _kShadow, blurRadius: 10, offset: Offset(0, 2)),
+          BoxShadow(color: Brand.settingsShadow, blurRadius: 10, offset: Offset(0, 2)),
         ],
       ),
       child: ClipRRect(
@@ -198,10 +191,10 @@ class _SettingTile extends StatelessWidget {
                 width: 40,
                 height: 40,
                 decoration: const BoxDecoration(
-                  color: _kIconBg,
+                  color: Brand.settingsIconBg,
                   shape: BoxShape.circle,
                 ),
-                child: Icon(icon, color: _kBrown, size: 22),
+                child: Icon(icon, color: Brand.settingsBrown, size: 22),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -213,7 +206,7 @@ class _SettingTile extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
-                        color: _kTitle,
+                        color: Brand.settingsTitle,
                       ),
                     ),
                     if (value != null) ...[
@@ -222,14 +215,14 @@ class _SettingTile extends StatelessWidget {
                         value!,
                         style: const TextStyle(
                           fontSize: 14,
-                          color: _kBrownSoft,
+                          color: Brand.settingsBrownSoft,
                         ),
                       ),
                     ],
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right, color: _kBrownSoft, size: 24),
+              const Icon(Icons.chevron_right, color: Brand.settingsBrownSoft, size: 24),
             ],
           ),
         ),

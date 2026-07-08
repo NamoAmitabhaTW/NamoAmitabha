@@ -117,7 +117,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get downloading => 'Téléchargement';
 
   @override
-  String get unzipping => 'Décompression';
+  String get unzipping => 'Installation';
 
   @override
   String get completed => 'Terminé';
@@ -266,6 +266,10 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get bgDownloadErrorGeneric =>
       'Échec du téléchargement. Veuillez réessayer plus tard.';
+
+  @override
+  String get bgDownloadErrorNotAvailable =>
+      'Cet arrière-plan ne peut pas être téléchargé pour le moment. Il a peut-être été retiré ou remplacé.';
 
   @override
   String get bgSettingSubtitle => 'Personnaliser l\'arrière-plan de récitation';

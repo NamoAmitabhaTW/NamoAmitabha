@@ -1,9 +1,10 @@
 // lib/features/model_install/widgets/download_progress_dialog.dart
 import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+
 import 'package:amitabha/features/model_install/install_progress_model.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DownloadProgressDialog extends StatelessWidget {
   const DownloadProgressDialog({super.key});
@@ -18,16 +19,17 @@ class DownloadProgressDialog extends StatelessWidget {
         builder: (context, m, child) {
           final downloading = m.progress > 0.0 && m.progress < 1.0;
           final unzipping = m.unzipProgress > 0.0 && m.unzipProgress < 1.0;
-          final done = m.progress >= 1.0 && m.unzipProgress >= 1.0;
-          final idle = !downloading && !unzipping && !done;
+          // 任一有進度(含收尾的 100%)都算進行中;全部歸零才是「準備中」。
+          final active = m.progress > 0.0 || m.unzipProgress > 0.0;
+          final idle = !active;
 
           final showingValue = downloading
               ? m.progress
-              : (unzipping ? m.unzipProgress : 0.0);
+              : (m.unzipProgress > 0.0 ? m.unzipProgress : 0.0);
 
           final label = downloading
               ? t.downloading
-              : (unzipping ? t.unzipping : (done ? t.completed : t.preparing));
+              : (active ? t.unzipping : t.preparing);
 
           return Column(
             mainAxisSize: MainAxisSize.min,
@@ -58,13 +60,15 @@ class DownloadProgressDialog extends StatelessWidget {
         Consumer<InstallProgressModel>(
           builder: (context, m, child) {
             final downloading = m.progress > 0.0 && m.progress < 1.0;
-            final unzipping = m.unzipProgress > 0.0 && m.unzipProgress < 1.0;
-            final busy = downloading || unzipping;
+            // 收尾瞬間(unzip=1.0)顯示 spinner 而非確定鈕,避免主流程完成時
+            // 閃現確定鈕(隨即被成功對話框取代,造成使用者混亂);
+            // 全部歸零(重開的進度框在安裝完成後)才顯示確定鈕供手動關閉。
+            final active = m.progress > 0.0 || m.unzipProgress > 0.0;
 
             return Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if (!busy)
+                if (!active)
                   SizedBox(
                     width: 200,
                     height: 60,

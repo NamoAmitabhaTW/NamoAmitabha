@@ -1,9 +1,11 @@
 // amitabha/lib/features/background/background_repo.dart
 import 'dart:convert';
 import 'dart:io';
-import 'package:http/http.dart' as http;
-import 'package:amitabha/storage/app_paths.dart';
+
 import 'package:amitabha/features/background/background_item.dart';
+import 'package:amitabha/storage/app_paths.dart';
+import 'package:amitabha/storage/atomic_io.dart';
+import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as p;
 
 class BackgroundRepo {
@@ -32,10 +34,11 @@ class BackgroundRepo {
     final items = data
         .map((e) => BackgroundItem.fromJson(e as Map<String, dynamic>))
         .toList();
-    // 成功解析後才覆寫快取,避免壞資料蓋掉上次的好資料
+    // 成功解析後才覆寫快取,避免壞資料蓋掉上次的好資料;
+    // 原子寫入,寫到一半中斷也不會留下半套快取
     try {
       final f = await _manifestCacheFile();
-      await f.writeAsString(raw, flush: true);
+      await atomicWriteJson(f, data);
     } catch (_) {}
     return items;
   }

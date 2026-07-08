@@ -12,17 +12,16 @@
 
 import 'dart:async';
 
-import 'package:flutter/widgets.dart';
-import 'package:wakelock_plus/wakelock_plus.dart';
-
-import 'package:amitabha/features/asr/domain/amitabha_normalizer.dart';
 import 'package:amitabha/core/utils/date_format.dart';
+import 'package:amitabha/features/asr/domain/amitabha_normalizer.dart';
 import 'package:amitabha/storage/buffered_hits.dart';
 import 'package:amitabha/storage/daily_repo.dart';
 import 'package:amitabha/storage/hit_logger.dart';
 import 'package:amitabha/storage/models.dart';
 import 'package:amitabha/storage/pending_commits.dart';
 import 'package:amitabha/storage/session_repo.dart';
+import 'package:flutter/widgets.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 /// 本 App 使用的 ASR 模型。
 const String kAsrModelName =

@@ -117,7 +117,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get downloading => 'Downloading';
 
   @override
-  String get unzipping => 'Unzipping';
+  String get unzipping => 'Installing';
 
   @override
   String get completed => 'Completed';
@@ -264,6 +264,10 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String get bgDownloadErrorGeneric =>
       'Download failed. Please try again later.';
+
+  @override
+  String get bgDownloadErrorNotAvailable =>
+      'This background can\'t be downloaded right now. It may have been removed or replaced.';
 
   @override
   String get bgSettingSubtitle => 'Customize chanting background';
@@ -425,7 +429,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get downloading => '下載中';
 
   @override
-  String get unzipping => '解壓縮中';
+  String get unzipping => '安裝中';
 
   @override
   String get completed => '完成';
@@ -438,7 +442,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String doNotOperateDuring(String phase) {
-    return '「$phase」過程請保持在此畫面，\n請勿進行切換 App、關閉螢幕等任何操作。';
+    return '「$phase」過程請保持在此畫面，\n請勿切換 App、關閉螢幕等任何操作。';
   }
 
   @override
@@ -566,6 +570,9 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get bgDownloadErrorGeneric => '下載失敗，請稍後再試。';
+
+  @override
+  String get bgDownloadErrorNotAvailable => '此背景目前無法下載，可能已下架或更換。';
 
   @override
   String get bgSettingSubtitle => '自訂頁面背景';

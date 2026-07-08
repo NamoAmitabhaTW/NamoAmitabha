@@ -1,14 +1,14 @@
 // lib/home/presentation/home_shell.dart
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:amitabha/l10n/generated/app_localizations.dart';
-import 'package:amitabha/features/asr/application/asr_session_controller.dart';
-import 'package:amitabha/features/asr/screens/streaming_asr_screen.dart';
-import 'package:amitabha/features/records/screens/records_screen.dart';
-import 'package:amitabha/features/settings/screens/settings_screen.dart';
 import 'package:amitabha/core/theme/brand.dart';
 import 'package:amitabha/core/theme/theme_controller.dart';
+import 'package:amitabha/features/asr/application/asr_session_controller.dart';
+import 'package:amitabha/features/asr/screens/streaming_asr_screen.dart';
 import 'package:amitabha/features/home/widgets/glass_nav_bar.dart';
+import 'package:amitabha/features/records/screens/records_screen.dart';
+import 'package:amitabha/features/settings/screens/settings_screen.dart';
+import 'package:amitabha/l10n/generated/app_localizations.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeShell extends StatefulWidget {
   const HomeShell({super.key});

@@ -1,16 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter_test/flutter_test.dart';
-import 'package:path/path.dart' as p;
-import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
-
 import 'package:amitabha/storage/app_paths.dart';
 import 'package:amitabha/storage/atomic_io.dart';
 import 'package:amitabha/storage/daily_repo.dart';
 import 'package:amitabha/storage/hit_logger.dart';
+import 'package:amitabha/storage/json_prefs_file.dart';
 import 'package:amitabha/storage/models.dart';
 import 'package:amitabha/storage/session_repo.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 
 import 'helpers/fake_path_provider.dart';
 
@@ -100,5 +100,22 @@ void main() {
     await atomicWriteJson(file, {'a': 1});
     final j = await readJsonOrEmpty(file);
     expect(j['a'], 1);
+  });
+
+  test('JsonPrefsFile 寫入/讀回往返', () async {
+    final prefs = JsonPrefsFile('test_prefs');
+    expect(await prefs.read(), isNull); // 尚未寫過 → null
+
+    await prefs.write({'theme_style': 'zenWood', 'n': 3});
+    final j = await prefs.read();
+    expect(j?['theme_style'], 'zenWood');
+    expect(j?['n'], 3);
+  });
+
+  test('JsonPrefsFile 檔案損毀 → 回 null 不拋錯', () async {
+    final prefs = JsonPrefsFile('broken_prefs');
+    final f = await prefs.file();
+    await f.writeAsString('{oops not json');
+    expect(await prefs.read(), isNull);
   });
 }

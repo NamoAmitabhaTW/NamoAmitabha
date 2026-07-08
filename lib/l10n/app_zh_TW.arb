@@ -140,11 +140,11 @@
   },
   "pleaseWait": "請稍候",
   "downloading": "下載中",
-  "unzipping": "解壓縮中",
+  "unzipping": "安裝中",
   "completed": "完成",
   "preparing": "準備中",
   "preparingPleaseWait": "正在準備，請稍候…",
-  "doNotOperateDuring": "「{phase}」過程請保持在此畫面，\n請勿進行切換 App、關閉螢幕等任何操作。",
+  "doNotOperateDuring": "「{phase}」過程請保持在此畫面，\n請勿切換 App、關閉螢幕等任何操作。",
   "@doNotOperateDuring": {
     "description": "Shown like: Please do not perform any operations during Downloading/Unzipping",
     "placeholders": {
@@ -228,6 +228,7 @@
   "bgOfflineBody": "連接網路，即可下載背景素材。",
   "bgDownloadErrorNetwork": "網路未連線，無法下載背景。",
   "bgDownloadErrorGeneric": "下載失敗，請稍後再試。",
+  "bgDownloadErrorNotAvailable": "此背景目前無法下載，可能已下架或更換。",
   "bgSettingSubtitle": "自訂頁面背景",
   "langFollowSystem": "跟隨系統",
   "langFollowSystemWith": "跟隨系統（{name}）",

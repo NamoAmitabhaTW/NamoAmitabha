@@ -117,7 +117,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get downloading => 'Đang tải xuống';
 
   @override
-  String get unzipping => 'Đang giải nén';
+  String get unzipping => 'Đang cài đặt';
 
   @override
   String get completed => 'Hoàn tất';
@@ -263,6 +263,10 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get bgDownloadErrorGeneric =>
       'Tải xuống thất bại. Vui lòng thử lại sau.';
+
+  @override
+  String get bgDownloadErrorNotAvailable =>
+      'Hiện không thể tải hình nền này. Có thể đã bị gỡ hoặc thay thế.';
 
   @override
   String get bgSettingSubtitle => 'Tùy chỉnh hình nền niệm Phật';

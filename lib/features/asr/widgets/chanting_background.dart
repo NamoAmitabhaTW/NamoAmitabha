@@ -1,7 +1,7 @@
 // features/asr/widgets/chanting_background.dart
+import 'package:amitabha/features/background/background_item.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
-import 'package:amitabha/features/background/background_item.dart';
 
 /// 念佛頁背景。來源由 BackgroundController.currentSource 提供,
 /// 可能是內建 asset 或下載到本地的 File,影片/圖片皆支援。

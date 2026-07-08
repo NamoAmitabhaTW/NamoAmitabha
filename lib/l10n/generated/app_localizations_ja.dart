@@ -116,7 +116,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get downloading => 'ダウンロード中';
 
   @override
-  String get unzipping => '解凍中';
+  String get unzipping => 'インストール中';
 
   @override
   String get completed => '完了';
@@ -258,6 +258,10 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get bgDownloadErrorGeneric => 'ダウンロードに失敗しました。後でもう一度お試しください。';
+
+  @override
+  String get bgDownloadErrorNotAvailable =>
+      'この背景は現在ダウンロードできません。提供終了または差し替えの可能性があります。';
 
   @override
   String get bgSettingSubtitle => '念仏の背景をカスタマイズ';

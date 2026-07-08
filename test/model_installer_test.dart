@@ -4,15 +4,14 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:amitabha/features/model_install/model_installer.dart';
+import 'package:amitabha/storage/model_paths.dart';
 import 'package:archive/archive.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
-
-import 'package:amitabha/features/model_install/model_installer.dart';
-import 'package:amitabha/storage/model_paths.dart';
 
 import 'helpers/fake_path_provider.dart';
 

@@ -117,7 +117,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get downloading => 'Downloading';
 
   @override
-  String get unzipping => 'Unzipping';
+  String get unzipping => 'Installing';
 
   @override
   String get completed => 'Completed';
@@ -264,6 +264,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get bgDownloadErrorGeneric =>
       'Download failed. Please try again later.';
+
+  @override
+  String get bgDownloadErrorNotAvailable =>
+      'This background can\'t be downloaded right now. It may have been removed or replaced.';
 
   @override
   String get bgSettingSubtitle => 'Customize chanting background';

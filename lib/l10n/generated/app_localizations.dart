@@ -328,7 +328,7 @@ abstract class AppLocalizations {
   /// No description provided for @unzipping.
   ///
   /// In en, this message translates to:
-  /// **'Unzipping'**
+  /// **'Installing'**
   String get unzipping;
 
   /// No description provided for @completed.
@@ -582,6 +582,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Download failed. Please try again later.'**
   String get bgDownloadErrorGeneric;
+
+  /// No description provided for @bgDownloadErrorNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'This background can\'t be downloaded right now. It may have been removed or replaced.'**
+  String get bgDownloadErrorNotAvailable;
 
   /// No description provided for @bgSettingSubtitle.
   ///

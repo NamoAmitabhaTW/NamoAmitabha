@@ -1,8 +1,8 @@
 // amitabha/lib/features/background/widgets/background_card.dart
-import 'package:flutter/material.dart';
 import 'package:amitabha/features/background/background_item.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 
 // ── 色彩 tokens ──(略,維持原樣)
 const _kBrown = Color(0xFF6F4E37);

@@ -1,10 +1,10 @@
 // amitabha/lib/features/background/screens/background_picker_screen.dart
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:amitabha/features/background/background_controller.dart';
 import 'package:amitabha/features/background/background_item.dart';
 import 'package:amitabha/features/background/widgets/background_card.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class BackgroundPickerScreen extends StatefulWidget {
   const BackgroundPickerScreen({super.key});
@@ -110,18 +110,24 @@ class _BackgroundPickerScreenState extends State<BackgroundPickerScreen> {
     final ok = await c.download(item);
     if (!ok && c.lastDownloadError != null && context.mounted) {
       final t = AppLocalizations.of(context);
-      final msg = switch (c.lastDownloadError!) {
+      final error = c.lastDownloadError!;
+      final msg = switch (error) {
         BackgroundDownloadError.network => t.bgDownloadErrorNetwork,
+        BackgroundDownloadError.notAvailable => t.bgDownloadErrorNotAvailable,
         BackgroundDownloadError.unknown => t.bgDownloadErrorGeneric,
       };
+      // 永久性錯誤(素材下架/連結失效)不給重試鈕,重試無意義
+      final retryable = error != BackgroundDownloadError.notAvailable;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(msg),
           behavior: SnackBarBehavior.floating,
-          action: SnackBarAction(
-            label: t.retry,
-            onPressed: () => _handleDownload(context, c, item),
-          ),
+          action: retryable
+              ? SnackBarAction(
+                  label: t.retry,
+                  onPressed: () => _handleDownload(context, c, item),
+                )
+              : null,
         ),
       );
     }

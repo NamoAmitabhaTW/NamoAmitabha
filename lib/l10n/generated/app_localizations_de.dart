@@ -117,7 +117,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get downloading => 'Wird heruntergeladen';
 
   @override
-  String get unzipping => 'Wird entpackt';
+  String get unzipping => 'Wird installiert';
 
   @override
   String get completed => 'Abgeschlossen';
@@ -266,6 +266,10 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get bgDownloadErrorGeneric =>
       'Download fehlgeschlagen. Bitte versuchen Sie es später erneut.';
+
+  @override
+  String get bgDownloadErrorNotAvailable =>
+      'Dieser Hintergrund kann derzeit nicht heruntergeladen werden. Er wurde möglicherweise entfernt oder ersetzt.';
 
   @override
   String get bgSettingSubtitle => 'Rezitations-Hintergrund anpassen';
