@@ -104,7 +104,7 @@ flutter:
   generate: true 
 
   assets:
-    - assets/hotwords_zh.txt
+    - assets/hotwords.txt
     - assets/images/amitabha_calligraphy.png
     - assets/images/amitabha_calligraphy_ja.png
     - assets/images/amitabha_calligraphy_sa.png
@@ -112,6 +112,11 @@ flutter:
     - assets/images/amitabha_calligraphy_ko.png
     - assets/videos/bg_mountain_stream.mp4
     - assets/images/bg_mountain_stream.png
+    - assets/sherpa-onnx/encoder.int8.onnx
+    - assets/sherpa-onnx/decoder.onnx
+    - assets/sherpa-onnx/joiner.int8.onnx
+    - assets/sherpa-onnx/tokens.txt
+    - assets/sherpa-onnx/bpe.vocab
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

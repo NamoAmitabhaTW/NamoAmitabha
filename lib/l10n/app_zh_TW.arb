@@ -180,6 +180,7 @@
   "close": "關閉",
   "retryUnzip": "重試解壓",
   "downloadFailedShort": "模型下載失敗，請稍後再試或重試。",
+  "modelPrepareFailed": "語音辨識模型安裝失敗，請確認裝置儲存空間足夠後再試。",
   "retry": "重試",
   "feedbackOpenMailAppFailed": "無法開啟郵件 App",
   "appName": "念佛",

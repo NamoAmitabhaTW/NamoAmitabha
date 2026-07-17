@@ -179,6 +179,10 @@ class AppLocalizationsFr extends AppLocalizations {
       'Échec du téléchargement du modèle. Veuillez réessayer plus tard.';
 
   @override
+  String get modelPrepareFailed =>
+      'Échec de l\'installation du modèle de reconnaissance vocale. Veuillez vérifier que votre appareil dispose de suffisamment d\'espace de stockage, puis réessayez.';
+
+  @override
   String get retry => 'Réessayer';
 
   @override

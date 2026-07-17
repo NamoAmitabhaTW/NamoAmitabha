@@ -179,6 +179,10 @@ class AppLocalizationsZh extends AppLocalizations {
       'Model download failed. Please try again later.';
 
   @override
+  String get modelPrepareFailed =>
+      'Speech recognition model installation failed. Please make sure your device has enough storage space and try again.';
+
+  @override
   String get retry => 'Retry';
 
   @override
@@ -488,6 +492,9 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get downloadFailedShort => '模型下載失敗，請稍後再試或重試。';
+
+  @override
+  String get modelPrepareFailed => '語音辨識模型安裝失敗，請確認裝置儲存空間足夠後再試。';
 
   @override
   String get retry => '重試';

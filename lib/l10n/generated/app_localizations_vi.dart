@@ -179,6 +179,10 @@ class AppLocalizationsVi extends AppLocalizations {
       'Tải mô hình thất bại. Vui lòng thử lại sau.';
 
   @override
+  String get modelPrepareFailed =>
+      'Cài đặt mô hình nhận dạng giọng nói thất bại. Vui lòng đảm bảo thiết bị còn đủ dung lượng lưu trữ rồi thử lại.';
+
+  @override
   String get retry => 'Thử lại';
 
   @override

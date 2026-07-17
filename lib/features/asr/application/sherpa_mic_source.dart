@@ -15,6 +15,7 @@ import 'dart:async';
 
 import 'package:amitabha/core/utils/audio_convert.dart';
 import 'package:amitabha/features/model_install/asr_hotwords.dart';
+import 'package:amitabha/features/model_install/bundled_model.dart';
 import 'package:amitabha/features/model_install/online_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:record/record.dart';
@@ -25,19 +26,34 @@ import 'asr_session_controller.dart' show SpeechSegmentSource, kAsrModelName;
 Future<sherpa_onnx.OnlineRecognizer> createOnlineRecognizer(
   String modelName,
 ) async {
+  // 內建模型:確保 assets 已複製到磁碟(冪等;首次以外皆為 no-op),
+  // 之後 getModelConfigByModelName 指向的落地路徑才會存在。
+  await materializeBundledModel(modelName);
   final localModelConfig = await getModelConfigByModelName(
     modelName: modelName,
   );
+  // ⚠️ hotwords 檔裡的每個 token 都必須切得出「當前模型的 tokens.txt」裡的 piece,
+  //    否則建 hotword graph 時會報錯甚至崩潰。此模型走 bpe(見 online_model.dart),
+  //    中文須逐字空白分隔才會編成「▁字」;hotwords.txt 已依此格式撰寫。
+  //    hotwords 必須搭配 modified_beam_search 解碼才會生效。
   final hotwordsPath = await materializeHotwordsFile();
   final config = sherpa_onnx.OnlineRecognizerConfig(
     model: localModelConfig,
     ruleFsts: '',
     decodingMethod: 'modified_beam_search',
+    // 熱詞「只保留難辨變體」(見 assets/hotwords.txt):標準「阿弥陀佛」模型本來
+    // 就聽得很準,對它加成反而會重複多吐(實測 10 聲被吐成 12);故主佛號不列入,
+    // 只用低加成接住口音近音(欧米斗魂等)與日/梵/越/韓羅馬拼音念法。
+    // hotwordsScore 是未標分數者的預設;目前每條都自帶低分,這裡放低值兜底。
     hotwordsFile: hotwordsPath,
-    hotwordsScore: 3,
+    hotwordsScore: 1.0,
     enableEndpoint: true,
-    rule2MinTrailingSilence: 1.2,
-    rule3MinUtteranceLength: 30,
+    maxActivePaths: 8,
+    blankPenalty: 1.2,
+    // 0.6 太短:念到一半的短停頓就觸發端點,把一句「omito」切成「omi」+「to」
+    // 兩半都不成詞而掉數。拉到 1.0 讓端點別在字中間切(代價:段落收尾稍慢)。
+    rule2MinTrailingSilence: 1.0,
+    rule3MinUtteranceLength: 20,
   );
 
   return sherpa_onnx.OnlineRecognizer(config);
@@ -55,6 +71,11 @@ class SherpaMicSource implements SpeechSegmentSource {
   sherpa_onnx.OnlineStream? _stream;
   StreamSubscription<Uint8List>? _subscription;
   bool _running = false;
+
+  // ── 診斷用(排查梵/英漏辨識;確認病因後可整段移除) ──
+  int _dbgDecodeMs = 0; // 累計解碼耗時
+  double _dbgAudioMs = 0; // 累計餵入的音訊時長
+  int _dbgEmptyEndpoints = 0; // 端點觸發但辨識為空(模型漏辨識)的次數
 
   @override
   Future<bool> hasPermission() => _recorder.hasPermission();
@@ -81,6 +102,11 @@ class SherpaMicSource implements SpeechSegmentSource {
     );
     final audio = await _recorder.startStream(config);
 
+    // 診斷計數歸零,讓每次錄音的 RTF/空端點統計獨立
+    _dbgDecodeMs = 0;
+    _dbgAudioMs = 0;
+    _dbgEmptyEndpoints = 0;
+
     _running = true;
     _subscription = audio.listen(
       (data) {
@@ -92,15 +118,30 @@ class SherpaMicSource implements SpeechSegmentSource {
 
         final samples = convertBytesToFloat32(Uint8List.fromList(data));
         stream.acceptWaveform(samples: samples, sampleRate: _sampleRate);
+
+        // 診斷:量測解碼耗時 vs 音訊時長,累計算 RTF(即時率)。
+        final sw = Stopwatch()..start();
         while (recognizer.isReady(stream)) {
           recognizer.decode(stream);
         }
+        sw.stop();
+        _dbgDecodeMs += sw.elapsedMilliseconds;
+        _dbgAudioMs += samples.length / _sampleRate * 1000;
+
         final text = recognizer.getResult(stream).text;
         if (recognizer.isEndpoint(stream)) {
           recognizer.reset(stream);
+          // RTF>1 代表解碼跟不上即時音訊 → 麥克風緩衝可能溢出丟音訊。
+          final rtf = _dbgAudioMs > 0 ? _dbgDecodeMs / _dbgAudioMs : 0;
+          final rtfStr = rtf.toStringAsFixed(2);
           if (text != '') {
-            debugPrint('[ASR] =$text');
+            debugPrint('[ASR] =$text  [RTF=$rtfStr]');
             onSegment(text);
+          } else {
+            _dbgEmptyEndpoints++;
+            debugPrint(
+              '[ASR] (空端點#$_dbgEmptyEndpoints — 有端點但辨識為空,模型漏辨識或未出聲)  [RTF=$rtfStr]',
+            );
           }
         }
       },

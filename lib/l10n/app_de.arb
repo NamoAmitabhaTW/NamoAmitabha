@@ -180,6 +180,7 @@
   "close": "Schließen",
   "retryUnzip": "Entpacken wiederholen",
   "downloadFailedShort": "Modell-Download fehlgeschlagen. Bitte versuchen Sie es später erneut.",
+  "modelPrepareFailed": "Installation des Spracherkennungsmodells fehlgeschlagen. Bitte stellen Sie sicher, dass genügend Speicherplatz auf dem Gerät vorhanden ist, und versuchen Sie es erneut.",
   "retry": "Wiederholen",
   "feedbackOpenMailAppFailed": "Mail-App konnte nicht geöffnet werden",
   "appName": "Amitabha",

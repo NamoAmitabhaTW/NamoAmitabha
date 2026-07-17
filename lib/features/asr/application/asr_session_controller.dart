@@ -25,7 +25,7 @@ import 'package:wakelock_plus/wakelock_plus.dart';
 
 /// 本 App 使用的 ASR 模型。
 const String kAsrModelName =
-    'sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20';
+    'sherpa-onnx-x-asr-960ms-streaming-zipformer-transducer-zh-en-punct-int8-2026-06-05';
 
 /// 尚未有帳號系統,本機使用者的固定識別(未來接帳號時只改這裡)。
 const String kLocalUserId = 'local';

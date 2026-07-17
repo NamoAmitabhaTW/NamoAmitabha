@@ -180,6 +180,7 @@
   "close": "Đóng",
   "retryUnzip": "Thử giải nén lại",
   "downloadFailedShort": "Tải mô hình thất bại. Vui lòng thử lại sau.",
+  "modelPrepareFailed": "Cài đặt mô hình nhận dạng giọng nói thất bại. Vui lòng đảm bảo thiết bị còn đủ dung lượng lưu trữ rồi thử lại.",
   "retry": "Thử lại",
   "feedbackOpenMailAppFailed": "Không thể mở ứng dụng email",
   "appName": "Niệm Phật",

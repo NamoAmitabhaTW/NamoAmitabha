@@ -180,6 +180,7 @@
   "close": "Close",
   "retryUnzip": "Retry unzip",
   "downloadFailedShort": "Model download failed. Please try again later.",
+  "modelPrepareFailed": "Speech recognition model installation failed. Please make sure your device has enough storage space and try again.",
   "retry": "Retry",
   "feedbackOpenMailAppFailed": "Could not open mail app",
   "appName": "Amitabha Buddha",

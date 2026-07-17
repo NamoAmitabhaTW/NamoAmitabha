@@ -177,6 +177,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get downloadFailedShort => 'モデルのダウンロードに失敗しました。後でもう一度お試しください。';
 
   @override
+  String get modelPrepareFailed =>
+      '音声認識モデルのインストールに失敗しました。デバイスの空き容量が十分にあることを確認してから、もう一度お試しください。';
+
+  @override
   String get retry => '再試行';
 
   @override

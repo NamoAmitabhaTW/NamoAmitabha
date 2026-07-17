@@ -179,6 +179,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Model download failed. Please try again later.';
 
   @override
+  String get modelPrepareFailed =>
+      'Speech recognition model installation failed. Please make sure your device has enough storage space and try again.';
+
+  @override
   String get retry => 'Retry';
 
   @override

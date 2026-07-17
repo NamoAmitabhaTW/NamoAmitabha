@@ -5,10 +5,7 @@ import 'package:amitabha/features/asr/application/asr_session_controller.dart';
 import 'package:amitabha/features/asr/widgets/chanting_background.dart';
 import 'package:amitabha/features/asr/widgets/liuli_button.dart';
 import 'package:amitabha/features/background/background_controller.dart';
-import 'package:amitabha/features/model_install/install_progress_model.dart';
-import 'package:amitabha/features/model_install/model_install_flow.dart';
-import 'package:amitabha/features/model_install/model_installer.dart';
-import 'package:amitabha/features/model_install/widgets/download_progress_dialog.dart';
+import 'package:amitabha/features/model_install/bundled_model.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -18,31 +15,17 @@ class StreamingAsrScreen extends StatelessWidget {
   const StreamingAsrScreen({super.key});
 
   /// 「開始」按下後的前置流程:模型就緒 → 麥克風權限 → 開始錄音。
-  /// 模型安裝的對話框在 ModelInstallFlow 內;這裡只處理權限引導。
+  /// 模型為內建;首次使用需把 assets 複製到磁碟,這裡只處理該複製與權限引導。
   Future<void> _handleStart(BuildContext context) async {
     final asr = context.read<AsrSessionController>();
 
-    // 安裝已在進行中 → 重新開啟進度對話框即可(射後不理,對話框自行收合)
-    final progressModel = context.read<InstallProgressModel>();
-    if (progressModel.isBusy) {
-      unawaited(
-        showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (_) => const DownloadProgressDialog(),
-        ),
-      );
-      return;
-    }
-
-    // 模型缺件 → 走安裝流程;安裝完成後由使用者再按一次「開始」
-    final installer = ModelInstaller();
-    if (await installer.status(kAsrModelName) != InstallStatus.ready) {
+    // 內建模型:首次使用需把 assets 複製到磁碟(約數百 MB,需數秒)。
+    // 準備完成後不中斷,直接續跑權限確認與開始,避免使用者還要再按一次「開始」。
+    if (!await bundledModelReady(kAsrModelName)) {
       if (!context.mounted) return;
-      await ModelInstallFlow(
-        installer: installer,
-      ).ensureReady(context, kAsrModelName);
-      return;
+      final ready = await _prepareBundledModel(context);
+      if (!ready) return; // 準備失敗:已顯示錯誤對話框
+      if (!context.mounted) return;
     }
 
     // 先觸發系統原生權限(第一次會跳 iOS/Android 原生彈窗);
@@ -55,6 +38,60 @@ class StreamingAsrScreen extends StatelessWidget {
     }
 
     await asr.start();
+  }
+
+  /// 首次使用時把內建模型從 assets 複製到磁碟,期間顯示不可關閉的準備對話框。
+  /// 回傳 true 表示準備成功(可續跑權限與開始),false 表示失敗(已顯示錯誤)。
+  Future<bool> _prepareBundledModel(BuildContext context) async {
+    final t = AppLocalizations.of(context);
+
+    unawaited(showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => PopScope(
+        canPop: false,
+        child: AlertDialog(
+          content: Row(
+            children: [
+              const SizedBox(
+                width: 24,
+                height: 24,
+                child: CircularProgressIndicator(strokeWidth: 3),
+              ),
+              const SizedBox(width: 20),
+              Expanded(child: Text(t.preparingPleaseWait)),
+            ],
+          ),
+        ),
+      ),
+    ));
+
+    try {
+      await materializeBundledModel(kAsrModelName);
+    } catch (_) {
+      if (context.mounted && Navigator.canPop(context)) {
+        Navigator.of(context).pop();
+      }
+      if (!context.mounted) return false;
+      await showDialog(
+        context: context,
+        builder: (dialogContext) => AlertDialog(
+          content: Text(t.modelPrepareFailed),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext),
+              child: Text(t.ok),
+            ),
+          ],
+        ),
+      );
+      return false;
+    }
+
+    if (context.mounted && Navigator.canPop(context)) {
+      Navigator.of(context).pop();
+    }
+    return true;
   }
 
   Future<void> _showOpenSettingsDialog(BuildContext context) async {

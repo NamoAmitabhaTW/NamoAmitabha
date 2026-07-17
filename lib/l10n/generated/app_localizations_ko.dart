@@ -177,6 +177,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get downloadFailedShort => '모델 다운로드에 실패했습니다. 나중에 다시 시도해 주세요.';
 
   @override
+  String get modelPrepareFailed =>
+      '음성 인식 모델 설치에 실패했습니다. 기기에 저장 공간이 충분한지 확인한 후 다시 시도해 주세요.';
+
+  @override
   String get retry => '다시 시도';
 
   @override

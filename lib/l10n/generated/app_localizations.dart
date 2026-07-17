@@ -433,6 +433,12 @@ abstract class AppLocalizations {
   /// **'Model download failed. Please try again later.'**
   String get downloadFailedShort;
 
+  /// No description provided for @modelPrepareFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Speech recognition model installation failed. Please make sure your device has enough storage space and try again.'**
+  String get modelPrepareFailed;
+
   /// No description provided for @retry.
   ///
   /// In en, this message translates to:

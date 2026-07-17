@@ -179,6 +179,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'Modell-Download fehlgeschlagen. Bitte versuchen Sie es später erneut.';
 
   @override
+  String get modelPrepareFailed =>
+      'Installation des Spracherkennungsmodells fehlgeschlagen. Bitte stellen Sie sicher, dass genügend Speicherplatz auf dem Gerät vorhanden ist, und versuchen Sie es erneut.';
+
+  @override
   String get retry => 'Wiederholen';
 
   @override

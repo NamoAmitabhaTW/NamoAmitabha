@@ -180,6 +180,7 @@
   "close": "閉じる",
   "retryUnzip": "解凍を再試行",
   "downloadFailedShort": "モデルのダウンロードに失敗しました。後でもう一度お試しください。",
+  "modelPrepareFailed": "音声認識モデルのインストールに失敗しました。デバイスの空き容量が十分にあることを確認してから、もう一度お試しください。",
   "retry": "再試行",
   "feedbackOpenMailAppFailed": "メールアプリを開けませんでした",
   "appName": "念仏",
