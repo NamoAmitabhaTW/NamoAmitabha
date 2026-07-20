@@ -47,7 +47,7 @@ final RegExp _amituofoTolerant = RegExp(
   '[$_c1][$_c2][$_c3][$_c4]'
   '|[$_c1][$_c2][$_c3]'
   r'|omit'
-  r'|[ao][ms]i[td][aou]',
+  r'|[ao][msc]i[td][aou]',
   caseSensitive: false,
 );
 
