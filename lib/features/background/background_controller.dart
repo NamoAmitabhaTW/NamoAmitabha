@@ -1,4 +1,4 @@
-// 背景狀態控制器(ChangeNotifier),對齊 theme_controller / locale_controller
+// 背景狀態控制器(ChangeNotifier),對齊locale_controller
 // amitabha/lib/features/background/background_controller.dart
 import 'dart:io'; // for SocketException
 

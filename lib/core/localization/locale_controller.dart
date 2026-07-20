@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'locale_prefs.dart';
 
-/// 一個可選語言的描述：持久化用的 code、要切換到的 Locale、選單顯示的自稱。
+
 class AppLanguage {
   const AppLanguage(this.code, this.locale, this.endonym);
 
@@ -20,8 +20,6 @@ class LocaleController extends ChangeNotifier {
   Locale? _locale; // null = 跟隨系統
   Locale? get locale => _locale;
 
-  /// 支援的語言清單（順序即選單顯示順序）。
-  /// 新增語言只要在這裡加一行 + 在 _toLocale 補 case 即可。
   static const List<AppLanguage> supportedLanguages = [
     AppLanguage('zh-TW', Locale('zh', 'TW'), '繁體中文'),
     AppLanguage('en', Locale('en'), 'English'),
@@ -33,7 +31,6 @@ class LocaleController extends ChangeNotifier {
   ];
 
   LocaleController() {
-    // 讓第一禎先畫，再非阻塞地做復原。
     WidgetsBinding.instance.addPostFrameCallback((_) {
       restore();
     });
@@ -41,7 +38,7 @@ class LocaleController extends ChangeNotifier {
 
   Future<void> restore() async {
     final code =
-        await LocalePrefs.load(); // 可能為 null / 'system' / 'en' / 'zh-TW' / 舊格式
+        await LocalePrefs.load();
     if (code == null || code == 'system') {
       _locale = null; // 跟隨系統
       notifyListeners();
@@ -51,7 +48,7 @@ class LocaleController extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// 通用設定語言。傳入 supportedLanguages 裡的 code。
+  
   Future<void> setLanguage(String code) async => _setAndPersist(code);
 
   Future<void> useSystem() async {
@@ -60,7 +57,6 @@ class LocaleController extends ChangeNotifier {
     await LocalePrefs.save('system');
   }
 
-  // 相容舊呼叫端（若他處仍引用）。新程式碼請改用 setLanguage()。
   Future<void> useTraditionalChinese() async => setLanguage('zh-TW');
   Future<void> useEnglish() async => setLanguage('en');
 
@@ -94,7 +90,7 @@ class LocaleController extends ChangeNotifier {
       case 'fr':
         return const Locale('fr');
       default:
-        return null; // ← 不認得就跟系統
+        return null; 
     }
   }
 }

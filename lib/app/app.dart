@@ -1,6 +1,6 @@
 // lib/app/app.dart
 import 'package:amitabha/core/localization/locale_controller.dart';
-import 'package:amitabha/core/theme/theme_controller.dart';
+import 'package:amitabha/core/theme/brand.dart';
 import 'package:amitabha/features/asr/application/asr_session_controller.dart';
 import 'package:amitabha/features/asr/application/sherpa_mic_source.dart';
 import 'package:amitabha/features/background/background_controller.dart';
@@ -23,7 +23,6 @@ class App extends StatelessWidget {
               AsrSessionController(sourceFactory: () => SherpaMicSource()),
         ),
         ChangeNotifierProvider(create: (_) => LocaleController()),
-        ChangeNotifierProvider(create: (_) => ThemeController()),
         ChangeNotifierProvider(
           create: (_) => BackgroundController()..load(),
           lazy: false,
@@ -33,7 +32,7 @@ class App extends StatelessWidget {
         builder: (context) {
           // 由 LocaleController 取得目前選擇；null 代表「跟隨系統」
           final locale = context.watch<LocaleController>().locale;
-          final themeData = context.watch<ThemeController>().themeData;
+          final themeData = Brand.getTheme(AppThemeStyle.zenWood);
           return MaterialApp(
             locale: locale, // null => 跟隨系統
             // 把所有「繁體」系統語系統一映射到 zh_TW

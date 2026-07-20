@@ -1,6 +1,5 @@
 // lib/home/presentation/home_shell.dart
 import 'package:amitabha/core/theme/brand.dart';
-import 'package:amitabha/core/theme/theme_controller.dart';
 import 'package:amitabha/features/asr/application/asr_session_controller.dart';
 import 'package:amitabha/features/asr/screens/streaming_asr_screen.dart';
 import 'package:amitabha/features/home/widgets/glass_nav_bar.dart';
@@ -52,14 +51,12 @@ class _HomeShellState extends State<HomeShell> {
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
-    final currentStyle = context.watch<ThemeController>().style;
-    // 念佛頁(深影片背景)→ 白；其他頁(淺 cream)→ 深木色
     final navFg = _index == 0
         ? Colors.white
         : Theme.of(context).colorScheme.primary;
         
     return Container(
-      decoration: Brand.getBackgroundDecoration(currentStyle),
+      decoration: Brand.getBackgroundDecoration(AppThemeStyle.zenWood),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         extendBody: true, // ← 新增：讓 body（含背景影片）延伸到 tabbar 後面
