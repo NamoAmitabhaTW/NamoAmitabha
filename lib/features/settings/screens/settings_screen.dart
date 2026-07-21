@@ -43,43 +43,37 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  /// 用 supportedLanguages 表，把目前 locale 對應到自稱名稱。
-  /// 找不到（理論上不會）退回系統第一個語言的自稱或 code 本身。
   String _languageLabel(BuildContext context) {
     final t = AppLocalizations.of(context);
-    final eff = context.watch<LocaleController>().locale; // null = 跟隨系統
+    final eff = context.watch<LocaleController>().locale;  
 
     if (eff == null) {
-      // 跟隨系統：顯示「跟隨系統（實際生效語言自稱）」
       final sys = Localizations.maybeLocaleOf(context);
       return t.langFollowSystemWith(_endonymForLocale(sys));
     }
     return _endonymForLocale(eff);
   }
 
-  /// 把一個 Locale 對到 supportedLanguages 裡的自稱。
   String _endonymForLocale(Locale? locale) {
     if (locale == null) return 'English';
-    // 先試完全比對（languageCode + countryCode）
     for (final lang in LocaleController.supportedLanguages) {
       if (lang.locale.languageCode == locale.languageCode &&
           lang.locale.countryCode == locale.countryCode) {
         return lang.endonym;
       }
     }
-    // 再退而求其次：只比對 languageCode（例如系統給 zh-CN / zh-HK 等）
     for (final lang in LocaleController.supportedLanguages) {
       if (lang.locale.languageCode == locale.languageCode) {
         return lang.endonym;
       }
     }
-    return locale.languageCode; // 完全不認得時的保底
+    return locale.languageCode; 
   }
 
   void _chooseLanguage(BuildContext context) {
     final t = AppLocalizations.of(context);
     final ctrl = context.read<LocaleController>();
-    final current = ctrl.locale; // null = 跟隨系統
+    final current = ctrl.locale; 
 
     showModalBottomSheet(
       context: context,
@@ -87,7 +81,7 @@ class SettingsScreen extends StatelessWidget {
         child: ListView(
           shrinkWrap: true,
           children: [
-            // 跟隨系統
+
             ListTile(
               leading: const Icon(Icons.settings_backup_restore),
               title: Text(t.langFollowSystem),
@@ -100,7 +94,7 @@ class SettingsScreen extends StatelessWidget {
               },
             ),
             const Divider(height: 1),
-            // 各語言：用自稱顯示，目前選中的打勾
+      
             for (final lang in LocaleController.supportedLanguages)
               ListTile(
                 leading: const Icon(Icons.translate),
@@ -126,7 +120,7 @@ class SettingsScreen extends StatelessWidget {
   }
 }
 
-/// 圓角卡片群組，內部自動補分隔線
+
 class _SettingsGroup extends StatelessWidget {
   const _SettingsGroup({required this.children});
   final List<Widget> children;
@@ -141,7 +135,7 @@ class _SettingsGroup extends StatelessWidget {
           const Divider(
             height: 1,
             thickness: 1,
-            indent: 72, // 對齊文字起點，分隔線不切過圖示
+            indent: 72, 
             color: Brand.settingsDivider,
           ),
         );
@@ -163,7 +157,7 @@ class _SettingsGroup extends StatelessWidget {
   }
 }
 
-/// 單一設定列：圓底圖示 + 標題 + 目前值 + 箭頭 + 漣漪
+
 class _SettingTile extends StatelessWidget {
   const _SettingTile({
     required this.icon,

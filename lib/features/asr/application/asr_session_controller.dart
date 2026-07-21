@@ -1,14 +1,4 @@
 // lib/features/asr/application/asr_session_controller.dart
-// 念佛 session 的業務邏輯層(取代原本掛在 widget 樹裡的 StreamingAsrRunner):
-// 狀態機(idle/recording/paused)、佛號計數、hit 落盤、session 提交。
-//
-// 設計重點:
-// - 不碰 BuildContext、不開對話框;UI 透過 Provider 監聽本 controller。
-// - 語音辨識硬體鏈路(麥克風+sherpa)抽象成 SpeechSegmentSource,
-//   測試時注入假來源即可完整驗證計數與提交邏輯。
-// - 提交採「journal 先行」:先把本輪結果寫入 pending journal 再歸零 UI,
-//   之後才寫 session/daily 檔;任何一步失敗,資料都還在 journal,
-//   下次啟動或下次儲存時自動重放,不會丟計數。
 
 import 'dart:async';
 
@@ -23,20 +13,17 @@ import 'package:amitabha/storage/session_repo.dart';
 import 'package:flutter/widgets.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
-/// App 使用的 ASR 模型。
+
 const String kAsrModelName =
     'sherpa-onnx-x-asr-960ms-streaming-zipformer-transducer-zh-en-punct-int8-2026-06-05';
 
-/// 未設帳號系統,本機使用者的固定識別(未來接帳號改這)。
 const String kLocalUserId = 'local';
 const String kLocalUserName = '使用者';
 
 enum SessionState { idle, recording, paused }
 
-/// 語音辨識來源的抽象:start() 之後,每辨識出一段完整語句
-/// 就透過 onSegment 回呼送出文字。實作見 sherpa_mic_source.dart。
 abstract class SpeechSegmentSource {
-  /// 是否已取得麥克風權限(第一次呼叫會觸發系統原生權限彈窗)。
+
   Future<bool> hasPermission();
 
   Future<void> start({required void Function(String text) onSegment});
@@ -59,7 +46,6 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
        _pendingStore = pendingStore ?? PendingCommitStore(),
        _setWakelock = setWakelock ?? _defaultSetWakelock {
     WidgetsBinding.instance.addObserver(this);
-    // 啟動時重放先前提交失敗的紀錄(若有),不阻塞建構
     unawaited(
       replayPending().catchError((e) => debugPrint('replay on init: $e')),
     );
@@ -72,9 +58,6 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
   final Future<void> Function(bool keepAwake) _setWakelock;
 
   SpeechSegmentSource? _source;
-
-  // ── UI 可觀察狀態 ─────────────────────────────────────────
-
   SessionState _sessionState = SessionState.idle;
   SessionState get sessionState => _sessionState;
   bool get isRecording => _sessionState == SessionState.recording;
@@ -85,11 +68,8 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
   DateTime? _lastHitAt;
   DateTime? get lastHitAt => _lastHitAt;
 
-  /// 每次資料成功寫入磁碟就 +1;紀錄頁以此為 key 重新載入。
   int _dataVersion = 0;
   int get dataVersion => _dataVersion;
-
-  // ── session 內部狀態 ─────────────────────────────────────
 
   String? _sessionId;
   String? get currentSessionId => _sessionId;
@@ -98,9 +78,6 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
   BufferedHits? _buffer;
   bool _committing = false;
 
-  // ── 對 UI 的操作 API ─────────────────────────────────────
-
-  /// 是否已取得麥克風權限(第一次呼叫會觸發系統原生權限彈窗)。
   Future<bool> hasMicPermission() async {
     _source ??= _sourceFactory?.call();
     final source = _source;
@@ -108,7 +85,6 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
     return source.hasPermission();
   }
 
-  /// 開始(或續錄)。模型就緒與權限確認由 UI 層先行處理。
   Future<void> start() async {
     if (_sessionState == SessionState.recording) return;
     _source ??= _sourceFactory?.call();
@@ -140,7 +116,6 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
     }
   }
 
-  /// 暫停錄音(session 保留,可續錄)。
   Future<void> stop() async {
     if (_sessionState != SessionState.recording) return;
     await _source?.stop();
@@ -151,7 +126,6 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
     notifyListeners();
   }
 
-  /// 使用者按「儲存」:提交本輪計數。
   Future<void> save() async {
     if (_committing) return;
     _committing = true;
@@ -163,8 +137,6 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
       _committing = false;
     }
   }
-
-  // ── 辨識結果進入點 ───────────────────────────────────────
 
   void _onSegment(String text) {
     final hits = countAmitabhaOccurrences(text);
@@ -180,7 +152,6 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
     notifyListeners();
   }
 
-  // ── session 生命週期 ─────────────────────────────────────
 
   Future<void> _beginNewSession() async {
     final sessionId = DateTime.now().toUtc().millisecondsSinceEpoch.toString();
@@ -222,18 +193,14 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
       ymd: nowYmdLocal(),
     );
 
-    // 1) 意圖先落盤:這步成功後,即使後續全失敗,計數也不會丟
     await _pendingStore.add(pending);
 
-    // 2) 停止硬體與 hit 緩衝
     await _source?.stop();
     try {
       await _buffer?.close();
     } catch (_) {}
     _buffer = null;
     _hitLogger = null;
-
-    // 3) UI 歸零
     _sessionCount = 0;
     _lastHitAt = null;
     _sessionState = SessionState.idle;
@@ -241,13 +208,9 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
       await _setWakelock(false);
     } catch (_) {}
     notifyListeners();
-
-    // 4) 真正寫入(順便重放先前失敗的紀錄)
     await replayPending();
   }
 
-  /// 把 journal 裡的每一筆寫入 session/daily 檔;成功的移除 journal。
-  /// daily 寫入以 sessionId 幂等,重放不會重複累計。
   Future<void> replayPending() async {
     final entries = await _pendingStore.list();
     if (entries.isEmpty) return;
@@ -266,7 +229,7 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
         await _pendingStore.remove(entry.snapshot.sessionId);
         wroteAny = true;
       } catch (e) {
-        debugPrint('[ASR] replay pending failed: $e'); // 留在 journal,下次再試
+        debugPrint('[ASR] replay pending failed: $e'); 
       }
     }
     if (wroteAny) {
@@ -275,7 +238,6 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
     }
   }
 
-  // ── App 生命週期 ─────────────────────────────────────────
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -283,10 +245,6 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
       if (_sessionState == SessionState.recording) {
         unawaited(stop());
       }
-      // 進背景就把目前計數寫成 journal 草稿:
-      // 使用者從多工列滑掉 App 時,系統多半直接殺進程,detached 不會送達;
-      // paused 是滑掉前必經的最後可靠時機。之後正常儲存會以同一個
-      // sessionId 覆蓋草稿(幂等),不會重複計數;被殺則下次啟動自動重放。
       unawaited(_saveDraft());
     }
     if (state == AppLifecycleState.detached) {
@@ -296,7 +254,7 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
     }
   }
 
-  /// 把目前 session 的計數寫成 journal 草稿(不歸零 UI、不重放)。
+ 
   Future<void> _saveDraft() async {
     if (_sessionCount <= 0) return;
     final sessionId = _sessionId;

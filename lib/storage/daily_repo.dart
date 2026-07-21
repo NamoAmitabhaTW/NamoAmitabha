@@ -9,8 +9,6 @@ class DailyRepository {
     await _add(yyyymmdd, userId, userName, delta, sessionId: null);
   }
 
-  /// 以 sessionId 幂等的加總:同一個 sessionId 只會累計一次,
-  /// journal 重放時即使重複執行也不會重複計數。
   Future<void> addCountForSession(
     String yyyymmdd,
     String userId,
@@ -43,7 +41,7 @@ class DailyRepository {
       } else {
         final d = DailySummary.fromJson(j);
         if (sessionId != null && d.sessionIds.contains(sessionId)) {
-          return; // 這個 session 已累計過 → 幂等跳過
+          return; 
         }
         final updated = DailySummary(
           yyyymmdd: d.yyyymmdd,

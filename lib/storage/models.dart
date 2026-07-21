@@ -41,9 +41,6 @@ class DailySummary {
   final String userId;
   final String userName;
   final int amitabhaCount;
-
-  /// 已累計進本日的 sessionId 清單,讓 journal 重放具幂等性
-  /// (同一個 session 重放兩次不會重複加總)。舊檔沒有此欄位 → 空清單。
   final List<String> sessionIds;
 
   DailySummary({

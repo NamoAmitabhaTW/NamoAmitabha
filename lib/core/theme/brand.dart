@@ -8,8 +8,6 @@ enum AppThemeStyle {
 class Brand {
   static const cream = Color(0xFFFFF8E7);
   static const seed  = Color(0xFF8C6A3F);
-
-  // ── 設定頁暖棕色系(原 settings_screen 內的硬編碼常數) ──
   static const settingsBrown = Color(0xFF6F4E37); // 主要暖棕
   static const settingsBrownSoft = Color(0xFF9A7B66); // 副標題 / 箭頭
   static const settingsTitle = Color(0xFF3A2E25); // 標題深棕
@@ -18,11 +16,9 @@ class Brand {
   static const settingsDivider = Color(0x14000000); // 卡片內分隔線
   static const settingsShadow = Color(0x0A000000); // 卡片陰影
   
-  // 新增：取得對應風格的背景裝飾 (BoxDecoration)
   static BoxDecoration getBackgroundDecoration(AppThemeStyle style) {
     switch (style) {
       case AppThemeStyle.zenWood:
-        // 禪堂木紋目前維持純色 (或你未來可換成木紋圖片)
         return const BoxDecoration(
           color: cream,
         );
@@ -32,7 +28,7 @@ class Brand {
   static ThemeData getTheme(AppThemeStyle style) {
     switch (style) {
       case AppThemeStyle.zenWood:
-        return light(); // 使用你原本設定的 cream/seed 作為木紋風格
+        return light(); 
     }
   }
 

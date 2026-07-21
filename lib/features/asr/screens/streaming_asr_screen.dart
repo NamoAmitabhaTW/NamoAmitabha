@@ -14,22 +14,15 @@ import 'package:provider/provider.dart';
 class StreamingAsrScreen extends StatelessWidget {
   const StreamingAsrScreen({super.key});
 
-  /// 「開始」按下後的前置流程:模型就緒 → 麥克風權限 → 開始錄音。
-  /// 模型為內建;首次使用需把 assets 複製到磁碟,這裡只處理該複製與權限引導。
   Future<void> _handleStart(BuildContext context) async {
     final asr = context.read<AsrSessionController>();
-
-    // 內建模型:首次使用需把 assets 複製到磁碟(約數百 MB,需數秒)。
-    // 準備完成後不中斷,直接續跑權限確認與開始,避免使用者還要再按一次「開始」。
     if (!await bundledModelReady(kAsrModelName)) {
       if (!context.mounted) return;
       final ready = await _prepareBundledModel(context);
-      if (!ready) return; // 準備失敗:已顯示錯誤對話框
+      if (!ready) return;  
       if (!context.mounted) return;
     }
 
-    // 先觸發系統原生權限(第一次會跳 iOS/Android 原生彈窗);
-    // 沒拿到就引導使用者去設定頁
     final granted = await asr.hasMicPermission();
     if (!granted) {
       if (!context.mounted) return;
@@ -40,8 +33,6 @@ class StreamingAsrScreen extends StatelessWidget {
     await asr.start();
   }
 
-  /// 首次使用時把內建模型從 assets 複製到磁碟,期間顯示不可關閉的準備對話框。
-  /// 回傳 true 表示準備成功(可續跑權限與開始),false 表示失敗(已顯示錯誤)。
   Future<bool> _prepareBundledModel(BuildContext context) async {
     final t = AppLocalizations.of(context);
 
@@ -110,7 +101,7 @@ class StreamingAsrScreen extends StatelessWidget {
           FilledButton(
             onPressed: () async {
               Navigator.pop(dialogContext);
-              await openAppSettings(); // 由 permission_handler 提供
+              await openAppSettings(); 
             },
             child: Text(t.openSettings),
           ),
@@ -119,12 +110,6 @@ class StreamingAsrScreen extends StatelessWidget {
     );
   }
 
-  /// 依語系挑選「阿彌陀佛」書法圖。
-  ///  zh → 中文書法
-  ///  ja → 日文
-  ///  vi → 越南文
-  ///  en/de/fr → 梵文/羅馬化版 (_sa)
-  ///  其餘(含 ko)→ 退回中文書法
   static String _calligraphyAsset(String lang) {
     switch (lang) {
       case 'ja':
@@ -150,13 +135,11 @@ class StreamingAsrScreen extends StatelessWidget {
     final bg = context.watch<BackgroundController>();
     final lang = Localizations.localeOf(context).languageCode;
 
-    // 拿底部導航的字型做為基礎
     final navLabelBase =
         NavigationBarTheme.of(context).labelTextStyle?.resolve(const {}) ??
         Theme.of(context).textTheme.labelMedium ??
         const TextStyle();
 
-    // 計數字樣式：放大、粗一點、沿用底部導航字型
     final countStyle = Theme.of(context).textTheme.displayLarge?.copyWith(
       fontFamily: navLabelBase.fontFamily,
       fontWeight: FontWeight.w600,
@@ -164,23 +147,21 @@ class StreamingAsrScreen extends StatelessWidget {
       letterSpacing: navLabelBase.letterSpacing,
     );
 
-    // 顏色：數字用主色，單位用 onSurface 降不透明
+
     final numberColor = Colors.white;
     final unitColor = Colors.white;
 
-    // 取得系統可視安全區（特別是底部手勢列的高度）
+   
     final viewPadding = MediaQuery.of(context).viewPadding;
-    // ===== 以 FocusTraversalGroup 包住，提供穩定焦點導覽 =====
+  
     return FocusTraversalGroup(
       child: Stack(
         children: [
-          // ① 滿版背景（影片或圖片）— 不受安全區內縮，墊到螢幕最底
+         
           Positioned.fill(
             child: ChantingBackground(source: bg.currentSource, active: true),
-            // ↑ 之後接設定頁時，改成 type: s.backgroundType 即可
           ),
 
-          // ② 前景內容 — 只保留底部安全區
           Padding(
             padding: EdgeInsets.only(bottom: viewPadding.bottom + 120),
             child: Padding(
@@ -200,7 +181,6 @@ class StreamingAsrScreen extends StatelessWidget {
                     child: Text.rich(
                       TextSpan(
                         children: [
-                          // 數字:沿用 countStyle 的 w600,不再覆寫
                           TextSpan(
                             text: '${s.sessionCount} ',
                             style: countStyle?.copyWith(
@@ -214,7 +194,6 @@ class StreamingAsrScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          // 單位「次」:較輕(w400)、較小(約 0.62 倍),退一步
                           TextSpan(
                             text: t.times,
                             style: countStyle?.copyWith(
@@ -251,8 +230,8 @@ class StreamingAsrScreen extends StatelessWidget {
                           gradientColors: [
                             Colors.white.withValues(
                               alpha: 0.22,
-                            ), // 上緣：極淡白，像玻璃反光
-                            Colors.white.withValues(alpha: 0.10), // 下緣：更透
+                            ), 
+                            Colors.white.withValues(alpha: 0.10), 
                           ],
                         ),
                       ),
@@ -265,8 +244,8 @@ class StreamingAsrScreen extends StatelessWidget {
                           gradientColors: [
                             Colors.white.withValues(
                               alpha: 0.22,
-                            ), // 上緣：極淡白，像玻璃反光
-                            Colors.white.withValues(alpha: 0.10), // 下緣：更透
+                            ), 
+                            Colors.white.withValues(alpha: 0.10), 
                           ],
                         ),
                       ),

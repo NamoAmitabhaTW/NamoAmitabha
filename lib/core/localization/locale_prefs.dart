@@ -1,4 +1,3 @@
-//語系持久化
 // lib/core/localization/locale_prefs.dart
 import 'package:amitabha/storage/json_prefs_file.dart';
 

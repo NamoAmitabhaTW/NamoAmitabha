@@ -5,7 +5,6 @@
 
 import 'package:flutter/foundation.dart';
 
-/// 16-bit PCM bytes → Float32 樣本(-1.0 ~ 1.0),餵給 sherpa-onnx 用。
 Float32List convertBytesToFloat32(
   Uint8List bytes, [
   Endian endian = Endian.little,

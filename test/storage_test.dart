@@ -104,7 +104,7 @@ void main() {
 
   test('JsonPrefsFile 寫入/讀回往返', () async {
     final prefs = JsonPrefsFile('test_prefs');
-    expect(await prefs.read(), isNull); // 尚未寫過 → null
+    expect(await prefs.read(), isNull); 
 
     await prefs.write({'theme_style': 'zenWood', 'n': 3});
     final j = await prefs.read();

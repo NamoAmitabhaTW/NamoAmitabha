@@ -116,7 +116,7 @@ class _BackgroundPickerScreenState extends State<BackgroundPickerScreen> {
         BackgroundDownloadError.notAvailable => t.bgDownloadErrorNotAvailable,
         BackgroundDownloadError.unknown => t.bgDownloadErrorGeneric,
       };
-      // 永久性錯誤(素材下架/連結失效)不給重試鈕,重試無意義
+      
       final retryable = error != BackgroundDownloadError.notAvailable;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -132,9 +132,8 @@ class _BackgroundPickerScreenState extends State<BackgroundPickerScreen> {
       );
     }
   }
-} // ← 這個大括號就是原本漏掉的:關閉 _BackgroundPickerScreenState
+} 
 
-/// 偵測到使用中背景被系統清掉時,在選擇頁頂端顯示的說明橫幅。
 class _ClearedNoticeBanner extends StatelessWidget {
   const _ClearedNoticeBanner({
     required this.t,
@@ -173,7 +172,7 @@ class _ClearedNoticeBanner extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 4),
-                Text( // ← 拿掉 const(內含 t.bgClearedBody)
+                Text( 
                   t.bgClearedBody,
                   style: const TextStyle(fontSize: 12.5, height: 1.4),
                 ),
@@ -191,7 +190,6 @@ class _ClearedNoticeBanner extends StatelessWidget {
   }
 }
 
-/// 抓不到遠端背景清單(多半是無網路)時,在頂端顯示的提示。
 class _OfflineNoticeBanner extends StatelessWidget {
   const _OfflineNoticeBanner({required this.t, required this.onRetry});
 
@@ -213,7 +211,7 @@ class _OfflineNoticeBanner extends StatelessWidget {
         children: [
           const Icon(Icons.cloud_off_outlined, size: 20, color: Colors.amber),
           const SizedBox(width: 10),
-          Expanded( // ← 拿掉 const(內含 t.bgOfflineTitle/Body)
+          Expanded( 
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -233,9 +231,9 @@ class _OfflineNoticeBanner extends StatelessWidget {
             ),
           ),
           TextButton.icon(
-            onPressed: onRetry,        // ← 原本誤寫成 t.retry
+            onPressed: onRetry,        
             icon: const Icon(Icons.refresh, size: 20),
-            label: Text(t.retry),      // ← 原本誤寫成 const Text('重試')
+            label: Text(t.retry),     
             style: TextButton.styleFrom(
               foregroundColor: const Color(0xFF6F5C44),
               textStyle: const TextStyle(

@@ -1,8 +1,5 @@
-// AsrSessionController 的單元測試:
-// 狀態機、佛號計數、session 提交、journal 防丟計數與重放幂等、App 生命週期。
-// 語音來源以 FakeSource 注入,不碰麥克風/sherpa;儲存層走真實檔案(假 path_provider)。
-import 'dart:io';
 
+import 'dart:io';
 import 'package:amitabha/core/utils/date_format.dart';
 import 'package:amitabha/features/asr/application/asr_session_controller.dart';
 import 'package:amitabha/storage/app_paths.dart';
@@ -42,11 +39,10 @@ class _FakeSource implements SpeechSegmentSource {
     disposed = true;
   }
 
-  /// 模擬辨識出一段語句。
+ 
   void emit(String text) => _onSegment?.call(text);
 }
 
-/// 模擬 daily 寫入失敗(磁碟錯誤)。
 class _FailingDailyRepo extends DailyRepository {
   @override
   Future<void> addCountForSession(
@@ -81,8 +77,7 @@ void main() {
   });
 
   tearDown(() async {
-    // dispose() 裡的 buffer flush 是 fire-and-forget,可能還在寫檔;
-    // 刪除失敗(Directory not empty)就稍等重試,避免與收尾寫入賽跑。
+   
     for (var attempt = 0; attempt < 5; attempt++) {
       try {
         if (await tempRoot.exists()) {
@@ -93,7 +88,7 @@ void main() {
         await Future<void>.delayed(const Duration(milliseconds: 50));
       }
     }
-    // 多次重試仍失敗 → 放棄;殘留在系統暫存區的目錄無害
+    
   });
 
   test('狀態機:idle → recording → paused → save 後回 idle', () async {
@@ -109,7 +104,7 @@ void main() {
     expect(c.sessionState, SessionState.paused);
     expect(source.stopCalls, 1);
 
-    await c.start(); // 續錄:不開新 session
+    await c.start(); 
     expect(c.sessionState, SessionState.recording);
 
     source.emit('阿彌陀佛');
@@ -128,10 +123,10 @@ void main() {
     expect(c.sessionCount, 2);
     expect(c.lastHitAt, isNotNull);
 
-    source.emit('南無觀世音菩薩'); // 不符合 → 不動
+    source.emit('南無觀世音菩薩'); 
     expect(c.sessionCount, 2);
 
-    source.emit('阿弥陀佛'); // 簡體也算
+    source.emit('阿弥陀佛'); 
     expect(c.sessionCount, 3);
 
     c.dispose();
@@ -150,20 +145,20 @@ void main() {
     expect(c.sessionCount, 0);
     expect(c.dataVersion, versionBefore + 1);
 
-    // snapshot 落盤
+
     final got = await SessionRepository().readSnapshot(sessionId);
     expect(got, isNotNull);
     expect(got!.amitabhaCount, 2);
 
-    // daily 累計
+  
     final daily = await readJsonOrEmpty(await AppPaths.daily(nowYmdLocal()));
     expect(daily['amitabhaCount'], 2);
     expect((daily['sessionIds'] as List).contains(sessionId), isTrue);
 
-    // journal 已清空
+    
     expect(await PendingCommitStore().list(), isEmpty);
 
-    // hit NDJSON 已寫出(buffer 於 commit 時 flush)
+
     final hits = await AppPaths.sessionHits(sessionId);
     expect(await hits.exists(), isTrue);
     expect((await hits.readAsLines()).length, 2);
@@ -178,7 +173,7 @@ void main() {
 
     await c.save();
 
-    expect(c.sessionState, SessionState.recording); // 沒被打斷
+    expect(c.sessionState, SessionState.recording);  
     expect(c.dataVersion, versionBefore);
     expect(await PendingCommitStore().list(), isEmpty);
 
@@ -186,7 +181,7 @@ void main() {
   });
 
   test('daily 寫入失敗 → 計數保留在 journal,重放後補寫成功且不重複', () async {
-    // 第一階段:daily 壞掉,save 之後 journal 應保留
+
     final broken = makeController(dailyRepo: _FailingDailyRepo());
     await broken.start();
     source.emit('阿彌陀佛');
@@ -196,13 +191,13 @@ void main() {
 
     await broken.save();
 
-    expect(broken.sessionCount, 0); // UI 照樣歸零(資料已安全落在 journal)
+    expect(broken.sessionCount, 0);
     final pendingAfterFail = await PendingCommitStore().list();
     expect(pendingAfterFail, hasLength(1));
     expect(pendingAfterFail.first.snapshot.amitabhaCount, 3);
     broken.dispose();
 
-    // 第二階段:修好的 repo 重放 → daily 補寫、journal 清空
+
     final healthy = makeController();
     await healthy.replayPending();
 
@@ -210,12 +205,12 @@ void main() {
     expect(daily['amitabhaCount'], 3);
     expect(await PendingCommitStore().list(), isEmpty);
 
-    // 幂等:再重放一次(模擬重複執行)不會重複累計
+
     final store = PendingCommitStore();
-    await store.add(pendingAfterFail.first); // 假裝 journal 沒刪成功
+    await store.add(pendingAfterFail.first); 
     await healthy.replayPending();
     final daily2 = await readJsonOrEmpty(await AppPaths.daily(nowYmdLocal()));
-    expect(daily2['amitabhaCount'], 3); // 同 sessionId → 跳過
+    expect(daily2['amitabhaCount'], 3); 
     expect(await PendingCommitStore().list(), isEmpty);
 
     expect(sessionId, isNotEmpty);
@@ -227,8 +222,8 @@ void main() {
     const ymd = '20260707';
 
     await repo.addCountForSession(ymd, 'u', 'n', 5, 'sess-1');
-    await repo.addCountForSession(ymd, 'u', 'n', 5, 'sess-1'); // 重複
-    await repo.addCountForSession(ymd, 'u', 'n', 2, 'sess-2'); // 新 session
+    await repo.addCountForSession(ymd, 'u', 'n', 5, 'sess-1'); 
+    await repo.addCountForSession(ymd, 'u', 'n', 2, 'sess-2'); 
 
     final daily = await readJsonOrEmpty(await AppPaths.daily(ymd));
     expect(daily['amitabhaCount'], 7);
@@ -255,7 +250,7 @@ void main() {
     source.emit('阿彌陀佛');
     final sessionId = c.currentSessionId!;
 
-    // 進背景 → 草稿非同步寫入,輪詢等它落盤
+   
     c.didChangeAppLifecycleState(AppLifecycleState.paused);
     final deadline = DateTime.now().add(const Duration(seconds: 5));
     while ((await PendingCommitStore().list()).isEmpty) {
@@ -265,10 +260,10 @@ void main() {
     final draft = (await PendingCommitStore().list()).single;
     expect(draft.snapshot.sessionId, sessionId);
     expect(draft.snapshot.amitabhaCount, 2);
-    expect(c.sessionCount, 2); // 草稿不影響進行中的 session
+    expect(c.sessionCount, 2); 
     c.dispose();
 
-    // 模擬 App 被殺後重啟:新 controller 重放草稿
+
     final relaunched = makeController();
     await relaunched.replayPending();
 
@@ -281,9 +276,9 @@ void main() {
   test('草稿後回前景繼續念、正常儲存 → 以最終數字覆蓋,不重複計數', () async {
     final c = makeController();
     await c.start();
-    source.emit('阿彌陀佛'); // 1
+    source.emit('阿彌陀佛'); 
 
-    // 進背景寫草稿(1 聲)
+  
     c.didChangeAppLifecycleState(AppLifecycleState.paused);
     final deadline = DateTime.now().add(const Duration(seconds: 5));
     while ((await PendingCommitStore().list()).isEmpty) {
@@ -291,12 +286,12 @@ void main() {
       await Future<void>.delayed(const Duration(milliseconds: 10));
     }
 
-    // 回前景續錄 → 再念 2 聲 → 正常儲存
+    
     await c.start();
-    source.emit('阿彌陀佛阿彌陀佛'); // 共 3
+    source.emit('阿彌陀佛阿彌陀佛'); 
     await c.save();
 
-    // daily 應是最終的 3(不是草稿 1 + 最終 3)
+
     final daily = await readJsonOrEmpty(await AppPaths.daily(nowYmdLocal()));
     expect(daily['amitabhaCount'], 3);
     expect(await PendingCommitStore().list(), isEmpty);
@@ -313,7 +308,7 @@ void main() {
 
     c.didChangeAppLifecycleState(AppLifecycleState.detached);
 
-    // 提交是非同步的:輪詢 dataVersion(資料成功落盤才會 +1),避免固定延遲的 flaky
+  
     final deadline = DateTime.now().add(const Duration(seconds: 5));
     while (c.dataVersion == versionBefore) {
       if (DateTime.now().isAfter(deadline)) {

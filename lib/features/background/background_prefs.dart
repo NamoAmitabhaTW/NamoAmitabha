@@ -3,7 +3,6 @@ import 'package:amitabha/features/background/background_item.dart';
 import 'package:amitabha/storage/json_prefs_file.dart';
 
 class BackgroundPrefs {
-  // ── 使用中背景描述 ──
 
   static final _active = JsonPrefsFile('background');
 
@@ -13,10 +12,8 @@ class BackgroundPrefs {
     int revision,
   ) => _active.write({'activeId': id, 'type': type.name, 'revision': revision});
 
-  /// 回傳 {activeId, type, revision};找不到回 null。
+  
   static Future<Map<String, dynamic>?> loadActive() => _active.read();
-
-  // ── 已下載背景的內容版本記錄({id: version}),用於偵測是否需更新 ──
 
   static final _versions = JsonPrefsFile('background_versions');
 

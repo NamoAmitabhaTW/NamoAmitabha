@@ -18,7 +18,6 @@ class HomeShell extends StatefulWidget {
 class _HomeShellState extends State<HomeShell> {
   int _index = 0;
 
-  /// 快取已建立過的頁面（避免重建成本）
   final Map<int, Widget> _cache = {};
 
   @override
@@ -37,14 +36,11 @@ class _HomeShellState extends State<HomeShell> {
     }
   }
 
-  /// 只在被選到時才建立頁面
   Widget _pageFor(int i) {
     if (i == 1) {
-      // 紀錄頁：依 dataVersion 強制重建以拿到最新 daily JSON
       final ver = context.select<AsrSessionController, int>((s) => s.dataVersion);
       return KeyedSubtree(key: ValueKey(ver), child: const RecordsScreen());
     }
-    // 其他頁面快取起來（避免每次切頁重建）
     return _cache[i] ??= _buildStaticPage(i);
   }
 
@@ -59,7 +55,7 @@ class _HomeShellState extends State<HomeShell> {
       decoration: Brand.getBackgroundDecoration(AppThemeStyle.zenWood),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        extendBody: true, // ← 新增：讓 body（含背景影片）延伸到 tabbar 後面
+        extendBody: true, 
         body: _pageFor(_index),
         bottomNavigationBar: GlassNavBar(
           selectedIndex: _index,

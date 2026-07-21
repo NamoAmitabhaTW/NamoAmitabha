@@ -5,19 +5,13 @@ import 'locale_prefs.dart';
 
 class AppLanguage {
   const AppLanguage(this.code, this.locale, this.endonym);
-
-  /// 持久化字串（存進 LocalePrefs）
   final String code;
-
-  /// 對應的 Flutter Locale
   final Locale locale;
-
-  /// 選單顯示名稱（語言自稱，不隨 UI 語系翻譯）
   final String endonym;
 }
 
 class LocaleController extends ChangeNotifier {
-  Locale? _locale; // null = 跟隨系統
+  Locale? _locale; 
   Locale? get locale => _locale;
 
   static const List<AppLanguage> supportedLanguages = [
@@ -40,7 +34,7 @@ class LocaleController extends ChangeNotifier {
     final code =
         await LocalePrefs.load();
     if (code == null || code == 'system') {
-      _locale = null; // 跟隨系統
+      _locale = null; 
       notifyListeners();
       return;
     }
@@ -52,7 +46,7 @@ class LocaleController extends ChangeNotifier {
   Future<void> setLanguage(String code) async => _setAndPersist(code);
 
   Future<void> useSystem() async {
-    _locale = null; // 交給系統
+    _locale = null; 
     notifyListeners();
     await LocalePrefs.save('system');
   }

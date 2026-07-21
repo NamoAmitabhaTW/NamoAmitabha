@@ -19,7 +19,6 @@ class DownloadProgressDialog extends StatelessWidget {
         builder: (context, m, child) {
           final downloading = m.progress > 0.0 && m.progress < 1.0;
           final unzipping = m.unzipProgress > 0.0 && m.unzipProgress < 1.0;
-          // 任一有進度(含收尾的 100%)都算進行中;全部歸零才是「準備中」。
           final active = m.progress > 0.0 || m.unzipProgress > 0.0;
           final idle = !active;
 
@@ -46,11 +45,8 @@ class DownloadProgressDialog extends StatelessWidget {
                 ),
               ],
               const SizedBox(height: 8),
-              // 下載階段：位元組數是真實進度，顯示精確百分比
               if (downloading)
                 Text('${(showingValue * 100).toStringAsFixed(2)}%'),
-              // 解壓階段：前段為估算進度，顯示精確數字反而造成「卡住」錯覺，
-              // 改用動態刪節號文字明確傳達「處理中」
               if (unzipping) _AnimatedDotsText(text: t.unzipping),
             ],
           );
@@ -60,9 +56,6 @@ class DownloadProgressDialog extends StatelessWidget {
         Consumer<InstallProgressModel>(
           builder: (context, m, child) {
             final downloading = m.progress > 0.0 && m.progress < 1.0;
-            // 收尾瞬間(unzip=1.0)顯示 spinner 而非確定鈕,避免主流程完成時
-            // 閃現確定鈕(隨即被成功對話框取代,造成使用者混亂);
-            // 全部歸零(重開的進度框在安裝完成後)才顯示確定鈕供手動關閉。
             final active = m.progress > 0.0 || m.unzipProgress > 0.0;
 
             return Row(
@@ -109,8 +102,6 @@ class DownloadProgressDialog extends StatelessWidget {
   }
 }
 
-/// 「解壓縮中.」→「解壓縮中...」→「解壓縮中.....」循環動態文字。
-/// 用固定寬度的點數欄位避免文字寬度跳動造成排版位移。
 class _AnimatedDotsText extends StatefulWidget {
   const _AnimatedDotsText({required this.text});
 
@@ -148,7 +139,6 @@ class _AnimatedDotsTextState extends State<_AnimatedDotsText> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(widget.text),
-        // 固定寬度：以最多點數佔位，實際只畫目前的點數，文字不會左右跳動
         SizedBox(
           width: _maxDots * 6.0,
           child: Text('.' * _dotCount),

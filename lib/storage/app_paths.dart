@@ -40,7 +40,7 @@ class AppPaths {
     return file;
   }
 
-  // ── 提交 journal:成功寫入 session/daily 前的暫存意圖 ──
+  
   static Future<Directory> pendingDir() async {
     final r = await root();
     return Directory(p.join(r.path, 'data', 'pending'));
@@ -53,10 +53,6 @@ class AppPaths {
     return file;
   }
 
-  // ── 新增:背景素材 ──────────────────────────────────────────
-  // 背景影片/圖片是「可從遠端重新下載」的素材,放 Caches:
-  //  - iOS 不納入 iCloud 備份,符合審查規範(可重下載資料不該被備份)
-  //  - 系統空間吃緊時可能被清掉 → 已有「檔案不在就退回預設 + 可重抓」的 fallback
   static Future<File> background(String id, String ext) async {
     final base = await getApplicationCacheDirectory();
     final file = File(p.join(base.path, 'amitabha', 'backgrounds', '$id.$ext'));
