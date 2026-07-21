@@ -1,6 +1,7 @@
 // lib/features/model_install/bundled_model.dart
 
 import 'dart:io';
+import 'package:amitabha/features/model_install/model_cleanup.dart';
 import 'package:amitabha/storage/model_paths.dart';
 import 'package:flutter/services.dart';
 
@@ -30,6 +31,7 @@ Future<Directory> materializeBundledModel(
   void Function(double progress)? onProgress,
 }) async {
   final dir = await ModelPaths.modelDir(modelName);
+  await purgeObsoleteModels();
   final pending = <String, ByteData>{};
   var totalBytes = 0;
   for (final name in bundledModelFiles) {
