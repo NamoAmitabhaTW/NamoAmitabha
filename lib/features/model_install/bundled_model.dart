@@ -3,6 +3,7 @@
 import 'dart:io';
 import 'package:amitabha/features/model_install/model_cleanup.dart';
 import 'package:amitabha/storage/model_paths.dart';
+import 'package:amitabha/storage/backup_exclusion.dart';
 import 'package:flutter/services.dart';
 
 const String _assetDir =
@@ -44,16 +45,17 @@ Future<Directory> materializeBundledModel(
 
   if (pending.isEmpty) {
     onProgress?.call(1.0);
-    return dir;
+  } else {
+    var written = 0;
+    for (final entry in pending.entries) {
+      final data = entry.value;
+      final bytes =
+          data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+      await File('${dir.path}/${entry.key}').writeAsBytes(bytes, flush: true);
+      written += data.lengthInBytes;
+      if (totalBytes > 0) onProgress?.call(written / totalBytes);
+    }
   }
-
-  var written = 0;
-  for (final entry in pending.entries) {
-    final data = entry.value;
-    final bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-    await File('${dir.path}/${entry.key}').writeAsBytes(bytes, flush: true);
-    written += data.lengthInBytes;
-    if (totalBytes > 0) onProgress?.call(written / totalBytes);
-  }
+  await excludeFromICloudBackup(dir.path);
   return dir;
 }
