@@ -22,13 +22,9 @@ class GlassNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isLightFg = foreground.computeLuminance() > 0.5;
-    final shadowColor = isLightFg
-        ? Colors.black.withValues(alpha: 0.5) 
-        : Colors.white.withValues(alpha: 0.6); 
-
-    final shadows = [
-      Shadow(color: shadowColor, blurRadius: 4, offset: const Offset(0, 1)),
-    ];
+    final shadows = isLightFg
+    ? [Shadow(color: Colors.black.withValues(alpha: 0.5), blurRadius: 4, offset: const Offset(0, 1))]
+    : const <Shadow>[]; 
 
     return NavigationBarTheme(
       data: NavigationBarThemeData(
