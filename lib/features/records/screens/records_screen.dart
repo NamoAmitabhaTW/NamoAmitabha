@@ -46,7 +46,11 @@ class RecordsScreen extends StatelessWidget {
                 const Divider(height: 0),
                 Padding(
                   padding: const EdgeInsets.all(24),
-                  child: Center(child: Text(t.noRecords)),
+                  child: Center(
+                    child: Text(
+                    t.noRecords,
+                    style: const TextStyle(fontSize: 20),)
+                    ),
                 ),
               ],
             ),
@@ -78,12 +82,13 @@ class RecordsScreen extends StatelessWidget {
                   leading: const Icon(Icons.calendar_month, size: 24),
                   title: Text(
                     df.format(dt), 
-                    style: Theme.of(context).textTheme.titleMedium,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 20),
                   ),
                   trailing: Text(
                     '${r.amitabhaCount} ${t.times}', 
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w600,
+                      fontSize: 20
                     ),
                   ),
                 );
