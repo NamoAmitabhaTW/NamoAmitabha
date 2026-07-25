@@ -1,6 +1,8 @@
 // amitabha/lib/features/background/background_item.dart
 import 'dart:io';
 
+import 'package:path/path.dart' as p;
+
 enum BackgroundType { video, image }
 
 
@@ -25,6 +27,8 @@ class BackgroundItem {
   final String thumbnail;
 
   final String fileUrl;
+
+  final String fileExtension;
 
   final int fileSize;
 
@@ -51,11 +55,24 @@ class BackgroundItem {
     this.version = 1,
     this.isBuiltin = false,
     this.assetPath,
+    String? fileExtension,
     this.isDownloaded = false,
     this.isDownloading = false,
     this.downloadProgress = 0,
     this.needsUpdate = false,
-  });
+  }) : fileExtension = fileExtension ?? _defaultFileExtension(type);
+
+  static String _defaultFileExtension(BackgroundType type) =>
+      type == BackgroundType.image ? 'png' : 'mp4';
+
+  static String _fileExtensionFromUrl(String url, BackgroundType type) {
+    if (url.isEmpty) return _defaultFileExtension(type);
+    final path = Uri.tryParse(url)?.path ?? url;
+    var e = p.extension(path).toLowerCase();
+    if (e.startsWith('.')) e = e.substring(1);
+    if (e == 'jpeg') e = 'jpg';
+    return e.isEmpty ? _defaultFileExtension(type) : e;
+  }
 
   factory BackgroundItem.fromJson(Map<String, dynamic> json) {
 
@@ -71,22 +88,24 @@ class BackgroundItem {
       }
     }
 
+    final type = (json['type'] as String) == 'image'
+        ? BackgroundType.image
+        : BackgroundType.video;
+    final fileUrl = json['fileUrl'] as String? ?? '';
+
     return BackgroundItem(
       id: json['id'] as String,
       name: json['name'] as String,
       nameEn: json['nameEn'] as String?,
       names: names,
-      type: (json['type'] as String) == 'image'
-          ? BackgroundType.image
-          : BackgroundType.video,
+      type: type,
       thumbnail: json['thumbnailUrl'] as String,
-      fileUrl: json['fileUrl'] as String? ?? '',
+      fileUrl: fileUrl,
+      fileExtension: _fileExtensionFromUrl(fileUrl, type),
       fileSize: json['fileSize'] as int? ?? 0,
       version: json['version'] as int? ?? 1,
     );
   }
-
-  String get ext => type == BackgroundType.image ? 'jpg' : 'mp4';
 
   BackgroundUiState uiState(bool isActive) {
     if (isDownloading) return BackgroundUiState.downloading;

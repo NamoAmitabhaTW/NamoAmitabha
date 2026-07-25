@@ -53,10 +53,15 @@ class AppPaths {
     return file;
   }
 
-  static Future<File> background(String id, String ext) async {
+  static Future<Directory> backgroundsDir() async {
     final base = await getApplicationCacheDirectory();
-    final file = File(p.join(base.path, 'amitabha', 'backgrounds', '$id.$ext'));
-    await file.parent.create(recursive: true);
-    return file;
+    final dir = Directory(p.join(base.path, 'amitabha', 'backgrounds'));
+    if (!await dir.exists()) await dir.create(recursive: true);
+    return dir;
+  }
+
+  static Future<File> background(String id, String ext) async {
+    final dir = await backgroundsDir();
+    return File(p.join(dir.path, '$id.$ext'));
   }
 }

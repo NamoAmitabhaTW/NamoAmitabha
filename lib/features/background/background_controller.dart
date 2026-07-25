@@ -200,8 +200,8 @@ class BackgroundController extends ChangeNotifier {
         revision: 1,
       );
     }
-    final f = await _repo.fileFor(item);
-    if (!await f.exists()) return null;
+    final f = await _repo.findById(item.id);
+    if (f == null) return null;
     final versions = await BackgroundPrefs.loadVersions();
     final localRev = versions[item.id] ?? 1;
     return BackgroundSource(type: item.type, file: f, revision: localRev);
@@ -234,8 +234,8 @@ class BackgroundController extends ChangeNotifier {
           ? BackgroundType.image
           : BackgroundType.video;
       final rev = (active['revision'] as num?)?.toInt() ?? 1;
-      final f = await _repo.fileForRaw(id, type);
-      if (await f.exists()) {
+      final f = await _repo.findById(id);
+      if (f != null) {
         _currentSource = BackgroundSource(type: type, file: f, revision: rev);
         return;
       }

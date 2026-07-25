@@ -51,22 +51,28 @@ class BackgroundRepo {
     }
   }
 
-  Future<File> fileFor(BackgroundItem item) =>
-      AppPaths.background(item.id, item.ext);
+  Future<File> _downloadTarget(BackgroundItem item) =>
+      AppPaths.background(item.id, item.fileExtension);
 
-  Future<File> fileForRaw(String id, BackgroundType type) =>
-      AppPaths.background(id, type == BackgroundType.image ? 'jpg' : 'mp4');
-
-  Future<bool> isDownloaded(BackgroundItem item) async {
-    final f = await fileFor(item);
-    return f.exists();
+  Future<File?> findById(String id) async {
+    final dir = await AppPaths.backgroundsDir();
+    if (!await dir.exists()) return null;
+    await for (final entry in dir.list()) {
+      if (entry is File && p.basenameWithoutExtension(entry.path) == id) {
+        return entry;
+      }
+    }
+    return null;
   }
+
+  Future<bool> isDownloaded(BackgroundItem item) async =>
+      await findById(item.id) != null;
 
   Future<void> download(
     BackgroundItem item, {
     required void Function(double progress) onProgress,
   }) async {
-    final file = await fileFor(item);
+    final file = await _downloadTarget(item);
     final client = http.Client();
     _clients[item.id] = client;
     IOSink? sink;
@@ -108,9 +114,16 @@ class BackgroundRepo {
     _clients[id]?.close();
   }
 
-  Future<void> delete(BackgroundItem item) async {
-    final f = await fileFor(item);
-    if (await f.exists()) await f.delete();
+  Future<void> delete(BackgroundItem item) => deleteById(item.id);
+
+  Future<void> deleteById(String id) async {
+    final dir = await AppPaths.backgroundsDir();
+    if (!await dir.exists()) return;
+    await for (final entry in dir.list()) {
+      if (entry is File && p.basenameWithoutExtension(entry.path) == id) {
+        await entry.delete();
+      }
+    }
   }
 
   Future<BackgroundSource?> sourceFor(BackgroundItem item) async {
@@ -121,8 +134,8 @@ class BackgroundRepo {
         revision: item.version,
       );
     }
-    final f = await fileFor(item);
-    if (await f.exists()) {
+    final f = await findById(item.id);
+    if (f != null) {
       return BackgroundSource(type: item.type, file: f, revision: item.version);
     }
     return null;
