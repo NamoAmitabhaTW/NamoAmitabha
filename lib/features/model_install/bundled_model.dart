@@ -2,8 +2,8 @@
 
 import 'dart:io';
 import 'package:amitabha/features/model_install/model_cleanup.dart';
-import 'package:amitabha/storage/model_paths.dart';
 import 'package:amitabha/storage/backup_exclusion.dart';
+import 'package:amitabha/storage/model_paths.dart';
 import 'package:flutter/services.dart';
 
 const String _assetDir =
