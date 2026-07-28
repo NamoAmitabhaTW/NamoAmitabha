@@ -1,8 +1,19 @@
-This project uses the sherpa-onnx library:
-https://pub.dev/packages/sherpa_onnx
+This app includes the following third-party components, each licensed
+under the Apache License, Version 2.0. A single copy of the full license
+text is provided below and applies to every component listed here.
 
-sherpa-onnx is licensed under the Apache License, Version 2.0.
-A copy of the license is provided below.
+--------------------------------------------------------------------
+1. sherpa-onnx  (on-device speech recognition runtime)
+   https://github.com/k2-fsa/sherpa-onnx
+   https://pub.dev/packages/sherpa_onnx
+   Copyright the sherpa-onnx / k2-fsa authors.
+
+2. X-ASR streaming zipformer model  (bundled ASR model, app 2.0.0+)
+   sherpa-onnx-x-asr-960ms-streaming-zipformer-transducer-zh-en-punct-int8-2026-06-05
+   https://github.com/Gilgamesh-J/X-ASR
+   Trained with icefall and deployed with sherpa-onnx (k2-fsa).
+   Redistributed unmodified.
+--------------------------------------------------------------------
 
 Apache License
                            Version 2.0, January 2004
