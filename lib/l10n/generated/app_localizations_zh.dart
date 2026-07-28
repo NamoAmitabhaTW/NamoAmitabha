@@ -117,7 +117,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get downloading => 'Downloading';
 
   @override
-  String get unzipping => 'Unzipping';
+  String get unzipping => 'Installing';
 
   @override
   String get completed => 'Completed';
@@ -166,7 +166,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get unzipFailedLowSpaceBody =>
-      'Likely due to low storage space. Please free up some space and try unzipping again.';
+      'Extraction failed due to insufficient storage. Please free up space, then tap \"Extract Again\". The downloaded file is kept, so no re-download is needed.';
 
   @override
   String get close => 'Close';
@@ -177,6 +177,10 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String get downloadFailedShort =>
       'Model download failed. Please try again later.';
+
+  @override
+  String get modelPrepareFailed =>
+      'Speech recognition model installation failed. Please make sure your device has enough storage space and try again.';
 
   @override
   String get retry => 'Retry';
@@ -266,6 +270,10 @@ class AppLocalizationsZh extends AppLocalizations {
       'Download failed. Please try again later.';
 
   @override
+  String get bgDownloadErrorNotAvailable =>
+      'This background can\'t be downloaded right now. It may have been removed or replaced.';
+
+  @override
   String get bgSettingSubtitle => 'Customize chanting background';
 
   @override
@@ -275,6 +283,37 @@ class AppLocalizationsZh extends AppLocalizations {
   String langFollowSystemWith(String name) {
     return 'Follow system ($name)';
   }
+
+  @override
+  String get cancelling => 'Cancelling…';
+
+  @override
+  String get networkErrorBody =>
+      'Network connection error. Please check your connection and try again.';
+
+  @override
+  String get timeoutErrorBody =>
+      'Connection timed out. Your network may be unstable or the server is temporarily unresponsive. Please try again later.';
+
+  @override
+  String get serverErrorBody =>
+      'The server returned an error. Please try again later.';
+
+  @override
+  String get downloadFailedLowSpaceTitle => 'Insufficient Storage';
+
+  @override
+  String get downloadFailedLowSpaceBody =>
+      'There is not enough storage space on your device to complete the installation. Please free up space, then tap \"Try Again\".';
+
+  @override
+  String get retryAfterFreeSpace => 'Space freed, try again';
+
+  @override
+  String get retryUnzipAfterFreeSpace => 'Space freed, extract again';
+
+  @override
+  String get retryUnzipNote => 'Retrying extraction after insufficient storage';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -394,7 +433,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get downloading => '下載中';
 
   @override
-  String get unzipping => '解壓縮中';
+  String get unzipping => '安裝中';
 
   @override
   String get completed => '完成';
@@ -407,7 +446,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String doNotOperateDuring(String phase) {
-    return '「$phase」過程請保持在此畫面，\n請勿進行切換 App、關閉螢幕等任何操作。';
+    return '「$phase」過程請保持在此畫面，\n請勿切換 App、關閉螢幕等任何操作。';
   }
 
   @override
@@ -442,7 +481,8 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get unzipFailedTitle => '解壓縮失敗';
 
   @override
-  String get unzipFailedLowSpaceBody => '可能是儲存空間不足，請清出空間後再嘗試解壓。';
+  String get unzipFailedLowSpaceBody =>
+      '解壓縮失敗，裝置儲存空間不足。請先清出足夠空間，再點擊「重新解壓縮」。已下載的檔案會保留，不需要重新下載。';
 
   @override
   String get close => '關閉';
@@ -452,6 +492,9 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get downloadFailedShort => '模型下載失敗，請稍後再試或重試。';
+
+  @override
+  String get modelPrepareFailed => '語音辨識模型安裝失敗，請確認裝置儲存空間足夠後再試。';
 
   @override
   String get retry => '重試';
@@ -536,6 +579,9 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get bgDownloadErrorGeneric => '下載失敗，請稍後再試。';
 
   @override
+  String get bgDownloadErrorNotAvailable => '此背景目前無法下載，可能已下架或更換。';
+
+  @override
   String get bgSettingSubtitle => '自訂頁面背景';
 
   @override
@@ -545,4 +591,32 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String langFollowSystemWith(String name) {
     return '跟隨系統（$name）';
   }
+
+  @override
+  String get cancelling => '取消中…';
+
+  @override
+  String get networkErrorBody => '網路連線異常，請確認網路狀態後重試。';
+
+  @override
+  String get timeoutErrorBody => '連線逾時，可能是網路不穩或伺服器暫時無回應，請稍後重試。';
+
+  @override
+  String get serverErrorBody => '伺服器回應異常，請稍後再試。';
+
+  @override
+  String get downloadFailedLowSpaceTitle => '儲存空間不足';
+
+  @override
+  String get downloadFailedLowSpaceBody =>
+      '裝置儲存空間不足，無法完成安裝。請先清出足夠空間，再點擊「重新嘗試」。';
+
+  @override
+  String get retryAfterFreeSpace => '已清出空間，重新嘗試';
+
+  @override
+  String get retryUnzipAfterFreeSpace => '已清出空間，重新解壓縮';
+
+  @override
+  String get retryUnzipNote => '因儲存空間不足，重新嘗試解壓縮中';
 }

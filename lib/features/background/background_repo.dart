@@ -1,20 +1,19 @@
 // amitabha/lib/features/background/background_repo.dart
 import 'dart:convert';
 import 'dart:io';
-import 'package:http/http.dart' as http;
-import 'package:amitabha/storage/app_paths.dart';
+
 import 'package:amitabha/features/background/background_item.dart';
+import 'package:amitabha/storage/app_paths.dart';
+import 'package:amitabha/storage/atomic_io.dart';
+import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as p;
 
 class BackgroundRepo {
-  // 遠端 manifest(JSON 清單);更新素材時記得發新 tag 並同步這裡的版號。
-  // 帳號務必全小寫。
   static const String manifestUrl =
       'https://cdn.jsdelivr.net/gh/Aaron-Tsai-iosDeveloper/NamoAmitabha@main/app-backgrounds/manifest.json';
 
   final Map<String, http.Client> _clients = {};
 
-  // ── manifest 本地快取(放 Support,離線重建清單用) ──
   Future<File> _manifestCacheFile() async {
     final root = await AppPaths.root();
     final f = File(p.join(root.path, 'settings', 'background_manifest.json'));
@@ -32,15 +31,13 @@ class BackgroundRepo {
     final items = data
         .map((e) => BackgroundItem.fromJson(e as Map<String, dynamic>))
         .toList();
-    // 成功解析後才覆寫快取,避免壞資料蓋掉上次的好資料
     try {
       final f = await _manifestCacheFile();
-      await f.writeAsString(raw, flush: true);
+      await atomicWriteJson(f, data);
     } catch (_) {}
     return items;
   }
 
-  /// 讀上次成功抓到的 manifest 快取;沒有或解析失敗回 []。
   Future<List<BackgroundItem>> loadCachedManifest() async {
     try {
       final f = await _manifestCacheFile();
@@ -54,22 +51,28 @@ class BackgroundRepo {
     }
   }
 
-  Future<File> fileFor(BackgroundItem item) =>
-      AppPaths.background(item.id, item.ext);
+  Future<File> _downloadTarget(BackgroundItem item) =>
+      AppPaths.background(item.id, item.fileExtension);
 
-  Future<File> fileForRaw(String id, BackgroundType type) =>
-      AppPaths.background(id, type == BackgroundType.image ? 'jpg' : 'mp4');
-
-  Future<bool> isDownloaded(BackgroundItem item) async {
-    final f = await fileFor(item);
-    return f.exists();
+  Future<File?> findById(String id) async {
+    final dir = await AppPaths.backgroundsDir();
+    if (!await dir.exists()) return null;
+    await for (final entry in dir.list()) {
+      if (entry is File && p.basenameWithoutExtension(entry.path) == id) {
+        return entry;
+      }
+    }
+    return null;
   }
+
+  Future<bool> isDownloaded(BackgroundItem item) async =>
+      await findById(item.id) != null;
 
   Future<void> download(
     BackgroundItem item, {
     required void Function(double progress) onProgress,
   }) async {
-    final file = await fileFor(item);
+    final file = await _downloadTarget(item);
     final client = http.Client();
     _clients[item.id] = client;
     IOSink? sink;
@@ -107,17 +110,22 @@ class BackgroundRepo {
     }
   }
 
-  /// 中斷進行中的下載(關閉連線會讓上面的 await for 丟例外)。
   void cancelDownload(String id) {
     _clients[id]?.close();
   }
 
-  Future<void> delete(BackgroundItem item) async {
-    final f = await fileFor(item);
-    if (await f.exists()) await f.delete();
+  Future<void> delete(BackgroundItem item) => deleteById(item.id);
+
+  Future<void> deleteById(String id) async {
+    final dir = await AppPaths.backgroundsDir();
+    if (!await dir.exists()) return;
+    await for (final entry in dir.list()) {
+      if (entry is File && p.basenameWithoutExtension(entry.path) == id) {
+        await entry.delete();
+      }
+    }
   }
 
-  /// 給 ChantingBackground 用:回傳目前該播的來源(asset 或本地檔)。
   Future<BackgroundSource?> sourceFor(BackgroundItem item) async {
     if (item.isBuiltin) {
       return BackgroundSource(
@@ -126,8 +134,8 @@ class BackgroundRepo {
         revision: item.version,
       );
     }
-    final f = await fileFor(item);
-    if (await f.exists()) {
+    final f = await findById(item.id);
+    if (f != null) {
       return BackgroundSource(type: item.type, file: f, revision: item.version);
     }
     return null;

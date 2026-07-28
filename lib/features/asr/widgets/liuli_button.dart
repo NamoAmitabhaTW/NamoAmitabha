@@ -9,10 +9,9 @@ class LiuliButton extends StatelessWidget {
     required this.icon,
     required this.label,
     this.foreground = Colors.white,
-    this.blurSigma = 8, // 比毛玻璃低 → 更通透
+    this.blurSigma = 8, 
     this.borderRadius = 18,
     this.padding = const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-    // 琉璃漸層色：預設用木色系，想要七寶池感可換成青綠→琉璃藍
     this.gradientColors,
   });
 
@@ -29,8 +28,6 @@ class LiuliButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final enabled = onPressed != null;
     final wood = Theme.of(context).colorScheme.primary;
-
-    // 預設木色琉璃：深木→淺木的半透明漸層
     final colors =
         gradientColors ??
         [
@@ -50,20 +47,17 @@ class LiuliButton extends StatelessWidget {
         child: DecoratedBox(
           decoration: BoxDecoration(
             borderRadius: radius,
-            // ① 漸層染色 → 琉璃的色彩穿透感
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: colors,
             ),
-            // ② 高光邊：上緣偏亮、下緣偏暗，做出玻璃反光
             border: Border.all(
               color: Colors.white.withValues(alpha: enabled ? 0.5 : 0.2),
               width: 1,
             ),
             boxShadow: enabled
                 ? [
-                    // ③ 內側高光感（用淡白外陰影模擬潤澤光暈）
                     BoxShadow(
                       color: Colors.white.withValues(alpha: 0.15),
                       blurRadius: 8,
@@ -87,7 +81,6 @@ class LiuliButton extends StatelessWidget {
                   children: [
                     Icon(icon, size: 20, color: effForeground),
                     const SizedBox(width: 8),
-                    // 文字可縮放，避免長語系(Enregistrer)撐爆按鈕
                     Flexible(
                       child: FittedBox(
                         fit: BoxFit.scaleDown,

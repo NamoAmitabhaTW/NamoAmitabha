@@ -1,13 +1,13 @@
 //main.dart
 import 'package:flutter/material.dart';
-import 'app.dart';
-import 'flavors.dart';
 import 'package:flutter/services.dart';
+
+import 'app/app.dart';
+import 'app/flavors.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Edge-to-edge：內容延伸到系統列
   await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
   SystemChrome.setSystemUIOverlayStyle(

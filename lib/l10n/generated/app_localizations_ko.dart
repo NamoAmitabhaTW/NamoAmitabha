@@ -116,7 +116,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get downloading => '다운로드 중';
 
   @override
-  String get unzipping => '압축 해제 중';
+  String get unzipping => '설치 중';
 
   @override
   String get completed => '완료됨';
@@ -165,7 +165,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get unzipFailedLowSpaceBody =>
-      '저장 공간이 부족할 수 있습니다. 공간을 확보한 후 다시 압축 해제를 시도해 주세요.';
+      '저장 공간이 부족하여 압축 해제에 실패했습니다. 공간을 확보한 후 \"다시 압축 해제\"를 눌러 주세요. 다운로드한 파일은 유지되므로 다시 다운로드할 필요가 없습니다.';
 
   @override
   String get close => '닫기';
@@ -175,6 +175,10 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get downloadFailedShort => '모델 다운로드에 실패했습니다. 나중에 다시 시도해 주세요.';
+
+  @override
+  String get modelPrepareFailed =>
+      '음성 인식 모델 설치에 실패했습니다. 기기에 저장 공간이 충분한지 확인한 후 다시 시도해 주세요.';
 
   @override
   String get retry => '다시 시도';
@@ -260,6 +264,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get bgDownloadErrorGeneric => '다운로드에 실패했습니다. 나중에 다시 시도해 주세요.';
 
   @override
+  String get bgDownloadErrorNotAvailable =>
+      '이 배경은 현재 다운로드할 수 없습니다. 제공이 중단되었거나 교체되었을 수 있습니다.';
+
+  @override
   String get bgSettingSubtitle => '염불 배경 사용자 지정';
 
   @override
@@ -269,4 +277,33 @@ class AppLocalizationsKo extends AppLocalizations {
   String langFollowSystemWith(String name) {
     return '시스템 설정 따르기 ($name)';
   }
+
+  @override
+  String get cancelling => '취소하는 중…';
+
+  @override
+  String get networkErrorBody => '네트워크 연결에 문제가 있습니다. 연결 상태를 확인한 후 다시 시도해 주세요.';
+
+  @override
+  String get timeoutErrorBody =>
+      '연결 시간이 초과되었습니다. 네트워크가 불안정하거나 서버가 일시적으로 응답하지 않을 수 있습니다. 잠시 후 다시 시도해 주세요.';
+
+  @override
+  String get serverErrorBody => '서버 응답에 문제가 있습니다. 잠시 후 다시 시도해 주세요.';
+
+  @override
+  String get downloadFailedLowSpaceTitle => '저장 공간 부족';
+
+  @override
+  String get downloadFailedLowSpaceBody =>
+      '기기의 저장 공간이 부족하여 설치를 완료할 수 없습니다. 공간을 확보한 후 \"다시 시도\"를 눌러 주세요.';
+
+  @override
+  String get retryAfterFreeSpace => '공간 확보 후 다시 시도';
+
+  @override
+  String get retryUnzipAfterFreeSpace => '공간 확보 후 다시 압축 해제';
+
+  @override
+  String get retryUnzipNote => '저장 공간 부족으로 압축 해제를 다시 시도하는 중';
 }

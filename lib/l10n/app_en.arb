@@ -140,7 +140,7 @@
   },
   "pleaseWait": "Please wait",
   "downloading": "Downloading",
-  "unzipping": "Unzipping",
+  "unzipping": "Installing",
   "completed": "Completed",
   "preparing": "Preparing",
   "preparingPleaseWait": "Preparing, please wait…",
@@ -176,10 +176,11 @@
   "successTitle": "Success",
   "successBody": "The model has been installed successfully.",
   "unzipFailedTitle": "Unzip failed",
-  "unzipFailedLowSpaceBody": "Likely due to low storage space. Please free up some space and try unzipping again.",
+  "unzipFailedLowSpaceBody": "Extraction failed due to insufficient storage. Please free up space, then tap \"Extract Again\". The downloaded file is kept, so no re-download is needed.",
   "close": "Close",
   "retryUnzip": "Retry unzip",
   "downloadFailedShort": "Model download failed. Please try again later.",
+  "modelPrepareFailed": "Speech recognition model installation failed. Please make sure your device has enough storage space and try again.",
   "retry": "Retry",
   "feedbackOpenMailAppFailed": "Could not open mail app",
   "appName": "Amitabha Buddha",
@@ -228,6 +229,7 @@
   "bgOfflineBody": "Connect to the internet to download backgrounds.",
   "bgDownloadErrorNetwork": "No internet connection. Can't download the background.",
   "bgDownloadErrorGeneric": "Download failed. Please try again later.",
+  "bgDownloadErrorNotAvailable": "This background can't be downloaded right now. It may have been removed or replaced.",
   "bgSettingSubtitle": "Customize chanting background",
   "langFollowSystem": "Follow system",
   "langFollowSystemWith": "Follow system ({name})",
@@ -237,5 +239,14 @@
         "type": "String"
       }
     }
-  }
+  },
+  "cancelling": "Cancelling…",
+  "networkErrorBody": "Network connection error. Please check your connection and try again.",
+  "timeoutErrorBody": "Connection timed out. Your network may be unstable or the server is temporarily unresponsive. Please try again later.",
+  "serverErrorBody": "The server returned an error. Please try again later.",
+  "downloadFailedLowSpaceTitle": "Insufficient Storage",
+  "downloadFailedLowSpaceBody": "There is not enough storage space on your device to complete the installation. Please free up space, then tap \"Try Again\".",
+  "retryAfterFreeSpace": "Space freed, try again",
+  "retryUnzipAfterFreeSpace": "Space freed, extract again",
+  "retryUnzipNote": "Retrying extraction after insufficient storage"
 }

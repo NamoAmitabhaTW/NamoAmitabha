@@ -140,7 +140,7 @@
   },
   "pleaseWait": "Bitte warten",
   "downloading": "Wird heruntergeladen",
-  "unzipping": "Wird entpackt",
+  "unzipping": "Wird installiert",
   "completed": "Abgeschlossen",
   "preparing": "Wird vorbereitet",
   "preparingPleaseWait": "Wird vorbereitet, bitte warten…",
@@ -176,10 +176,11 @@
   "successTitle": "Erfolg",
   "successBody": "Das Modell wurde erfolgreich installiert.",
   "unzipFailedTitle": "Entpacken fehlgeschlagen",
-  "unzipFailedLowSpaceBody": "Möglicherweise zu wenig Speicherplatz. Bitte geben Sie Speicher frei und versuchen Sie es erneut.",
+  "unzipFailedLowSpaceBody": "Das Entpacken ist wegen unzureichenden Speicherplatzes fehlgeschlagen. Bitte geben Sie Speicherplatz frei und tippen Sie dann auf „Erneut entpacken“. Die heruntergeladene Datei bleibt erhalten – ein erneuter Download ist nicht nötig.",
   "close": "Schließen",
   "retryUnzip": "Entpacken wiederholen",
   "downloadFailedShort": "Modell-Download fehlgeschlagen. Bitte versuchen Sie es später erneut.",
+  "modelPrepareFailed": "Installation des Spracherkennungsmodells fehlgeschlagen. Bitte stellen Sie sicher, dass genügend Speicherplatz auf dem Gerät vorhanden ist, und versuchen Sie es erneut.",
   "retry": "Wiederholen",
   "feedbackOpenMailAppFailed": "Mail-App konnte nicht geöffnet werden",
   "appName": "Amitabha",
@@ -228,6 +229,7 @@
   "bgOfflineBody": "Stellen Sie eine Internetverbindung her, um Hintergründe herunterzuladen.",
   "bgDownloadErrorNetwork": "Keine Internetverbindung. Hintergrund kann nicht heruntergeladen werden.",
   "bgDownloadErrorGeneric": "Download fehlgeschlagen. Bitte versuchen Sie es später erneut.",
+  "bgDownloadErrorNotAvailable": "Dieser Hintergrund kann derzeit nicht heruntergeladen werden. Er wurde möglicherweise entfernt oder ersetzt.",
   "bgSettingSubtitle": "Rezitations-Hintergrund anpassen",
   "langFollowSystem": "System folgen",
   "langFollowSystemWith": "System folgen ({name})",
@@ -237,5 +239,14 @@
         "type": "String"
       }
     }
-  }
+  },
+  "cancelling": "Wird abgebrochen …",
+  "networkErrorBody": "Netzwerkverbindungsfehler. Bitte überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
+  "timeoutErrorBody": "Zeitüberschreitung der Verbindung. Das Netzwerk ist möglicherweise instabil oder der Server antwortet vorübergehend nicht. Bitte versuchen Sie es später erneut.",
+  "serverErrorBody": "Der Server hat einen Fehler zurückgegeben. Bitte versuchen Sie es später erneut.",
+  "downloadFailedLowSpaceTitle": "Nicht genügend Speicherplatz",
+  "downloadFailedLowSpaceBody": "Der Speicherplatz auf Ihrem Gerät reicht nicht aus, um die Installation abzuschließen. Bitte geben Sie Speicherplatz frei und tippen Sie dann auf „Erneut versuchen“.",
+  "retryAfterFreeSpace": "Speicher freigegeben, erneut versuchen",
+  "retryUnzipAfterFreeSpace": "Speicher freigegeben, erneut entpacken",
+  "retryUnzipNote": "Entpacken wird wegen Speichermangels erneut versucht"
 }

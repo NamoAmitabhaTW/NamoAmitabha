@@ -1,5 +1,5 @@
 name: amitabha
-description: "A new Flutter project."
+description: "念佛 — 以語音辨識自動計數佛號的專注念佛 App。"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.1.0+15
+version: 2.0.0
 
 environment:
   sdk: ^3.8.1
@@ -42,8 +42,6 @@ dependencies:
   path: ^1.9.0
 
   provider: ^6.1.2         
-  url_launcher: ^6.2.6
-  cupertino_icons: ^1.0.8
 
   intl: ^0.20.2
 
@@ -54,11 +52,6 @@ dependencies:
   video_player: ^2.9.0
   cached_network_image: ^3.4.1
 
-  # firebase_core: ^3.6.0
-  # cloud_firestore: ^5.5.1
-  # firebase_auth: ^5.3.1
-  # sign_in_with_apple: ^7.0.0
-  # google_sign_in: ^7.2.0
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   
@@ -66,6 +59,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  path_provider_platform_interface: ^2.1.2
   flutter_lints: ^5.0.0
   flutter_flavorizr: 2.4.1
   flutter_launcher_icons: ^0.14.4
@@ -110,8 +104,7 @@ flutter:
   generate: true 
 
   assets:
-    - assets/keywords_zh.txt
-    - assets/hotwords_zh.txt
+    - assets/hotwords.txt
     - assets/images/amitabha_calligraphy.png
     - assets/images/amitabha_calligraphy_ja.png
     - assets/images/amitabha_calligraphy_sa.png
@@ -119,6 +112,11 @@ flutter:
     - assets/images/amitabha_calligraphy_ko.png
     - assets/videos/bg_mountain_stream.mp4
     - assets/images/bg_mountain_stream.png
+    - assets/sherpa-onnx/encoder.int8.onnx
+    - assets/sherpa-onnx/decoder.onnx
+    - assets/sherpa-onnx/joiner.int8.onnx
+    - assets/sherpa-onnx/tokens.txt
+    - assets/sherpa-onnx/bpe.vocab
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

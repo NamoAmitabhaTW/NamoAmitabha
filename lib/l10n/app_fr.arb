@@ -140,7 +140,7 @@
   },
   "pleaseWait": "Veuillez patienter",
   "downloading": "Téléchargement",
-  "unzipping": "Décompression",
+  "unzipping": "Installation",
   "completed": "Terminé",
   "preparing": "Préparation",
   "preparingPleaseWait": "Préparation, veuillez patienter…",
@@ -176,10 +176,11 @@
   "successTitle": "Réussi",
   "successBody": "Le modèle a été installé avec succès.",
   "unzipFailedTitle": "Échec de la décompression",
-  "unzipFailedLowSpaceBody": "Espace de stockage probablement insuffisant. Libérez de l'espace puis réessayez la décompression.",
+  "unzipFailedLowSpaceBody": "Échec de la décompression : espace de stockage insuffisant. Veuillez libérer de l'espace, puis appuyez sur « Décompresser à nouveau ». Le fichier téléchargé est conservé, aucun nouveau téléchargement n'est nécessaire.",
   "close": "Fermer",
   "retryUnzip": "Réessayer la décompression",
   "downloadFailedShort": "Échec du téléchargement du modèle. Veuillez réessayer plus tard.",
+  "modelPrepareFailed": "Échec de l'installation du modèle de reconnaissance vocale. Veuillez vérifier que votre appareil dispose de suffisamment d'espace de stockage, puis réessayez.",
   "retry": "Réessayer",
   "feedbackOpenMailAppFailed": "Impossible d'ouvrir l'application e-mail",
   "appName": "Amitabha",
@@ -228,6 +229,7 @@
   "bgOfflineBody": "Connectez-vous à Internet pour télécharger des arrière-plans.",
   "bgDownloadErrorNetwork": "Pas de connexion Internet. Impossible de télécharger l'arrière-plan.",
   "bgDownloadErrorGeneric": "Échec du téléchargement. Veuillez réessayer plus tard.",
+  "bgDownloadErrorNotAvailable": "Cet arrière-plan ne peut pas être téléchargé pour le moment. Il a peut-être été retiré ou remplacé.",
   "bgSettingSubtitle": "Personnaliser l'arrière-plan de récitation",
   "langFollowSystem": "Suivre le système",
   "langFollowSystemWith": "Suivre le système ({name})",
@@ -237,5 +239,14 @@
         "type": "String"
       }
     }
-  }
+  },
+  "cancelling": "Annulation…",
+  "networkErrorBody": "Problème de connexion réseau. Veuillez vérifier votre connexion puis réessayer.",
+  "timeoutErrorBody": "Délai de connexion dépassé. Le réseau est peut-être instable ou le serveur ne répond temporairement pas. Veuillez réessayer plus tard.",
+  "serverErrorBody": "Le serveur a renvoyé une erreur. Veuillez réessayer plus tard.",
+  "downloadFailedLowSpaceTitle": "Espace de stockage insuffisant",
+  "downloadFailedLowSpaceBody": "L'espace de stockage de votre appareil est insuffisant pour terminer l'installation. Veuillez libérer de l'espace, puis appuyez sur « Réessayer ».",
+  "retryAfterFreeSpace": "Espace libéré, réessayer",
+  "retryUnzipAfterFreeSpace": "Espace libéré, décompresser à nouveau",
+  "retryUnzipNote": "Nouvelle tentative de décompression suite au manque d'espace"
 }

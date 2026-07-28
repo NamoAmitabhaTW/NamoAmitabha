@@ -77,9 +77,6 @@
 		45941FFF2FF452A500E302BD /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		459420002FF452C300E302BD /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		459420012FF452D000E302BD /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		45F6960A2E97ABA8002F5E05 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		45F6960C2E97ABA8002F5E05 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		45F6960E2E97ABA8002F5E05 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		45FBE3922E9561A600B9FD84 /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		46E3CA227C74823004EE090A /* Pods-RunnerTests.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.debug-prod.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.debug-prod.xcconfig"; sourceTree = "<group>"; };
 		48B008B9C3111B239BB38B48 /* Pods-RunnerTests.debug-staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.debug-staging.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.debug-staging.xcconfig"; sourceTree = "<group>"; };
@@ -180,40 +177,6 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		45F6960B2E97ABA8002F5E05 /* dev */ = {
-			isa = PBXGroup;
-			children = (
-				45F6960A2E97ABA8002F5E05 /* GoogleService-Info.plist */,
-			);
-			path = dev;
-			sourceTree = "<group>";
-		};
-		45F6960D2E97ABA8002F5E05 /* prod */ = {
-			isa = PBXGroup;
-			children = (
-				45F6960C2E97ABA8002F5E05 /* GoogleService-Info.plist */,
-			);
-			path = prod;
-			sourceTree = "<group>";
-		};
-		45F6960F2E97ABA8002F5E05 /* staging */ = {
-			isa = PBXGroup;
-			children = (
-				45F6960E2E97ABA8002F5E05 /* GoogleService-Info.plist */,
-			);
-			path = staging;
-			sourceTree = "<group>";
-		};
-		45F696102E97ABA8002F5E05 /* Firebase */ = {
-			isa = PBXGroup;
-			children = (
-				45F6960B2E97ABA8002F5E05 /* dev */,
-				45F6960D2E97ABA8002F5E05 /* prod */,
-				45F6960F2E97ABA8002F5E05 /* staging */,
-			);
-			path = Firebase;
-			sourceTree = "<group>";
-		};
 		9740EEB11CF90186004384FC /* Flutter */ = {
 			isa = PBXGroup;
 			children = (
@@ -262,7 +225,6 @@
 			isa = PBXGroup;
 			children = (
 				4540945D2E9A0DD400933828 /* InfoPlist.strings */,
-				45F696102E97ABA8002F5E05 /* Firebase */,
 				45FBE3922E9561A600B9FD84 /* Runner.entitlements */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
@@ -318,7 +280,6 @@
 				97C146EC1CF9000F007C117D /* Resources */,
 				9705A1C41CF9048500538489 /* Embed Frameworks */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
-				45F696112E97AD46002F5E05 /* ShellScript */,
 				37DC1E328A7575569C00A8D1 /* [CP] Embed Pods Frameworks */,
 				076465B2D1921B19B1839368 /* [CP] Copy Pods Resources */,
 			);
@@ -481,28 +442,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin";
-		};
-		45F696112E97AD46002F5E05 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PROJECT_DIR}/Runner/Firebase/dev/GoogleService-Info.plist",
-				"${PROJECT_DIR}/Runner/Firebase/staging/GoogleService-Info.plist",
-				"${PROJECT_DIR}/Runner/Firebase/prod/GoogleService-Info.plist",
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nset -euo pipefail\n\nKEY=\"${SCHEME_NAME:-${CONFIGURATION:-}}\"\n\ncase \"$KEY\" in\n  *Debug*|*dev*) FLAVOR=\"dev\" ;;\n  *Staging*|*Profile*|*staging*) FLAVOR=\"staging\" ;;\n   *Release*|*prod*) FLAVOR=\"prod\" ;;\n  *) FLAVOR=\"dev\" ;;\nesac\n\nSRC=\"${PROJECT_DIR}/Runner/Firebase/${FLAVOR}/GoogleService-Info.plist\"\necho \"SCHEME_NAME=${SCHEME_NAME:-} CONFIGURATION=${CONFIGURATION:-} -> FLAVOR=$FLAVOR\"\necho \"SRC=$SRC\"\n\nDEST=\"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"\n\nif [ ! -f \"$SRC\" ]; then\n  echo \"error: Missing $SRC\"\n  exit 1\nfi\n\nmkdir -p \"$(dirname \"$DEST\")\"\n\ncp \"$SRC\" \"$DEST\"\necho \"✅ Copied $SRC → $DEST\"\n";
+			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin\n";
 		};
 		9740EEB61CF901F6004384FC /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;

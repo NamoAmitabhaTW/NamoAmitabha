@@ -1,30 +1,24 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter_test/flutter_test.dart';
-import 'package:path/path.dart' as p;
-import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
-
 import 'package:amitabha/storage/app_paths.dart';
 import 'package:amitabha/storage/atomic_io.dart';
 import 'package:amitabha/storage/daily_repo.dart';
 import 'package:amitabha/storage/hit_logger.dart';
+import 'package:amitabha/storage/json_prefs_file.dart';
 import 'package:amitabha/storage/models.dart';
 import 'package:amitabha/storage/session_repo.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
+
+import 'helpers/fake_path_provider.dart';
 
 String _nowYmdLocal() {
   final n = DateTime.now();
   return '${n.year.toString().padLeft(4, '0')}'
          '${n.month.toString().padLeft(2, '0')}'
          '${n.day.toString().padLeft(2, '0')}';
-}
-
-/// Mock path_provider
-class _FakePathProvider extends PathProviderPlatform {
-  _FakePathProvider(this.docs);
-  final Directory docs;
-  @override
-  Future<String?> getApplicationDocumentsPath() async => docs.path;
 }
 
 void main() {
@@ -34,7 +28,7 @@ void main() {
 
   setUp(() async {
     tempRoot = await Directory.systemTemp.createTemp('namo_test_');
-    PathProviderPlatform.instance = _FakePathProvider(tempRoot);
+    PathProviderPlatform.instance = FakePathProviderPlatform(tempRoot);
   });
 
   tearDown(() async {
@@ -106,5 +100,22 @@ void main() {
     await atomicWriteJson(file, {'a': 1});
     final j = await readJsonOrEmpty(file);
     expect(j['a'], 1);
+  });
+
+  test('JsonPrefsFile 寫入/讀回往返', () async {
+    final prefs = JsonPrefsFile('test_prefs');
+    expect(await prefs.read(), isNull); 
+
+    await prefs.write({'theme_style': 'zenWood', 'n': 3});
+    final j = await prefs.read();
+    expect(j?['theme_style'], 'zenWood');
+    expect(j?['n'], 3);
+  });
+
+  test('JsonPrefsFile 檔案損毀 → 回 null 不拋錯', () async {
+    final prefs = JsonPrefsFile('broken_prefs');
+    final f = await prefs.file();
+    await f.writeAsString('{oops not json');
+    expect(await prefs.read(), isNull);
   });
 }

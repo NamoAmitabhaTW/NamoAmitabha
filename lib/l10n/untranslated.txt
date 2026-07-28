@@ -53,6 +53,7 @@
     "close",
     "retryUnzip",
     "downloadFailedShort",
+    "modelPrepareFailed",
     "retry",
     "feedbackOpenMailAppFailed",
     "appName",
@@ -78,9 +79,19 @@
     "bgOfflineBody",
     "bgDownloadErrorNetwork",
     "bgDownloadErrorGeneric",
+    "bgDownloadErrorNotAvailable",
     "bgSettingSubtitle",
     "langFollowSystem",
-    "langFollowSystemWith"
+    "langFollowSystemWith",
+    "cancelling",
+    "networkErrorBody",
+    "timeoutErrorBody",
+    "serverErrorBody",
+    "downloadFailedLowSpaceTitle",
+    "downloadFailedLowSpaceBody",
+    "retryAfterFreeSpace",
+    "retryUnzipAfterFreeSpace",
+    "retryUnzipNote"
   ],
 
   "zh_Hant": [
@@ -137,6 +148,7 @@
     "close",
     "retryUnzip",
     "downloadFailedShort",
+    "modelPrepareFailed",
     "retry",
     "feedbackOpenMailAppFailed",
     "appName",
@@ -162,8 +174,18 @@
     "bgOfflineBody",
     "bgDownloadErrorNetwork",
     "bgDownloadErrorGeneric",
+    "bgDownloadErrorNotAvailable",
     "bgSettingSubtitle",
     "langFollowSystem",
-    "langFollowSystemWith"
+    "langFollowSystemWith",
+    "cancelling",
+    "networkErrorBody",
+    "timeoutErrorBody",
+    "serverErrorBody",
+    "downloadFailedLowSpaceTitle",
+    "downloadFailedLowSpaceBody",
+    "retryAfterFreeSpace",
+    "retryUnzipAfterFreeSpace",
+    "retryUnzipNote"
   ]
 }

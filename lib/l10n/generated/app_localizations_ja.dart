@@ -116,7 +116,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get downloading => 'ダウンロード中';
 
   @override
-  String get unzipping => '解凍中';
+  String get unzipping => 'インストール中';
 
   @override
   String get completed => '完了';
@@ -165,7 +165,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get unzipFailedLowSpaceBody =>
-      'ストレージの空き容量が不足している可能性があります。空き容量を確保してから再度解凍してください。';
+      'ストレージ容量不足のため解凍に失敗しました。空き容量を確保してから「再解凍」をタップしてください。ダウンロード済みのファイルは保持されるため、再ダウンロードは不要です。';
 
   @override
   String get close => '閉じる';
@@ -175,6 +175,10 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get downloadFailedShort => 'モデルのダウンロードに失敗しました。後でもう一度お試しください。';
+
+  @override
+  String get modelPrepareFailed =>
+      '音声認識モデルのインストールに失敗しました。デバイスの空き容量が十分にあることを確認してから、もう一度お試しください。';
 
   @override
   String get retry => '再試行';
@@ -260,6 +264,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get bgDownloadErrorGeneric => 'ダウンロードに失敗しました。後でもう一度お試しください。';
 
   @override
+  String get bgDownloadErrorNotAvailable =>
+      'この背景は現在ダウンロードできません。提供終了または差し替えの可能性があります。';
+
+  @override
   String get bgSettingSubtitle => '念仏の背景をカスタマイズ';
 
   @override
@@ -269,4 +277,33 @@ class AppLocalizationsJa extends AppLocalizations {
   String langFollowSystemWith(String name) {
     return 'システムに従う（$name）';
   }
+
+  @override
+  String get cancelling => 'キャンセル中…';
+
+  @override
+  String get networkErrorBody => 'ネットワーク接続に問題があります。接続状況をご確認のうえ、もう一度お試しください。';
+
+  @override
+  String get timeoutErrorBody =>
+      '接続がタイムアウトしました。ネットワークが不安定か、サーバーが一時的に応答していない可能性があります。しばらくしてからもう一度お試しください。';
+
+  @override
+  String get serverErrorBody => 'サーバーの応答に問題があります。しばらくしてからもう一度お試しください。';
+
+  @override
+  String get downloadFailedLowSpaceTitle => 'ストレージ容量不足';
+
+  @override
+  String get downloadFailedLowSpaceBody =>
+      '端末のストレージ容量が不足しているため、インストールを完了できません。空き容量を確保してから「再試行」をタップしてください。';
+
+  @override
+  String get retryAfterFreeSpace => '空き容量を確保して再試行';
+
+  @override
+  String get retryUnzipAfterFreeSpace => '空き容量を確保して再解凍';
+
+  @override
+  String get retryUnzipNote => '容量不足のため、解凍を再試行しています';
 }

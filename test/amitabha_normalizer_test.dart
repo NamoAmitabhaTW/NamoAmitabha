@@ -1,5 +1,5 @@
+import 'package:amitabha/features/asr/domain/amitabha_normalizer.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:amitabha/amitabha_normalizer.dart';
 
 void main() {
   group('Amitabha detection', () {
@@ -31,9 +31,9 @@ void main() {
 
     test('normalization mapping sanity', () {
       final n = normalizeForAmitabha('阿驮佛/阿彌陀仏');
-      expect(n.contains('陀'), true); // 驮→陀
-      expect(n.contains('弥'), true); // 彌→弥
-      expect(n.contains('佛'), true); // 仏→佛
+      expect(n.contains('陀'), true); 
+      expect(n.contains('弥'), true); 
+      expect(n.contains('佛'), true); 
     });
   });
 }

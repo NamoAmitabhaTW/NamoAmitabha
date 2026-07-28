@@ -1,6 +1,7 @@
 import 'dart:typed_data';
+
+import 'package:amitabha/core/utils/audio_convert.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:amitabha/utils.dart';
 
 Uint8List _i16ToBytesLE(List<int> xs) {
   final b = ByteData(xs.length * 2);
@@ -45,9 +46,9 @@ void main() {
     });
 
     test('子片段（sublist）位移正確', () {
-      // 建一個較大的 buffer，取其中一段作為子片段
-      final all = _i16ToBytesLE([111, -222, 333, -444, 555]); // 10 bytes
-      final slice = Uint8List.sublistView(all, 2, 8); // 對應 [-222, 333, -444]
+      
+      final all = _i16ToBytesLE([111, -222, 333, -444, 555]); 
+      final slice = Uint8List.sublistView(all, 2, 8); 
       final f = convertBytesToFloat32(slice);
       expect(f.length, 3);
       expect(f[0], closeTo(-222 / 32768.0, 1e-7));

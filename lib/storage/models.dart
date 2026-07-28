@@ -41,12 +41,14 @@ class DailySummary {
   final String userId;
   final String userName;
   final int amitabhaCount;
+  final List<String> sessionIds;
 
   DailySummary({
     required this.yyyymmdd,
     required this.userId,
     required this.userName,
     required this.amitabhaCount,
+    this.sessionIds = const [],
   });
 
   Map<String, dynamic> toJson() => {
@@ -55,6 +57,7 @@ class DailySummary {
     'userId': userId,
     'userName': userName,
     'amitabhaCount': amitabhaCount,
+    'sessionIds': sessionIds,
   };
 
   static DailySummary fromJson(Map<String, dynamic> j) => DailySummary(
@@ -62,5 +65,6 @@ class DailySummary {
     userId: j['userId'],
     userName: j['userName'],
     amitabhaCount: j['amitabhaCount'] ?? 0,
+    sessionIds: (j['sessionIds'] as List?)?.cast<String>() ?? const [],
   );
 }

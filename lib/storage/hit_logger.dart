@@ -2,7 +2,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'app_paths.dart';
-import 'package:amitabha/utils.dart';
 
 class HitLogger {
   final String sessionId;
@@ -54,5 +53,4 @@ class HitLogger {
       _lines = 0;
     }
   }
-  static String todayYmdLocal() => nowYmdLocal();
 }

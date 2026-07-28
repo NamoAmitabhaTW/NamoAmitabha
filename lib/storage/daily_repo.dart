@@ -1,11 +1,31 @@
 //amitabha/lib/storage/daily_repo.dart
-import 'atomic_io.dart';
 import 'app_paths.dart';
+import 'atomic_io.dart';
 import 'models.dart';
 import 'single_writer.dart';
 
 class DailyRepository {
   Future<void> addCount(String yyyymmdd, String userId, String userName, int delta) async {
+    await _add(yyyymmdd, userId, userName, delta, sessionId: null);
+  }
+
+  Future<void> addCountForSession(
+    String yyyymmdd,
+    String userId,
+    String userName,
+    int delta,
+    String sessionId,
+  ) async {
+    await _add(yyyymmdd, userId, userName, delta, sessionId: sessionId);
+  }
+
+  Future<void> _add(
+    String yyyymmdd,
+    String userId,
+    String userName,
+    int delta, {
+    required String? sessionId,
+  }) async {
     final file = await AppPaths.daily(yyyymmdd);
     await singleWriter.run(() async {
       final j = await readJsonOrEmpty(file);
@@ -15,15 +35,22 @@ class DailyRepository {
           userId: userId,
           userName: userName,
           amitabhaCount: delta,
+          sessionIds: sessionId == null ? const [] : [sessionId],
         );
         await atomicWriteJson(file, d.toJson());
       } else {
         final d = DailySummary.fromJson(j);
+        if (sessionId != null && d.sessionIds.contains(sessionId)) {
+          return; 
+        }
         final updated = DailySummary(
           yyyymmdd: d.yyyymmdd,
           userId: d.userId,
           userName: d.userName,
           amitabhaCount: d.amitabhaCount + delta,
+          sessionIds: sessionId == null
+              ? d.sessionIds
+              : [...d.sessionIds, sessionId],
         );
         await atomicWriteJson(file, updated.toJson());
       }

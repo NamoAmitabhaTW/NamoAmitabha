@@ -117,7 +117,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get downloading => 'Téléchargement';
 
   @override
-  String get unzipping => 'Décompression';
+  String get unzipping => 'Installation';
 
   @override
   String get completed => 'Terminé';
@@ -166,7 +166,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get unzipFailedLowSpaceBody =>
-      'Espace de stockage probablement insuffisant. Libérez de l\'espace puis réessayez la décompression.';
+      'Échec de la décompression : espace de stockage insuffisant. Veuillez libérer de l\'espace, puis appuyez sur « Décompresser à nouveau ». Le fichier téléchargé est conservé, aucun nouveau téléchargement n\'est nécessaire.';
 
   @override
   String get close => 'Fermer';
@@ -177,6 +177,10 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get downloadFailedShort =>
       'Échec du téléchargement du modèle. Veuillez réessayer plus tard.';
+
+  @override
+  String get modelPrepareFailed =>
+      'Échec de l\'installation du modèle de reconnaissance vocale. Veuillez vérifier que votre appareil dispose de suffisamment d\'espace de stockage, puis réessayez.';
 
   @override
   String get retry => 'Réessayer';
@@ -268,6 +272,10 @@ class AppLocalizationsFr extends AppLocalizations {
       'Échec du téléchargement. Veuillez réessayer plus tard.';
 
   @override
+  String get bgDownloadErrorNotAvailable =>
+      'Cet arrière-plan ne peut pas être téléchargé pour le moment. Il a peut-être été retiré ou remplacé.';
+
+  @override
   String get bgSettingSubtitle => 'Personnaliser l\'arrière-plan de récitation';
 
   @override
@@ -277,4 +285,37 @@ class AppLocalizationsFr extends AppLocalizations {
   String langFollowSystemWith(String name) {
     return 'Suivre le système ($name)';
   }
+
+  @override
+  String get cancelling => 'Annulation…';
+
+  @override
+  String get networkErrorBody =>
+      'Problème de connexion réseau. Veuillez vérifier votre connexion puis réessayer.';
+
+  @override
+  String get timeoutErrorBody =>
+      'Délai de connexion dépassé. Le réseau est peut-être instable ou le serveur ne répond temporairement pas. Veuillez réessayer plus tard.';
+
+  @override
+  String get serverErrorBody =>
+      'Le serveur a renvoyé une erreur. Veuillez réessayer plus tard.';
+
+  @override
+  String get downloadFailedLowSpaceTitle => 'Espace de stockage insuffisant';
+
+  @override
+  String get downloadFailedLowSpaceBody =>
+      'L\'espace de stockage de votre appareil est insuffisant pour terminer l\'installation. Veuillez libérer de l\'espace, puis appuyez sur « Réessayer ».';
+
+  @override
+  String get retryAfterFreeSpace => 'Espace libéré, réessayer';
+
+  @override
+  String get retryUnzipAfterFreeSpace =>
+      'Espace libéré, décompresser à nouveau';
+
+  @override
+  String get retryUnzipNote =>
+      'Nouvelle tentative de décompression suite au manque d\'espace';
 }

@@ -1,10 +1,10 @@
 // amitabha/lib/features/background/widgets/background_card.dart
-import 'package:flutter/material.dart';
 import 'package:amitabha/features/background/background_item.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 
-// ── 色彩 tokens ──(略,維持原樣)
+
 const _kBrown = Color(0xFF6F4E37);
 const _kDangerColor = Color(0xFFA8623F);
 const _kCream = Color(0xFFFFF8EC);
@@ -19,7 +19,6 @@ const _kPreviewBg = Color(0x1F000000);
 const _kPreviewIcon = Color(0x61000000);
 const _kSubtleText = Color(0x8A000000);
 
-/// 可縮放的按鈕文字：長語系(Verwenden/Löschen)不折行，改為等比縮小。
 Widget _btnLabel(String text) => FittedBox(
   fit: BoxFit.scaleDown,
   child: Text(text, maxLines: 1, softWrap: false),
@@ -66,7 +65,7 @@ class BackgroundCard extends StatelessWidget {
           Stack(
             children: [
               SizedBox(height: 180, width: double.infinity, child: _preview()),
-              Positioned(top: 12, right: 12, child: _metaChip(t)), // ← 傳 t
+              Positioned(top: 12, right: 12, child: _metaChip(t)), 
             ],
           ),
           Padding(
@@ -83,7 +82,7 @@ class BackgroundCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 16),
-                _actions(state, t), // ← 傳 t
+                _actions(state, t), 
               ],
             ),
           ),
@@ -113,7 +112,6 @@ class BackgroundCard extends StatelessWidget {
     );
   }
 
-  // 內建顯示「預設背景」,其餘顯示「類型 · 大小」。
   Widget _metaChip(AppLocalizations t) {
     final String text;
     if (item.isBuiltin) {
@@ -269,7 +267,7 @@ class BackgroundCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(25),
     ),
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-    child: Row( // ← 拿掉 const(因為內含 t.bgInUse)
+    child: Row( 
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: [

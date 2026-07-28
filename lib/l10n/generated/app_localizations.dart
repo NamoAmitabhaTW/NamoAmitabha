@@ -328,7 +328,7 @@ abstract class AppLocalizations {
   /// No description provided for @unzipping.
   ///
   /// In en, this message translates to:
-  /// **'Unzipping'**
+  /// **'Installing'**
   String get unzipping;
 
   /// No description provided for @completed.
@@ -412,7 +412,7 @@ abstract class AppLocalizations {
   /// No description provided for @unzipFailedLowSpaceBody.
   ///
   /// In en, this message translates to:
-  /// **'Likely due to low storage space. Please free up some space and try unzipping again.'**
+  /// **'Extraction failed due to insufficient storage. Please free up space, then tap \"Extract Again\". The downloaded file is kept, so no re-download is needed.'**
   String get unzipFailedLowSpaceBody;
 
   /// No description provided for @close.
@@ -432,6 +432,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Model download failed. Please try again later.'**
   String get downloadFailedShort;
+
+  /// No description provided for @modelPrepareFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Speech recognition model installation failed. Please make sure your device has enough storage space and try again.'**
+  String get modelPrepareFailed;
 
   /// No description provided for @retry.
   ///
@@ -583,6 +589,12 @@ abstract class AppLocalizations {
   /// **'Download failed. Please try again later.'**
   String get bgDownloadErrorGeneric;
 
+  /// No description provided for @bgDownloadErrorNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'This background can\'t be downloaded right now. It may have been removed or replaced.'**
+  String get bgDownloadErrorNotAvailable;
+
   /// No description provided for @bgSettingSubtitle.
   ///
   /// In en, this message translates to:
@@ -600,6 +612,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Follow system ({name})'**
   String langFollowSystemWith(String name);
+
+  /// No description provided for @cancelling.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelling…'**
+  String get cancelling;
+
+  /// No description provided for @networkErrorBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Network connection error. Please check your connection and try again.'**
+  String get networkErrorBody;
+
+  /// No description provided for @timeoutErrorBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection timed out. Your network may be unstable or the server is temporarily unresponsive. Please try again later.'**
+  String get timeoutErrorBody;
+
+  /// No description provided for @serverErrorBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The server returned an error. Please try again later.'**
+  String get serverErrorBody;
+
+  /// No description provided for @downloadFailedLowSpaceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Insufficient Storage'**
+  String get downloadFailedLowSpaceTitle;
+
+  /// No description provided for @downloadFailedLowSpaceBody.
+  ///
+  /// In en, this message translates to:
+  /// **'There is not enough storage space on your device to complete the installation. Please free up space, then tap \"Try Again\".'**
+  String get downloadFailedLowSpaceBody;
+
+  /// No description provided for @retryAfterFreeSpace.
+  ///
+  /// In en, this message translates to:
+  /// **'Space freed, try again'**
+  String get retryAfterFreeSpace;
+
+  /// No description provided for @retryUnzipAfterFreeSpace.
+  ///
+  /// In en, this message translates to:
+  /// **'Space freed, extract again'**
+  String get retryUnzipAfterFreeSpace;
+
+  /// No description provided for @retryUnzipNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Retrying extraction after insufficient storage'**
+  String get retryUnzipNote;
 }
 
 class _AppLocalizationsDelegate

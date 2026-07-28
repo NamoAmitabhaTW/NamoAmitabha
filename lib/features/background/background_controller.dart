@@ -1,12 +1,18 @@
-// 背景狀態控制器(ChangeNotifier),對齊 theme_controller / locale_controller
 // amitabha/lib/features/background/background_controller.dart
-import 'package:flutter/foundation.dart';
+import 'dart:io'; // for SocketException
+
 import 'package:amitabha/features/background/background_item.dart';
 import 'package:amitabha/features/background/background_prefs.dart';
 import 'package:amitabha/features/background/background_repo.dart';
-import 'dart:io'; // for SocketException
+import 'package:flutter/foundation.dart';
 
-enum BackgroundDownloadError { network, unknown }
+enum BackgroundDownloadError {
+  network,
+
+  notAvailable,
+
+  unknown,
+}
 
 class BackgroundController extends ChangeNotifier {
   BackgroundController({BackgroundRepo? repo})
@@ -14,10 +20,8 @@ class BackgroundController extends ChangeNotifier {
 
   final BackgroundRepo _repo;
 
-  // 是否抓清單失敗(離線/伺服器問題)
   bool manifestLoadFailed = false;
 
-  // 被使用者取消中的下載 id,用來區分「取消」與「真的失敗」。
   final Set<String> _cancelling = {};
 
   List<BackgroundItem> items = [];
@@ -25,11 +29,11 @@ class BackgroundController extends ChangeNotifier {
   bool isLoading = false;
   BackgroundDownloadError? lastDownloadError; 
 
-  // 目前背景來源的快取:同步讀取,避免在 build 裡跑 Future 造成影片重建/閃爍。
+  
   BackgroundSource? _currentSource;
   BackgroundSource? get currentSource => _currentSource;
 
-  // 偵測到「使用中的背景被系統清掉」時,記下名稱供 UI 顯示一次提醒。
+ 
   BackgroundItem? clearedNoticeItem;
   void consumeClearedNotice() {
     clearedNoticeItem = null;
@@ -52,15 +56,13 @@ class BackgroundController extends ChangeNotifier {
     isLoading = true;
     final builtins = BackgroundItem.builtinDefaults();
 
-    // ── Phase 1:本地優先(內建 + 上次快取的 manifest),離線也能顯示 ──
     final cached = await _repo.loadCachedManifest();
     items = await _reconcile(builtins, cached);
     final active = await BackgroundPrefs.loadActive();
     activeId = (active?['activeId'] as String?) ?? _defaultBuiltin?.id;
     await _resolveSourceFast(active);
-    notifyListeners(); // 背景先動起來,不被網路卡住
+    notifyListeners(); 
 
-    // ── Phase 2:抓遠端,成功才覆寫;失敗則保留 Phase 1 結果 ──
     manifestLoadFailed = false;
     try {
       final remote = await _repo.fetchManifest();
@@ -68,17 +70,15 @@ class BackgroundController extends ChangeNotifier {
     } catch (e) {
       debugPrint('manifest 載入失敗: $e');
       manifestLoadFailed = true;
-      // 關鍵:不再把 items 打回只剩 builtins,維持 Phase 1(內建 + 快取)
     }
 
     if (!items.any((i) => i.id == activeId)) {
       activeId = _defaultBuiltin?.id;
     }
 
-    // 偵測:使用中是「非內建、但本地檔已不在」→ 被系統清掉了
     final cur = activeItem;
     if (cur != null && !cur.isBuiltin && !cur.isDownloaded) {
-      clearedNoticeItem = cur;            // 原 clearedNoticeName = cur.name;
+      clearedNoticeItem = cur;            
       final fb = _defaultBuiltin;
       activeId = fb?.id;
       if (fb != null) await _saveActive(fb);
@@ -89,8 +89,6 @@ class BackgroundController extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// 把 manifest 清單與內建合併,並依本地檔案狀態標記 isDownloaded / needsUpdate。
-  /// Phase 1(快取)與 Phase 2(遠端)共用,確保兩條路徑邏輯一致。
   Future<List<BackgroundItem>> _reconcile(
     List<BackgroundItem> builtins,
     List<BackgroundItem> manifest,
@@ -98,7 +96,7 @@ class BackgroundController extends ChangeNotifier {
     final merged = <BackgroundItem>[...builtins];
     final versions = await BackgroundPrefs.loadVersions();
     for (final item in manifest) {
-      if (builtins.any((b) => b.id == item.id)) continue; // 去重
+      if (builtins.any((b) => b.id == item.id)) continue; 
       item.isDownloaded = await _repo.isDownloaded(item);
       if (item.isDownloaded) {
         final local = versions[item.id] ?? 1;
@@ -136,21 +134,31 @@ class BackgroundController extends ChangeNotifier {
         await _saveActive(item);
         await _resolveSource();
       }
-      return true; // ← 成功
+      return true; 
     } catch (e) {
       if (_cancelling.contains(item.id)) {
-        return false; // 使用者主動取消,不算失敗、不提示
+        return false; 
       }
-      lastDownloadError = e is SocketException
-          ? BackgroundDownloadError.network
-          : BackgroundDownloadError.unknown;
-      return false; // ← 失敗
+      lastDownloadError = _classifyDownloadError(e);
+      return false; 
     } finally {
       item.isDownloading = false;
       item.downloadProgress = 0;
       _cancelling.remove(item.id);
       notifyListeners();
     }
+  }
+
+  static BackgroundDownloadError _classifyDownloadError(Object e) {
+    if (e is SocketException) return BackgroundDownloadError.network;
+    if (e is HttpException) {
+      final match = RegExp(r'HTTP (\d{3})').firstMatch(e.message);
+      final code = int.tryParse(match?.group(1) ?? '');
+      if (code != null && code >= 400 && code < 500) {
+        return BackgroundDownloadError.notAvailable;
+      }
+    }
+    return BackgroundDownloadError.unknown;
   }
 
   void cancelDownload(BackgroundItem item) {
@@ -167,14 +175,13 @@ class BackgroundController extends ChangeNotifier {
   }
 
   Future<void> delete(BackgroundItem item) async {
-    if (item.isBuiltin) return; // 內建不可刪
+    if (item.isBuiltin) return; 
 
     await _repo.delete(item);
     await BackgroundPrefs.removeVersion(item.id);
     item.isDownloaded = false;
     item.needsUpdate = false;
 
-    // 刪到使用中的 → 自動退回內建預設,避免畫面變空白
     if (activeId == item.id) {
       final fb = _defaultBuiltin;
       activeId = fb?.id;
@@ -184,10 +191,6 @@ class BackgroundController extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ── 來源解析 ──────────────────────────────────────────────
-
-  /// 由 item 建出來源。已下載者的 revision 取「本地版本」(代表磁碟上的內容),
-  /// 這樣只有真正更新過檔案、revision 改變時播放端才會重載。
   Future<BackgroundSource?> _buildSource(BackgroundItem? item) async {
     if (item == null) return null;
     if (item.isBuiltin) {
@@ -197,8 +200,8 @@ class BackgroundController extends ChangeNotifier {
         revision: 1,
       );
     }
-    final f = await _repo.fileFor(item);
-    if (!await f.exists()) return null;
+    final f = await _repo.findById(item.id);
+    if (f == null) return null;
     final versions = await BackgroundPrefs.loadVersions();
     final localRev = versions[item.id] ?? 1;
     return BackgroundSource(type: item.type, file: f, revision: localRev);
@@ -208,15 +211,13 @@ class BackgroundController extends ChangeNotifier {
     _currentSource = await _buildSource(activeItem);
   }
 
-  /// Phase 1 快速解析:只靠本地資料(內建用 asset;已下載用持久化描述 + 本地檔),
-  /// 免 manifest、可離線,讓背景在啟動瞬間就出現。
   Future<void> _resolveSourceFast(Map<String, dynamic>? active) async {
     final id = activeId;
     if (id == null) {
       _currentSource = null;
       return;
     }
-    // 內建?直接拿 asset
+
     for (final b in BackgroundItem.builtinDefaults()) {
       if (b.id == id) {
         _currentSource = BackgroundSource(
@@ -227,22 +228,22 @@ class BackgroundController extends ChangeNotifier {
         return;
       }
     }
-    // 非內建:用持久化描述 + 本地檔還原
+
     if (active != null) {
       final type = (active['type'] as String?) == 'image'
           ? BackgroundType.image
           : BackgroundType.video;
       final rev = (active['revision'] as num?)?.toInt() ?? 1;
-      final f = await _repo.fileForRaw(id, type);
-      if (await f.exists()) {
+      final f = await _repo.findById(id);
+      if (f != null) {
         _currentSource = BackgroundSource(type: type, file: f, revision: rev);
         return;
       }
     }
-    _currentSource = null; // 檔案不在(可能被清)→ Phase 2 再處理 fallback
+    _currentSource = null; 
   }
 
-  /// 存使用中背景的描述(id + type + 本地版本),供下次啟動離線快速還原。
+  
   Future<void> _saveActive(BackgroundItem item) async {
     final localRev = item.isBuiltin
         ? 1

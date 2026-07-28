@@ -13,8 +13,31 @@ App名稱：念佛
 
 此次開發的念佛App，透過語音辨識自動計數佛號，念佛過程可以隨時調整念誦速度，不用分心計算佛號數量。
 
+## 建置前置步驟 / Build setup
+
+語音辨識模型（約 160 MB）**未納入 git**，需在建置前從 GitHub Release 下載。
+在 `flutter run` / `flutter build` 之前，先執行一次：
+
+The ASR model (~160 MB) is **not stored in git**. Fetch it from the GitHub
+Release before building — run this once (it downloads, verifies the SHA256
+checksums, and extracts into `assets/sherpa-onnx/`; it's idempotent and
+skips if the files are already present):
+
+```bash
+./tool/fetch_model.sh
+```
+
+> 若 `assets/sherpa-onnx/` 為空，App 會找不到模型而無法運作。CI 若之後加入
+> `flutter build` / `flutter test`，也需在建置前加上這一步。
+
 ## Licenses
 
-This project depends on [sherpa-onnx](https://pub.dev/packages/sherpa_onnx),
-which is licensed under the Apache License 2.0.  
+This project bundles two third-party components, both licensed under the
+Apache License 2.0:
+
+- **[sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx)** — on-device speech
+  recognition runtime.
+- **[X-ASR](https://github.com/Gilgamesh-J/X-ASR)** streaming zipformer model
+  (zh-en, 960ms, int8) — the bundled ASR model, redistributed unmodified.
+
 See `THIRD_PARTY_LICENSES.txt` for details.
