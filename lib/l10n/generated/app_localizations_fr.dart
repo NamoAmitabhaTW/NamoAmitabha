@@ -318,4 +318,13 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get retryUnzipNote =>
       'Nouvelle tentative de décompression suite au manque d\'espace';
+
+  @override
+  String get dedicationTitle => 'Dédicace des mérites';
+
+  @override
+  String get dedicationButton => 'Dédier';
+
+  @override
+  String get dedicationEdit => 'Modifier le verset de dédicace';
 }

@@ -248,5 +248,8 @@
   "downloadFailedLowSpaceBody": "Der Speicherplatz auf Ihrem Gerät reicht nicht aus, um die Installation abzuschließen. Bitte geben Sie Speicherplatz frei und tippen Sie dann auf „Erneut versuchen“.",
   "retryAfterFreeSpace": "Speicher freigegeben, erneut versuchen",
   "retryUnzipAfterFreeSpace": "Speicher freigegeben, erneut entpacken",
-  "retryUnzipNote": "Entpacken wird wegen Speichermangels erneut versucht"
+  "retryUnzipNote": "Entpacken wird wegen Speichermangels erneut versucht",
+  "dedicationTitle": "Widmung der Verdienste",
+  "dedicationButton": "Widmen",
+  "dedicationEdit": "Widmungsvers bearbeiten"
 }

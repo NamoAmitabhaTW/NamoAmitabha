@@ -248,5 +248,8 @@
   "downloadFailedLowSpaceBody": "裝置儲存空間不足，無法完成安裝。請先清出足夠空間，再點擊「重新嘗試」。",
   "retryAfterFreeSpace": "已清出空間，重新嘗試",
   "retryUnzipAfterFreeSpace": "已清出空間，重新解壓縮",
-  "retryUnzipNote": "因儲存空間不足，重新嘗試解壓縮中"
+  "retryUnzipNote": "因儲存空間不足，重新嘗試解壓縮中",
+  "dedicationTitle": "迴向偈",
+  "dedicationButton": "迴向",
+  "dedicationEdit": "編輯迴向偈"
 }

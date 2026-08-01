@@ -306,4 +306,13 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get retryUnzipNote => '저장 공간 부족으로 압축 해제를 다시 시도하는 중';
+
+  @override
+  String get dedicationTitle => '회향게';
+
+  @override
+  String get dedicationButton => '회향';
+
+  @override
+  String get dedicationEdit => '회향게 편집';
 }

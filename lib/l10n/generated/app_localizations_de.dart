@@ -318,4 +318,13 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get retryUnzipNote =>
       'Entpacken wird wegen Speichermangels erneut versucht';
+
+  @override
+  String get dedicationTitle => 'Widmung der Verdienste';
+
+  @override
+  String get dedicationButton => 'Widmen';
+
+  @override
+  String get dedicationEdit => 'Widmungsvers bearbeiten';
 }

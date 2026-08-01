@@ -248,5 +248,17 @@
   "downloadFailedLowSpaceBody": "There is not enough storage space on your device to complete the installation. Please free up space, then tap \"Try Again\".",
   "retryAfterFreeSpace": "Space freed, try again",
   "retryUnzipAfterFreeSpace": "Space freed, extract again",
-  "retryUnzipNote": "Retrying extraction after insufficient storage"
+  "retryUnzipNote": "Retrying extraction after insufficient storage",
+  "dedicationTitle": "Dedication of Merit",
+  "@dedicationTitle": {
+    "description": "Title of the dedication-verse full-screen page and settings item"
+  },
+  "dedicationButton": "Dedicate",
+  "@dedicationButton": {
+    "description": "Button on the dedication page; enabled after the verse finishes animating"
+  },
+  "dedicationEdit": "Edit dedication verse",
+  "@dedicationEdit": {
+    "description": "Settings subtitle / editor screen title for editing the dedication verse"
+  }
 }

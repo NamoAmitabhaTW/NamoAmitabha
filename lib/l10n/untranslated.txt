@@ -91,7 +91,10 @@
     "downloadFailedLowSpaceBody",
     "retryAfterFreeSpace",
     "retryUnzipAfterFreeSpace",
-    "retryUnzipNote"
+    "retryUnzipNote",
+    "dedicationTitle",
+    "dedicationButton",
+    "dedicationEdit"
   ],
 
   "zh_Hant": [
@@ -186,6 +189,9 @@
     "downloadFailedLowSpaceBody",
     "retryAfterFreeSpace",
     "retryUnzipAfterFreeSpace",
-    "retryUnzipNote"
+    "retryUnzipNote",
+    "dedicationTitle",
+    "dedicationButton",
+    "dedicationEdit"
   ]
 }

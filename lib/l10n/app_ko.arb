@@ -248,5 +248,8 @@
   "downloadFailedLowSpaceBody": "기기의 저장 공간이 부족하여 설치를 완료할 수 없습니다. 공간을 확보한 후 \"다시 시도\"를 눌러 주세요.",
   "retryAfterFreeSpace": "공간 확보 후 다시 시도",
   "retryUnzipAfterFreeSpace": "공간 확보 후 다시 압축 해제",
-  "retryUnzipNote": "저장 공간 부족으로 압축 해제를 다시 시도하는 중"
+  "retryUnzipNote": "저장 공간 부족으로 압축 해제를 다시 시도하는 중",
+  "dedicationTitle": "회향게",
+  "dedicationButton": "회향",
+  "dedicationEdit": "회향게 편집"
 }

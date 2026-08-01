@@ -248,5 +248,8 @@
   "downloadFailedLowSpaceBody": "Thiết bị không đủ dung lượng lưu trữ để hoàn tất cài đặt. Vui lòng giải phóng dung lượng rồi nhấn \"Thử lại\".",
   "retryAfterFreeSpace": "Đã giải phóng dung lượng, thử lại",
   "retryUnzipAfterFreeSpace": "Đã giải phóng dung lượng, giải nén lại",
-  "retryUnzipNote": "Đang thử giải nén lại do thiếu dung lượng lưu trữ"
+  "retryUnzipNote": "Đang thử giải nén lại do thiếu dung lượng lưu trữ",
+  "dedicationTitle": "Kệ Hồi Hướng",
+  "dedicationButton": "Hồi hướng",
+  "dedicationEdit": "Chỉnh sửa kệ hồi hướng"
 }
