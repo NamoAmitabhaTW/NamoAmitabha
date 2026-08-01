@@ -315,4 +315,13 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get retryUnzipNote =>
       'Đang thử giải nén lại do thiếu dung lượng lưu trữ';
+
+  @override
+  String get dedicationTitle => 'Kệ Hồi Hướng';
+
+  @override
+  String get dedicationButton => 'Hồi hướng';
+
+  @override
+  String get dedicationEdit => 'Chỉnh sửa kệ hồi hướng';
 }

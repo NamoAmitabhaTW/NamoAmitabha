@@ -666,6 +666,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Retrying extraction after insufficient storage'**
   String get retryUnzipNote;
+
+  /// Title of the dedication-verse full-screen page and settings item
+  ///
+  /// In en, this message translates to:
+  /// **'Dedication of Merit'**
+  String get dedicationTitle;
+
+  /// Button on the dedication page; enabled after the verse finishes animating
+  ///
+  /// In en, this message translates to:
+  /// **'Dedicate'**
+  String get dedicationButton;
+
+  /// Settings subtitle / editor screen title for editing the dedication verse
+  ///
+  /// In en, this message translates to:
+  /// **'Edit dedication verse'**
+  String get dedicationEdit;
 }
 
 class _AppLocalizationsDelegate

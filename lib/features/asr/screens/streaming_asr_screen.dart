@@ -5,6 +5,8 @@ import 'package:amitabha/features/asr/application/asr_session_controller.dart';
 import 'package:amitabha/features/asr/widgets/chanting_background.dart';
 import 'package:amitabha/features/asr/widgets/liuli_button.dart';
 import 'package:amitabha/features/background/background_controller.dart';
+import 'package:amitabha/features/dedication/screens/dedication_screen.dart';
+import 'package:amitabha/features/dedication/screens/lotus_overlay.dart';
 import 'package:amitabha/features/model_install/bundled_model.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -83,6 +85,22 @@ class StreamingAsrScreen extends StatelessWidget {
       Navigator.of(context).pop();
     }
     return true;
+  }
+
+  /// 儲存本次念佛數，並顯示滿版迴向頁；完成迴向後播放蓮花動畫。
+  Future<void> _handleSave(BuildContext context) async {
+    final asr = context.read<AsrSessionController>();
+    await asr.save();
+    if (!context.mounted) return;
+    final dedicated = await Navigator.of(context).push<bool>(
+      MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (_) => const DedicationScreen(),
+      ),
+    );
+    if (dedicated == true && context.mounted) {
+      await showLotusCelebration(context);
+    }
   }
 
   Future<void> _showOpenSettingsDialog(BuildContext context) async {
@@ -238,7 +256,9 @@ class StreamingAsrScreen extends StatelessWidget {
                       const SizedBox(width: 16),
                       Expanded(
                         child: LiuliButton(
-                          onPressed: s.sessionCount > 0 ? s.save : null,
+                          onPressed: s.sessionCount > 0
+                              ? () => _handleSave(context)
+                              : null,
                           icon: Icons.save,
                           label: t.save,
                           gradientColors: [

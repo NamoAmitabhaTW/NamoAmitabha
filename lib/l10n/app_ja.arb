@@ -248,5 +248,8 @@
   "downloadFailedLowSpaceBody": "端末のストレージ容量が不足しているため、インストールを完了できません。空き容量を確保してから「再試行」をタップしてください。",
   "retryAfterFreeSpace": "空き容量を確保して再試行",
   "retryUnzipAfterFreeSpace": "空き容量を確保して再解凍",
-  "retryUnzipNote": "容量不足のため、解凍を再試行しています"
+  "retryUnzipNote": "容量不足のため、解凍を再試行しています",
+  "dedicationTitle": "回向偈",
+  "dedicationButton": "回向",
+  "dedicationEdit": "回向偈を編集"
 }

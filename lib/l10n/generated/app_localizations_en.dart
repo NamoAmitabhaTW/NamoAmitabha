@@ -314,4 +314,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get retryUnzipNote => 'Retrying extraction after insufficient storage';
+
+  @override
+  String get dedicationTitle => 'Dedication of Merit';
+
+  @override
+  String get dedicationButton => 'Dedicate';
+
+  @override
+  String get dedicationEdit => 'Edit dedication verse';
 }

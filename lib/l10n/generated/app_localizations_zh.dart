@@ -314,6 +314,15 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get retryUnzipNote => 'Retrying extraction after insufficient storage';
+
+  @override
+  String get dedicationTitle => 'Dedication of Merit';
+
+  @override
+  String get dedicationButton => 'Dedicate';
+
+  @override
+  String get dedicationEdit => 'Edit dedication verse';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -619,4 +628,13 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get retryUnzipNote => '因儲存空間不足，重新嘗試解壓縮中';
+
+  @override
+  String get dedicationTitle => '迴向偈';
+
+  @override
+  String get dedicationButton => '迴向';
+
+  @override
+  String get dedicationEdit => '編輯迴向偈';
 }

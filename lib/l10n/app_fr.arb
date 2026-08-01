@@ -248,5 +248,8 @@
   "downloadFailedLowSpaceBody": "L'espace de stockage de votre appareil est insuffisant pour terminer l'installation. Veuillez libérer de l'espace, puis appuyez sur « Réessayer ».",
   "retryAfterFreeSpace": "Espace libéré, réessayer",
   "retryUnzipAfterFreeSpace": "Espace libéré, décompresser à nouveau",
-  "retryUnzipNote": "Nouvelle tentative de décompression suite au manque d'espace"
+  "retryUnzipNote": "Nouvelle tentative de décompression suite au manque d'espace",
+  "dedicationTitle": "Dédicace des mérites",
+  "dedicationButton": "Dédier",
+  "dedicationEdit": "Modifier le verset de dédicace"
 }

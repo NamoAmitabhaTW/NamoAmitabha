@@ -2,6 +2,7 @@
 import 'package:amitabha/core/localization/locale_controller.dart';
 import 'package:amitabha/core/theme/brand.dart';
 import 'package:amitabha/features/background/background_picker_screen.dart';
+import 'package:amitabha/features/dedication/screens/dedication_editor_screen.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -34,6 +35,17 @@ class SettingsScreen extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (_) => const BackgroundPickerScreen(),
+                ),
+              ),
+            ),
+            _SettingTile(
+              icon: Icons.menu_book_outlined,
+              title: t.dedicationTitle,
+              value: t.dedicationEdit,
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const DedicationEditorScreen(),
                 ),
               ),
             ),

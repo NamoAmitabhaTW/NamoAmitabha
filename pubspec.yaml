@@ -112,6 +112,8 @@ flutter:
     - assets/images/amitabha_calligraphy_ko.png
     - assets/videos/bg_mountain_stream.mp4
     - assets/images/bg_mountain_stream.png
+    - assets/gifs/lotus_flower.webp
+    - assets/images/lotus_divider.png
     - assets/sherpa-onnx/encoder.int8.onnx
     - assets/sherpa-onnx/decoder.onnx
     - assets/sherpa-onnx/joiner.int8.onnx
@@ -122,6 +124,20 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  fonts:
+    # 迴向偈用明體（子集化）。繁中：常用約 5000 字 + 偈文 + 拉丁。
+    - family: NotoSerifGatha
+      fonts:
+        - asset: assets/fonts/NotoSerifTC-Gatha.ttf
+    # 日文明體（常用漢字 + 假名 + 偈文），日文改用日文字形。
+    - family: NotoSerifGathaJP
+      fonts:
+        - asset: assets/fonts/NotoSerifJP-Gatha.ttf
+    # 韓文諺文明體 fallback（繁中/日文明體不含諺文字形；僅含預設偈文）。
+    - family: NotoSerifGathaKR
+      fonts:
+        - asset: assets/fonts/NotoSerifKR-Gatha.ttf
 
   # To add assets to your application, add an assets section, like this:
   # An image asset can refer to one or more resolution-specific "variants", see

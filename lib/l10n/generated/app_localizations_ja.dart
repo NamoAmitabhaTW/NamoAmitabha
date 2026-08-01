@@ -306,4 +306,13 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get retryUnzipNote => '容量不足のため、解凍を再試行しています';
+
+  @override
+  String get dedicationTitle => '回向偈';
+
+  @override
+  String get dedicationButton => '回向';
+
+  @override
+  String get dedicationEdit => '回向偈を編集';
 }
