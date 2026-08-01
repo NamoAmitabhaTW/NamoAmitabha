@@ -5,9 +5,6 @@ import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-/// 設定 → 迴向偈：編輯迴向偈內容。
-/// 字體與迴向頁字幕跑字時一致；沒有獨立的儲存按鈕。
-/// 保存時機：離開頁面（返回上頁 / 手勢返回）以及 App 進入背景 / 被關閉時。
 class DedicationEditorScreen extends StatefulWidget {
   const DedicationEditorScreen({super.key});
 
@@ -23,14 +20,12 @@ class _DedicationEditorScreenState extends State<DedicationEditorScreen>
   String _lastSaved = '';
   bool _initialized = false;
 
-  // 拉丁文字（英/德/法/越南）用較小字級、正常字距，方塊字沿用字幕字體。
   bool get _isLatin => const {'en', 'de', 'fr', 'vi'}.contains(_lang);
 
-  // 拉丁文字字級 / 行距：英/德/法共用；越南語獨立（與迴向頁一致）。
   static const double _latinFontSize = 20.0;
-  static const double _viFontSize = 22.0; // ← 調整越南語編輯頁字級
+  static const double _viFontSize = 22.0;
   static const double _latinLineHeight = 1.6;
-  static const double _viLineHeight = 1.6; // ← 調整越南語編輯頁行距
+  static const double _viLineHeight = 1.6;
 
   TextStyle get _editStyle => _isLatin
       ? TextStyle(
@@ -66,13 +61,11 @@ class _DedicationEditorScreenState extends State<DedicationEditorScreen>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    // App 進入背景 / 隱藏 / 被關閉前保存，避免直接關閉 App 時遺失編輯。
     if (state != AppLifecycleState.resumed) {
       _persistIfChanged();
     }
   }
 
-  /// 只在內容有變動時寫入，避免重複寫檔。
   void _persistIfChanged() {
     final text = _controller?.text;
     if (text == null || text == _lastSaved) return;
@@ -83,7 +76,6 @@ class _DedicationEditorScreenState extends State<DedicationEditorScreen>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    // 離開頁面即保存（返回上頁、手勢返回皆適用）。
     _persistIfChanged();
     _controller?.dispose();
     super.dispose();

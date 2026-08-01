@@ -87,7 +87,6 @@ class StreamingAsrScreen extends StatelessWidget {
     return true;
   }
 
-  /// 儲存本次念佛數，並顯示滿版迴向頁；完成迴向後播放蓮花動畫。
   Future<void> _handleSave(BuildContext context) async {
     final asr = context.read<AsrSessionController>();
     await asr.save();
