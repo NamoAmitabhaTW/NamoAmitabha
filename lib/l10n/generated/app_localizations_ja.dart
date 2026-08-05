@@ -315,4 +315,16 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get dedicationEdit => '回向偈を編集';
+
+  @override
+  String get announcementsTitle => 'お知らせ';
+
+  @override
+  String get announcementsSubtitle => '最新情報を見る';
+
+  @override
+  String get announcementsEmpty => 'お知らせはまだありません';
+
+  @override
+  String get announcementsLinkCopied => 'リンクをコピーしました';
 }

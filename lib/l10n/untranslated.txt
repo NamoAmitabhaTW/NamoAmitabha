@@ -94,7 +94,11 @@
     "retryUnzipNote",
     "dedicationTitle",
     "dedicationButton",
-    "dedicationEdit"
+    "dedicationEdit",
+    "announcementsTitle",
+    "announcementsSubtitle",
+    "announcementsEmpty",
+    "announcementsLinkCopied"
   ],
 
   "zh_Hant": [
@@ -192,6 +196,10 @@
     "retryUnzipNote",
     "dedicationTitle",
     "dedicationButton",
-    "dedicationEdit"
+    "dedicationEdit",
+    "announcementsTitle",
+    "announcementsSubtitle",
+    "announcementsEmpty",
+    "announcementsLinkCopied"
   ]
 }

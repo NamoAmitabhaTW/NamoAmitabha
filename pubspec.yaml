@@ -119,6 +119,9 @@ flutter:
     - assets/sherpa-onnx/joiner.int8.onnx
     - assets/sherpa-onnx/tokens.txt
     - assets/sherpa-onnx/bpe.vocab
+    - assets/announcements/
+    - assets/announcements/dev-intro/
+    - assets/announcements/changelog/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

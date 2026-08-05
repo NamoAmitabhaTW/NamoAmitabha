@@ -323,6 +323,18 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get dedicationEdit => 'Edit dedication verse';
+
+  @override
+  String get announcementsTitle => 'Announcements';
+
+  @override
+  String get announcementsSubtitle => 'News & updates';
+
+  @override
+  String get announcementsEmpty => 'No announcements yet';
+
+  @override
+  String get announcementsLinkCopied => 'Link copied';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -637,4 +649,16 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get dedicationEdit => '編輯迴向偈';
+
+  @override
+  String get announcementsTitle => '公告';
+
+  @override
+  String get announcementsSubtitle => '查看最新消息';
+
+  @override
+  String get announcementsEmpty => '目前沒有公告';
+
+  @override
+  String get announcementsLinkCopied => '已複製連結';
 }

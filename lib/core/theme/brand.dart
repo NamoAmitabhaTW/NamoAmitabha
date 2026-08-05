@@ -15,6 +15,7 @@ class Brand {
   static const settingsIconBg = Color(0x1A6F4E37); // 暖棕 10%,圖示圓底
   static const settingsDivider = Color(0x14000000); // 卡片內分隔線
   static const settingsShadow = Color(0x0A000000); // 卡片陰影
+  static const settingsGold = Color(0xFF8A6320); // 泥金深,公告強調字句
   
   static BoxDecoration getBackgroundDecoration(AppThemeStyle style) {
     switch (style) {

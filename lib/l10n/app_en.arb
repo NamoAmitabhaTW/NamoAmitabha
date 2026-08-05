@@ -260,5 +260,21 @@
   "dedicationEdit": "Edit dedication verse",
   "@dedicationEdit": {
     "description": "Settings subtitle / editor screen title for editing the dedication verse"
+  },
+  "announcementsTitle": "Announcements",
+  "@announcementsTitle": {
+    "description": "Settings entry and screen title for announcements"
+  },
+  "announcementsSubtitle": "News & updates",
+  "@announcementsSubtitle": {
+    "description": "Settings subtitle under the announcements entry"
+  },
+  "announcementsEmpty": "No announcements yet",
+  "@announcementsEmpty": {
+    "description": "Shown when there are no announcements or content is unavailable"
+  },
+  "announcementsLinkCopied": "Link copied",
+  "@announcementsLinkCopied": {
+    "description": "Snackbar shown after tapping a link in an announcement"
   }
 }

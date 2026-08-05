@@ -251,5 +251,9 @@
   "retryUnzipNote": "저장 공간 부족으로 압축 해제를 다시 시도하는 중",
   "dedicationTitle": "회향게",
   "dedicationButton": "회향",
-  "dedicationEdit": "회향게 편집"
+  "dedicationEdit": "회향게 편집",
+  "announcementsTitle": "공지사항",
+  "announcementsSubtitle": "최신 소식 보기",
+  "announcementsEmpty": "아직 공지사항이 없습니다",
+  "announcementsLinkCopied": "링크가 복사되었습니다"
 }
