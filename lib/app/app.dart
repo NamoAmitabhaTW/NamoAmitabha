@@ -1,6 +1,7 @@
 // lib/app/app.dart
 import 'package:amitabha/core/localization/locale_controller.dart';
 import 'package:amitabha/core/theme/brand.dart';
+import 'package:amitabha/features/announcements/announcement_controller.dart';
 import 'package:amitabha/features/asr/application/asr_session_controller.dart';
 import 'package:amitabha/features/asr/application/sherpa_mic_source.dart';
 import 'package:amitabha/features/background/background_controller.dart';
@@ -30,6 +31,10 @@ class App extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => DedicationController()..load(),
+          lazy: false,
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AnnouncementController()..load(),
           lazy: false,
         ),
       ],

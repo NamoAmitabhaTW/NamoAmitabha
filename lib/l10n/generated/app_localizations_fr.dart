@@ -327,4 +327,16 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get dedicationEdit => 'Modifier le verset de dédicace';
+
+  @override
+  String get announcementsTitle => 'Annonces';
+
+  @override
+  String get announcementsSubtitle => 'Voir les dernières nouvelles';
+
+  @override
+  String get announcementsEmpty => 'Aucune annonce pour le moment';
+
+  @override
+  String get announcementsLinkCopied => 'Lien copié';
 }

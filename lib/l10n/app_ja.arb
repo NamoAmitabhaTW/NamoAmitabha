@@ -251,5 +251,9 @@
   "retryUnzipNote": "容量不足のため、解凍を再試行しています",
   "dedicationTitle": "回向偈",
   "dedicationButton": "回向",
-  "dedicationEdit": "回向偈を編集"
+  "dedicationEdit": "回向偈を編集",
+  "announcementsTitle": "お知らせ",
+  "announcementsSubtitle": "最新情報を見る",
+  "announcementsEmpty": "お知らせはまだありません",
+  "announcementsLinkCopied": "リンクをコピーしました"
 }

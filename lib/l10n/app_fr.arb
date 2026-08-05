@@ -251,5 +251,9 @@
   "retryUnzipNote": "Nouvelle tentative de décompression suite au manque d'espace",
   "dedicationTitle": "Dédicace des mérites",
   "dedicationButton": "Dédier",
-  "dedicationEdit": "Modifier le verset de dédicace"
+  "dedicationEdit": "Modifier le verset de dédicace",
+  "announcementsTitle": "Annonces",
+  "announcementsSubtitle": "Voir les dernières nouvelles",
+  "announcementsEmpty": "Aucune annonce pour le moment",
+  "announcementsLinkCopied": "Lien copié"
 }

@@ -323,4 +323,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dedicationEdit => 'Edit dedication verse';
+
+  @override
+  String get announcementsTitle => 'Announcements';
+
+  @override
+  String get announcementsSubtitle => 'News & updates';
+
+  @override
+  String get announcementsEmpty => 'No announcements yet';
+
+  @override
+  String get announcementsLinkCopied => 'Link copied';
 }

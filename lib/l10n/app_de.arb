@@ -251,5 +251,9 @@
   "retryUnzipNote": "Entpacken wird wegen Speichermangels erneut versucht",
   "dedicationTitle": "Widmung der Verdienste",
   "dedicationButton": "Widmen",
-  "dedicationEdit": "Widmungsvers bearbeiten"
+  "dedicationEdit": "Widmungsvers bearbeiten",
+  "announcementsTitle": "Ankündigungen",
+  "announcementsSubtitle": "Neuigkeiten ansehen",
+  "announcementsEmpty": "Noch keine Ankündigungen",
+  "announcementsLinkCopied": "Link kopiert"
 }

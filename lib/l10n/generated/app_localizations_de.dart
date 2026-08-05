@@ -327,4 +327,16 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get dedicationEdit => 'Widmungsvers bearbeiten';
+
+  @override
+  String get announcementsTitle => 'Ankündigungen';
+
+  @override
+  String get announcementsSubtitle => 'Neuigkeiten ansehen';
+
+  @override
+  String get announcementsEmpty => 'Noch keine Ankündigungen';
+
+  @override
+  String get announcementsLinkCopied => 'Link kopiert';
 }

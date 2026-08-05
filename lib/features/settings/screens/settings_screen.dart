@@ -1,6 +1,8 @@
 //amitabha/lib/features/settings/screens/settings_screen.dart
 import 'package:amitabha/core/localization/locale_controller.dart';
 import 'package:amitabha/core/theme/brand.dart';
+import 'package:amitabha/features/announcements/announcement_controller.dart';
+import 'package:amitabha/features/announcements/screens/announcements_screen.dart';
 import 'package:amitabha/features/background/background_picker_screen.dart';
 import 'package:amitabha/features/dedication/screens/dedication_editor_screen.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
@@ -46,6 +48,20 @@ class SettingsScreen extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (_) => const DedicationEditorScreen(),
+                ),
+              ),
+            ),
+            _SettingTile(
+              icon: Icons.campaign_outlined,
+              title: t.announcementsTitle,
+              value: t.announcementsSubtitle,
+              showBadge: context.select<AnnouncementController, bool>(
+                (c) => c.hasUnread,
+              ),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const AnnouncementsScreen(),
                 ),
               ),
             ),
@@ -176,12 +192,14 @@ class _SettingTile extends StatelessWidget {
     required this.title,
     required this.onTap,
     this.value,
+    this.showBadge = false,
   });
 
   final IconData icon;
   final String title;
   final String? value;
   final VoidCallback onTap;
+  final bool showBadge;
 
   @override
   Widget build(BuildContext context) {
@@ -228,6 +246,17 @@ class _SettingTile extends StatelessWidget {
                   ],
                 ),
               ),
+              if (showBadge) ...[
+                Container(
+                  width: 9,
+                  height: 9,
+                  decoration: const BoxDecoration(
+                    color: Color(0xFFE53935),
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                const SizedBox(width: 8),
+              ],
               const Icon(Icons.chevron_right, color: Brand.settingsBrownSoft, size: 24),
             ],
           ),

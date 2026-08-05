@@ -324,4 +324,16 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get dedicationEdit => 'Chỉnh sửa kệ hồi hướng';
+
+  @override
+  String get announcementsTitle => 'Thông báo';
+
+  @override
+  String get announcementsSubtitle => 'Xem tin mới nhất';
+
+  @override
+  String get announcementsEmpty => 'Chưa có thông báo nào';
+
+  @override
+  String get announcementsLinkCopied => 'Đã sao chép liên kết';
 }

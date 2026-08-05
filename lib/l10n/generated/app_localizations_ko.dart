@@ -315,4 +315,16 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get dedicationEdit => '회향게 편집';
+
+  @override
+  String get announcementsTitle => '공지사항';
+
+  @override
+  String get announcementsSubtitle => '최신 소식 보기';
+
+  @override
+  String get announcementsEmpty => '아직 공지사항이 없습니다';
+
+  @override
+  String get announcementsLinkCopied => '링크가 복사되었습니다';
 }

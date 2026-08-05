@@ -1,0 +1,34 @@
+[
+  {
+    "id": "dev-intro",
+    "version": 4,
+    "date": "2026-08-01",
+    "pinned": true,
+    "title": {
+      "zh": "開發初衷",
+      "en": "A Note from the Developer",
+      "ja": "開発の想い",
+      "ko": "개발 취지",
+      "vi": "Lời ngỏ từ nhà phát triển",
+      "de": "Ein Wort des Entwicklers",
+      "fr": "Un mot du développeur"
+    },
+    "langs": ["zh", "en", "ja", "ko", "vi", "de", "fr"]
+  },
+  {
+    "id": "changelog",
+    "version": 2,
+    "date": "",
+    "pinned": false,
+    "title": {
+      "zh": "開發日誌",
+      "en": "Changelog",
+      "ja": "開発ログ",
+      "ko": "개발 로그",
+      "vi": "Nhật ký phát triển",
+      "de": "Änderungsprotokoll",
+      "fr": "Journal des modifications"
+    },
+    "langs": ["zh", "en", "ja", "ko", "vi", "de", "fr"]
+  }
+]

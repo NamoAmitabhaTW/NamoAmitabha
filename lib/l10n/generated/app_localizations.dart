@@ -684,6 +684,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Edit dedication verse'**
   String get dedicationEdit;
+
+  /// Settings entry and screen title for announcements
+  ///
+  /// In en, this message translates to:
+  /// **'Announcements'**
+  String get announcementsTitle;
+
+  /// Settings subtitle under the announcements entry
+  ///
+  /// In en, this message translates to:
+  /// **'News & updates'**
+  String get announcementsSubtitle;
+
+  /// Shown when there are no announcements or content is unavailable
+  ///
+  /// In en, this message translates to:
+  /// **'No announcements yet'**
+  String get announcementsEmpty;
+
+  /// Snackbar shown after tapping a link in an announcement
+  ///
+  /// In en, this message translates to:
+  /// **'Link copied'**
+  String get announcementsLinkCopied;
 }
 
 class _AppLocalizationsDelegate

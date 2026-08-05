@@ -251,5 +251,9 @@
   "retryUnzipNote": "因儲存空間不足，重新嘗試解壓縮中",
   "dedicationTitle": "迴向偈",
   "dedicationButton": "迴向",
-  "dedicationEdit": "編輯迴向偈"
+  "dedicationEdit": "編輯迴向偈",
+  "announcementsTitle": "公告",
+  "announcementsSubtitle": "查看最新消息",
+  "announcementsEmpty": "目前沒有公告",
+  "announcementsLinkCopied": "已複製連結"
 }
