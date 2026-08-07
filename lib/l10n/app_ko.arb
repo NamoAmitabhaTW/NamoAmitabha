@@ -183,7 +183,7 @@
   "modelPrepareFailed": "음성 인식 모델 설치에 실패했습니다. 기기에 저장 공간이 충분한지 확인한 후 다시 시도해 주세요.",
   "retry": "다시 시도",
   "feedbackOpenMailAppFailed": "메일 앱을 열 수 없습니다",
-  "appName": "염불",
+  "appName": "하루 염불",
   "feedbackEmailSubject": "[{app}] 피드백",
   "@feedbackEmailSubject": {
     "description": "Subject for user feedback email to developer",
@@ -255,5 +255,12 @@
   "announcementsTitle": "공지사항",
   "announcementsSubtitle": "최신 소식 보기",
   "announcementsEmpty": "아직 공지사항이 없습니다",
-  "announcementsLinkCopied": "링크가 복사되었습니다"
+  "announcementsLinkCopied": "링크가 복사되었습니다",
+  "rateTitle": "리뷰로 응원하기",
+  "rateSubtitle": "스토어에서 평가하기",
+  "shareTitle": "앱 공유",
+  "shareSubtitle": "가족과 친구에게 추천하기",
+  "shareSubject": "하루 염불 — 무료 염불 카운터 앱",
+  "shareMessage": "'하루 염불'은 무료 염불 카운터 앱입니다.\n염불 소리를 듣고 횟수를 자동으로 세어 줍니다.\n염불에만 집중하세요. 세는 일은 '하루 염불'에 맡기세요!",
+  "storeActionFailed": "스토어를 열 수 없습니다. 잠시 후 다시 시도해 주세요."
 }

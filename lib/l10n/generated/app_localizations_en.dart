@@ -335,4 +335,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get announcementsLinkCopied => 'Link copied';
+
+  @override
+  String get rateTitle => 'Rate & Encourage';
+
+  @override
+  String get rateSubtitle => 'Leave a review on the store';
+
+  @override
+  String get shareTitle => 'Share App';
+
+  @override
+  String get shareSubtitle => 'Recommend to friends & family';
+
+  @override
+  String get shareSubject =>
+      'Amitabha Buddha — a free Buddha-name chanting counter';
+
+  @override
+  String get shareMessage =>
+      '\"Amitabha Buddha\" is a free Buddha-name chanting counter.\nThe app listens to your recitations and counts them automatically.\nJust focus on chanting — leave the counting to \"Amitabha Buddha\"!';
+
+  @override
+  String get storeActionFailed =>
+      'Couldn\'t open the store, please try again later.';
 }

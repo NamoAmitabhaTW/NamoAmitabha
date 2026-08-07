@@ -189,7 +189,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get feedbackOpenMailAppFailed => 'Không thể mở ứng dụng email';
 
   @override
-  String get appName => 'Niệm Phật';
+  String get appName => 'Chuyên Tâm Niệm Phật';
 
   @override
   String feedbackEmailSubject(String app) {
@@ -336,4 +336,28 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get announcementsLinkCopied => 'Đã sao chép liên kết';
+
+  @override
+  String get rateTitle => 'Đánh giá & động viên';
+
+  @override
+  String get rateSubtitle => 'Để lại đánh giá trên cửa hàng';
+
+  @override
+  String get shareTitle => 'Chia sẻ ứng dụng';
+
+  @override
+  String get shareSubtitle => 'Giới thiệu cho người thân & bạn bè';
+
+  @override
+  String get shareSubject =>
+      'Chuyên Tâm Niệm Phật — Ứng dụng đếm niệm Phật miễn phí';
+
+  @override
+  String get shareMessage =>
+      '\"Chuyên Tâm Niệm Phật\" là ứng dụng đếm niệm Phật miễn phí.\nỨng dụng lắng nghe tiếng niệm Phật của bạn và tự động đếm số câu.\nChỉ cần chuyên tâm niệm Phật — việc đếm cứ để ứng dụng lo!';
+
+  @override
+  String get storeActionFailed =>
+      'Không thể mở cửa hàng, vui lòng thử lại sau.';
 }

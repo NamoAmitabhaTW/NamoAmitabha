@@ -187,7 +187,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get feedbackOpenMailAppFailed => 'メールアプリを開けませんでした';
 
   @override
-  String get appName => '念仏';
+  String get appName => '念仏日和';
 
   @override
   String feedbackEmailSubject(String app) {
@@ -327,4 +327,26 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get announcementsLinkCopied => 'リンクをコピーしました';
+
+  @override
+  String get rateTitle => 'レビューで応援';
+
+  @override
+  String get rateSubtitle => 'ストアで評価する';
+
+  @override
+  String get shareTitle => 'アプリを共有';
+
+  @override
+  String get shareSubtitle => '友だちや家族にすすめる';
+
+  @override
+  String get shareSubject => '念仏日和 — 無料の念仏カウンターアプリ';
+
+  @override
+  String get shareMessage =>
+      '「念仏日和」は無料の念仏カウンターアプリです。\nあなたの念仏の声を聞き取り、称えた数を自動で数えます。\n念仏に専念して、カウントは「念仏日和」におまかせ！';
+
+  @override
+  String get storeActionFailed => 'ストアを開けませんでした。しばらくしてからもう一度お試しください。';
 }

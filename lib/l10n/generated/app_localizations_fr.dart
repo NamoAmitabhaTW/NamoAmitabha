@@ -190,7 +190,7 @@ class AppLocalizationsFr extends AppLocalizations {
       'Impossible d\'ouvrir l\'application e-mail';
 
   @override
-  String get appName => 'Amitabha';
+  String get appName => 'Amitabha Buddha';
 
   @override
   String feedbackEmailSubject(String app) {
@@ -339,4 +339,28 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get announcementsLinkCopied => 'Lien copié';
+
+  @override
+  String get rateTitle => 'Noter & encourager';
+
+  @override
+  String get rateSubtitle => 'Laisser un avis sur la boutique';
+
+  @override
+  String get shareTitle => 'Partager l\'appli';
+
+  @override
+  String get shareSubtitle => 'Recommander à vos proches';
+
+  @override
+  String get shareSubject =>
+      'Amitabha Buddha — compteur gratuit de récitation du nom du Bouddha';
+
+  @override
+  String get shareMessage =>
+      '« Amitabha Buddha » est un compteur gratuit de récitation du nom du Bouddha.\nL\'appli écoute vos récitations et les compte automatiquement.\nConcentrez-vous sur la récitation — laissez « Amitabha Buddha » compter pour vous !';
+
+  @override
+  String get storeActionFailed =>
+      'Impossible d\'ouvrir la boutique, veuillez réessayer plus tard.';
 }

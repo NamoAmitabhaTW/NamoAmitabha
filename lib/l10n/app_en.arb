@@ -276,5 +276,33 @@
   "announcementsLinkCopied": "Link copied",
   "@announcementsLinkCopied": {
     "description": "Snackbar shown after tapping a link in an announcement"
+  },
+  "rateTitle": "Rate & Encourage",
+  "@rateTitle": {
+    "description": "Settings entry: opens the app store rating/review page"
+  },
+  "rateSubtitle": "Leave a review on the store",
+  "@rateSubtitle": {
+    "description": "Settings subtitle under the rate entry"
+  },
+  "shareTitle": "Share App",
+  "@shareTitle": {
+    "description": "Settings entry: opens the system share sheet"
+  },
+  "shareSubtitle": "Recommend to friends & family",
+  "@shareSubtitle": {
+    "description": "Settings subtitle under the share entry"
+  },
+  "shareSubject": "Amitabha Buddha — a free Buddha-name chanting counter",
+  "@shareSubject": {
+    "description": "Subject line used when the share is sent as an email"
+  },
+  "shareMessage": "\"Amitabha Buddha\" is a free Buddha-name chanting counter.\nThe app listens to your recitations and counts them automatically.\nJust focus on chanting — leave the counting to \"Amitabha Buddha\"!",
+  "@shareMessage": {
+    "description": "Intro paragraph in the share sheet; download links are appended after it"
+  },
+  "storeActionFailed": "Couldn't open the store, please try again later.",
+  "@storeActionFailed": {
+    "description": "Snackbar shown when opening the store listing fails"
   }
 }

@@ -98,7 +98,14 @@
     "announcementsTitle",
     "announcementsSubtitle",
     "announcementsEmpty",
-    "announcementsLinkCopied"
+    "announcementsLinkCopied",
+    "rateTitle",
+    "rateSubtitle",
+    "shareTitle",
+    "shareSubtitle",
+    "shareSubject",
+    "shareMessage",
+    "storeActionFailed"
   ],
 
   "zh_Hant": [
@@ -200,6 +207,13 @@
     "announcementsTitle",
     "announcementsSubtitle",
     "announcementsEmpty",
-    "announcementsLinkCopied"
+    "announcementsLinkCopied",
+    "rateTitle",
+    "rateSubtitle",
+    "shareTitle",
+    "shareSubtitle",
+    "shareSubject",
+    "shareMessage",
+    "storeActionFailed"
   ]
 }
