@@ -335,6 +335,30 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get announcementsLinkCopied => 'Link copied';
+
+  @override
+  String get rateTitle => 'Rate & Encourage';
+
+  @override
+  String get rateSubtitle => 'Leave a review on the store';
+
+  @override
+  String get shareTitle => 'Share App';
+
+  @override
+  String get shareSubtitle => 'Recommend to friends & family';
+
+  @override
+  String get shareSubject =>
+      'Amitabha Buddha — a free Buddha-name chanting counter';
+
+  @override
+  String get shareMessage =>
+      '\"Amitabha Buddha\" is a free Buddha-name chanting counter.\nThe app listens to your recitations and counts them automatically.\nJust focus on chanting — leave the counting to \"Amitabha Buddha\"!';
+
+  @override
+  String get storeActionFailed =>
+      'Couldn\'t open the store, please try again later.';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -524,7 +548,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get feedbackOpenMailAppFailed => '無法開啟郵件 App';
 
   @override
-  String get appName => '念佛';
+  String get appName => '好好念佛';
 
   @override
   String feedbackEmailSubject(String app) {
@@ -661,4 +685,26 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get announcementsLinkCopied => '已複製連結';
+
+  @override
+  String get rateTitle => '留言鼓勵';
+
+  @override
+  String get rateSubtitle => '到商店給予評分';
+
+  @override
+  String get shareTitle => '分享 App';
+
+  @override
+  String get shareSubtitle => '推薦給親友';
+
+  @override
+  String get shareSubject => '好好念佛 — 免費的念佛計數 App';
+
+  @override
+  String get shareMessage =>
+      '「好好念佛」是一款免費的念佛計數 App，會聆聽您的佛號聲並自動統計出佛號數量。專心念佛，計數就交給「好好念佛」！';
+
+  @override
+  String get storeActionFailed => '無法開啟商店，請稍後再試。';
 }

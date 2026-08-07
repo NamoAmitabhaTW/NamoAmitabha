@@ -708,6 +708,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Link copied'**
   String get announcementsLinkCopied;
+
+  /// Settings entry: opens the app store rating/review page
+  ///
+  /// In en, this message translates to:
+  /// **'Rate & Encourage'**
+  String get rateTitle;
+
+  /// Settings subtitle under the rate entry
+  ///
+  /// In en, this message translates to:
+  /// **'Leave a review on the store'**
+  String get rateSubtitle;
+
+  /// Settings entry: opens the system share sheet
+  ///
+  /// In en, this message translates to:
+  /// **'Share App'**
+  String get shareTitle;
+
+  /// Settings subtitle under the share entry
+  ///
+  /// In en, this message translates to:
+  /// **'Recommend to friends & family'**
+  String get shareSubtitle;
+
+  /// Subject line used when the share is sent as an email
+  ///
+  /// In en, this message translates to:
+  /// **'Amitabha Buddha — a free Buddha-name chanting counter'**
+  String get shareSubject;
+
+  /// Intro paragraph in the share sheet; download links are appended after it
+  ///
+  /// In en, this message translates to:
+  /// **'\"Amitabha Buddha\" is a free Buddha-name chanting counter.\nThe app listens to your recitations and counts them automatically.\nJust focus on chanting — leave the counting to \"Amitabha Buddha\"!'**
+  String get shareMessage;
+
+  /// Snackbar shown when opening the store listing fails
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open the store, please try again later.'**
+  String get storeActionFailed;
 }
 
 class _AppLocalizationsDelegate

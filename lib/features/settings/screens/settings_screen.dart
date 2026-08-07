@@ -5,6 +5,7 @@ import 'package:amitabha/features/announcements/announcement_controller.dart';
 import 'package:amitabha/features/announcements/screens/announcements_screen.dart';
 import 'package:amitabha/features/background/background_picker_screen.dart';
 import 'package:amitabha/features/dedication/screens/dedication_editor_screen.dart';
+import 'package:amitabha/features/settings/store_actions.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -63,6 +64,21 @@ class SettingsScreen extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (_) => const AnnouncementsScreen(),
                 ),
+              ),
+            ),
+            if (isRateSupported)
+              _SettingTile(
+                icon: Icons.rate_review_outlined,
+                title: t.rateTitle,
+                value: t.rateSubtitle,
+                onTap: () => StoreActions.rate(context),
+              ),
+            Builder(
+              builder: (tileContext) => _SettingTile(
+                icon: Icons.ios_share,
+                title: t.shareTitle,
+                value: t.shareSubtitle,
+                onTap: () => StoreActions.share(tileContext),
               ),
             ),
           ],

@@ -187,7 +187,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get feedbackOpenMailAppFailed => '메일 앱을 열 수 없습니다';
 
   @override
-  String get appName => '염불';
+  String get appName => '하루 염불';
 
   @override
   String feedbackEmailSubject(String app) {
@@ -327,4 +327,26 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get announcementsLinkCopied => '링크가 복사되었습니다';
+
+  @override
+  String get rateTitle => '리뷰로 응원하기';
+
+  @override
+  String get rateSubtitle => '스토어에서 평가하기';
+
+  @override
+  String get shareTitle => '앱 공유';
+
+  @override
+  String get shareSubtitle => '가족과 친구에게 추천하기';
+
+  @override
+  String get shareSubject => '하루 염불 — 무료 염불 카운터 앱';
+
+  @override
+  String get shareMessage =>
+      '\'하루 염불\'은 무료 염불 카운터 앱입니다.\n염불 소리를 듣고 횟수를 자동으로 세어 줍니다.\n염불에만 집중하세요. 세는 일은 \'하루 염불\'에 맡기세요!';
+
+  @override
+  String get storeActionFailed => '스토어를 열 수 없습니다. 잠시 후 다시 시도해 주세요.';
 }

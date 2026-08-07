@@ -183,7 +183,7 @@
   "modelPrepareFailed": "Cài đặt mô hình nhận dạng giọng nói thất bại. Vui lòng đảm bảo thiết bị còn đủ dung lượng lưu trữ rồi thử lại.",
   "retry": "Thử lại",
   "feedbackOpenMailAppFailed": "Không thể mở ứng dụng email",
-  "appName": "Niệm Phật",
+  "appName": "Chuyên Tâm Niệm Phật",
   "feedbackEmailSubject": "[{app}] Phản hồi",
   "@feedbackEmailSubject": {
     "description": "Subject for user feedback email to developer",
@@ -255,5 +255,12 @@
   "announcementsTitle": "Thông báo",
   "announcementsSubtitle": "Xem tin mới nhất",
   "announcementsEmpty": "Chưa có thông báo nào",
-  "announcementsLinkCopied": "Đã sao chép liên kết"
+  "announcementsLinkCopied": "Đã sao chép liên kết",
+  "rateTitle": "Đánh giá & động viên",
+  "rateSubtitle": "Để lại đánh giá trên cửa hàng",
+  "shareTitle": "Chia sẻ ứng dụng",
+  "shareSubtitle": "Giới thiệu cho người thân & bạn bè",
+  "shareSubject": "Chuyên Tâm Niệm Phật — Ứng dụng đếm niệm Phật miễn phí",
+  "shareMessage": "\"Chuyên Tâm Niệm Phật\" là ứng dụng đếm niệm Phật miễn phí.\nỨng dụng lắng nghe tiếng niệm Phật của bạn và tự động đếm số câu.\nChỉ cần chuyên tâm niệm Phật — việc đếm cứ để ứng dụng lo!",
+  "storeActionFailed": "Không thể mở cửa hàng, vui lòng thử lại sau."
 }

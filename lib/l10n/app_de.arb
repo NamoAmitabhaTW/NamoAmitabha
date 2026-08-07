@@ -183,7 +183,7 @@
   "modelPrepareFailed": "Installation des Spracherkennungsmodells fehlgeschlagen. Bitte stellen Sie sicher, dass genügend Speicherplatz auf dem Gerät vorhanden ist, und versuchen Sie es erneut.",
   "retry": "Wiederholen",
   "feedbackOpenMailAppFailed": "Mail-App konnte nicht geöffnet werden",
-  "appName": "Amitabha",
+  "appName": "Amitabha Buddha",
   "feedbackEmailSubject": "[{app}] Feedback",
   "@feedbackEmailSubject": {
     "description": "Subject for user feedback email to developer",
@@ -255,5 +255,12 @@
   "announcementsTitle": "Ankündigungen",
   "announcementsSubtitle": "Neuigkeiten ansehen",
   "announcementsEmpty": "Noch keine Ankündigungen",
-  "announcementsLinkCopied": "Link kopiert"
+  "announcementsLinkCopied": "Link kopiert",
+  "rateTitle": "Bewerten & unterstützen",
+  "rateSubtitle": "Im Store eine Bewertung abgeben",
+  "shareTitle": "App teilen",
+  "shareSubtitle": "Freunden & Familie empfehlen",
+  "shareSubject": "Amitabha Buddha — kostenloser Zähler für die Buddha-Anrufung",
+  "shareMessage": "„Amitabha Buddha“ ist ein kostenloser Zähler für die Buddha-Anrufung.\nDie App hört deine Rezitationen und zählt sie automatisch.\nKonzentriere dich ganz aufs Rezitieren – das Zählen übernimmt „Amitabha Buddha“!",
+  "storeActionFailed": "Store konnte nicht geöffnet werden. Bitte versuche es später erneut."
 }

@@ -183,7 +183,7 @@
   "modelPrepareFailed": "Échec de l'installation du modèle de reconnaissance vocale. Veuillez vérifier que votre appareil dispose de suffisamment d'espace de stockage, puis réessayez.",
   "retry": "Réessayer",
   "feedbackOpenMailAppFailed": "Impossible d'ouvrir l'application e-mail",
-  "appName": "Amitabha",
+  "appName": "Amitabha Buddha",
   "feedbackEmailSubject": "[{app}] Commentaires",
   "@feedbackEmailSubject": {
     "description": "Subject for user feedback email to developer",
@@ -255,5 +255,12 @@
   "announcementsTitle": "Annonces",
   "announcementsSubtitle": "Voir les dernières nouvelles",
   "announcementsEmpty": "Aucune annonce pour le moment",
-  "announcementsLinkCopied": "Lien copié"
+  "announcementsLinkCopied": "Lien copié",
+  "rateTitle": "Noter & encourager",
+  "rateSubtitle": "Laisser un avis sur la boutique",
+  "shareTitle": "Partager l'appli",
+  "shareSubtitle": "Recommander à vos proches",
+  "shareSubject": "Amitabha Buddha — compteur gratuit de récitation du nom du Bouddha",
+  "shareMessage": "« Amitabha Buddha » est un compteur gratuit de récitation du nom du Bouddha.\nL'appli écoute vos récitations et les compte automatiquement.\nConcentrez-vous sur la récitation — laissez « Amitabha Buddha » compter pour vous !",
+  "storeActionFailed": "Impossible d'ouvrir la boutique, veuillez réessayer plus tard."
 }

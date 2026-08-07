@@ -183,7 +183,7 @@
   "modelPrepareFailed": "音声認識モデルのインストールに失敗しました。デバイスの空き容量が十分にあることを確認してから、もう一度お試しください。",
   "retry": "再試行",
   "feedbackOpenMailAppFailed": "メールアプリを開けませんでした",
-  "appName": "念仏",
+  "appName": "念仏日和",
   "feedbackEmailSubject": "[{app}] フィードバック",
   "@feedbackEmailSubject": {
     "description": "Subject for user feedback email to developer",
@@ -255,5 +255,12 @@
   "announcementsTitle": "お知らせ",
   "announcementsSubtitle": "最新情報を見る",
   "announcementsEmpty": "お知らせはまだありません",
-  "announcementsLinkCopied": "リンクをコピーしました"
+  "announcementsLinkCopied": "リンクをコピーしました",
+  "rateTitle": "レビューで応援",
+  "rateSubtitle": "ストアで評価する",
+  "shareTitle": "アプリを共有",
+  "shareSubtitle": "友だちや家族にすすめる",
+  "shareSubject": "念仏日和 — 無料の念仏カウンターアプリ",
+  "shareMessage": "「念仏日和」は無料の念仏カウンターアプリです。\nあなたの念仏の声を聞き取り、称えた数を自動で数えます。\n念仏に専念して、カウントは「念仏日和」におまかせ！",
+  "storeActionFailed": "ストアを開けませんでした。しばらくしてからもう一度お試しください。"
 }

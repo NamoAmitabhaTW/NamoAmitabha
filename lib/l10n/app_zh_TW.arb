@@ -183,7 +183,7 @@
   "modelPrepareFailed": "語音辨識模型安裝失敗，請確認裝置儲存空間足夠後再試。",
   "retry": "重試",
   "feedbackOpenMailAppFailed": "無法開啟郵件 App",
-  "appName": "念佛",
+  "appName": "好好念佛",
   "feedbackEmailSubject": "[{app}] 意見回饋",
   "@feedbackEmailSubject": {
     "description": "Subject for user feedback email to developer",
@@ -255,5 +255,12 @@
   "announcementsTitle": "公告",
   "announcementsSubtitle": "查看最新消息",
   "announcementsEmpty": "目前沒有公告",
-  "announcementsLinkCopied": "已複製連結"
+  "announcementsLinkCopied": "已複製連結",
+  "rateTitle": "留言鼓勵",
+  "rateSubtitle": "到商店給予評分",
+  "shareTitle": "分享 App",
+  "shareSubtitle": "推薦給親友",
+  "shareSubject": "好好念佛 — 免費的念佛計數 App",
+  "shareMessage": "「好好念佛」是一款免費的念佛計數 App，會聆聽您的佛號聲並自動統計出佛號數量。專心念佛，計數就交給「好好念佛」！",
+  "storeActionFailed": "無法開啟商店，請稍後再試。"
 }
