@@ -42,72 +42,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get noRecords => 'まだ記録がありません';
 
   @override
-  String get logIn => 'ログイン';
-
-  @override
-  String get logOut => 'ログアウト';
-
-  @override
-  String get enableCloudSync => 'クラウド同期を有効にする';
-
-  @override
-  String get account => 'アカウント';
-
-  @override
-  String get accountStatus => 'ログイン状態';
-
-  @override
-  String get statusSignedIn => 'ログイン済み';
-
-  @override
-  String get statusSignedOut => '未ログイン';
-
-  @override
   String get language => '言語';
 
   @override
-  String currentLanguage(String lang) {
-    return '現在の言語：$lang';
-  }
-
-  @override
-  String get langZhHant => '繁體中文';
-
-  @override
-  String get langEn => 'English';
-
-  @override
-  String get langJa => '日本語';
-
-  @override
-  String get langKo => '한국어';
-
-  @override
-  String get langVi => 'Tiếng Việt';
-
-  @override
-  String get langDe => 'Deutsch';
-
-  @override
-  String get langFr => 'Français';
-
-  @override
-  String get feedback => 'フィードバック';
-
-  @override
-  String get deleteAccount => 'アカウントを削除';
-
-  @override
-  String get confirm => '確認';
-
-  @override
   String get cancel => 'キャンセル';
-
-  @override
-  String get done => '完了';
-
-  @override
-  String get confirmDeleteAccount => 'アカウントとデータを削除してもよろしいですか？この操作は取り消せません。';
 
   @override
   String get pleaseWait => 'お待ちください';
@@ -150,11 +88,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get downloadFailedTitle => 'ダウンロード失敗';
 
   @override
-  String downloadFailedBody(String error) {
-    return 'モデルのダウンロードに失敗しました：$error';
-  }
-
-  @override
   String get successTitle => '成功';
 
   @override
@@ -171,9 +104,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get close => '閉じる';
 
   @override
-  String get retryUnzip => '解凍を再試行';
-
-  @override
   String get downloadFailedShort => 'モデルのダウンロードに失敗しました。後でもう一度お試しください。';
 
   @override
@@ -184,20 +114,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get retry => '再試行';
 
   @override
-  String get feedbackOpenMailAppFailed => 'メールアプリを開けませんでした';
-
-  @override
-  String get appName => '念仏日和';
-
-  @override
-  String feedbackEmailSubject(String app) {
-    return '[$app] フィードバック';
-  }
-
-  @override
-  String get feedbackEmailBody => '問題・ご提案：\n\n（スクリーンショットを添付できます）';
-
-  @override
   String get micPermissionTitle => 'マイクの許可が必要です';
 
   @override
@@ -206,9 +122,6 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get openSettings => '設定を開く';
-
-  @override
-  String get microphonePermissionDenied => 'マイクの許可が得られていません。';
 
   @override
   String get bgScreenTitle => '念仏の背景';
@@ -268,15 +181,7 @@ class AppLocalizationsJa extends AppLocalizations {
       'この背景は現在ダウンロードできません。提供終了または差し替えの可能性があります。';
 
   @override
-  String get bgSettingSubtitle => '念仏の背景をカスタマイズ';
-
-  @override
   String get langFollowSystem => 'システムに従う';
-
-  @override
-  String langFollowSystemWith(String name) {
-    return 'システムに従う（$name）';
-  }
 
   @override
   String get cancelling => 'キャンセル中…';
@@ -320,25 +225,16 @@ class AppLocalizationsJa extends AppLocalizations {
   String get announcementsTitle => 'お知らせ';
 
   @override
-  String get announcementsSubtitle => '最新情報を見る';
-
-  @override
   String get announcementsEmpty => 'お知らせはまだありません';
 
   @override
   String get announcementsLinkCopied => 'リンクをコピーしました';
 
   @override
-  String get rateTitle => 'レビューで応援';
-
-  @override
-  String get rateSubtitle => 'ストアで評価する';
+  String get rateTitle => 'レビューで\n応援';
 
   @override
   String get shareTitle => 'アプリを共有';
-
-  @override
-  String get shareSubtitle => '友だちや家族にすすめる';
 
   @override
   String get shareSubject => '念仏日和 — 無料の念仏カウンターアプリ';

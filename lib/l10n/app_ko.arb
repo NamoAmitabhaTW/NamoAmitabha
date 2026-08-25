@@ -44,99 +44,13 @@
   "@noRecords": {
     "description": "Records page empty state"
   },
-  "logIn": "로그인",
-  "@logIn": {
-    "description": "General login label (use enableCloudSync for the cloud-sync CTA)"
-  },
-  "logOut": "로그아웃",
-  "@logOut": {
-    "description": "Sign-out button"
-  },
-  "enableCloudSync": "클라우드 동기화 사용",
-  "@enableCloudSync": {
-    "description": "Enable backup & sync (lazily initialize Firebase)"
-  },
-  "account": "계정",
-  "@account": {
-    "description": "Settings: account section title"
-  },
-  "accountStatus": "로그인 상태",
-  "@accountStatus": {
-    "description": "Settings: sign-in status label"
-  },
-  "statusSignedIn": "로그인됨",
-  "@statusSignedIn": {
-    "description": "Signed-in state label"
-  },
-  "statusSignedOut": "로그인 안 됨",
-  "@statusSignedOut": {
-    "description": "Signed-out state label"
-  },
   "language": "언어",
   "@language": {
     "description": "Settings: language switch"
   },
-  "currentLanguage": "현재 언어: {lang}",
-  "@currentLanguage": {
-    "description": "Display the currently active language name",
-    "placeholders": {
-      "lang": {
-        "type": "String",
-        "example": "English"
-      }
-    }
-  },
-  "langZhHant": "繁體中文",
-  "@langZhHant": {
-    "description": "Language option: Traditional Chinese (endonym, not translated)"
-  },
-  "langEn": "English",
-  "@langEn": {
-    "description": "Language option: English (endonym, not translated)"
-  },
-  "langJa": "日本語",
-  "@langJa": {
-    "description": "Language option: Japanese (endonym, not translated)"
-  },
-  "langKo": "한국어",
-  "@langKo": {
-    "description": "Language option: Korean (endonym, not translated)"
-  },
-  "langVi": "Tiếng Việt",
-  "@langVi": {
-    "description": "Language option: Vietnamese (endonym, not translated)"
-  },
-  "langDe": "Deutsch",
-  "@langDe": {
-    "description": "Language option: German (endonym, not translated)"
-  },
-  "langFr": "Français",
-  "@langFr": {
-    "description": "Language option: French (endonym, not translated)"
-  },
-  "feedback": "피드백",
-  "@feedback": {
-    "description": "Settings: feedback item"
-  },
-  "deleteAccount": "계정 삭제",
-  "@deleteAccount": {
-    "description": "Settings: delete account"
-  },
-  "confirm": "확인",
-  "@confirm": {
-    "description": "Dialog title: confirm"
-  },
   "cancel": "취소",
   "@cancel": {
     "description": "Dialog button: cancel"
-  },
-  "done": "완료",
-  "@done": {
-    "description": "Generic completion toast"
-  },
-  "confirmDeleteAccount": "계정과 데이터를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
-  "@confirmDeleteAccount": {
-    "description": "Delete account confirmation message"
   },
   "pleaseWait": "잠시 기다려 주세요",
   "downloading": "다운로드 중",
@@ -165,40 +79,17 @@
   },
   "download": "다운로드",
   "downloadFailedTitle": "다운로드 실패",
-  "downloadFailedBody": "모델 다운로드에 실패했습니다: {error}",
-  "@downloadFailedBody": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
   "successTitle": "성공",
   "successBody": "모델이 성공적으로 설치되었습니다.",
   "unzipFailedTitle": "압축 해제 실패",
   "unzipFailedLowSpaceBody": "저장 공간이 부족하여 압축 해제에 실패했습니다. 공간을 확보한 후 \"다시 압축 해제\"를 눌러 주세요. 다운로드한 파일은 유지되므로 다시 다운로드할 필요가 없습니다.",
   "close": "닫기",
-  "retryUnzip": "압축 해제 다시 시도",
   "downloadFailedShort": "모델 다운로드에 실패했습니다. 나중에 다시 시도해 주세요.",
   "modelPrepareFailed": "음성 인식 모델 설치에 실패했습니다. 기기에 저장 공간이 충분한지 확인한 후 다시 시도해 주세요.",
   "retry": "다시 시도",
-  "feedbackOpenMailAppFailed": "메일 앱을 열 수 없습니다",
-  "appName": "하루 염불",
-  "feedbackEmailSubject": "[{app}] 피드백",
-  "@feedbackEmailSubject": {
-    "description": "Subject for user feedback email to developer",
-    "placeholders": {
-      "app": {
-        "type": "String",
-        "example": "Amitabha"
-      }
-    }
-  },
-  "feedbackEmailBody": "문제/제안:\n\n(스크린샷을 첨부할 수 있습니다)",
   "micPermissionTitle": "마이크 권한 필요",
   "micPermissionRationale": "염불 횟수를 세려면 시스템 설정 > 염불 > 마이크에서 권한을 켜 주세요.",
   "openSettings": "설정 열기",
-  "microphonePermissionDenied": "마이크 권한이 허용되지 않았습니다.",
   "bgScreenTitle": "염불 배경",
   "bgUse": "사용",
   "bgUpdate": "업데이트",
@@ -230,16 +121,7 @@
   "bgDownloadErrorNetwork": "인터넷에 연결되어 있지 않아 배경을 다운로드할 수 없습니다.",
   "bgDownloadErrorGeneric": "다운로드에 실패했습니다. 나중에 다시 시도해 주세요.",
   "bgDownloadErrorNotAvailable": "이 배경은 현재 다운로드할 수 없습니다. 제공이 중단되었거나 교체되었을 수 있습니다.",
-  "bgSettingSubtitle": "염불 배경 사용자 지정",
   "langFollowSystem": "시스템 설정 따르기",
-  "langFollowSystemWith": "시스템 설정 따르기 ({name})",
-  "@langFollowSystemWith": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
   "cancelling": "취소하는 중…",
   "networkErrorBody": "네트워크 연결에 문제가 있습니다. 연결 상태를 확인한 후 다시 시도해 주세요.",
   "timeoutErrorBody": "연결 시간이 초과되었습니다. 네트워크가 불안정하거나 서버가 일시적으로 응답하지 않을 수 있습니다. 잠시 후 다시 시도해 주세요.",
@@ -253,13 +135,10 @@
   "dedicationButton": "회향",
   "dedicationEdit": "회향게 편집",
   "announcementsTitle": "공지사항",
-  "announcementsSubtitle": "최신 소식 보기",
   "announcementsEmpty": "아직 공지사항이 없습니다",
   "announcementsLinkCopied": "링크가 복사되었습니다",
-  "rateTitle": "리뷰로 응원하기",
-  "rateSubtitle": "스토어에서 평가하기",
+  "rateTitle": "리뷰로\n응원하기",
   "shareTitle": "앱 공유",
-  "shareSubtitle": "가족과 친구에게 추천하기",
   "shareSubject": "하루 염불 — 무료 염불 카운터 앱",
   "shareMessage": "'하루 염불'은 무료 염불 카운터 앱입니다.\n염불 소리를 듣고 횟수를 자동으로 세어 줍니다.\n염불에만 집중하세요. 세는 일은 '하루 염불'에 맡기세요!",
   "storeActionFailed": "스토어를 열 수 없습니다. 잠시 후 다시 시도해 주세요."

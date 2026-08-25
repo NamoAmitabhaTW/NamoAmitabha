@@ -1,6 +1,7 @@
 // amitabha/lib/features/dedication/screens/dedication_editor_screen.dart
 import 'package:amitabha/core/theme/brand.dart';
 import 'package:amitabha/features/dedication/dedication_controller.dart';
+import 'package:amitabha/features/dedication/dedication_style.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -27,14 +28,24 @@ class _DedicationEditorScreenState extends State<DedicationEditorScreen>
   static const double _latinLineHeight = 1.6;
   static const double _viLineHeight = 1.6;
 
+  static const List<String> _editFontFallback = <String>[
+    'NotoSerifGathaJP',
+    'NotoSerifGathaKR',
+    Brand.lxgwWenkaiTc,
+  ];
+
   TextStyle get _editStyle => _isLatin
       ? TextStyle(
+          fontFamily: Brand.notoSerifTc,
+          fontFamilyFallback: _editFontFallback,
           fontSize: _lang == 'vi' ? _viFontSize : _latinFontSize,
           height: _lang == 'vi' ? _viLineHeight : _latinLineHeight,
           fontWeight: FontWeight.w500,
           color: Brand.settingsBrown,
         )
       : const TextStyle(
+          fontFamily: Brand.notoSerifTc,
+          fontFamilyFallback: _editFontFallback,
           fontSize: 30,
           height: 1.5,
           letterSpacing: 3,
@@ -84,38 +95,116 @@ class _DedicationEditorScreenState extends State<DedicationEditorScreen>
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
+    final locale = Localizations.localeOf(context);
+    final isCjkTitle = locale.languageCode == 'zh' || locale.languageCode == 'ja';
 
-    return Scaffold(
-      appBar: AppBar(title: Text(t.dedicationEdit)),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Brand.settingsCardBg,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: const [
-              BoxShadow(
-                color: Brand.settingsShadow,
-                blurRadius: 10,
-                offset: Offset(0, 2),
+    return DecoratedBox(
+      decoration: _paperDecoration,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          centerTitle: true,
+          iconTheme: const IconThemeData(color: Brand.settingsBrownSoft),
+          title: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              t.dedicationEdit,
+              maxLines: 1,
+              softWrap: false,
+              style: TextStyle(
+                fontFamily: Brand.notoSerifTc,
+                fontFamilyFallback: _editFontFallback,
+                fontSize: 22,
+                fontWeight: FontWeight.w600,
+                letterSpacing: isCjkTitle ? 4 : 0.5,
+                color: Brand.settingsTitle,
               ),
-            ],
+            ),
           ),
-          padding: const EdgeInsets.all(16),
-          child: TextField(
-            controller: _controller,
-            maxLines: null,
-            expands: true,
-            textAlignVertical: TextAlignVertical.top,
-            keyboardType: TextInputType.multiline,
-            style: _editStyle,
-            decoration: const InputDecoration(
-              border: InputBorder.none,
-              isCollapsed: true,
+        ),
+        body: SafeArea(
+          top: false,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+            child: Column(
+              children: [
+                const _GoldDivider(),
+                const SizedBox(height: 16),
+                Expanded(
+                  child: Container(
+              decoration: BoxDecoration(
+                color: Brand.settingsCardBg,
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: const Color(0x22B2842E),
+                  width: 1,
+                ),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color(0x146F4E37),
+                    blurRadius: 24,
+                    spreadRadius: -6,
+                    offset: Offset(0, 8),
+                  ),
+                ],
+              ),
+              padding: const EdgeInsets.all(20),
+              child: TextField(
+                controller: _controller,
+                maxLines: null,
+                expands: true,
+                textAlignVertical: TextAlignVertical.top,
+                keyboardType: TextInputType.multiline,
+                style: _editStyle,
+                cursorColor: DedicationStyle.gold,
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  isCollapsed: true,
+                ),
+              ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+final BoxDecoration _paperDecoration = const BoxDecoration(
+  gradient: RadialGradient(
+    center: Alignment(0, -0.25),
+    radius: 1.15,
+    colors: [DedicationStyle.paperCenter, DedicationStyle.paperEdge],
+  ),
+);
+
+class _GoldDivider extends StatelessWidget {
+  const _GoldDivider();
+
+  @override
+  Widget build(BuildContext context) {
+    Widget line(List<Color> colors) => Container(
+          width: 56,
+          height: 1,
+          decoration: BoxDecoration(gradient: LinearGradient(colors: colors)),
+        );
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        line(const [Color(0x00B2842E), DedicationStyle.gold]),
+        const SizedBox(width: 8),
+        Image.asset('assets/images/lotus_divider.png', height: 32),
+        const SizedBox(width: 8),
+        line(const [DedicationStyle.gold, Color(0x00B2842E)]),
+      ],
     );
   }
 }

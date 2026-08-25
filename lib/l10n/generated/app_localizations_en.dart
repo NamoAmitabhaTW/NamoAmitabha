@@ -42,73 +42,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noRecords => 'No records yet';
 
   @override
-  String get logIn => 'Log in';
-
-  @override
-  String get logOut => 'Log out';
-
-  @override
-  String get enableCloudSync => 'Enable Cloud Sync';
-
-  @override
-  String get account => 'Account';
-
-  @override
-  String get accountStatus => 'Sign-in status';
-
-  @override
-  String get statusSignedIn => 'Signed in';
-
-  @override
-  String get statusSignedOut => 'Not signed in';
-
-  @override
   String get language => 'Language';
 
   @override
-  String currentLanguage(String lang) {
-    return 'Current language: $lang';
-  }
-
-  @override
-  String get langZhHant => 'Chinese (Traditional)';
-
-  @override
-  String get langEn => 'English';
-
-  @override
-  String get langJa => '日本語';
-
-  @override
-  String get langKo => '한국어';
-
-  @override
-  String get langVi => 'Tiếng Việt';
-
-  @override
-  String get langDe => 'Deutsch';
-
-  @override
-  String get langFr => 'Français';
-
-  @override
-  String get feedback => 'Feedback';
-
-  @override
-  String get deleteAccount => 'Delete account';
-
-  @override
-  String get confirm => 'Confirm';
-
-  @override
   String get cancel => 'Cancel';
-
-  @override
-  String get done => 'Done';
-
-  @override
-  String get confirmDeleteAccount =>
-      'Are you sure you want to delete your account and data? This action cannot be undone.';
 
   @override
   String get pleaseWait => 'Please wait';
@@ -151,11 +88,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get downloadFailedTitle => 'Download Failed';
 
   @override
-  String downloadFailedBody(String error) {
-    return 'Failed to download the model: $error';
-  }
-
-  @override
   String get successTitle => 'Success';
 
   @override
@@ -172,9 +104,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get close => 'Close';
 
   @override
-  String get retryUnzip => 'Retry unzip';
-
-  @override
   String get downloadFailedShort =>
       'Model download failed. Please try again later.';
 
@@ -186,21 +115,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get retry => 'Retry';
 
   @override
-  String get feedbackOpenMailAppFailed => 'Could not open mail app';
-
-  @override
-  String get appName => 'Amitabha Buddha';
-
-  @override
-  String feedbackEmailSubject(String app) {
-    return '[$app] Feedback';
-  }
-
-  @override
-  String get feedbackEmailBody =>
-      'Issue/Suggestion:\n\n(You may attach a screenshot)';
-
-  @override
   String get micPermissionTitle => 'Microphone Permission Required';
 
   @override
@@ -209,9 +123,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get openSettings => 'Open Settings';
-
-  @override
-  String get microphonePermissionDenied => 'Microphone permission not granted.';
 
   @override
   String get bgScreenTitle => 'Chanting Background';
@@ -274,15 +185,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'This background can\'t be downloaded right now. It may have been removed or replaced.';
 
   @override
-  String get bgSettingSubtitle => 'Customize chanting background';
-
-  @override
   String get langFollowSystem => 'Follow system';
-
-  @override
-  String langFollowSystemWith(String name) {
-    return 'Follow system ($name)';
-  }
 
   @override
   String get cancelling => 'Cancelling…';
@@ -328,25 +231,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get announcementsTitle => 'Announcements';
 
   @override
-  String get announcementsSubtitle => 'News & updates';
-
-  @override
   String get announcementsEmpty => 'No announcements yet';
 
   @override
   String get announcementsLinkCopied => 'Link copied';
 
   @override
-  String get rateTitle => 'Rate & Encourage';
-
-  @override
-  String get rateSubtitle => 'Leave a review on the store';
+  String get rateTitle => 'Support with a Review';
 
   @override
   String get shareTitle => 'Share App';
-
-  @override
-  String get shareSubtitle => 'Recommend to friends & family';
 
   @override
   String get shareSubject =>

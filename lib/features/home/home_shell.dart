@@ -47,20 +47,19 @@ class _HomeShellState extends State<HomeShell> {
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
-    final navFg = _index == 0
-        ? Colors.white
-        : Theme.of(context).colorScheme.primary;
+    final navFg = _index == 0 ? Colors.white : Brand.amitabhaInk;
         
     return Container(
       decoration: Brand.getBackgroundDecoration(AppThemeStyle.zenWood),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        extendBody: true, 
+        extendBody: _index != 2,
         body: _pageFor(_index),
         bottomNavigationBar: GlassNavBar(
           selectedIndex: _index,
           onDestinationSelected: (i) => setState(() => _index = i),
           foreground: navFg,
+          glass: _index == 1,
           destinations: [
             NavigationDestination(icon: const Icon(Icons.mic), label: t.chant),
             NavigationDestination(

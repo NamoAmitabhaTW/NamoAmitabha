@@ -42,73 +42,10 @@ class AppLocalizationsVi extends AppLocalizations {
   String get noRecords => 'Chưa có bản ghi nào';
 
   @override
-  String get logIn => 'Đăng nhập';
-
-  @override
-  String get logOut => 'Đăng xuất';
-
-  @override
-  String get enableCloudSync => 'Bật đồng bộ đám mây';
-
-  @override
-  String get account => 'Tài khoản';
-
-  @override
-  String get accountStatus => 'Trạng thái đăng nhập';
-
-  @override
-  String get statusSignedIn => 'Đã đăng nhập';
-
-  @override
-  String get statusSignedOut => 'Chưa đăng nhập';
-
-  @override
   String get language => 'Ngôn ngữ';
 
   @override
-  String currentLanguage(String lang) {
-    return 'Ngôn ngữ hiện tại: $lang';
-  }
-
-  @override
-  String get langZhHant => '繁體中文';
-
-  @override
-  String get langEn => 'English';
-
-  @override
-  String get langJa => '日本語';
-
-  @override
-  String get langKo => '한국어';
-
-  @override
-  String get langVi => 'Tiếng Việt';
-
-  @override
-  String get langDe => 'Deutsch';
-
-  @override
-  String get langFr => 'Français';
-
-  @override
-  String get feedback => 'Phản hồi';
-
-  @override
-  String get deleteAccount => 'Xóa tài khoản';
-
-  @override
-  String get confirm => 'Xác nhận';
-
-  @override
   String get cancel => 'Hủy';
-
-  @override
-  String get done => 'Xong';
-
-  @override
-  String get confirmDeleteAccount =>
-      'Bạn có chắc muốn xóa tài khoản và dữ liệu? Hành động này không thể hoàn tác.';
 
   @override
   String get pleaseWait => 'Vui lòng đợi';
@@ -151,11 +88,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get downloadFailedTitle => 'Tải xuống thất bại';
 
   @override
-  String downloadFailedBody(String error) {
-    return 'Tải mô hình thất bại: $error';
-  }
-
-  @override
   String get successTitle => 'Thành công';
 
   @override
@@ -172,9 +104,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get close => 'Đóng';
 
   @override
-  String get retryUnzip => 'Thử giải nén lại';
-
-  @override
   String get downloadFailedShort =>
       'Tải mô hình thất bại. Vui lòng thử lại sau.';
 
@@ -186,21 +115,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get retry => 'Thử lại';
 
   @override
-  String get feedbackOpenMailAppFailed => 'Không thể mở ứng dụng email';
-
-  @override
-  String get appName => 'Chuyên Tâm Niệm Phật';
-
-  @override
-  String feedbackEmailSubject(String app) {
-    return '[$app] Phản hồi';
-  }
-
-  @override
-  String get feedbackEmailBody =>
-      'Vấn đề/Góp ý:\n\n(Bạn có thể đính kèm ảnh chụp màn hình)';
-
-  @override
   String get micPermissionTitle => 'Cần quyền micrô';
 
   @override
@@ -209,9 +123,6 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get openSettings => 'Mở Cài đặt';
-
-  @override
-  String get microphonePermissionDenied => 'Chưa được cấp quyền micrô.';
 
   @override
   String get bgScreenTitle => 'Hình nền niệm Phật';
@@ -273,15 +184,7 @@ class AppLocalizationsVi extends AppLocalizations {
       'Hiện không thể tải hình nền này. Có thể đã bị gỡ hoặc thay thế.';
 
   @override
-  String get bgSettingSubtitle => 'Tùy chỉnh hình nền niệm Phật';
-
-  @override
   String get langFollowSystem => 'Theo hệ thống';
-
-  @override
-  String langFollowSystemWith(String name) {
-    return 'Theo hệ thống ($name)';
-  }
 
   @override
   String get cancelling => 'Đang hủy…';
@@ -329,25 +232,16 @@ class AppLocalizationsVi extends AppLocalizations {
   String get announcementsTitle => 'Thông báo';
 
   @override
-  String get announcementsSubtitle => 'Xem tin mới nhất';
-
-  @override
   String get announcementsEmpty => 'Chưa có thông báo nào';
 
   @override
   String get announcementsLinkCopied => 'Đã sao chép liên kết';
 
   @override
-  String get rateTitle => 'Đánh giá & động viên';
-
-  @override
-  String get rateSubtitle => 'Để lại đánh giá trên cửa hàng';
+  String get rateTitle => 'Để lại lời động viên';
 
   @override
   String get shareTitle => 'Chia sẻ ứng dụng';
-
-  @override
-  String get shareSubtitle => 'Giới thiệu cho người thân & bạn bè';
 
   @override
   String get shareSubject =>

@@ -1,35 +1,71 @@
 // lib/core/theme/brand.dart
 import 'package:flutter/material.dart';
 
-enum AppThemeStyle {
-  zenWood,
-}
+enum AppThemeStyle { zenWood }
 
 class Brand {
   static const cream = Color(0xFFFFF8E7);
-  static const seed  = Color(0xFF8C6A3F);
-  static const settingsBrown = Color(0xFF6F4E37); // 主要暖棕
-  static const settingsBrownSoft = Color(0xFF9A7B66); // 副標題 / 箭頭
-  static const settingsTitle = Color(0xFF3A2E25); // 標題深棕
-  static const settingsCardBg = Color(0xFFFDF8EE); // 暖白卡片,與米底同色溫
-  static const settingsIconBg = Color(0x1A6F4E37); // 暖棕 10%,圖示圓底
-  static const settingsDivider = Color(0x14000000); // 卡片內分隔線
-  static const settingsShadow = Color(0x0A000000); // 卡片陰影
-  static const settingsGold = Color(0xFF8A6320); // 泥金深,公告強調字句
-  
+  static const seed = Color(0xFF8C6A3F);
+  static const settingsBrown = Color(0xFF6F4E37);
+  static const settingsBrownSoft = Color(0xFF9A7B66);
+  static const settingsTitle = Color(0xFF3A2E25);
+  static const settingsCardBg = Color(0xFFFDF8EE);
+  static const settingsIconBg = Color(0x1A6F4E37);
+  static const settingsDivider = Color(0x14000000);
+  static const settingsShadow = Color(0x0A000000);
+  static const settingsGold = Color(0xFF8A6320);
+  static const yamabuki = Color(0xFFC99833);
+  static const amitabhaInk = Color(0xFF5A4735);
+
+  static const lxgwWenkaiTc = 'LxgwWenkaiTC';
+
+  static const kleeOne = 'KleeOne';
+
+  static const notoSerifTc = 'NotoSerifTC';
+
+  static const cjkFallback = <String>[lxgwWenkaiTc];
+
+  static String primaryFontFor(Locale locale) =>
+      locale.languageCode == 'vi' ? lxgwWenkaiTc : kleeOne;
+
+  static String settingsFontFor(Locale locale) => primaryFontFor(locale);
+
+  static Widget withFontFamily(
+    BuildContext context,
+    Widget child, {
+    String family = lxgwWenkaiTc,
+    List<String>? fallback,
+  }) {
+    final base = Theme.of(context);
+    return Theme(
+      data: base.copyWith(
+        textTheme: base.textTheme.apply(
+          fontFamily: family,
+          fontFamilyFallback: fallback,
+        ),
+        primaryTextTheme: base.primaryTextTheme.apply(
+          fontFamily: family,
+          fontFamilyFallback: fallback,
+        ),
+      ),
+      child: DefaultTextStyle.merge(
+        style: TextStyle(fontFamily: family, fontFamilyFallback: fallback),
+        child: child,
+      ),
+    );
+  }
+
   static BoxDecoration getBackgroundDecoration(AppThemeStyle style) {
     switch (style) {
       case AppThemeStyle.zenWood:
-        return const BoxDecoration(
-          color: cream,
-        );
+        return const BoxDecoration(color: cream);
     }
   }
 
   static ThemeData getTheme(AppThemeStyle style) {
     switch (style) {
       case AppThemeStyle.zenWood:
-        return light(); 
+        return light();
     }
   }
 
@@ -66,8 +102,9 @@ class Brand {
         backgroundColor: cream,
         surfaceTintColor: Colors.transparent,
       ),
-      bottomAppBarTheme:
-          const BottomAppBarThemeData(surfaceTintColor: Colors.transparent),
+      bottomAppBarTheme: const BottomAppBarThemeData(
+        surfaceTintColor: Colors.transparent,
+      ),
     );
   }
 
@@ -103,8 +140,9 @@ class Brand {
         backgroundColor: cream,
         surfaceTintColor: Colors.transparent,
       ),
-      bottomAppBarTheme:
-          const BottomAppBarThemeData(surfaceTintColor: Colors.transparent),
+      bottomAppBarTheme: const BottomAppBarThemeData(
+        surfaceTintColor: Colors.transparent,
+      ),
     );
   }
 }

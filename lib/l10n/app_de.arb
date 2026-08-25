@@ -44,99 +44,13 @@
   "@noRecords": {
     "description": "Records page empty state"
   },
-  "logIn": "Anmelden",
-  "@logIn": {
-    "description": "General login label (use enableCloudSync for the cloud-sync CTA)"
-  },
-  "logOut": "Abmelden",
-  "@logOut": {
-    "description": "Sign-out button"
-  },
-  "enableCloudSync": "Cloud-Sync aktivieren",
-  "@enableCloudSync": {
-    "description": "Enable backup & sync (lazily initialize Firebase)"
-  },
-  "account": "Konto",
-  "@account": {
-    "description": "Settings: account section title"
-  },
-  "accountStatus": "Anmeldestatus",
-  "@accountStatus": {
-    "description": "Settings: sign-in status label"
-  },
-  "statusSignedIn": "Angemeldet",
-  "@statusSignedIn": {
-    "description": "Signed-in state label"
-  },
-  "statusSignedOut": "Nicht angemeldet",
-  "@statusSignedOut": {
-    "description": "Signed-out state label"
-  },
   "language": "Sprache",
   "@language": {
     "description": "Settings: language switch"
   },
-  "currentLanguage": "Aktuelle Sprache: {lang}",
-  "@currentLanguage": {
-    "description": "Display the currently active language name",
-    "placeholders": {
-      "lang": {
-        "type": "String",
-        "example": "English"
-      }
-    }
-  },
-  "langZhHant": "繁體中文",
-  "@langZhHant": {
-    "description": "Language option: Traditional Chinese (endonym, not translated)"
-  },
-  "langEn": "English",
-  "@langEn": {
-    "description": "Language option: English (endonym, not translated)"
-  },
-  "langJa": "日本語",
-  "@langJa": {
-    "description": "Language option: Japanese (endonym, not translated)"
-  },
-  "langKo": "한국어",
-  "@langKo": {
-    "description": "Language option: Korean (endonym, not translated)"
-  },
-  "langVi": "Tiếng Việt",
-  "@langVi": {
-    "description": "Language option: Vietnamese (endonym, not translated)"
-  },
-  "langDe": "Deutsch",
-  "@langDe": {
-    "description": "Language option: German (endonym, not translated)"
-  },
-  "langFr": "Français",
-  "@langFr": {
-    "description": "Language option: French (endonym, not translated)"
-  },
-  "feedback": "Feedback",
-  "@feedback": {
-    "description": "Settings: feedback item"
-  },
-  "deleteAccount": "Konto löschen",
-  "@deleteAccount": {
-    "description": "Settings: delete account"
-  },
-  "confirm": "Bestätigen",
-  "@confirm": {
-    "description": "Dialog title: confirm"
-  },
   "cancel": "Abbrechen",
   "@cancel": {
     "description": "Dialog button: cancel"
-  },
-  "done": "Fertig",
-  "@done": {
-    "description": "Generic completion toast"
-  },
-  "confirmDeleteAccount": "Möchten Sie Ihr Konto und Ihre Daten wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
-  "@confirmDeleteAccount": {
-    "description": "Delete account confirmation message"
   },
   "pleaseWait": "Bitte warten",
   "downloading": "Wird heruntergeladen",
@@ -165,40 +79,17 @@
   },
   "download": "Herunterladen",
   "downloadFailedTitle": "Download fehlgeschlagen",
-  "downloadFailedBody": "Modell-Download fehlgeschlagen: {error}",
-  "@downloadFailedBody": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
   "successTitle": "Erfolg",
   "successBody": "Das Modell wurde erfolgreich installiert.",
   "unzipFailedTitle": "Entpacken fehlgeschlagen",
   "unzipFailedLowSpaceBody": "Das Entpacken ist wegen unzureichenden Speicherplatzes fehlgeschlagen. Bitte geben Sie Speicherplatz frei und tippen Sie dann auf „Erneut entpacken“. Die heruntergeladene Datei bleibt erhalten – ein erneuter Download ist nicht nötig.",
   "close": "Schließen",
-  "retryUnzip": "Entpacken wiederholen",
   "downloadFailedShort": "Modell-Download fehlgeschlagen. Bitte versuchen Sie es später erneut.",
   "modelPrepareFailed": "Installation des Spracherkennungsmodells fehlgeschlagen. Bitte stellen Sie sicher, dass genügend Speicherplatz auf dem Gerät vorhanden ist, und versuchen Sie es erneut.",
   "retry": "Wiederholen",
-  "feedbackOpenMailAppFailed": "Mail-App konnte nicht geöffnet werden",
-  "appName": "Amitabha Buddha",
-  "feedbackEmailSubject": "[{app}] Feedback",
-  "@feedbackEmailSubject": {
-    "description": "Subject for user feedback email to developer",
-    "placeholders": {
-      "app": {
-        "type": "String",
-        "example": "Amitabha"
-      }
-    }
-  },
-  "feedbackEmailBody": "Problem/Vorschlag:\n\n(Sie können einen Screenshot anhängen)",
   "micPermissionTitle": "Mikrofonberechtigung erforderlich",
   "micPermissionRationale": "Um Rezitationen zu zählen, aktivieren Sie das Mikrofon in den Systemeinstellungen > Amitabha.",
   "openSettings": "Einstellungen öffnen",
-  "microphonePermissionDenied": "Mikrofonberechtigung nicht erteilt.",
   "bgScreenTitle": "Rezitations-Hintergrund",
   "bgUse": "Verwenden",
   "bgUpdate": "Aktualisieren",
@@ -230,16 +121,7 @@
   "bgDownloadErrorNetwork": "Keine Internetverbindung. Hintergrund kann nicht heruntergeladen werden.",
   "bgDownloadErrorGeneric": "Download fehlgeschlagen. Bitte versuchen Sie es später erneut.",
   "bgDownloadErrorNotAvailable": "Dieser Hintergrund kann derzeit nicht heruntergeladen werden. Er wurde möglicherweise entfernt oder ersetzt.",
-  "bgSettingSubtitle": "Rezitations-Hintergrund anpassen",
   "langFollowSystem": "System folgen",
-  "langFollowSystemWith": "System folgen ({name})",
-  "@langFollowSystemWith": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
   "cancelling": "Wird abgebrochen …",
   "networkErrorBody": "Netzwerkverbindungsfehler. Bitte überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
   "timeoutErrorBody": "Zeitüberschreitung der Verbindung. Das Netzwerk ist möglicherweise instabil oder der Server antwortet vorübergehend nicht. Bitte versuchen Sie es später erneut.",
@@ -253,13 +135,10 @@
   "dedicationButton": "Widmen",
   "dedicationEdit": "Widmungsvers bearbeiten",
   "announcementsTitle": "Ankündigungen",
-  "announcementsSubtitle": "Neuigkeiten ansehen",
   "announcementsEmpty": "Noch keine Ankündigungen",
   "announcementsLinkCopied": "Link kopiert",
-  "rateTitle": "Bewerten & unterstützen",
-  "rateSubtitle": "Im Store eine Bewertung abgeben",
+  "rateTitle": "Mit einer Rezension unterstützen",
   "shareTitle": "App teilen",
-  "shareSubtitle": "Freunden & Familie empfehlen",
   "shareSubject": "Amitabha Buddha — kostenloser Zähler für die Buddha-Anrufung",
   "shareMessage": "„Amitabha Buddha“ ist ein kostenloser Zähler für die Buddha-Anrufung.\nDie App hört deine Rezitationen und zählt sie automatisch.\nKonzentriere dich ganz aufs Rezitieren – das Zählen übernimmt „Amitabha Buddha“!",
   "storeActionFailed": "Store konnte nicht geöffnet werden. Bitte versuche es später erneut."

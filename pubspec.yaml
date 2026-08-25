@@ -52,8 +52,8 @@ dependencies:
   video_player: ^2.9.0
   cached_network_image: ^3.4.1
 
-  in_app_review: ^2.0.10   
-  share_plus: ^10.1.4      
+  in_app_review: ^2.0.10
+  share_plus: ^10.1.4
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -113,8 +113,27 @@ flutter:
     - assets/images/amitabha_calligraphy_sa.png
     - assets/images/amitabha_calligraphy_vi.png
     - assets/images/amitabha_calligraphy_ko.png
+    # 念佛頁按鈕標題書法圖（白字透明底，執行時染色）；逐語系一目錄。
+    - assets/images/chant_buttons/zh/
+    - assets/images/chant_buttons/ja/
+    - assets/images/chant_buttons/ko/
+    - assets/images/chant_buttons/vi/
+    - assets/images/chant_buttons/en/
+    - assets/images/chant_buttons/de/
+    - assets/images/chant_buttons/fr/
     - assets/videos/bg_mountain_stream.mp4
     - assets/images/bg_mountain_stream.png
+    - assets/images/bg_bodhi_leaf.png
+    # 平板專用：3:4 畫布背景 + 全螢幕鋪底（cover）。
+    - assets/images/bg_bodhi_leaf_tablet.png
+    - assets/images/bg_bodhi_leaf_bleed.png
+    - assets/images/settings_titles/zh/
+    - assets/images/settings_titles/en/
+    - assets/images/settings_titles/ja/
+    - assets/images/settings_titles/ko/
+    - assets/images/settings_titles/vi/
+    - assets/images/settings_titles/de/
+    - assets/images/settings_titles/fr/
     - assets/gifs/lotus_flower.webp
     - assets/images/lotus_divider.png
     - assets/sherpa-onnx/encoder.int8.onnx
@@ -125,6 +144,7 @@ flutter:
     - assets/announcements/
     - assets/announcements/dev-intro/
     - assets/announcements/changelog/
+    - assets/announcements/licenses/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
@@ -132,18 +152,36 @@ flutter:
   uses-material-design: true
 
   fonts:
-    # 迴向偈用明體（子集化）。繁中：常用約 5000 字 + 偈文 + 拉丁。
-    - family: NotoSerifGatha
+    # 思源宋體 繁中完整字（Noto Serif TC ExtraLight，OFL，全 ~20,000 字）；纖細明體。
+    # 同時供「迴向偈顯示」與「編輯迴向偈自由輸入」用——原顯示的 Gatha 子集即此字重
+    # 的子集，改用完整檔後合併為一，顯示外觀不變、編輯亦纖細且不缺字。
+    - family: NotoSerifTC
       fonts:
-        - asset: assets/fonts/NotoSerifTC-Gatha.ttf
+        - asset: assets/fonts/NotoSerifTC-ExtraLight.ttf
     # 日文明體（常用漢字 + 假名 + 偈文），日文改用日文字形。
     - family: NotoSerifGathaJP
       fonts:
         - asset: assets/fonts/NotoSerifJP-Gatha.ttf
-    # 韓文諺文明體 fallback（繁中/日文明體不含諺文字形；僅含預設偈文）。
+    # 韓文諺文明體（Noto Serif KR ExtraLight，實例化＋子集化為 KS X 1001 常用
+    # 2,350 音節，涵蓋日常韓文；罕見音節落系統字）。韓文迴向偈主字型、他語系諺文
+    # fallback。漢字仍由 TC / LXGW 承接。
     - family: NotoSerifGathaKR
       fonts:
-        - asset: assets/fonts/NotoSerifKR-Gatha.ttf
+        - asset: assets/fonts/NotoSerifKR-ExtraLight.ttf
+    # 霞鶩文楷 TC LXGW WenKai TC（lxgw/LxgwWenkaiTC，OFL）；
+    # 記錄頁/設定頁的繁體字 fallback（Klee One 為日文字體，缺字時落回此楷體）。
+    - family: LxgwWenkaiTC
+      fonts:
+        - asset: assets/fonts/LXGWWenKaiTC-Regular.ttf
+    # Klee One（googlefonts/klee，OFL）；記錄頁/設定頁主字體，手寫楷書風。
+    # 日文字體，繁體缺字由 LxgwWenkaiTC fallback 補上。
+    # 記錄/念佛頁主字體，手寫楷書風。已依實際使用字集子集化（原檔約 8MB → ~1MB）；
+    # 未收錄的冷僻字由 LxgwWenkaiTC fallback 承接。
+    - family: KleeOne
+      fonts:
+        - asset: assets/fonts/KleeOne-Regular.ttf
+        - asset: assets/fonts/KleeOne-SemiBold.ttf
+          weight: 600
 
   # To add assets to your application, add an assets section, like this:
   # An image asset can refer to one or more resolution-specific "variants", see

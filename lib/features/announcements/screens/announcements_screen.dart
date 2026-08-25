@@ -1,3 +1,4 @@
+// amitabha/lib/features/announcements/screens/announcements_screen.dart
 import 'package:amitabha/core/theme/brand.dart';
 import 'package:amitabha/features/announcements/announcement_controller.dart';
 import 'package:amitabha/features/announcements/announcement_item.dart';
@@ -95,7 +96,8 @@ class _PinnedCard extends StatelessWidget {
             fontSize: 24,
             fontWeight: FontWeight.w500,
             letterSpacing: 2,
-            color: Brand.settingsGold,
+            color: Brand.amitabhaInk,
+            fontFamily: Brand.lxgwWenkaiTc,
             fontFamilyFallback: SimpleMarkdown.cjkFallback,
           ),
         ),

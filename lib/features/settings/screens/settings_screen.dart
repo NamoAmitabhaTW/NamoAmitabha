@@ -1,7 +1,8 @@
 //amitabha/lib/features/settings/screens/settings_screen.dart
+import 'dart:math' as math;
+
 import 'package:amitabha/core/localization/locale_controller.dart';
 import 'package:amitabha/core/theme/brand.dart';
-import 'package:amitabha/features/announcements/announcement_controller.dart';
 import 'package:amitabha/features/announcements/screens/announcements_screen.dart';
 import 'package:amitabha/features/background/background_picker_screen.dart';
 import 'package:amitabha/features/dedication/screens/dedication_editor_screen.dart';
@@ -10,6 +11,27 @@ import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+const _titleImageLocales = {'zh', 'en', 'ja', 'ko', 'vi', 'de', 'fr'};
+
+String? _titleImage(BuildContext context, String feature) {
+  final lang = Localizations.localeOf(context).languageCode;
+  if (!_titleImageLocales.contains(lang)) return null;
+  return 'assets/images/settings_titles/$lang/title_${feature}_$lang.png';
+}
+
+const _breathFloat = 6.0;
+const _breathScale = 0.018;
+const _breathHold = Duration(milliseconds: 500);
+
+const _titleInkColor = Brand.amitabhaInk;
+const _titleGoldColor = Color(0xFFC69E4A);
+const _titleGoldSwing = 1.0;
+
+Color _titleColor(double v) => Color.lerp(
+  _titleInkColor,
+  _titleGoldColor,
+  ((v + 1) / 2) * _titleGoldSwing,
+)!;
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -17,107 +39,133 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
-    final vp = MediaQuery.of(context).viewPadding;
+    final isTablet = MediaQuery.of(context).size.shortestSide >= 600;
 
-    return ListView(
-      padding: EdgeInsets.fromLTRB(16, vp.top + 16, 16, vp.bottom + 16),
-      children: [
-        _SettingsGroup(
-          children: [
-            _SettingTile(
-              icon: Icons.language,
-              title: t.language,
-              value: _languageLabel(context),
-              onTap: () => _chooseLanguage(context),
-            ),
-            _SettingTile(
-              icon: Icons.image_outlined,
-              title: t.bgScreenTitle,
-              value: t.bgSettingSubtitle,
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const BackgroundPickerScreen(),
-                ),
-              ),
-            ),
-            _SettingTile(
-              icon: Icons.menu_book_outlined,
-              title: t.dedicationTitle,
-              value: t.dedicationEdit,
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const DedicationEditorScreen(),
-                ),
-              ),
-            ),
-            _SettingTile(
-              icon: Icons.campaign_outlined,
-              title: t.announcementsTitle,
-              value: t.announcementsSubtitle,
-              showBadge: context.select<AnnouncementController, bool>(
-                (c) => c.hasUnread,
-              ),
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const AnnouncementsScreen(),
-                ),
-              ),
-            ),
-            if (isRateSupported)
-              _SettingTile(
-                icon: Icons.rate_review_outlined,
-                title: t.rateTitle,
-                value: t.rateSubtitle,
-                onTap: () => StoreActions.rate(context),
-              ),
-            Builder(
-              builder: (tileContext) => _SettingTile(
-                icon: Icons.ios_share,
-                title: t.shareTitle,
-                value: t.shareSubtitle,
-                onTap: () => StoreActions.share(tileContext),
-              ),
-            ),
-          ],
+    final buttons = <Widget>[
+      _LeafButton(
+        title: t.language,
+        image: _titleImage(context, 'language'),
+        left: isTablet ? 605 : 590,
+        top: isTablet ? 50 : 185,
+        width: isTablet ? 340 : 340,
+        height: isTablet ? 240 : 240,
+        phase: 0.00,
+        period: const Duration(milliseconds: 3400),
+        onTap: () => _chooseLanguage(context),
+      ),
+      _LeafButton(
+        title: t.bgScreenTitle,
+        image: _titleImage(context, 'background'),
+        left: isTablet ? 0 : 0,
+        top: isTablet ? 10 : 60,
+        width: isTablet ? 400 : 430,
+        height: isTablet ? 300 : 300,
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const BackgroundPickerScreen()),
         ),
-      ],
+        phase: 0.17,
+        period: const Duration(milliseconds: 3900),
+      ),
+      _LeafButton(
+        title: t.announcementsTitle,
+        image: _titleImage(context, 'announcements'),
+        left: isTablet ? 560 : 630,
+        top: isTablet ? 1020 : 1440,
+        width: isTablet ? 380 : 380,
+        height: isTablet ? 300 : 300,
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const AnnouncementsScreen()),
+        ),
+        phase: 0.34,
+        period: const Duration(milliseconds: 3600),
+      ),
+      _LeafButton(
+        title: t.dedicationTitle,
+        image: _titleImage(context, 'dedication'),
+        left: isTablet ? 65 : 70,
+        top: isTablet ? 435 : 500,
+        width: isTablet ? 400 : 400,
+        height: isTablet ? 320 : 320,
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const DedicationEditorScreen()),
+        ),
+        phase: 0.51,
+        period: const Duration(milliseconds: 4200),
+      ),
+      if (isRateSupported)
+        _LeafButton(
+          title: t.rateTitle,
+          image: _titleImage(context, 'rate'),
+          left: isTablet ? 200 : 190,
+          top: isTablet ? 900 : 1060,
+          width: isTablet ? 270 : 270,
+          height: isTablet ? 320 : 320,
+          minFontSize: 56,
+          phase: 0.68,
+          period: const Duration(milliseconds: 3700),
+          onTap: () => StoreActions.rate(context),
+        ),
+      _LeafButton(
+        title: t.shareTitle,
+        image: _titleImage(context, 'share'),
+        left: isTablet ? 655 : 620,
+        top: isTablet ? 560 : 890,
+        width: isTablet ? 280 : 280,
+        height: isTablet ? 320 : 320,
+        phase: 0.85,
+        period: const Duration(milliseconds: 4000),
+        onTap: () => StoreActions.share(context),
+      ),
+    ];
+
+    return Brand.withFontFamily(
+      context,
+      family: Brand.settingsFontFor(Localizations.localeOf(context)),
+      fallback: Brand.cjkFallback,
+      Stack(
+        children: [
+          Positioned.fill(
+            child: isTablet
+                ? Image.asset(
+                    'assets/images/bg_bodhi_leaf_bleed.png',
+                    fit: BoxFit.cover,
+                  )
+                : const ColoredBox(color: Brand.cream),
+          ),
+          Center(
+            child: FittedBox(
+              fit: BoxFit.contain,
+              child: SizedBox(
+                width: 1080,
+                height: isTablet ? 1440 : 1920,
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: Image.asset(
+                        isTablet
+                            ? 'assets/images/bg_bodhi_leaf_tablet.png'
+                            : 'assets/images/bg_bodhi_leaf.png',
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                    ...buttons,
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
-  }
-
-  String _languageLabel(BuildContext context) {
-    final t = AppLocalizations.of(context);
-    final eff = context.watch<LocaleController>().locale;  
-
-    if (eff == null) {
-      final sys = Localizations.maybeLocaleOf(context);
-      return t.langFollowSystemWith(_endonymForLocale(sys));
-    }
-    return _endonymForLocale(eff);
-  }
-
-  String _endonymForLocale(Locale? locale) {
-    if (locale == null) return 'English';
-    for (final lang in LocaleController.supportedLanguages) {
-      if (lang.locale.languageCode == locale.languageCode &&
-          lang.locale.countryCode == locale.countryCode) {
-        return lang.endonym;
-      }
-    }
-    for (final lang in LocaleController.supportedLanguages) {
-      if (lang.locale.languageCode == locale.languageCode) {
-        return lang.endonym;
-      }
-    }
-    return locale.languageCode; 
   }
 
   void _chooseLanguage(BuildContext context) {
     final t = AppLocalizations.of(context);
     final ctrl = context.read<LocaleController>();
-    final current = ctrl.locale; 
+    final current = ctrl.locale;
 
     showModalBottomSheet(
       context: context,
@@ -125,7 +173,6 @@ class SettingsScreen extends StatelessWidget {
         child: ListView(
           shrinkWrap: true,
           children: [
-
             ListTile(
               leading: const Icon(Icons.settings_backup_restore),
               title: Text(t.langFollowSystem),
@@ -138,7 +185,7 @@ class SettingsScreen extends StatelessWidget {
               },
             ),
             const Divider(height: 1),
-      
+
             for (final lang in LocaleController.supportedLanguages)
               ListTile(
                 leading: const Icon(Icons.translate),
@@ -164,120 +211,263 @@ class SettingsScreen extends StatelessWidget {
   }
 }
 
+TextStyle _leafTextStyle(String fontFamily) => TextStyle(
+  fontFamily: fontFamily,
+  fontFamilyFallback: Brand.cjkFallback,
+  fontWeight: FontWeight.w500,
+  height: 1.18,
+  color: Brand.settingsTitle,
+  shadows: const [
+    Shadow(color: Color(0xE6FFFCF3), blurRadius: 14),
+    Shadow(color: Color(0x80FFFCF3), blurRadius: 4),
+  ],
+);
 
-class _SettingsGroup extends StatelessWidget {
-  const _SettingsGroup({required this.children});
-  final List<Widget> children;
+class _LeafButton extends StatefulWidget {
+  const _LeafButton({
+    required this.title,
+    required this.left,
+    required this.top,
+    required this.width,
+    required this.height,
+    required this.onTap,
+    required this.phase,
+    required this.period,
+    this.image,
+    this.minFontSize = 50,
+  });
+
+  final String title;
+  final String? image;
+  final double left;
+  final double top;
+  final double width;
+  final double height;
+  final VoidCallback onTap;
+  final double minFontSize;
+  final double phase;
+  final Duration period;
+
+  @override
+  State<_LeafButton> createState() => _LeafButtonState();
+}
+
+class _LeafButtonState extends State<_LeafButton>
+    with SingleTickerProviderStateMixin {
+  bool _pressed = false;
+
+  late final Duration _cycle = widget.period + _breathHold * 2;
+
+  late final double _holdFraction =
+      _breathHold.inMilliseconds / _cycle.inMilliseconds;
+
+  late final AnimationController _breath = AnimationController(
+    vsync: this,
+    duration: _cycle,
+  )..repeat();
+
+  bool _reduceMotion = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final reduce = MediaQuery.maybeOf(context)?.disableAnimations ?? false;
+    if (reduce == _reduceMotion) return;
+    _reduceMotion = reduce;
+    if (reduce) {
+      _breath.stop();
+    } else {
+      _breath.repeat();
+    }
+  }
+
+  @override
+  void dispose() {
+    _breath.dispose();
+    super.dispose();
+  }
+
+  void _setPressed(bool v) {
+    if (_pressed != v) setState(() => _pressed = v);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final tiles = <Widget>[];
-    for (var i = 0; i < children.length; i++) {
-      tiles.add(children[i]);
-      if (i != children.length - 1) {
-        tiles.add(
-          const Divider(
-            height: 1,
-            thickness: 1,
-            indent: 72, 
-            color: Brand.settingsDivider,
+    final family = Brand.settingsFontFor(Localizations.localeOf(context));
+    const anim = Duration(milliseconds: 120);
+    return Positioned(
+      left: widget.left,
+      top: widget.top,
+      width: widget.width,
+      height: widget.height,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTapDown: (_) => _setPressed(true),
+        onTapUp: (_) => _setPressed(false),
+        onTapCancel: () => _setPressed(false),
+        onTap: widget.onTap,
+        child: _breathe(
+          AnimatedScale(
+            scale: _pressed ? 0.94 : 1.0,
+            duration: anim,
+            curve: Curves.easeOut,
+            child: Stack(
+              clipBehavior: Clip.none,
+              alignment: Alignment.center,
+              children: [
+                if (widget.image != null)
+                  Padding(
+                    padding: const EdgeInsets.all(6),
+                    child: AnimatedBuilder(
+                      animation: _breath,
+                      child: Image.asset(
+                        widget.image!,
+                        fit: BoxFit.contain,
+                        semanticLabel: widget.title,
+                      ),
+                      builder: (context, child) => ColorFiltered(
+                        colorFilter: ColorFilter.mode(
+                          _titleColor(_phaseValue()),
+                          BlendMode.srcIn,
+                        ),
+                        child: child,
+                      ),
+                    ),
+                  )
+                else
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Center(
+                      child: _FitText(
+                        text: widget.title,
+                        style: _leafTextStyle(family),
+                        maxFontSize: 72,
+                        minFontSize: widget.minFontSize,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
           ),
+        ),
+      ),
+    );
+  }
+
+  double _phaseValue() {
+    if (_reduceMotion) return 0.0;
+    final u = (_breath.value + widget.phase) % 1.0;
+    final h = _holdFraction;
+    final m = (1 - 2 * h) / 2;
+    if (u < h) return -1.0;
+    if (u < h + m) return -math.cos(math.pi * (u - h) / m);
+    if (u < 2 * h + m) return 1.0;
+    return math.cos(math.pi * (u - 2 * h - m) / m);
+  }
+
+  Widget _breathe(Widget child) {
+    if (_reduceMotion) return child;
+    return AnimatedBuilder(
+      animation: _breath,
+      child: RepaintBoundary(child: child),
+      builder: (context, child) {
+        final v = _phaseValue();
+        return Transform.translate(
+          offset: Offset(0, v * _breathFloat),
+          child: Transform.scale(scale: 1 + v * _breathScale, child: child),
         );
-      }
-    }
-    return Container(
-      decoration: BoxDecoration(
-        color: Brand.settingsCardBg,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: const [
-          BoxShadow(color: Brand.settingsShadow, blurRadius: 10, offset: Offset(0, 2)),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(16),
-        child: Column(children: tiles),
-      ),
+      },
     );
   }
 }
 
-
-class _SettingTile extends StatelessWidget {
-  const _SettingTile({
-    required this.icon,
-    required this.title,
-    required this.onTap,
-    this.value,
-    this.showBadge = false,
+class _FitText extends StatelessWidget {
+  const _FitText({
+    required this.text,
+    required this.style,
+    required this.maxFontSize,
+    this.minFontSize = 6,
   });
 
-  final IconData icon;
-  final String title;
-  final String? value;
-  final VoidCallback onTap;
-  final bool showBadge;
+  final String text;
+  final TextStyle style;
+  final double maxFontSize;
+  final double minFontSize;
+
+  static final RegExp _breakable = RegExp(r'[぀-ヿ㐀-鿿豈-﫿가-힯]');
+  static final RegExp _splitter = RegExp(r'[\s‐-―\-]+');
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          child: Row(
-            children: [
-              Container(
-                width: 40,
-                height: 40,
-                decoration: const BoxDecoration(
-                  color: Brand.settingsIconBg,
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(icon, color: Brand.settingsBrown, size: 22),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: Brand.settingsTitle,
-                      ),
-                    ),
-                    if (value != null) ...[
-                      const SizedBox(height: 4),
-                      Text(
-                        value!,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: Brand.settingsBrownSoft,
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-              if (showBadge) ...[
-                Container(
-                  width: 9,
-                  height: 9,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFE53935),
-                    shape: BoxShape.circle,
-                  ),
-                ),
-                const SizedBox(width: 8),
-              ],
-              const Icon(Icons.chevron_right, color: Brand.settingsBrownSoft, size: 24),
-            ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final maxW = constraints.maxWidth;
+        final maxH = constraints.maxHeight;
+        final scaler = MediaQuery.textScalerOf(context);
+        final safeW = maxW * 0.96;
+        final wordMaxW = maxW * 0.92;
+
+        bool fits(double fontSize) {
+          final s = style.copyWith(fontSize: fontSize);
+          final tp = TextPainter(
+            text: TextSpan(text: text, style: s),
+            textAlign: TextAlign.center,
+            textDirection: TextDirection.ltr,
+            textScaler: scaler,
+            maxLines: 2,
+          )..layout(maxWidth: safeW);
+          if (tp.didExceedMaxLines) return false;
+          if (tp.height > maxH || tp.width > safeW) return false;
+          for (final token in text.split(_splitter)) {
+            if (token.isEmpty || _breakable.hasMatch(token)) continue;
+            final wtp = TextPainter(
+              text: TextSpan(text: token, style: s),
+              textDirection: TextDirection.ltr,
+              textScaler: scaler,
+            )..layout();
+            if (wtp.width > wordMaxW) return false;
+          }
+          return true;
+        }
+
+        double lo = 6, hi = maxFontSize, best = 6;
+        for (var i = 0; i < 12; i++) {
+          final mid = (lo + hi) / 2;
+          if (fits(mid)) {
+            best = mid;
+            lo = mid;
+          } else {
+            hi = mid;
+          }
+        }
+
+        if (best >= minFontSize) {
+          return Text(
+            text,
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            style: style.copyWith(fontSize: best),
+          );
+        }
+
+        final overflowW = maxW * 1.9;
+        return OverflowBox(
+          alignment: Alignment.center,
+          minWidth: 0,
+          maxWidth: overflowW,
+          minHeight: 0,
+          maxHeight: double.infinity,
+          child: SizedBox(
+            width: overflowW,
+            child: Text(
+              text,
+              textAlign: TextAlign.center,
+              maxLines: 3,
+              style: style.copyWith(fontSize: minFontSize),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

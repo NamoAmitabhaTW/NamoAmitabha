@@ -44,99 +44,13 @@
   "@noRecords": {
     "description": "Records page empty state"
   },
-  "logIn": "ログイン",
-  "@logIn": {
-    "description": "General login label (use enableCloudSync for the cloud-sync CTA)"
-  },
-  "logOut": "ログアウト",
-  "@logOut": {
-    "description": "Sign-out button"
-  },
-  "enableCloudSync": "クラウド同期を有効にする",
-  "@enableCloudSync": {
-    "description": "Enable backup & sync (lazily initialize Firebase)"
-  },
-  "account": "アカウント",
-  "@account": {
-    "description": "Settings: account section title"
-  },
-  "accountStatus": "ログイン状態",
-  "@accountStatus": {
-    "description": "Settings: sign-in status label"
-  },
-  "statusSignedIn": "ログイン済み",
-  "@statusSignedIn": {
-    "description": "Signed-in state label"
-  },
-  "statusSignedOut": "未ログイン",
-  "@statusSignedOut": {
-    "description": "Signed-out state label"
-  },
   "language": "言語",
   "@language": {
     "description": "Settings: language switch"
   },
-  "currentLanguage": "現在の言語：{lang}",
-  "@currentLanguage": {
-    "description": "Display the currently active language name",
-    "placeholders": {
-      "lang": {
-        "type": "String",
-        "example": "English"
-      }
-    }
-  },
-  "langZhHant": "繁體中文",
-  "@langZhHant": {
-    "description": "Language option: Traditional Chinese (endonym, not translated)"
-  },
-  "langEn": "English",
-  "@langEn": {
-    "description": "Language option: English (endonym, not translated)"
-  },
-  "langJa": "日本語",
-  "@langJa": {
-    "description": "Language option: Japanese (endonym, not translated)"
-  },
-  "langKo": "한국어",
-  "@langKo": {
-    "description": "Language option: Korean (endonym, not translated)"
-  },
-  "langVi": "Tiếng Việt",
-  "@langVi": {
-    "description": "Language option: Vietnamese (endonym, not translated)"
-  },
-  "langDe": "Deutsch",
-  "@langDe": {
-    "description": "Language option: German (endonym, not translated)"
-  },
-  "langFr": "Français",
-  "@langFr": {
-    "description": "Language option: French (endonym, not translated)"
-  },
-  "feedback": "フィードバック",
-  "@feedback": {
-    "description": "Settings: feedback item"
-  },
-  "deleteAccount": "アカウントを削除",
-  "@deleteAccount": {
-    "description": "Settings: delete account"
-  },
-  "confirm": "確認",
-  "@confirm": {
-    "description": "Dialog title: confirm"
-  },
   "cancel": "キャンセル",
   "@cancel": {
     "description": "Dialog button: cancel"
-  },
-  "done": "完了",
-  "@done": {
-    "description": "Generic completion toast"
-  },
-  "confirmDeleteAccount": "アカウントとデータを削除してもよろしいですか？この操作は取り消せません。",
-  "@confirmDeleteAccount": {
-    "description": "Delete account confirmation message"
   },
   "pleaseWait": "お待ちください",
   "downloading": "ダウンロード中",
@@ -165,40 +79,17 @@
   },
   "download": "ダウンロード",
   "downloadFailedTitle": "ダウンロード失敗",
-  "downloadFailedBody": "モデルのダウンロードに失敗しました：{error}",
-  "@downloadFailedBody": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
   "successTitle": "成功",
   "successBody": "モデルのインストールが完了しました。",
   "unzipFailedTitle": "解凍に失敗",
   "unzipFailedLowSpaceBody": "ストレージ容量不足のため解凍に失敗しました。空き容量を確保してから「再解凍」をタップしてください。ダウンロード済みのファイルは保持されるため、再ダウンロードは不要です。",
   "close": "閉じる",
-  "retryUnzip": "解凍を再試行",
   "downloadFailedShort": "モデルのダウンロードに失敗しました。後でもう一度お試しください。",
   "modelPrepareFailed": "音声認識モデルのインストールに失敗しました。デバイスの空き容量が十分にあることを確認してから、もう一度お試しください。",
   "retry": "再試行",
-  "feedbackOpenMailAppFailed": "メールアプリを開けませんでした",
-  "appName": "念仏日和",
-  "feedbackEmailSubject": "[{app}] フィードバック",
-  "@feedbackEmailSubject": {
-    "description": "Subject for user feedback email to developer",
-    "placeholders": {
-      "app": {
-        "type": "String",
-        "example": "Amitabha"
-      }
-    }
-  },
-  "feedbackEmailBody": "問題・ご提案：\n\n（スクリーンショットを添付できます）",
   "micPermissionTitle": "マイクの許可が必要です",
   "micPermissionRationale": "念仏の回数を数えるため、システムの「設定」>「念仏」>「マイク」で許可を有効にしてください。",
   "openSettings": "設定を開く",
-  "microphonePermissionDenied": "マイクの許可が得られていません。",
   "bgScreenTitle": "念仏の背景",
   "bgUse": "使用",
   "bgUpdate": "更新",
@@ -230,16 +121,7 @@
   "bgDownloadErrorNetwork": "インターネットに接続されていないため、背景をダウンロードできません。",
   "bgDownloadErrorGeneric": "ダウンロードに失敗しました。後でもう一度お試しください。",
   "bgDownloadErrorNotAvailable": "この背景は現在ダウンロードできません。提供終了または差し替えの可能性があります。",
-  "bgSettingSubtitle": "念仏の背景をカスタマイズ",
   "langFollowSystem": "システムに従う",
-  "langFollowSystemWith": "システムに従う（{name}）",
-  "@langFollowSystemWith": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
   "cancelling": "キャンセル中…",
   "networkErrorBody": "ネットワーク接続に問題があります。接続状況をご確認のうえ、もう一度お試しください。",
   "timeoutErrorBody": "接続がタイムアウトしました。ネットワークが不安定か、サーバーが一時的に応答していない可能性があります。しばらくしてからもう一度お試しください。",
@@ -253,13 +135,10 @@
   "dedicationButton": "回向",
   "dedicationEdit": "回向偈を編集",
   "announcementsTitle": "お知らせ",
-  "announcementsSubtitle": "最新情報を見る",
   "announcementsEmpty": "お知らせはまだありません",
   "announcementsLinkCopied": "リンクをコピーしました",
-  "rateTitle": "レビューで応援",
-  "rateSubtitle": "ストアで評価する",
+  "rateTitle": "レビューで\n応援",
   "shareTitle": "アプリを共有",
-  "shareSubtitle": "友だちや家族にすすめる",
   "shareSubject": "念仏日和 — 無料の念仏カウンターアプリ",
   "shareMessage": "「念仏日和」は無料の念仏カウンターアプリです。\nあなたの念仏の声を聞き取り、称えた数を自動で数えます。\n念仏に専念して、カウントは「念仏日和」におまかせ！",
   "storeActionFailed": "ストアを開けませんでした。しばらくしてからもう一度お試しください。"

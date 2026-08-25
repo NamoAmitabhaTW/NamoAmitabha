@@ -36,7 +36,7 @@
   "@days": {
     "description": "Stats: number of practice days (unique dates from records)"
   },
-  "times": "次",
+  "times": "聲",
   "@times": {
     "description": "Unit text for counts"
   },
@@ -44,99 +44,13 @@
   "@noRecords": {
     "description": "Records page empty state"
   },
-  "logIn": "登入",
-  "@logIn": {
-    "description": "General login label (use enableCloudSync for the cloud-sync CTA)"
-  },
-  "logOut": "登出",
-  "@logOut": {
-    "description": "Sign-out button"
-  },
-  "enableCloudSync": "開啟同步雲端",
-  "@enableCloudSync": {
-    "description": "Enable backup & sync (lazily initialize Firebase)"
-  },
-  "account": "帳號",
-  "@account": {
-    "description": "Settings: account section title"
-  },
-  "accountStatus": "登入狀態",
-  "@accountStatus": {
-    "description": "Settings: sign-in status label"
-  },
-  "statusSignedIn": "已登入",
-  "@statusSignedIn": {
-    "description": "Signed-in state label"
-  },
-  "statusSignedOut": "尚未登入",
-  "@statusSignedOut": {
-    "description": "Signed-out state label"
-  },
   "language": "語言",
   "@language": {
     "description": "Settings: language switch"
   },
-  "currentLanguage": "目前語言：{lang}",
-  "@currentLanguage": {
-    "description": "Display the currently active language name",
-    "placeholders": {
-      "lang": {
-        "type": "String",
-        "example": "English"
-      }
-    }
-  },
-  "langZhHant": "繁體中文",
-  "@langZhHant": {
-    "description": "Language option: Traditional Chinese (endonym, not translated)"
-  },
-  "langEn": "English",
-  "@langEn": {
-    "description": "Language option: English (endonym, not translated)"
-  },
-  "langJa": "日本語",
-  "@langJa": {
-    "description": "Language option: Japanese (endonym, not translated)"
-  },
-  "langKo": "한국어",
-  "@langKo": {
-    "description": "Language option: Korean (endonym, not translated)"
-  },
-  "langVi": "Tiếng Việt",
-  "@langVi": {
-    "description": "Language option: Vietnamese (endonym, not translated)"
-  },
-  "langDe": "Deutsch",
-  "@langDe": {
-    "description": "Language option: German (endonym, not translated)"
-  },
-  "langFr": "Français",
-  "@langFr": {
-    "description": "Language option: French (endonym, not translated)"
-  },
-  "feedback": "意見回饋",
-  "@feedback": {
-    "description": "Settings: feedback item"
-  },
-  "deleteAccount": "刪除帳號",
-  "@deleteAccount": {
-    "description": "Settings: delete account"
-  },
-  "confirm": "確認",
-  "@confirm": {
-    "description": "Dialog title: confirm"
-  },
   "cancel": "取消",
   "@cancel": {
     "description": "Dialog button: cancel"
-  },
-  "done": "已完成",
-  "@done": {
-    "description": "Generic completion toast"
-  },
-  "confirmDeleteAccount": "確定要刪除帳號與資料？此動作無法復原。",
-  "@confirmDeleteAccount": {
-    "description": "Delete account confirmation message"
   },
   "pleaseWait": "請稍候",
   "downloading": "下載中",
@@ -165,40 +79,17 @@
   },
   "download": "下載",
   "downloadFailedTitle": "下載失敗",
-  "downloadFailedBody": "模型下載失敗：{error}",
-  "@downloadFailedBody": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
   "successTitle": "成功",
   "successBody": "模型已安裝完成。",
   "unzipFailedTitle": "解壓縮失敗",
   "unzipFailedLowSpaceBody": "解壓縮失敗，裝置儲存空間不足。請先清出足夠空間，再點擊「重新解壓縮」。已下載的檔案會保留，不需要重新下載。",
   "close": "關閉",
-  "retryUnzip": "重試解壓",
   "downloadFailedShort": "模型下載失敗，請稍後再試或重試。",
   "modelPrepareFailed": "語音辨識模型安裝失敗，請確認裝置儲存空間足夠後再試。",
   "retry": "重試",
-  "feedbackOpenMailAppFailed": "無法開啟郵件 App",
-  "appName": "好好念佛",
-  "feedbackEmailSubject": "[{app}] 意見回饋",
-  "@feedbackEmailSubject": {
-    "description": "Subject for user feedback email to developer",
-    "placeholders": {
-      "app": {
-        "type": "String",
-        "example": "Amitabha"
-      }
-    }
-  },
-  "feedbackEmailBody": "描述問題/建議：\n\n（可附上截圖）",
   "micPermissionTitle": "需要麥克風權限",
   "micPermissionRationale": "語音辨識計算佛號數量，請前往系統「設定」>「念佛」>「麥克風」將權限開啟。",
   "openSettings": "前往設定",
-  "microphonePermissionDenied": "未取得麥克風權限。",
   "bgScreenTitle": "念佛背景",
   "bgUse": "使用",
   "bgUpdate": "更新",
@@ -230,16 +121,7 @@
   "bgDownloadErrorNetwork": "網路未連線，無法下載背景。",
   "bgDownloadErrorGeneric": "下載失敗，請稍後再試。",
   "bgDownloadErrorNotAvailable": "此背景目前無法下載，可能已下架或更換。",
-  "bgSettingSubtitle": "自訂頁面背景",
   "langFollowSystem": "跟隨系統",
-  "langFollowSystemWith": "跟隨系統（{name}）",
-  "@langFollowSystemWith": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
   "cancelling": "取消中…",
   "networkErrorBody": "網路連線異常，請確認網路狀態後重試。",
   "timeoutErrorBody": "連線逾時，可能是網路不穩或伺服器暫時無回應，請稍後重試。",
@@ -253,13 +135,10 @@
   "dedicationButton": "迴向",
   "dedicationEdit": "編輯迴向偈",
   "announcementsTitle": "公告",
-  "announcementsSubtitle": "查看最新消息",
   "announcementsEmpty": "目前沒有公告",
   "announcementsLinkCopied": "已複製連結",
   "rateTitle": "留言鼓勵",
-  "rateSubtitle": "到商店給予評分",
   "shareTitle": "分享 App",
-  "shareSubtitle": "推薦給親友",
   "shareSubject": "好好念佛 — 免費的念佛計數 App",
   "shareMessage": "「好好念佛」是一款免費的念佛計數 App，會聆聽您的佛號聲並自動統計出佛號數量。專心念佛，計數就交給「好好念佛」！",
   "storeActionFailed": "無法開啟商店，請稍後再試。"
