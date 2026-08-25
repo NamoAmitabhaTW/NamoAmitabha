@@ -1,6 +1,7 @@
 // lib/features/records/screens/records_screen.dart
 import 'dart:io';
 
+import 'package:amitabha/core/theme/brand.dart';
 import 'package:amitabha/features/asr/application/asr_session_controller.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:amitabha/storage/app_paths.dart';
@@ -11,19 +12,94 @@ import 'package:intl/intl.dart';
 import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 
+const Color _goldHairline = Color(0x4D82663A);
+const Color _goldDeep = Color(0xFF82663A);
+const Color _amitabhaInk = Brand.amitabhaInk;
+const Color _brownSoft = Color(0xFF6F4E37);
+
+const RadialGradient _recordsBackground = RadialGradient(
+  center: Alignment(0, -0.55),
+  radius: 1.3,
+  colors: [
+    Color(0xFFFFFCF3),
+    Color(0xFFFFF8E7),
+    Color(0xFFF3E7CE),
+  ],
+  stops: [0.0, 0.55, 1.0],
+);
+
+const RadialGradient _headerSpotlight = RadialGradient(
+  center: Alignment(0, -0.35),
+  radius: 1.0,
+  colors: [
+    Color(0x4DFFFCF3),
+    Color(0x1AFFFCF3),
+    Color(0x00FFFCF3),
+  ],
+  stops: [0.0, 0.5, 1.0],
+);
+
+String _calligraphyAsset(String lang) {
+  switch (lang) {
+    case 'ja':
+      return 'assets/images/amitabha_calligraphy_ja.png';
+    case 'ko':
+      return 'assets/images/amitabha_calligraphy_ko.png';
+    case 'vi':
+      return 'assets/images/amitabha_calligraphy_vi.png';
+    case 'en':
+    case 'de':
+    case 'fr':
+      return 'assets/images/amitabha_calligraphy_sa.png';
+    case 'zh':
+    default:
+      return 'assets/images/amitabha_calligraphy.png';
+  }
+}
+
 class RecordsScreen extends StatelessWidget {
   const RecordsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
-    final locale = Localizations.localeOf(context).toString();
-    final df = DateFormat.yMd(locale);
+    final localeObj = Localizations.localeOf(context);
+    final locale = localeObj.toString();
+    final df = localeObj.languageCode == 'en'
+        ? DateFormat.yMd(locale)
+        : DateFormat(
+            (DateFormat.yMd(locale).pattern ?? 'yyyy/MM/dd')
+                .replaceAll(RegExp('M+'), 'MM')
+                .replaceAll(RegExp('d+'), 'dd')
+                .replaceAll(RegExp('y+'), 'yyyy'),
+            locale,
+          );
+    final dfMonth = DateFormat.yMMM(locale);
     final ver = context.select<AsrSessionController, int>((s) => s.dataVersion);
+    final bottomInset = MediaQuery.of(context).padding.bottom + 80;
 
+    return Brand.withFontFamily(
+      context,
+      Container(
+        decoration: const BoxDecoration(gradient: _recordsBackground),
+        child: _buildContent(context, t, df, dfMonth, ver, bottomInset),
+      ),
+      family: Brand.primaryFontFor(localeObj),
+      fallback: Brand.cjkFallback,
+    );
+  }
+
+  Widget _buildContent(
+    BuildContext context,
+    AppLocalizations t,
+    DateFormat df,
+    DateFormat dfMonth,
+    int ver,
+    double bottomInset,
+  ) {
     return FutureBuilder<_DailyLoadResult>(
-      key: ValueKey(ver), 
-      future: _loadAllDaily(), 
+      key: ValueKey(ver),
+      future: _loadAllDaily(),
       builder: (context, snap) {
         if (!snap.hasData) {
           return const Center(child: CircularProgressIndicator());
@@ -32,7 +108,9 @@ class RecordsScreen extends StatelessWidget {
         final header = _HeaderCards(
           totalText: '${data.total}',
           practiceDaysText: '${data.practiceDays}',
-          verticalTitle: t.amitabha,
+          calligraphyAsset: _calligraphyAsset(
+            Localizations.localeOf(context).languageCode,
+          ),
           t: t,
         );
 
@@ -41,16 +119,17 @@ class RecordsScreen extends StatelessWidget {
             top: true,
             bottom: false,
             child: ListView(
+              padding: EdgeInsets.only(bottom: bottomInset),
               children: [
                 header,
-                const Divider(height: 0),
                 Padding(
                   padding: const EdgeInsets.all(24),
                   child: Center(
                     child: Text(
-                    t.noRecords,
-                    style: const TextStyle(fontSize: 20),)
+                      t.noRecords,
+                      style: const TextStyle(fontSize: 20, color: _brownSoft),
                     ),
+                  ),
                 ),
               ],
             ),
@@ -64,7 +143,6 @@ class RecordsScreen extends StatelessWidget {
               bottom: false,
               sliver: SliverToBoxAdapter(child: header),
             ),
-            const SliverToBoxAdapter(child: Divider(height: 0)),
             SliverList.builder(
               itemCount: data.items.length,
               itemBuilder: (_, i) {
@@ -74,26 +152,26 @@ class RecordsScreen extends StatelessWidget {
                 final d = int.parse(r.yyyymmdd.substring(6, 8));
                 final dt = DateTime(y, m, d);
 
-                return ListTile(
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 8,
-                  ),
-                  leading: const Icon(Icons.calendar_month, size: 24),
-                  title: Text(
-                    df.format(dt), 
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 20),
-                  ),
-                  trailing: Text(
-                    '${r.amitabhaCount} ${t.times}', 
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 20
-                    ),
-                  ),
+                final isMonthStart =
+                    i == 0 || data.items[i - 1].yyyymmdd.substring(0, 6) != r.yyyymmdd.substring(0, 6);
+
+                final tile = _RecordTile(
+                  dateText: df.format(dt),
+                  countText: '${r.amitabhaCount}',
+                  unitText: t.times,
+                );
+
+                if (!isMonthStart) return tile;
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _MonthHeader(label: dfMonth.format(dt), isFirst: i == 0),
+                    tile,
+                  ],
                 );
               },
             ),
+            SliverToBoxAdapter(child: SizedBox(height: bottomInset)),
           ],
         );
       },
@@ -101,9 +179,8 @@ class RecordsScreen extends StatelessWidget {
   }
 }
 
-
 class _DailyLoadResult {
-  final List<DailySummary> items; 
+  final List<DailySummary> items;
   final int total;
   final int practiceDays;
   _DailyLoadResult(this.items, this.total, this.practiceDays);
@@ -143,170 +220,220 @@ Future<_DailyLoadResult> _loadAllDaily() async {
 class _HeaderCards extends StatelessWidget {
   final String totalText;
   final String practiceDaysText;
-  final String verticalTitle;
+  final String calligraphyAsset;
   final AppLocalizations t;
 
   const _HeaderCards({
     required this.totalText,
     required this.practiceDaysText,
-    required this.verticalTitle,
+    required this.calligraphyAsset,
     required this.t,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-      child: Card(
-        elevation: 1.5,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        child: SizedBox(
-          height: 180,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+    return Container(
+      decoration: const BoxDecoration(gradient: _headerSpotlight),
+      padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
+      child: Column(
+        children: [
+          Image.asset(
+            calligraphyAsset,
+            width: MediaQuery.of(context).size.width * 0.6,
+            fit: BoxFit.contain,
+            color: _amitabhaInk,
+            colorBlendMode: BlendMode.srcIn,
+            semanticLabel: t.amitabha,
+          ),
+          const SizedBox(height: 2),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            textBaseline: TextBaseline.alphabetic,
             children: [
-              Expanded(
-                child: _StatCol(
-                  topLabel: t.total,
-                  valueText: totalText,
-                  unitText: t.times,
+              const Expanded(child: SizedBox.shrink()),
+              const SizedBox(width: 8),
+              Text(
+                totalText,
+                style: const TextStyle(
+                  fontSize: 80,
+                  fontWeight: FontWeight.w400,
+                  height: 1.0,
+                  color: _goldDeep,
+                  letterSpacing: 1,
                 ),
               ),
-              const _VDivider(),
-              Expanded(child: _VerticalTitle(title: verticalTitle)),
-              const _VDivider(),
+              const SizedBox(width: 8),
               Expanded(
-                child: _StatCol(
-                  topLabel: t.chant,
-                  valueText: practiceDaysText,
-                  unitText: t.days,
+                child: Text(
+                  t.times,
+                  textAlign: TextAlign.left,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontSize: 16, color: _brownSoft),
                 ),
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _StatCol extends StatelessWidget {
-  final String topLabel;
-  final String valueText;
-  final String unitText;
-
-  const _StatCol({
-    required this.topLabel,
-    required this.valueText,
-    required this.unitText,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final title = Theme.of(
-      context,
-    ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700);
-    final unit = Theme.of(context).textTheme.titleMedium;
-    final numTx = Theme.of(context).textTheme.displayLarge?.copyWith(
-      fontWeight: FontWeight.w800,
-      height: 1.0,
-    );
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
+          const SizedBox(height: 16),
           SizedBox(
-            width: double.infinity,
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(
-                topLabel,
-                style: title,
-                textAlign: TextAlign.center,
-                maxLines: 1,
-              ),
-            ),
+            width: MediaQuery.of(context).size.width * 0.72,
+            child: _GoldDivider(label: t.total),
           ),
-          Expanded(
-            child: Center(
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Text(
-                  valueText,
-                  style: numTx,
-                  textAlign: TextAlign.center,
+          const SizedBox(height: 14),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            textBaseline: TextBaseline.alphabetic,
+            children: [
+              const Expanded(child: SizedBox.shrink()),
+              const SizedBox(width: 8),
+              Text(
+                practiceDaysText,
+                style: const TextStyle(
+                  fontSize: 44,
+                  fontWeight: FontWeight.w500,
+                  color: _goldDeep,
                 ),
               ),
-            ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  t.days,
+                  textAlign: TextAlign.left,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontSize: 19, color: _brownSoft),
+                ),
+              ),
+            ],
           ),
-          Text(unitText, style: unit, textAlign: TextAlign.center),
         ],
       ),
     );
   }
 }
 
-class _VerticalTitle extends StatelessWidget {
-  final String title;
-  const _VerticalTitle({required this.title});
-
-  bool _isCjk(String s) {
-    final cjk = RegExp(
-      r'[\u3400-\u4DBF\u4E00-\u9FFF\uF900-\uFAFF\u3040-\u30FF\uAC00-\uD7AF]',
-    );
-    return cjk.hasMatch(s);
-  }
+class _GoldDivider extends StatelessWidget {
+  final String? label;
+  const _GoldDivider({this.label});
 
   @override
   Widget build(BuildContext context) {
-    final style = Theme.of(context).textTheme.titleLarge;
-
-    if (_isCjk(title)) {
-      final chars = title.characters.toList();
-      return Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            for (final c in chars)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 2),
-                child: Text(c, style: style),
+    final l = label;
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Expanded(child: _line(fadeToLeft: true)),
+        if (l != null)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14),
+            child: Text(
+              l,
+              style: const TextStyle(
+                fontSize: 13,
+                color: _brownSoft,
+                letterSpacing: 4,
               ),
-          ],
-        ),
-      );
-    }
-
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Text(
-            title,
-            maxLines: 2,
-            textAlign: TextAlign.center,
-            overflow: TextOverflow.ellipsis,
-            style: style,
+            ),
           ),
+        Expanded(child: _line(fadeToLeft: false)),
+      ],
+    );
+  }
+
+  Widget _line({required bool fadeToLeft}) {
+    return Container(
+      height: 1,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            _goldDeep.withValues(alpha: fadeToLeft ? 0.0 : 0.5),
+            _goldDeep.withValues(alpha: fadeToLeft ? 0.5 : 0.0),
+          ],
         ),
       ),
     );
   }
 }
 
-class _VDivider extends StatelessWidget {
-  const _VDivider();
+class _MonthHeader extends StatelessWidget {
+  final String label;
+  final bool isFirst;
+
+  const _MonthHeader({required this.label, required this.isFirst});
+
   @override
   Widget build(BuildContext context) {
-    final color = Theme.of(context).dividerColor.withValues(alpha: 0.6);
+    return Padding(
+      padding: EdgeInsets.fromLTRB(22, isFirst ? 4 : 28, 22, 10),
+      child: Text(
+        label,
+        style: const TextStyle(
+          fontSize: 13,
+          fontWeight: FontWeight.w500,
+          color: _brownSoft,
+          letterSpacing: 1,
+        ),
+      ),
+    );
+  }
+}
+
+class _RecordTile extends StatelessWidget {
+  final String dateText;
+  final String countText;
+  final String unitText;
+
+  const _RecordTile({
+    required this.dateText,
+    required this.countText,
+    required this.unitText,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
-      width: 1,
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      color: color,
+      margin: const EdgeInsets.symmetric(horizontal: 22),
+      decoration: const BoxDecoration(
+        border: Border(bottom: BorderSide(color: _goldHairline, width: 1)),
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 18),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              dateText,
+              style: const TextStyle(
+                fontSize: 19,
+                fontWeight: FontWeight.w400,
+                color: _amitabhaInk,
+              ),
+            ),
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            textBaseline: TextBaseline.alphabetic,
+            children: [
+              Text(
+                countText,
+                style: const TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.w400,
+                  color: _amitabhaInk,
+                ),
+              ),
+              Text(
+                ' $unitText',
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400,
+                  color: _amitabhaInk,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

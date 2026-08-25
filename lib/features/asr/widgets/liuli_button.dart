@@ -13,6 +13,10 @@ class LiuliButton extends StatelessWidget {
     this.borderRadius = 18,
     this.padding = const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
     this.gradientColors,
+    this.labelFontFamily,
+    this.labelFontFamilyFallback,
+    this.labelFontSize = 18,
+    this.labelImageAsset,
   });
 
   final VoidCallback? onPressed;
@@ -23,6 +27,10 @@ class LiuliButton extends StatelessWidget {
   final double borderRadius;
   final EdgeInsets padding;
   final List<Color>? gradientColors;
+  final String? labelFontFamily;
+  final List<String>? labelFontFamilyFallback;
+  final double labelFontSize;
+  final String? labelImageAsset;
 
   @override
   Widget build(BuildContext context) {
@@ -74,31 +82,44 @@ class LiuliButton extends StatelessWidget {
               child: Container(
                 constraints: const BoxConstraints(minHeight: 60),
                 alignment: Alignment.center,
-                padding: padding,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(icon, size: 20, color: effForeground),
-                    const SizedBox(width: 8),
-                    Flexible(
-                      child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text(
-                          label,
-                          maxLines: 1,
-                          softWrap: false,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700,
-                            letterSpacing: 0.2,
-                            color: effForeground,
+                padding: labelImageAsset != null
+                    ? const EdgeInsets.symmetric(horizontal: 14, vertical: 12)
+                    : padding,
+                child: labelImageAsset != null
+                    ? Image.asset(
+                        labelImageAsset!,
+                        width: double.infinity,
+                        fit: BoxFit.contain,
+                        color: effForeground,
+                        colorBlendMode: BlendMode.srcIn,
+                        semanticLabel: label,
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(icon, size: 20, color: effForeground),
+                          const SizedBox(width: 8),
+                          Flexible(
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(
+                                label,
+                                maxLines: 1,
+                                softWrap: false,
+                                style: TextStyle(
+                                  fontFamily: labelFontFamily,
+                                  fontFamilyFallback: labelFontFamilyFallback,
+                                  fontSize: labelFontSize,
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: 0.2,
+                                  color: effForeground,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
               ),
             ),
           ),

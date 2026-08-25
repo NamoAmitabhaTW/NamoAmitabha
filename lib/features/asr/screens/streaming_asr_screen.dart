@@ -1,6 +1,7 @@
 // features/asr/screens/streaming_asr_screen.dart
 import 'dart:async';
 
+import 'package:amitabha/core/theme/brand.dart';
 import 'package:amitabha/features/asr/application/asr_session_controller.dart';
 import 'package:amitabha/features/asr/widgets/chanting_background.dart';
 import 'package:amitabha/features/asr/widgets/liuli_button.dart';
@@ -127,6 +128,15 @@ class StreamingAsrScreen extends StatelessWidget {
     );
   }
 
+  static const Set<String> _buttonImageLangs = {
+    'zh', 'ja', 'ko', 'vi', 'en', 'de', 'fr',
+  };
+
+  static String? _buttonImage(String lang, String name) =>
+      _buttonImageLangs.contains(lang)
+          ? 'assets/images/chant_buttons/$lang/$name.png'
+          : null;
+
   static String _calligraphyAsset(String lang) {
     switch (lang) {
       case 'ja':
@@ -150,27 +160,152 @@ class StreamingAsrScreen extends StatelessWidget {
     final t = AppLocalizations.of(context);
     final s = context.watch<AsrSessionController>();
     final bg = context.watch<BackgroundController>();
-    final lang = Localizations.localeOf(context).languageCode;
+    final locale = Localizations.localeOf(context);
+    final lang = locale.languageCode;
+    final isTablet = MediaQuery.of(context).size.shortestSide >= 600;
 
-    final navLabelBase =
-        NavigationBarTheme.of(context).labelTextStyle?.resolve(const {}) ??
-        Theme.of(context).textTheme.labelMedium ??
-        const TextStyle();
-
-    final countStyle = Theme.of(context).textTheme.displayLarge?.copyWith(
-      fontFamily: navLabelBase.fontFamily,
+    final baseCount = Theme.of(context).textTheme.displayLarge;
+    final countStyle = baseCount?.copyWith(
       fontWeight: FontWeight.w600,
       height: 1.05,
-      letterSpacing: navLabelBase.letterSpacing,
+      fontFeatures: const [FontFeature.tabularFigures()],
+      fontSize: (baseCount.fontSize ?? 57.0) * (isTablet ? 2.0 : 1.0),
     );
 
+    final kleeFamily = Brand.primaryFontFor(locale);
+    final labelFallbackFamily = Brand.settingsFontFor(locale);
 
     final numberColor = Colors.white;
     final unitColor = Colors.white;
 
    
     final viewPadding = MediaQuery.of(context).viewPadding;
-  
+
+    final titleImage = Image.asset(
+      _calligraphyAsset(lang),
+      width: isTablet
+          ? MediaQuery.of(context).size.width.clamp(0.0, 640.0) * 0.88
+          : MediaQuery.of(context).size.width.clamp(0.0, 520.0) * 0.8,
+      fit: BoxFit.contain,
+    );
+
+    Shadow numShadow() => Shadow(
+          color: Colors.black.withValues(alpha: 0.4),
+          blurRadius: 6,
+          offset: const Offset(0, 1),
+        );
+
+    final countWidget = FittedBox(
+      fit: BoxFit.scaleDown,
+      child: Text.rich(
+        TextSpan(
+          children: [
+            TextSpan(
+              text: '${s.sessionCount} ',
+              style: countStyle?.copyWith(
+                color: numberColor,
+                shadows: [numShadow()],
+              ),
+            ),
+            TextSpan(
+              text: t.times,
+              style: countStyle?.copyWith(
+                fontFamily: kleeFamily,
+                fontFamilyFallback: Brand.cjkFallback,
+                color: unitColor,
+                fontWeight: FontWeight.w700,
+                fontSize: (countStyle.fontSize ?? 57.0) * 0.62,
+                shadows: [numShadow()],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    final startButton = LiuliButton(
+      onPressed: () {
+        if (s.isRecording) {
+          s.stop();
+        } else {
+          _handleStart(context);
+        }
+      },
+      icon: s.isRecording ? Icons.pause : Icons.play_arrow,
+      label: s.isRecording ? t.pause : t.start,
+      labelImageAsset: _buttonImage(lang, s.isRecording ? 'pause' : 'start'),
+      labelFontFamily: labelFallbackFamily,
+      labelFontFamilyFallback: Brand.cjkFallback,
+      labelFontSize: 26,
+      gradientColors: [
+        Colors.white.withValues(alpha: 0.22),
+        Colors.white.withValues(alpha: 0.10),
+      ],
+    );
+
+    final saveButton = LiuliButton(
+      onPressed: s.sessionCount > 0 ? () => _handleSave(context) : null,
+      icon: Icons.save,
+      label: t.save,
+      labelImageAsset: _buttonImage(lang, 'save'),
+      labelFontFamily: labelFallbackFamily,
+      labelFontFamilyFallback: Brand.cjkFallback,
+      labelFontSize: 26,
+      gradientColors: [
+        Colors.white.withValues(alpha: 0.22),
+        Colors.white.withValues(alpha: 0.10),
+      ],
+    );
+
+    final buttonsRow = Row(
+      children: isTablet
+          ? [
+              Expanded(flex: 2, child: startButton),
+              const Spacer(flex: 1),
+              Expanded(flex: 2, child: saveButton),
+            ]
+          : [
+              Expanded(child: startButton),
+              const SizedBox(width: 16),
+              Expanded(child: saveButton),
+            ],
+    );
+
+    final contentColumn = Column(
+      children: isTablet
+          ? [
+              SizedBox(height: viewPadding.top + 16),
+              titleImage,
+              const Spacer(),
+              countWidget,
+              const Spacer(),
+              buttonsRow,
+            ]
+          : [
+              const Spacer(flex: 4),
+              titleImage,
+              const SizedBox(height: 320),
+              countWidget,
+              const Spacer(flex: 10),
+              buttonsRow,
+            ],
+    );
+
+    final content = Padding(
+      padding: EdgeInsets.only(bottom: viewPadding.bottom + 120),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: contentColumn,
+      ),
+    );
+
+    final body = Center(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: isTablet ? 640 : 520),
+        child: content,
+      ),
+    );
+
     return FocusTraversalGroup(
       child: Stack(
         children: [
@@ -179,101 +314,7 @@ class StreamingAsrScreen extends StatelessWidget {
             child: ChantingBackground(source: bg.currentSource, active: true),
           ),
 
-          Padding(
-            padding: EdgeInsets.only(bottom: viewPadding.bottom + 120),
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  const Spacer(flex: 4),
-                  Image.asset(
-                    _calligraphyAsset(lang),
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    fit: BoxFit.contain,
-                  ),
-                  const SizedBox(height: 320),
-
-                  FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                            text: '${s.sessionCount} ',
-                            style: countStyle?.copyWith(
-                              color: numberColor,
-                              shadows: [
-                                Shadow(
-                                  color: Colors.black.withValues(alpha: 0.4),
-                                  blurRadius: 6,
-                                  offset: const Offset(0, 1),
-                                ),
-                              ],
-                            ),
-                          ),
-                          TextSpan(
-                            text: t.times,
-                            style: countStyle?.copyWith(
-                              color: unitColor,
-                              fontWeight: FontWeight.w400,
-                              fontSize: (countStyle.fontSize ?? 57.0) * 0.62,
-                              shadows: [
-                                Shadow(
-                                  color: Colors.black.withValues(alpha: 0.4),
-                                  blurRadius: 6,
-                                  offset: const Offset(0, 1),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const Spacer(flex: 10),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: LiuliButton(
-                          onPressed: () {
-                            if (s.isRecording) {
-                              s.stop();
-                            } else {
-                              _handleStart(context);
-                            }
-                          },
-                          icon: s.isRecording ? Icons.pause : Icons.play_arrow,
-                          label: s.isRecording ? t.pause : t.start,
-                          gradientColors: [
-                            Colors.white.withValues(
-                              alpha: 0.22,
-                            ), 
-                            Colors.white.withValues(alpha: 0.10), 
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: LiuliButton(
-                          onPressed: s.sessionCount > 0
-                              ? () => _handleSave(context)
-                              : null,
-                          icon: Icons.save,
-                          label: t.save,
-                          gradientColors: [
-                            Colors.white.withValues(
-                              alpha: 0.22,
-                            ), 
-                            Colors.white.withValues(alpha: 0.10), 
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
+          body,
         ],
       ),
     );

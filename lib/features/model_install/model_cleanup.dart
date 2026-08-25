@@ -33,16 +33,13 @@ Future<void> deleteSpecificFiles(
   }
 }
 
-//下載式流程，移除多餘模型變體(目前未啟用)
 const Map<String, List<String>> _deleteMap = {
-  // 雙語 ASR（2023-02-20）
   'sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20': [
     'encoder-epoch-99-avg-1.onnx', 
     'decoder-epoch-99-avg-1.int8.onnx',
     'joiner-epoch-99-avg-1.int8.onnx',
   ],
 
-  // WenetSpeech ASR（20230615）
   'icefall-asr-zipformer-streaming-wenetspeech-20230615': [
     'exp/encoder-epoch-12-avg-4-chunk-16-left-128.onnx',
     'exp/decoder-epoch-12-avg-4-chunk-16-left-128.int8.onnx',
@@ -68,7 +65,6 @@ const List<String> obsoleteModelDirs = <String>[
   'sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20',
 ];
 
-//版本 2.0.0 從下載模型改為內建模型，啟用時先移除舊版本模型檔案
 Future<void> purgeObsoleteModels({bool dryRun = false}) async {
   final Directory root;
   try {
