@@ -1,3 +1,4 @@
+// amitabha/lib/features/announcements/screens/announcement_detail_screen.dart
 import 'package:amitabha/core/theme/brand.dart';
 import 'package:amitabha/features/announcements/announcement_controller.dart';
 import 'package:amitabha/features/announcements/announcement_item.dart';
@@ -63,6 +64,7 @@ class AnnouncementDetailScreen extends StatelessWidget {
                 data: body,
                 accentColor: Brand.settingsGold,
                 justify: bodyLang == 'zh' || bodyLang == 'ja',
+                baseFontSize: item.id == 'licenses' ? 14 : 18,
                 onLinkTap: (url) => _copyLink(context, url),
               );
             },

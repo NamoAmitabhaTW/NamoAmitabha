@@ -1,3 +1,4 @@
+// amitabha/lib/features/announcements/widgets/simple_markdown.dart
 import 'package:amitabha/core/theme/brand.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -134,7 +135,7 @@ class _SimpleMarkdownState extends State<SimpleMarkdown> {
           text,
           TextStyle(
             fontSize: widget.baseFontSize - 4,
-            color: Brand.settingsBrownSoft,
+            color: widget.textColor,
             height: 1.5,
             fontFamilyFallback: SimpleMarkdown.cjkFallback,
           ),
@@ -220,7 +221,10 @@ class _SimpleMarkdownState extends State<SimpleMarkdown> {
         spans.add(
           TextSpan(
             text: m.group(2),
-            style: base.copyWith(color: Brand.settingsBrown),
+            style: base.copyWith(
+              color: Brand.yamabuki,
+              fontWeight: FontWeight.w700,
+            ),
           ),
         );
       } else {
