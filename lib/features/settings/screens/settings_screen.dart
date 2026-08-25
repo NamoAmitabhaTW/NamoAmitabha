@@ -1,4 +1,6 @@
 //amitabha/lib/features/settings/screens/settings_screen.dart
+import 'dart:math' as math;
+
 import 'package:amitabha/core/localization/locale_controller.dart';
 import 'package:amitabha/core/theme/brand.dart';
 import 'package:amitabha/features/announcements/screens/announcements_screen.dart';
@@ -17,6 +19,20 @@ String? _titleImage(BuildContext context, String feature) {
   return 'assets/images/settings_titles/$lang/title_${feature}_$lang.png';
 }
 
+const _breathFloat = 6.0;
+const _breathScale = 0.018;
+const _breathHold = Duration(milliseconds: 500);
+
+const _titleInkColor = Brand.amitabhaInk;
+const _titleGoldColor = Color(0xFFC69E4A);
+const _titleGoldSwing = 1.0;
+
+Color _titleColor(double v) => Color.lerp(
+  _titleInkColor,
+  _titleGoldColor,
+  ((v + 1) / 2) * _titleGoldSwing,
+)!;
+
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
@@ -33,6 +49,8 @@ class SettingsScreen extends StatelessWidget {
         top: isTablet ? 50 : 185,
         width: isTablet ? 340 : 340,
         height: isTablet ? 240 : 240,
+        phase: 0.00,
+        period: const Duration(milliseconds: 3400),
         onTap: () => _chooseLanguage(context),
       ),
       _LeafButton(
@@ -46,6 +64,8 @@ class SettingsScreen extends StatelessWidget {
           context,
           MaterialPageRoute(builder: (_) => const BackgroundPickerScreen()),
         ),
+        phase: 0.17,
+        period: const Duration(milliseconds: 3900),
       ),
       _LeafButton(
         title: t.announcementsTitle,
@@ -58,6 +78,8 @@ class SettingsScreen extends StatelessWidget {
           context,
           MaterialPageRoute(builder: (_) => const AnnouncementsScreen()),
         ),
+        phase: 0.34,
+        period: const Duration(milliseconds: 3600),
       ),
       _LeafButton(
         title: t.dedicationTitle,
@@ -70,6 +92,8 @@ class SettingsScreen extends StatelessWidget {
           context,
           MaterialPageRoute(builder: (_) => const DedicationEditorScreen()),
         ),
+        phase: 0.51,
+        period: const Duration(milliseconds: 4200),
       ),
       if (isRateSupported)
         _LeafButton(
@@ -80,6 +104,8 @@ class SettingsScreen extends StatelessWidget {
           width: isTablet ? 270 : 270,
           height: isTablet ? 320 : 320,
           minFontSize: 56,
+          phase: 0.68,
+          period: const Duration(milliseconds: 3700),
           onTap: () => StoreActions.rate(context),
         ),
       _LeafButton(
@@ -89,6 +115,8 @@ class SettingsScreen extends StatelessWidget {
         top: isTablet ? 560 : 890,
         width: isTablet ? 280 : 280,
         height: isTablet ? 320 : 320,
+        phase: 0.85,
+        period: const Duration(milliseconds: 4000),
         onTap: () => StoreActions.share(context),
       ),
     ];
@@ -137,7 +165,7 @@ class SettingsScreen extends StatelessWidget {
   void _chooseLanguage(BuildContext context) {
     final t = AppLocalizations.of(context);
     final ctrl = context.read<LocaleController>();
-    final current = ctrl.locale; 
+    final current = ctrl.locale;
 
     showModalBottomSheet(
       context: context,
@@ -145,7 +173,6 @@ class SettingsScreen extends StatelessWidget {
         child: ListView(
           shrinkWrap: true,
           children: [
-
             ListTile(
               leading: const Icon(Icons.settings_backup_restore),
               title: Text(t.langFollowSystem),
@@ -158,7 +185,7 @@ class SettingsScreen extends StatelessWidget {
               },
             ),
             const Divider(height: 1),
-      
+
             for (final lang in LocaleController.supportedLanguages)
               ListTile(
                 leading: const Icon(Icons.translate),
@@ -185,16 +212,16 @@ class SettingsScreen extends StatelessWidget {
 }
 
 TextStyle _leafTextStyle(String fontFamily) => TextStyle(
-      fontFamily: fontFamily,
-      fontFamilyFallback: Brand.cjkFallback,
-      fontWeight: FontWeight.w500,
-      height: 1.18,
-      color: Brand.settingsTitle,
-      shadows: const [
-        Shadow(color: Color(0xE6FFFCF3), blurRadius: 14),
-        Shadow(color: Color(0x80FFFCF3), blurRadius: 4),
-      ],
-    );
+  fontFamily: fontFamily,
+  fontFamilyFallback: Brand.cjkFallback,
+  fontWeight: FontWeight.w500,
+  height: 1.18,
+  color: Brand.settingsTitle,
+  shadows: const [
+    Shadow(color: Color(0xE6FFFCF3), blurRadius: 14),
+    Shadow(color: Color(0x80FFFCF3), blurRadius: 4),
+  ],
+);
 
 class _LeafButton extends StatefulWidget {
   const _LeafButton({
@@ -204,6 +231,8 @@ class _LeafButton extends StatefulWidget {
     required this.width,
     required this.height,
     required this.onTap,
+    required this.phase,
+    required this.period,
     this.image,
     this.minFontSize = 50,
   });
@@ -216,13 +245,47 @@ class _LeafButton extends StatefulWidget {
   final double height;
   final VoidCallback onTap;
   final double minFontSize;
+  final double phase;
+  final Duration period;
 
   @override
   State<_LeafButton> createState() => _LeafButtonState();
 }
 
-class _LeafButtonState extends State<_LeafButton> {
+class _LeafButtonState extends State<_LeafButton>
+    with SingleTickerProviderStateMixin {
   bool _pressed = false;
+
+  late final Duration _cycle = widget.period + _breathHold * 2;
+
+  late final double _holdFraction =
+      _breathHold.inMilliseconds / _cycle.inMilliseconds;
+
+  late final AnimationController _breath = AnimationController(
+    vsync: this,
+    duration: _cycle,
+  )..repeat();
+
+  bool _reduceMotion = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final reduce = MediaQuery.maybeOf(context)?.disableAnimations ?? false;
+    if (reduce == _reduceMotion) return;
+    _reduceMotion = reduce;
+    if (reduce) {
+      _breath.stop();
+    } else {
+      _breath.repeat();
+    }
+  }
+
+  @override
+  void dispose() {
+    _breath.dispose();
+    super.dispose();
+  }
 
   void _setPressed(bool v) {
     if (_pressed != v) setState(() => _pressed = v);
@@ -243,39 +306,77 @@ class _LeafButtonState extends State<_LeafButton> {
         onTapUp: (_) => _setPressed(false),
         onTapCancel: () => _setPressed(false),
         onTap: widget.onTap,
-        child: AnimatedScale(
-          scale: _pressed ? 0.94 : 1.0,
-          duration: anim,
-          curve: Curves.easeOut,
-          child: Stack(
-            clipBehavior: Clip.none,
-            alignment: Alignment.center,
-            children: [
-              if (widget.image != null)
-                Padding(
-                  padding: const EdgeInsets.all(6),
-                  child: Image.asset(
-                    widget.image!,
-                    fit: BoxFit.contain,
-                    semanticLabel: widget.title,
-                  ),
-                )
-              else
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Center(
-                    child: _FitText(
-                      text: widget.title,
-                      style: _leafTextStyle(family),
-                      maxFontSize: 72,
-                      minFontSize: widget.minFontSize,
+        child: _breathe(
+          AnimatedScale(
+            scale: _pressed ? 0.94 : 1.0,
+            duration: anim,
+            curve: Curves.easeOut,
+            child: Stack(
+              clipBehavior: Clip.none,
+              alignment: Alignment.center,
+              children: [
+                if (widget.image != null)
+                  Padding(
+                    padding: const EdgeInsets.all(6),
+                    child: AnimatedBuilder(
+                      animation: _breath,
+                      child: Image.asset(
+                        widget.image!,
+                        fit: BoxFit.contain,
+                        semanticLabel: widget.title,
+                      ),
+                      builder: (context, child) => ColorFiltered(
+                        colorFilter: ColorFilter.mode(
+                          _titleColor(_phaseValue()),
+                          BlendMode.srcIn,
+                        ),
+                        child: child,
+                      ),
+                    ),
+                  )
+                else
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Center(
+                      child: _FitText(
+                        text: widget.title,
+                        style: _leafTextStyle(family),
+                        maxFontSize: 72,
+                        minFontSize: widget.minFontSize,
+                      ),
                     ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
+    );
+  }
+
+  double _phaseValue() {
+    if (_reduceMotion) return 0.0;
+    final u = (_breath.value + widget.phase) % 1.0;
+    final h = _holdFraction;
+    final m = (1 - 2 * h) / 2;
+    if (u < h) return -1.0;
+    if (u < h + m) return -math.cos(math.pi * (u - h) / m);
+    if (u < 2 * h + m) return 1.0;
+    return math.cos(math.pi * (u - 2 * h - m) / m);
+  }
+
+  Widget _breathe(Widget child) {
+    if (_reduceMotion) return child;
+    return AnimatedBuilder(
+      animation: _breath,
+      child: RepaintBoundary(child: child),
+      builder: (context, child) {
+        final v = _phaseValue();
+        return Transform.translate(
+          offset: Offset(0, v * _breathFloat),
+          child: Transform.scale(scale: 1 + v * _breathScale, child: child),
+        );
+      },
     );
   }
 }
@@ -293,8 +394,7 @@ class _FitText extends StatelessWidget {
   final double maxFontSize;
   final double minFontSize;
 
-  static final RegExp _breakable =
-      RegExp(r'[぀-ヿ㐀-鿿豈-﫿가-힯]');
+  static final RegExp _breakable = RegExp(r'[぀-ヿ㐀-鿿豈-﫿가-힯]');
   static final RegExp _splitter = RegExp(r'[\s‐-―\-]+');
 
   @override
