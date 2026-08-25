@@ -30,5 +30,21 @@
       "fr": "Journal des modifications"
     },
     "langs": ["zh", "en", "ja", "ko", "vi", "de", "fr"]
+  },
+  {
+    "id": "licenses",
+    "version": 1,
+    "date": "",
+    "pinned": false,
+    "title": {
+      "zh": "開源授權",
+      "en": "Open Source Licenses",
+      "ja": "オープンソースライセンス",
+      "ko": "오픈소스 라이선스",
+      "vi": "Giấy phép mã nguồn mở",
+      "de": "Open-Source-Lizenzen",
+      "fr": "Licences open source"
+    },
+    "langs": ["en"]
   }
 ]

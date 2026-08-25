@@ -1,28 +1,40 @@
 This app includes the following third-party components. Components 1-2 are
 licensed under the Apache License, Version 2.0 (full text below). The bundled
-Noto Serif fonts (component 3) are licensed under the SIL Open Font License,
+fonts (component 3) are licensed under the SIL Open Font License,
 Version 1.1 (full text at the end of this file).
 
 --------------------------------------------------------------------
 1. sherpa-onnx  (on-device speech recognition runtime)
-   https://github.com/k2-fsa/sherpa-onnx
-   https://pub.dev/packages/sherpa_onnx
    Copyright the sherpa-onnx / k2-fsa authors.
+   Licensed under the Apache License, Version 2.0 (full text below).
 
 2. X-ASR streaming zipformer model  (bundled ASR model, app 2.0.0+)
    sherpa-onnx-x-asr-960ms-streaming-zipformer-transducer-zh-en-punct-int8-2026-06-05
-   https://github.com/Gilgamesh-J/X-ASR
-   Trained with icefall and deployed with sherpa-onnx (k2-fsa).
-   Redistributed unmodified.
+   Trained with icefall and deployed with sherpa-onnx (k2-fsa); redistributed
+   unmodified.
+   Copyright the X-ASR authors.
+   Licensed under the Apache License, Version 2.0 (full text below).
 
-3. Noto Serif TC / JP / KR  (subset — bundled Ming/serif fonts for the
-   dedication verse)
-   Subsets of Google Noto Serif Traditional Chinese / Japanese / Korean,
-   produced with fonttools (pyftsubset); glyph outlines unmodified.
-   https://github.com/notofonts/noto-cjk   https://fonts.google.com/noto
-   Copyright The Noto Project Authors.
-   Licensed under the SIL Open Font License, Version 1.1
-   (full text at the end of this file).
+3. Bundled fonts — all under the SIL Open Font License, Version 1.1
+   (full text at the end of this file). None of these fonts declares a
+   Reserved Font Name, so the subset / instanced versions below keep their
+   original family names.
+
+   a. Klee One  (main handwriting-style UI font: records / chanting screens)
+      Copyright 2020 The Klee Project Authors.
+      Subset with fonttools (pyftsubset) to the glyphs actually used by the
+      app; glyph outlines unmodified.
+
+   b. LXGW WenKai TC  (Vietnamese primary UI font; Traditional-Chinese kai
+      fallback across the rest of the app)
+      Copyright 2022-2026 The LXGW WenKai Project Authors.
+      Bundled unmodified.
+
+   c. Noto Serif TC / JP / KR  (Ming/serif fonts for the dedication verse)
+      Copyright The Noto Project Authors.
+      TC: full ExtraLight, instanced from the Noto Serif TC variable font
+      with fonttools (varLib.instancer). JP / KR: subsets produced with
+      fonttools (pyftsubset). Glyph outlines unmodified.
 --------------------------------------------------------------------
 
 Apache License
@@ -232,9 +244,13 @@ Apache License
 FONTS (component 3) — SIL OPEN FONT LICENSE, Version 1.1 - 26 February 2007
 ====================================================================
 
-Copyright The Noto Project Authors (https://github.com/notofonts/noto-cjk).
-The fonts bundled in this app are subsets of Google Noto Serif TC/JP/KR,
-created with fonttools (pyftsubset); glyph outlines are unmodified.
+The SIL Open Font License 1.1 below covers all bundled fonts:
+  - Klee One             Copyright 2020 The Klee Project Authors
+  - LXGW WenKai TC       Copyright 2022-2026 The LXGW WenKai Project Authors
+  - Noto Serif TC/JP/KR  Copyright The Noto Project Authors
+None of these fonts declares a Reserved Font Name. Klee One is subset, and
+Noto Serif TC is instanced to ExtraLight, with fonttools; LXGW WenKai TC and
+the JP/KR subsets are bundled as-is. All glyph outlines are unmodified.
 
 PREAMBLE
 The goals of the Open Font License (OFL) are to stimulate worldwide
