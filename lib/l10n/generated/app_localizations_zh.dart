@@ -42,73 +42,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get noRecords => 'No records yet';
 
   @override
-  String get logIn => 'Log in';
-
-  @override
-  String get logOut => 'Log out';
-
-  @override
-  String get enableCloudSync => 'Enable Cloud Sync';
-
-  @override
-  String get account => 'Account';
-
-  @override
-  String get accountStatus => 'Sign-in status';
-
-  @override
-  String get statusSignedIn => 'Signed in';
-
-  @override
-  String get statusSignedOut => 'Not signed in';
-
-  @override
   String get language => 'Language';
 
   @override
-  String currentLanguage(String lang) {
-    return 'Current language: $lang';
-  }
-
-  @override
-  String get langZhHant => 'Chinese (Traditional)';
-
-  @override
-  String get langEn => 'English';
-
-  @override
-  String get langJa => '日本語';
-
-  @override
-  String get langKo => '한국어';
-
-  @override
-  String get langVi => 'Tiếng Việt';
-
-  @override
-  String get langDe => 'Deutsch';
-
-  @override
-  String get langFr => 'Français';
-
-  @override
-  String get feedback => 'Feedback';
-
-  @override
-  String get deleteAccount => 'Delete account';
-
-  @override
-  String get confirm => 'Confirm';
-
-  @override
   String get cancel => 'Cancel';
-
-  @override
-  String get done => 'Done';
-
-  @override
-  String get confirmDeleteAccount =>
-      'Are you sure you want to delete your account and data? This action cannot be undone.';
 
   @override
   String get pleaseWait => 'Please wait';
@@ -151,11 +88,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get downloadFailedTitle => 'Download Failed';
 
   @override
-  String downloadFailedBody(String error) {
-    return 'Failed to download the model: $error';
-  }
-
-  @override
   String get successTitle => 'Success';
 
   @override
@@ -172,9 +104,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get close => 'Close';
 
   @override
-  String get retryUnzip => 'Retry unzip';
-
-  @override
   String get downloadFailedShort =>
       'Model download failed. Please try again later.';
 
@@ -186,21 +115,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get retry => 'Retry';
 
   @override
-  String get feedbackOpenMailAppFailed => 'Could not open mail app';
-
-  @override
-  String get appName => 'Amitabha Buddha';
-
-  @override
-  String feedbackEmailSubject(String app) {
-    return '[$app] Feedback';
-  }
-
-  @override
-  String get feedbackEmailBody =>
-      'Issue/Suggestion:\n\n(You may attach a screenshot)';
-
-  @override
   String get micPermissionTitle => 'Microphone Permission Required';
 
   @override
@@ -209,9 +123,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get openSettings => 'Open Settings';
-
-  @override
-  String get microphonePermissionDenied => 'Microphone permission not granted.';
 
   @override
   String get bgScreenTitle => 'Chanting Background';
@@ -274,15 +185,7 @@ class AppLocalizationsZh extends AppLocalizations {
       'This background can\'t be downloaded right now. It may have been removed or replaced.';
 
   @override
-  String get bgSettingSubtitle => 'Customize chanting background';
-
-  @override
   String get langFollowSystem => 'Follow system';
-
-  @override
-  String langFollowSystemWith(String name) {
-    return 'Follow system ($name)';
-  }
 
   @override
   String get cancelling => 'Cancelling…';
@@ -328,25 +231,16 @@ class AppLocalizationsZh extends AppLocalizations {
   String get announcementsTitle => 'Announcements';
 
   @override
-  String get announcementsSubtitle => 'News & updates';
-
-  @override
   String get announcementsEmpty => 'No announcements yet';
 
   @override
   String get announcementsLinkCopied => 'Link copied';
 
   @override
-  String get rateTitle => 'Rate & Encourage';
-
-  @override
-  String get rateSubtitle => 'Leave a review on the store';
+  String get rateTitle => 'Support with a Review';
 
   @override
   String get shareTitle => 'Share App';
-
-  @override
-  String get shareSubtitle => 'Recommend to friends & family';
 
   @override
   String get shareSubject =>
@@ -398,78 +292,16 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get days => '天';
 
   @override
-  String get times => '次';
+  String get times => '聲';
 
   @override
   String get noRecords => '目前沒有記錄';
 
   @override
-  String get logIn => '登入';
-
-  @override
-  String get logOut => '登出';
-
-  @override
-  String get enableCloudSync => '開啟同步雲端';
-
-  @override
-  String get account => '帳號';
-
-  @override
-  String get accountStatus => '登入狀態';
-
-  @override
-  String get statusSignedIn => '已登入';
-
-  @override
-  String get statusSignedOut => '尚未登入';
-
-  @override
   String get language => '語言';
 
   @override
-  String currentLanguage(String lang) {
-    return '目前語言：$lang';
-  }
-
-  @override
-  String get langZhHant => '繁體中文';
-
-  @override
-  String get langEn => 'English';
-
-  @override
-  String get langJa => '日本語';
-
-  @override
-  String get langKo => '한국어';
-
-  @override
-  String get langVi => 'Tiếng Việt';
-
-  @override
-  String get langDe => 'Deutsch';
-
-  @override
-  String get langFr => 'Français';
-
-  @override
-  String get feedback => '意見回饋';
-
-  @override
-  String get deleteAccount => '刪除帳號';
-
-  @override
-  String get confirm => '確認';
-
-  @override
   String get cancel => '取消';
-
-  @override
-  String get done => '已完成';
-
-  @override
-  String get confirmDeleteAccount => '確定要刪除帳號與資料？此動作無法復原。';
 
   @override
   String get pleaseWait => '請稍候';
@@ -512,11 +344,6 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get downloadFailedTitle => '下載失敗';
 
   @override
-  String downloadFailedBody(String error) {
-    return '模型下載失敗：$error';
-  }
-
-  @override
   String get successTitle => '成功';
 
   @override
@@ -533,9 +360,6 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get close => '關閉';
 
   @override
-  String get retryUnzip => '重試解壓';
-
-  @override
   String get downloadFailedShort => '模型下載失敗，請稍後再試或重試。';
 
   @override
@@ -545,20 +369,6 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get retry => '重試';
 
   @override
-  String get feedbackOpenMailAppFailed => '無法開啟郵件 App';
-
-  @override
-  String get appName => '好好念佛';
-
-  @override
-  String feedbackEmailSubject(String app) {
-    return '[$app] 意見回饋';
-  }
-
-  @override
-  String get feedbackEmailBody => '描述問題/建議：\n\n（可附上截圖）';
-
-  @override
   String get micPermissionTitle => '需要麥克風權限';
 
   @override
@@ -566,9 +376,6 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get openSettings => '前往設定';
-
-  @override
-  String get microphonePermissionDenied => '未取得麥克風權限。';
 
   @override
   String get bgScreenTitle => '念佛背景';
@@ -627,15 +434,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get bgDownloadErrorNotAvailable => '此背景目前無法下載，可能已下架或更換。';
 
   @override
-  String get bgSettingSubtitle => '自訂頁面背景';
-
-  @override
   String get langFollowSystem => '跟隨系統';
-
-  @override
-  String langFollowSystemWith(String name) {
-    return '跟隨系統（$name）';
-  }
 
   @override
   String get cancelling => '取消中…';
@@ -678,9 +477,6 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get announcementsTitle => '公告';
 
   @override
-  String get announcementsSubtitle => '查看最新消息';
-
-  @override
   String get announcementsEmpty => '目前沒有公告';
 
   @override
@@ -690,13 +486,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get rateTitle => '留言鼓勵';
 
   @override
-  String get rateSubtitle => '到商店給予評分';
-
-  @override
   String get shareTitle => '分享 App';
-
-  @override
-  String get shareSubtitle => '推薦給親友';
 
   @override
   String get shareSubject => '好好念佛 — 免費的念佛計數 App';

@@ -181,137 +181,17 @@ abstract class AppLocalizations {
   /// **'No records yet'**
   String get noRecords;
 
-  /// General login label (use enableCloudSync for the cloud-sync CTA)
-  ///
-  /// In en, this message translates to:
-  /// **'Log in'**
-  String get logIn;
-
-  /// Sign-out button
-  ///
-  /// In en, this message translates to:
-  /// **'Log out'**
-  String get logOut;
-
-  /// Enable backup & sync (lazily initialize Firebase)
-  ///
-  /// In en, this message translates to:
-  /// **'Enable Cloud Sync'**
-  String get enableCloudSync;
-
-  /// Settings: account section title
-  ///
-  /// In en, this message translates to:
-  /// **'Account'**
-  String get account;
-
-  /// Settings: sign-in status label
-  ///
-  /// In en, this message translates to:
-  /// **'Sign-in status'**
-  String get accountStatus;
-
-  /// Signed-in state label
-  ///
-  /// In en, this message translates to:
-  /// **'Signed in'**
-  String get statusSignedIn;
-
-  /// Signed-out state label
-  ///
-  /// In en, this message translates to:
-  /// **'Not signed in'**
-  String get statusSignedOut;
-
   /// Settings: language switch
   ///
   /// In en, this message translates to:
   /// **'Language'**
   String get language;
 
-  /// Display the currently active language name
-  ///
-  /// In en, this message translates to:
-  /// **'Current language: {lang}'**
-  String currentLanguage(String lang);
-
-  /// Language option: Traditional Chinese (endonym, not translated)
-  ///
-  /// In en, this message translates to:
-  /// **'Chinese (Traditional)'**
-  String get langZhHant;
-
-  /// Language option: English (endonym, not translated)
-  ///
-  /// In en, this message translates to:
-  /// **'English'**
-  String get langEn;
-
-  /// Language option: Japanese (endonym, not translated)
-  ///
-  /// In en, this message translates to:
-  /// **'日本語'**
-  String get langJa;
-
-  /// Language option: Korean (endonym, not translated)
-  ///
-  /// In en, this message translates to:
-  /// **'한국어'**
-  String get langKo;
-
-  /// Language option: Vietnamese (endonym, not translated)
-  ///
-  /// In en, this message translates to:
-  /// **'Tiếng Việt'**
-  String get langVi;
-
-  /// Language option: German (endonym, not translated)
-  ///
-  /// In en, this message translates to:
-  /// **'Deutsch'**
-  String get langDe;
-
-  /// Language option: French (endonym, not translated)
-  ///
-  /// In en, this message translates to:
-  /// **'Français'**
-  String get langFr;
-
-  /// Settings: feedback item
-  ///
-  /// In en, this message translates to:
-  /// **'Feedback'**
-  String get feedback;
-
-  /// Settings: delete account
-  ///
-  /// In en, this message translates to:
-  /// **'Delete account'**
-  String get deleteAccount;
-
-  /// Dialog title: confirm
-  ///
-  /// In en, this message translates to:
-  /// **'Confirm'**
-  String get confirm;
-
   /// Dialog button: cancel
   ///
   /// In en, this message translates to:
   /// **'Cancel'**
   String get cancel;
-
-  /// Generic completion toast
-  ///
-  /// In en, this message translates to:
-  /// **'Done'**
-  String get done;
-
-  /// Delete account confirmation message
-  ///
-  /// In en, this message translates to:
-  /// **'Are you sure you want to delete your account and data? This action cannot be undone.'**
-  String get confirmDeleteAccount;
 
   /// No description provided for @pleaseWait.
   ///
@@ -385,12 +265,6 @@ abstract class AppLocalizations {
   /// **'Download Failed'**
   String get downloadFailedTitle;
 
-  /// No description provided for @downloadFailedBody.
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to download the model: {error}'**
-  String downloadFailedBody(String error);
-
   /// No description provided for @successTitle.
   ///
   /// In en, this message translates to:
@@ -421,12 +295,6 @@ abstract class AppLocalizations {
   /// **'Close'**
   String get close;
 
-  /// No description provided for @retryUnzip.
-  ///
-  /// In en, this message translates to:
-  /// **'Retry unzip'**
-  String get retryUnzip;
-
   /// No description provided for @downloadFailedShort.
   ///
   /// In en, this message translates to:
@@ -445,30 +313,6 @@ abstract class AppLocalizations {
   /// **'Retry'**
   String get retry;
 
-  /// No description provided for @feedbackOpenMailAppFailed.
-  ///
-  /// In en, this message translates to:
-  /// **'Could not open mail app'**
-  String get feedbackOpenMailAppFailed;
-
-  /// No description provided for @appName.
-  ///
-  /// In en, this message translates to:
-  /// **'Amitabha Buddha'**
-  String get appName;
-
-  /// Subject for user feedback email to developer
-  ///
-  /// In en, this message translates to:
-  /// **'[{app}] Feedback'**
-  String feedbackEmailSubject(String app);
-
-  /// No description provided for @feedbackEmailBody.
-  ///
-  /// In en, this message translates to:
-  /// **'Issue/Suggestion:\n\n(You may attach a screenshot)'**
-  String get feedbackEmailBody;
-
   /// No description provided for @micPermissionTitle.
   ///
   /// In en, this message translates to:
@@ -486,12 +330,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open Settings'**
   String get openSettings;
-
-  /// No description provided for @microphonePermissionDenied.
-  ///
-  /// In en, this message translates to:
-  /// **'Microphone permission not granted.'**
-  String get microphonePermissionDenied;
 
   /// No description provided for @bgScreenTitle.
   ///
@@ -595,23 +433,11 @@ abstract class AppLocalizations {
   /// **'This background can\'t be downloaded right now. It may have been removed or replaced.'**
   String get bgDownloadErrorNotAvailable;
 
-  /// No description provided for @bgSettingSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Customize chanting background'**
-  String get bgSettingSubtitle;
-
   /// No description provided for @langFollowSystem.
   ///
   /// In en, this message translates to:
   /// **'Follow system'**
   String get langFollowSystem;
-
-  /// No description provided for @langFollowSystemWith.
-  ///
-  /// In en, this message translates to:
-  /// **'Follow system ({name})'**
-  String langFollowSystemWith(String name);
 
   /// No description provided for @cancelling.
   ///
@@ -691,12 +517,6 @@ abstract class AppLocalizations {
   /// **'Announcements'**
   String get announcementsTitle;
 
-  /// Settings subtitle under the announcements entry
-  ///
-  /// In en, this message translates to:
-  /// **'News & updates'**
-  String get announcementsSubtitle;
-
   /// Shown when there are no announcements or content is unavailable
   ///
   /// In en, this message translates to:
@@ -712,26 +532,14 @@ abstract class AppLocalizations {
   /// Settings entry: opens the app store rating/review page
   ///
   /// In en, this message translates to:
-  /// **'Rate & Encourage'**
+  /// **'Support with a Review'**
   String get rateTitle;
-
-  /// Settings subtitle under the rate entry
-  ///
-  /// In en, this message translates to:
-  /// **'Leave a review on the store'**
-  String get rateSubtitle;
 
   /// Settings entry: opens the system share sheet
   ///
   /// In en, this message translates to:
   /// **'Share App'**
   String get shareTitle;
-
-  /// Settings subtitle under the share entry
-  ///
-  /// In en, this message translates to:
-  /// **'Recommend to friends & family'**
-  String get shareSubtitle;
 
   /// Subject line used when the share is sent as an email
   ///

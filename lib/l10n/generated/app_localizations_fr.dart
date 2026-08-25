@@ -42,73 +42,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get noRecords => 'Aucun enregistrement';
 
   @override
-  String get logIn => 'Connexion';
-
-  @override
-  String get logOut => 'Déconnexion';
-
-  @override
-  String get enableCloudSync => 'Activer la synchro cloud';
-
-  @override
-  String get account => 'Compte';
-
-  @override
-  String get accountStatus => 'Statut de connexion';
-
-  @override
-  String get statusSignedIn => 'Connecté';
-
-  @override
-  String get statusSignedOut => 'Non connecté';
-
-  @override
   String get language => 'Langue';
 
   @override
-  String currentLanguage(String lang) {
-    return 'Langue actuelle : $lang';
-  }
-
-  @override
-  String get langZhHant => '繁體中文';
-
-  @override
-  String get langEn => 'English';
-
-  @override
-  String get langJa => '日本語';
-
-  @override
-  String get langKo => '한국어';
-
-  @override
-  String get langVi => 'Tiếng Việt';
-
-  @override
-  String get langDe => 'Deutsch';
-
-  @override
-  String get langFr => 'Français';
-
-  @override
-  String get feedback => 'Commentaires';
-
-  @override
-  String get deleteAccount => 'Supprimer le compte';
-
-  @override
-  String get confirm => 'Confirmer';
-
-  @override
   String get cancel => 'Annuler';
-
-  @override
-  String get done => 'Terminé';
-
-  @override
-  String get confirmDeleteAccount =>
-      'Voulez-vous vraiment supprimer votre compte et vos données ? Cette action est irréversible.';
 
   @override
   String get pleaseWait => 'Veuillez patienter';
@@ -151,11 +88,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get downloadFailedTitle => 'Échec du téléchargement';
 
   @override
-  String downloadFailedBody(String error) {
-    return 'Échec du téléchargement du modèle : $error';
-  }
-
-  @override
   String get successTitle => 'Réussi';
 
   @override
@@ -172,9 +104,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get close => 'Fermer';
 
   @override
-  String get retryUnzip => 'Réessayer la décompression';
-
-  @override
   String get downloadFailedShort =>
       'Échec du téléchargement du modèle. Veuillez réessayer plus tard.';
 
@@ -186,22 +115,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get retry => 'Réessayer';
 
   @override
-  String get feedbackOpenMailAppFailed =>
-      'Impossible d\'ouvrir l\'application e-mail';
-
-  @override
-  String get appName => 'Amitabha Buddha';
-
-  @override
-  String feedbackEmailSubject(String app) {
-    return '[$app] Commentaires';
-  }
-
-  @override
-  String get feedbackEmailBody =>
-      'Problème/Suggestion :\n\n(Vous pouvez joindre une capture d\'écran)';
-
-  @override
   String get micPermissionTitle => 'Autorisation du micro requise';
 
   @override
@@ -210,10 +123,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get openSettings => 'Ouvrir les réglages';
-
-  @override
-  String get microphonePermissionDenied =>
-      'Autorisation du micro non accordée.';
 
   @override
   String get bgScreenTitle => 'Arrière-plan de récitation';
@@ -276,15 +185,7 @@ class AppLocalizationsFr extends AppLocalizations {
       'Cet arrière-plan ne peut pas être téléchargé pour le moment. Il a peut-être été retiré ou remplacé.';
 
   @override
-  String get bgSettingSubtitle => 'Personnaliser l\'arrière-plan de récitation';
-
-  @override
   String get langFollowSystem => 'Suivre le système';
-
-  @override
-  String langFollowSystemWith(String name) {
-    return 'Suivre le système ($name)';
-  }
 
   @override
   String get cancelling => 'Annulation…';
@@ -332,25 +233,16 @@ class AppLocalizationsFr extends AppLocalizations {
   String get announcementsTitle => 'Annonces';
 
   @override
-  String get announcementsSubtitle => 'Voir les dernières nouvelles';
-
-  @override
   String get announcementsEmpty => 'Aucune annonce pour le moment';
 
   @override
   String get announcementsLinkCopied => 'Lien copié';
 
   @override
-  String get rateTitle => 'Noter & encourager';
-
-  @override
-  String get rateSubtitle => 'Laisser un avis sur la boutique';
+  String get rateTitle => 'Encourager avec un avis';
 
   @override
   String get shareTitle => 'Partager l\'appli';
-
-  @override
-  String get shareSubtitle => 'Recommander à vos proches';
 
   @override
   String get shareSubject =>

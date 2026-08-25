@@ -44,99 +44,13 @@
   "@noRecords": {
     "description": "Records page empty state"
   },
-  "logIn": "Đăng nhập",
-  "@logIn": {
-    "description": "General login label (use enableCloudSync for the cloud-sync CTA)"
-  },
-  "logOut": "Đăng xuất",
-  "@logOut": {
-    "description": "Sign-out button"
-  },
-  "enableCloudSync": "Bật đồng bộ đám mây",
-  "@enableCloudSync": {
-    "description": "Enable backup & sync (lazily initialize Firebase)"
-  },
-  "account": "Tài khoản",
-  "@account": {
-    "description": "Settings: account section title"
-  },
-  "accountStatus": "Trạng thái đăng nhập",
-  "@accountStatus": {
-    "description": "Settings: sign-in status label"
-  },
-  "statusSignedIn": "Đã đăng nhập",
-  "@statusSignedIn": {
-    "description": "Signed-in state label"
-  },
-  "statusSignedOut": "Chưa đăng nhập",
-  "@statusSignedOut": {
-    "description": "Signed-out state label"
-  },
   "language": "Ngôn ngữ",
   "@language": {
     "description": "Settings: language switch"
   },
-  "currentLanguage": "Ngôn ngữ hiện tại: {lang}",
-  "@currentLanguage": {
-    "description": "Display the currently active language name",
-    "placeholders": {
-      "lang": {
-        "type": "String",
-        "example": "English"
-      }
-    }
-  },
-  "langZhHant": "繁體中文",
-  "@langZhHant": {
-    "description": "Language option: Traditional Chinese (endonym, not translated)"
-  },
-  "langEn": "English",
-  "@langEn": {
-    "description": "Language option: English (endonym, not translated)"
-  },
-  "langJa": "日本語",
-  "@langJa": {
-    "description": "Language option: Japanese (endonym, not translated)"
-  },
-  "langKo": "한국어",
-  "@langKo": {
-    "description": "Language option: Korean (endonym, not translated)"
-  },
-  "langVi": "Tiếng Việt",
-  "@langVi": {
-    "description": "Language option: Vietnamese (endonym, not translated)"
-  },
-  "langDe": "Deutsch",
-  "@langDe": {
-    "description": "Language option: German (endonym, not translated)"
-  },
-  "langFr": "Français",
-  "@langFr": {
-    "description": "Language option: French (endonym, not translated)"
-  },
-  "feedback": "Phản hồi",
-  "@feedback": {
-    "description": "Settings: feedback item"
-  },
-  "deleteAccount": "Xóa tài khoản",
-  "@deleteAccount": {
-    "description": "Settings: delete account"
-  },
-  "confirm": "Xác nhận",
-  "@confirm": {
-    "description": "Dialog title: confirm"
-  },
   "cancel": "Hủy",
   "@cancel": {
     "description": "Dialog button: cancel"
-  },
-  "done": "Xong",
-  "@done": {
-    "description": "Generic completion toast"
-  },
-  "confirmDeleteAccount": "Bạn có chắc muốn xóa tài khoản và dữ liệu? Hành động này không thể hoàn tác.",
-  "@confirmDeleteAccount": {
-    "description": "Delete account confirmation message"
   },
   "pleaseWait": "Vui lòng đợi",
   "downloading": "Đang tải xuống",
@@ -165,40 +79,17 @@
   },
   "download": "Tải xuống",
   "downloadFailedTitle": "Tải xuống thất bại",
-  "downloadFailedBody": "Tải mô hình thất bại: {error}",
-  "@downloadFailedBody": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
   "successTitle": "Thành công",
   "successBody": "Mô hình đã được cài đặt thành công.",
   "unzipFailedTitle": "Giải nén thất bại",
   "unzipFailedLowSpaceBody": "Giải nén thất bại do không đủ dung lượng lưu trữ. Vui lòng giải phóng dung lượng rồi nhấn \"Giải nén lại\". Tệp đã tải xuống vẫn được giữ nguyên nên không cần tải lại.",
   "close": "Đóng",
-  "retryUnzip": "Thử giải nén lại",
   "downloadFailedShort": "Tải mô hình thất bại. Vui lòng thử lại sau.",
   "modelPrepareFailed": "Cài đặt mô hình nhận dạng giọng nói thất bại. Vui lòng đảm bảo thiết bị còn đủ dung lượng lưu trữ rồi thử lại.",
   "retry": "Thử lại",
-  "feedbackOpenMailAppFailed": "Không thể mở ứng dụng email",
-  "appName": "Chuyên Tâm Niệm Phật",
-  "feedbackEmailSubject": "[{app}] Phản hồi",
-  "@feedbackEmailSubject": {
-    "description": "Subject for user feedback email to developer",
-    "placeholders": {
-      "app": {
-        "type": "String",
-        "example": "Amitabha"
-      }
-    }
-  },
-  "feedbackEmailBody": "Vấn đề/Góp ý:\n\n(Bạn có thể đính kèm ảnh chụp màn hình)",
   "micPermissionTitle": "Cần quyền micrô",
   "micPermissionRationale": "Để đếm số lần niệm Phật, vui lòng bật Micrô trong Cài đặt hệ thống > Niệm Phật.",
   "openSettings": "Mở Cài đặt",
-  "microphonePermissionDenied": "Chưa được cấp quyền micrô.",
   "bgScreenTitle": "Hình nền niệm Phật",
   "bgUse": "Dùng",
   "bgUpdate": "Cập nhật",
@@ -230,16 +121,7 @@
   "bgDownloadErrorNetwork": "Không có kết nối internet. Không thể tải hình nền.",
   "bgDownloadErrorGeneric": "Tải xuống thất bại. Vui lòng thử lại sau.",
   "bgDownloadErrorNotAvailable": "Hiện không thể tải hình nền này. Có thể đã bị gỡ hoặc thay thế.",
-  "bgSettingSubtitle": "Tùy chỉnh hình nền niệm Phật",
   "langFollowSystem": "Theo hệ thống",
-  "langFollowSystemWith": "Theo hệ thống ({name})",
-  "@langFollowSystemWith": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
   "cancelling": "Đang hủy…",
   "networkErrorBody": "Kết nối mạng gặp sự cố. Vui lòng kiểm tra kết nối rồi thử lại.",
   "timeoutErrorBody": "Hết thời gian kết nối. Mạng có thể không ổn định hoặc máy chủ tạm thời không phản hồi. Vui lòng thử lại sau.",
@@ -253,13 +135,10 @@
   "dedicationButton": "Hồi hướng",
   "dedicationEdit": "Chỉnh sửa kệ hồi hướng",
   "announcementsTitle": "Thông báo",
-  "announcementsSubtitle": "Xem tin mới nhất",
   "announcementsEmpty": "Chưa có thông báo nào",
   "announcementsLinkCopied": "Đã sao chép liên kết",
-  "rateTitle": "Đánh giá & động viên",
-  "rateSubtitle": "Để lại đánh giá trên cửa hàng",
+  "rateTitle": "Để lại lời động viên",
   "shareTitle": "Chia sẻ ứng dụng",
-  "shareSubtitle": "Giới thiệu cho người thân & bạn bè",
   "shareSubject": "Chuyên Tâm Niệm Phật — Ứng dụng đếm niệm Phật miễn phí",
   "shareMessage": "\"Chuyên Tâm Niệm Phật\" là ứng dụng đếm niệm Phật miễn phí.\nỨng dụng lắng nghe tiếng niệm Phật của bạn và tự động đếm số câu.\nChỉ cần chuyên tâm niệm Phật — việc đếm cứ để ứng dụng lo!",
   "storeActionFailed": "Không thể mở cửa hàng, vui lòng thử lại sau."

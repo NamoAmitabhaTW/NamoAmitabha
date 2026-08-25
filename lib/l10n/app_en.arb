@@ -44,99 +44,13 @@
   "@noRecords": {
     "description": "Records page empty state"
   },
-  "logIn": "Log in",
-  "@logIn": {
-    "description": "General login label (use enableCloudSync for the cloud-sync CTA)"
-  },
-  "logOut": "Log out",
-  "@logOut": {
-    "description": "Sign-out button"
-  },
-  "enableCloudSync": "Enable Cloud Sync",
-  "@enableCloudSync": {
-    "description": "Enable backup & sync (lazily initialize Firebase)"
-  },
-  "account": "Account",
-  "@account": {
-    "description": "Settings: account section title"
-  },
-  "accountStatus": "Sign-in status",
-  "@accountStatus": {
-    "description": "Settings: sign-in status label"
-  },
-  "statusSignedIn": "Signed in",
-  "@statusSignedIn": {
-    "description": "Signed-in state label"
-  },
-  "statusSignedOut": "Not signed in",
-  "@statusSignedOut": {
-    "description": "Signed-out state label"
-  },
   "language": "Language",
   "@language": {
     "description": "Settings: language switch"
   },
-  "currentLanguage": "Current language: {lang}",
-  "@currentLanguage": {
-    "description": "Display the currently active language name",
-    "placeholders": {
-      "lang": {
-        "type": "String",
-        "example": "English"
-      }
-    }
-  },
-  "langZhHant": "Chinese (Traditional)",
-  "@langZhHant": {
-    "description": "Language option: Traditional Chinese (endonym, not translated)"
-  },
-  "langEn": "English",
-  "@langEn": {
-    "description": "Language option: English (endonym, not translated)"
-  },
-  "langJa": "日本語",
-  "@langJa": {
-    "description": "Language option: Japanese (endonym, not translated)"
-  },
-  "langKo": "한국어",
-  "@langKo": {
-    "description": "Language option: Korean (endonym, not translated)"
-  },
-  "langVi": "Tiếng Việt",
-  "@langVi": {
-    "description": "Language option: Vietnamese (endonym, not translated)"
-  },
-  "langDe": "Deutsch",
-  "@langDe": {
-    "description": "Language option: German (endonym, not translated)"
-  },
-  "langFr": "Français",
-  "@langFr": {
-    "description": "Language option: French (endonym, not translated)"
-  },
-  "feedback": "Feedback",
-  "@feedback": {
-    "description": "Settings: feedback item"
-  },
-  "deleteAccount": "Delete account",
-  "@deleteAccount": {
-    "description": "Settings: delete account"
-  },
-  "confirm": "Confirm",
-  "@confirm": {
-    "description": "Dialog title: confirm"
-  },
   "cancel": "Cancel",
   "@cancel": {
     "description": "Dialog button: cancel"
-  },
-  "done": "Done",
-  "@done": {
-    "description": "Generic completion toast"
-  },
-  "confirmDeleteAccount": "Are you sure you want to delete your account and data? This action cannot be undone.",
-  "@confirmDeleteAccount": {
-    "description": "Delete account confirmation message"
   },
   "pleaseWait": "Please wait",
   "downloading": "Downloading",
@@ -165,40 +79,17 @@
   },
   "download": "Download",
   "downloadFailedTitle": "Download Failed",
-  "downloadFailedBody": "Failed to download the model: {error}",
-  "@downloadFailedBody": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
   "successTitle": "Success",
   "successBody": "The model has been installed successfully.",
   "unzipFailedTitle": "Unzip failed",
   "unzipFailedLowSpaceBody": "Extraction failed due to insufficient storage. Please free up space, then tap \"Extract Again\". The downloaded file is kept, so no re-download is needed.",
   "close": "Close",
-  "retryUnzip": "Retry unzip",
   "downloadFailedShort": "Model download failed. Please try again later.",
   "modelPrepareFailed": "Speech recognition model installation failed. Please make sure your device has enough storage space and try again.",
   "retry": "Retry",
-  "feedbackOpenMailAppFailed": "Could not open mail app",
-  "appName": "Amitabha Buddha",
-  "feedbackEmailSubject": "[{app}] Feedback",
-  "@feedbackEmailSubject": {
-    "description": "Subject for user feedback email to developer",
-    "placeholders": {
-      "app": {
-        "type": "String",
-        "example": "Amitabha"
-      }
-    }
-  },
-  "feedbackEmailBody": "Issue/Suggestion:\n\n(You may attach a screenshot)",
   "micPermissionTitle": "Microphone Permission Required",
   "micPermissionRationale": "To count chants, please enable Microphone in System Settings > Amitabha.",
   "openSettings": "Open Settings",
-  "microphonePermissionDenied": "Microphone permission not granted.",
   "bgScreenTitle": "Chanting Background",
   "bgUse": "Use",
   "bgUpdate": "Update",
@@ -230,16 +121,7 @@
   "bgDownloadErrorNetwork": "No internet connection. Can't download the background.",
   "bgDownloadErrorGeneric": "Download failed. Please try again later.",
   "bgDownloadErrorNotAvailable": "This background can't be downloaded right now. It may have been removed or replaced.",
-  "bgSettingSubtitle": "Customize chanting background",
   "langFollowSystem": "Follow system",
-  "langFollowSystemWith": "Follow system ({name})",
-  "@langFollowSystemWith": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
   "cancelling": "Cancelling…",
   "networkErrorBody": "Network connection error. Please check your connection and try again.",
   "timeoutErrorBody": "Connection timed out. Your network may be unstable or the server is temporarily unresponsive. Please try again later.",
@@ -265,10 +147,6 @@
   "@announcementsTitle": {
     "description": "Settings entry and screen title for announcements"
   },
-  "announcementsSubtitle": "News & updates",
-  "@announcementsSubtitle": {
-    "description": "Settings subtitle under the announcements entry"
-  },
   "announcementsEmpty": "No announcements yet",
   "@announcementsEmpty": {
     "description": "Shown when there are no announcements or content is unavailable"
@@ -277,21 +155,13 @@
   "@announcementsLinkCopied": {
     "description": "Snackbar shown after tapping a link in an announcement"
   },
-  "rateTitle": "Rate & Encourage",
+  "rateTitle": "Support with a Review",
   "@rateTitle": {
     "description": "Settings entry: opens the app store rating/review page"
-  },
-  "rateSubtitle": "Leave a review on the store",
-  "@rateSubtitle": {
-    "description": "Settings subtitle under the rate entry"
   },
   "shareTitle": "Share App",
   "@shareTitle": {
     "description": "Settings entry: opens the system share sheet"
-  },
-  "shareSubtitle": "Recommend to friends & family",
-  "@shareSubtitle": {
-    "description": "Settings subtitle under the share entry"
   },
   "shareSubject": "Amitabha Buddha — a free Buddha-name chanting counter",
   "@shareSubject": {
