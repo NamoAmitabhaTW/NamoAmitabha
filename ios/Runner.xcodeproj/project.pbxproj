@@ -282,6 +282,7 @@
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				37DC1E328A7575569C00A8D1 /* [CP] Embed Pods Frameworks */,
 				076465B2D1921B19B1839368 /* [CP] Copy Pods Resources */,
+				24F5B2D285C2F80ABE58F3AB /* Inject Debug Network Keys */,
 			);
 			buildRules = (
 			);
@@ -372,6 +373,22 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		24F5B2D285C2F80ABE58F3AB /* Inject Debug Network Keys */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Inject Debug Network Keys";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Scripts/inject_debug_network_keys.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		076465B2D1921B19B1839368 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
