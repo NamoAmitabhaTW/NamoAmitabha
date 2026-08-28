@@ -141,5 +141,10 @@
   "shareTitle": "Partager l'appli",
   "shareSubject": "Amitabha Buddha — compteur gratuit de récitation du nom du Bouddha",
   "shareMessage": "« Amitabha Buddha » est un compteur gratuit de récitation du nom du Bouddha.\nL'appli écoute vos récitations et les compte automatiquement.\nConcentrez-vous sur la récitation — laissez « Amitabha Buddha » compter pour vous !",
-  "storeActionFailed": "Impossible d'ouvrir la boutique, veuillez réessayer plus tard."
+  "storeActionFailed": "Impossible d'ouvrir la boutique, veuillez réessayer plus tard.",
+  "appDisplayName": "Amitabha Buddha",
+  "updateTitle": "Une nouvelle version est sortie",
+  "updateBody": "Mettez à jour pour améliorer «\u00A0Amitabha\u00A0Buddha\u00A0».",
+  "updateButton": "Mettre à jour",
+  "updateLater": "Plus tard"
 }

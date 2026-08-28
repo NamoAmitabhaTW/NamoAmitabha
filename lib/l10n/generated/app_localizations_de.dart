@@ -255,4 +255,20 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get storeActionFailed =>
       'Store konnte nicht geöffnet werden. Bitte versuche es später erneut.';
+
+  @override
+  String get appDisplayName => 'Amitabha Buddha';
+
+  @override
+  String get updateTitle => 'Eine neue Version ist erschienen';
+
+  @override
+  String get updateBody =>
+      'Aktualisiere die App, damit „Amitabha Buddha“ immer besser wird.';
+
+  @override
+  String get updateButton => 'Jetzt aktualisieren';
+
+  @override
+  String get updateLater => 'Später';
 }

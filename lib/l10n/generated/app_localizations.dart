@@ -558,6 +558,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Couldn\'t open the store, please try again later.'**
   String get storeActionFailed;
+
+  /// The app's display name as it appears on the device home screen
+  ///
+  /// In en, this message translates to:
+  /// **'Amitabha Buddha'**
+  String get appDisplayName;
+
+  /// Headline on the full-screen update prompt
+  ///
+  /// In en, this message translates to:
+  /// **'A New Version Is Here'**
+  String get updateTitle;
+
+  /// Body text on the full-screen update prompt
+  ///
+  /// In en, this message translates to:
+  /// **'Please update the Amitabha Buddha app and help it keep getting better.'**
+  String get updateBody;
+
+  /// Primary button that opens the app's store listing
+  ///
+  /// In en, this message translates to:
+  /// **'Update Now'**
+  String get updateButton;
+
+  /// Tooltip and accessibility label for the close (X) button
+  ///
+  /// In en, this message translates to:
+  /// **'Maybe later'**
+  String get updateLater;
 }
 
 class _AppLocalizationsDelegate

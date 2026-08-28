@@ -255,4 +255,19 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get storeActionFailed =>
       'Impossible d\'ouvrir la boutique, veuillez réessayer plus tard.';
+
+  @override
+  String get appDisplayName => 'Amitabha Buddha';
+
+  @override
+  String get updateTitle => 'Une nouvelle version est sortie';
+
+  @override
+  String get updateBody => 'Mettez à jour pour améliorer « Amitabha Buddha ».';
+
+  @override
+  String get updateButton => 'Mettre à jour';
+
+  @override
+  String get updateLater => 'Plus tard';
 }

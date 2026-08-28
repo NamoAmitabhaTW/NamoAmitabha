@@ -141,5 +141,10 @@
   "shareTitle": "Chia sẻ ứng dụng",
   "shareSubject": "Chuyên Tâm Niệm Phật — Ứng dụng đếm niệm Phật miễn phí",
   "shareMessage": "\"Chuyên Tâm Niệm Phật\" là ứng dụng đếm niệm Phật miễn phí.\nỨng dụng lắng nghe tiếng niệm Phật của bạn và tự động đếm số câu.\nChỉ cần chuyên tâm niệm Phật — việc đếm cứ để ứng dụng lo!",
-  "storeActionFailed": "Không thể mở cửa hàng, vui lòng thử lại sau."
+  "storeActionFailed": "Không thể mở cửa hàng, vui lòng thử lại sau.",
+  "appDisplayName": "Chuyên Tâm Niệm Phật",
+  "updateTitle": "Đã phát hành phiên bản mới",
+  "updateBody": "Cập nhật để \"Chuyên\u00A0Tâm\u00A0Niệm\u00A0Phật\" ngày càng tốt hơn.",
+  "updateButton": "Cập nhật ngay",
+  "updateLater": "Để sau"
 }

@@ -55,6 +55,9 @@ dependencies:
   in_app_review: ^2.0.10
   share_plus: ^10.1.4
 
+  package_info_plus: ^9.0.1
+  url_launcher: ^6.3.2
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   
@@ -136,6 +139,7 @@ flutter:
     - assets/images/settings_titles/fr/
     - assets/gifs/lotus_flower.webp
     - assets/images/lotus_divider.png
+    - assets/images/app_icon.png
     - assets/sherpa-onnx/encoder.int8.onnx
     - assets/sherpa-onnx/decoder.onnx
     - assets/sherpa-onnx/joiner.int8.onnx

@@ -73,7 +73,12 @@
     "shareTitle",
     "shareSubject",
     "shareMessage",
-    "storeActionFailed"
+    "storeActionFailed",
+    "appDisplayName",
+    "updateTitle",
+    "updateBody",
+    "updateButton",
+    "updateLater"
   ],
 
   "zh_Hant": [
@@ -150,6 +155,11 @@
     "shareTitle",
     "shareSubject",
     "shareMessage",
-    "storeActionFailed"
+    "storeActionFailed",
+    "appDisplayName",
+    "updateTitle",
+    "updateBody",
+    "updateButton",
+    "updateLater"
   ]
 }
