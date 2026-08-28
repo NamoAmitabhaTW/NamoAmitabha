@@ -19,13 +19,6 @@ class AnnouncementController extends ChangeNotifier {
 
   final Map<String, Future<String?>> _bodyFutures = {};
 
-  bool get hasUnread {
-    for (final item in items) {
-      if (item.version > (_read[item.id] ?? 0)) return true;
-    }
-    return false;
-  }
-
   Future<void> load() async {
     isLoading = true;
     _read = await AnnouncementPrefs.loadRead();

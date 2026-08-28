@@ -141,5 +141,10 @@
   "shareTitle": "App teilen",
   "shareSubject": "Amitabha Buddha — kostenloser Zähler für die Buddha-Anrufung",
   "shareMessage": "„Amitabha Buddha“ ist ein kostenloser Zähler für die Buddha-Anrufung.\nDie App hört deine Rezitationen und zählt sie automatisch.\nKonzentriere dich ganz aufs Rezitieren – das Zählen übernimmt „Amitabha Buddha“!",
-  "storeActionFailed": "Store konnte nicht geöffnet werden. Bitte versuche es später erneut."
+  "storeActionFailed": "Store konnte nicht geöffnet werden. Bitte versuche es später erneut.",
+  "appDisplayName": "Amitabha Buddha",
+  "updateTitle": "Eine neue Version ist erschienen",
+  "updateBody": "Aktualisiere die App, damit „Amitabha\u00A0Buddha“ immer besser wird.",
+  "updateButton": "Jetzt aktualisieren",
+  "updateLater": "Später"
 }

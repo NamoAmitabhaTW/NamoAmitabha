@@ -2,6 +2,8 @@
 import 'package:amitabha/core/localization/locale_controller.dart';
 import 'package:amitabha/core/theme/brand.dart';
 import 'package:amitabha/features/announcements/announcement_controller.dart';
+import 'package:amitabha/features/app_update/app_update_controller.dart';
+import 'package:amitabha/features/app_update/app_update_gate.dart';
 import 'package:amitabha/features/asr/application/asr_session_controller.dart';
 import 'package:amitabha/features/asr/application/sherpa_mic_source.dart';
 import 'package:amitabha/features/background/background_controller.dart';
@@ -37,6 +39,7 @@ class App extends StatelessWidget {
           create: (_) => AnnouncementController()..load(),
           lazy: false,
         ),
+        Provider(create: (_) => AppUpdateController()),
       ],
       child: Builder(
         builder: (context) {
@@ -73,7 +76,7 @@ class App extends StatelessWidget {
             theme: themeData,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
-            home: const HomeShell(),
+            home: const AppUpdateGate(child: HomeShell()),
             debugShowCheckedModeBanner: false,
           );
         },

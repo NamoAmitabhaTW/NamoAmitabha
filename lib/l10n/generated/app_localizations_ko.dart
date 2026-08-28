@@ -245,4 +245,19 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get storeActionFailed => '스토어를 열 수 없습니다. 잠시 후 다시 시도해 주세요.';
+
+  @override
+  String get appDisplayName => '하루 염불';
+
+  @override
+  String get updateTitle => '새로운 버전이 출시되었습니다';
+
+  @override
+  String get updateBody => '앱을 업데이트하여 \'하루 염불\'을\n함께 더 좋게 만들어 주세요.';
+
+  @override
+  String get updateButton => '업데이트하기';
+
+  @override
+  String get updateLater => '나중에';
 }

@@ -253,6 +253,22 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String get storeActionFailed =>
       'Couldn\'t open the store, please try again later.';
+
+  @override
+  String get appDisplayName => 'Amitabha Buddha';
+
+  @override
+  String get updateTitle => 'A New Version Is Here';
+
+  @override
+  String get updateBody =>
+      'Please update the Amitabha Buddha app and help it keep getting better.';
+
+  @override
+  String get updateButton => 'Update Now';
+
+  @override
+  String get updateLater => 'Maybe later';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -497,4 +513,19 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get storeActionFailed => '無法開啟商店，請稍後再試。';
+
+  @override
+  String get appDisplayName => '好好念佛';
+
+  @override
+  String get updateTitle => '新版本已發布';
+
+  @override
+  String get updateBody => '請更新 App，\n讓《好好念佛》一起變更好。';
+
+  @override
+  String get updateButton => '前往更新';
+
+  @override
+  String get updateLater => '稍後再說';
 }

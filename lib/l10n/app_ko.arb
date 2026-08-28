@@ -141,5 +141,10 @@
   "shareTitle": "앱 공유",
   "shareSubject": "하루 염불 — 무료 염불 카운터 앱",
   "shareMessage": "'하루 염불'은 무료 염불 카운터 앱입니다.\n염불 소리를 듣고 횟수를 자동으로 세어 줍니다.\n염불에만 집중하세요. 세는 일은 '하루 염불'에 맡기세요!",
-  "storeActionFailed": "스토어를 열 수 없습니다. 잠시 후 다시 시도해 주세요."
+  "storeActionFailed": "스토어를 열 수 없습니다. 잠시 후 다시 시도해 주세요.",
+  "appDisplayName": "하루 염불",
+  "updateTitle": "새로운 버전이 출시되었습니다",
+  "updateBody": "앱을 업데이트하여 '하루 염불'을\n함께 더 좋게 만들어 주세요.",
+  "updateButton": "업데이트하기",
+  "updateLater": "나중에"
 }

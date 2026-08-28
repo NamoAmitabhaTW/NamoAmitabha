@@ -141,5 +141,10 @@
   "shareTitle": "分享 App",
   "shareSubject": "好好念佛 — 免費的念佛計數 App",
   "shareMessage": "「好好念佛」是一款免費的念佛計數 App，會聆聽您的佛號聲並自動統計出佛號數量。專心念佛，計數就交給「好好念佛」！",
-  "storeActionFailed": "無法開啟商店，請稍後再試。"
+  "storeActionFailed": "無法開啟商店，請稍後再試。",
+  "appDisplayName": "好好念佛",
+  "updateTitle": "新版本已發布",
+  "updateBody": "請更新 App，\n讓《好好念佛》一起變更好。",
+  "updateButton": "前往更新",
+  "updateLater": "稍後再說"
 }

@@ -245,4 +245,19 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get storeActionFailed => 'ストアを開けませんでした。しばらくしてからもう一度お試しください。';
+
+  @override
+  String get appDisplayName => '念仏日和';
+
+  @override
+  String get updateTitle => '新しいバージョンを\n公開しました';
+
+  @override
+  String get updateBody => 'アプリを更新して、「念仏日和」を\nもっと良くしていきましょう。';
+
+  @override
+  String get updateButton => 'アップデート';
+
+  @override
+  String get updateLater => 'あとで';
 }

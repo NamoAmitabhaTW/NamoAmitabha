@@ -254,4 +254,20 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get storeActionFailed =>
       'Không thể mở cửa hàng, vui lòng thử lại sau.';
+
+  @override
+  String get appDisplayName => 'Chuyên Tâm Niệm Phật';
+
+  @override
+  String get updateTitle => 'Đã phát hành phiên bản mới';
+
+  @override
+  String get updateBody =>
+      'Cập nhật để \"Chuyên Tâm Niệm Phật\" ngày càng tốt hơn.';
+
+  @override
+  String get updateButton => 'Cập nhật ngay';
+
+  @override
+  String get updateLater => 'Để sau';
 }

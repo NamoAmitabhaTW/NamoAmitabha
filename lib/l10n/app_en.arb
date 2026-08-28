@@ -174,5 +174,25 @@
   "storeActionFailed": "Couldn't open the store, please try again later.",
   "@storeActionFailed": {
     "description": "Snackbar shown when opening the store listing fails"
+  },
+  "appDisplayName": "Amitabha Buddha",
+  "@appDisplayName": {
+    "description": "The app's display name as it appears on the device home screen"
+  },
+  "updateTitle": "A New Version Is Here",
+  "@updateTitle": {
+    "description": "Headline on the full-screen update prompt"
+  },
+  "updateBody": "Please update the Amitabha\u00A0Buddha app and help it keep getting better.",
+  "@updateBody": {
+    "description": "Body text on the full-screen update prompt"
+  },
+  "updateButton": "Update Now",
+  "@updateButton": {
+    "description": "Primary button that opens the app's store listing"
+  },
+  "updateLater": "Maybe later",
+  "@updateLater": {
+    "description": "Tooltip and accessibility label for the close (X) button"
   }
 }
