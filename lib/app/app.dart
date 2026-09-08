@@ -1,4 +1,5 @@
 // lib/app/app.dart
+import 'package:amitabha/app/orientation_lock.dart';
 import 'package:amitabha/core/localization/locale_controller.dart';
 import 'package:amitabha/core/theme/brand.dart';
 import 'package:amitabha/features/announcements/announcement_controller.dart';
@@ -76,7 +77,9 @@ class App extends StatelessWidget {
             theme: themeData,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
-            home: const AppUpdateGate(child: HomeShell()),
+            home: const OrientationLock(
+              child: AppUpdateGate(child: HomeShell()),
+            ),
             debugShowCheckedModeBanner: false,
           );
         },
