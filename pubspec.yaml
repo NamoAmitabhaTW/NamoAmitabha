@@ -128,7 +128,8 @@ flutter:
     - assets/images/bg_mountain_stream.png
     - assets/images/bg_bodhi_leaf.png
     # 平板專用：3:4 畫布背景 + 全螢幕鋪底（cover）。
-    - assets/images/bg_bodhi_leaf_tablet.png
+    - assets/images/bg_bodhi_leaf_tablet_portrait.png
+    - assets/images/bg_bodhi_leaf_tablet_landscape.png
     - assets/images/bg_bodhi_leaf_bleed.png
     - assets/images/settings_titles/zh/
     - assets/images/settings_titles/en/

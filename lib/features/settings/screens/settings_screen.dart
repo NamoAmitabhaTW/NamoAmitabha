@@ -3,9 +3,11 @@ import 'dart:math' as math;
 
 import 'package:amitabha/core/localization/locale_controller.dart';
 import 'package:amitabha/core/theme/brand.dart';
+import 'package:amitabha/core/widgets/app_bottom_sheet.dart';
 import 'package:amitabha/features/announcements/screens/announcements_screen.dart';
 import 'package:amitabha/features/background/background_picker_screen.dart';
 import 'package:amitabha/features/dedication/screens/dedication_editor_screen.dart';
+import 'package:amitabha/features/settings/leaf_layout.dart';
 import 'package:amitabha/features/settings/store_actions.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -39,16 +41,24 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
-    final isTablet = MediaQuery.of(context).size.shortestSide >= 600;
+    final size = MediaQuery.sizeOf(context);
+    final isTablet = size.shortestSide >= 600;
+    final isLandscape = size.width > size.height;
+    final canvas = !isTablet
+        ? SettingsCanvas.phone
+        : (isLandscape
+              ? SettingsCanvas.tabletLandscape
+              : SettingsCanvas.tabletPortrait);
+
+    final canvasSize = settingsCanvasSize[canvas]!;
+    LeafRect rectOf(SettingsLeaf leaf) =>
+        settingsLeafLayout[leaf]!.forCanvas(canvas);
 
     final buttons = <Widget>[
       _LeafButton(
         title: t.language,
         image: _titleImage(context, 'language'),
-        left: isTablet ? 605 : 590,
-        top: isTablet ? 50 : 185,
-        width: isTablet ? 340 : 340,
-        height: isTablet ? 240 : 240,
+        rect: rectOf(SettingsLeaf.language),
         phase: 0.00,
         period: const Duration(milliseconds: 3400),
         onTap: () => _chooseLanguage(context),
@@ -56,10 +66,7 @@ class SettingsScreen extends StatelessWidget {
       _LeafButton(
         title: t.bgScreenTitle,
         image: _titleImage(context, 'background'),
-        left: isTablet ? 0 : 0,
-        top: isTablet ? 10 : 60,
-        width: isTablet ? 400 : 430,
-        height: isTablet ? 300 : 300,
+        rect: rectOf(SettingsLeaf.background),
         onTap: () => Navigator.push(
           context,
           MaterialPageRoute(builder: (_) => const BackgroundPickerScreen()),
@@ -70,10 +77,7 @@ class SettingsScreen extends StatelessWidget {
       _LeafButton(
         title: t.announcementsTitle,
         image: _titleImage(context, 'announcements'),
-        left: isTablet ? 560 : 630,
-        top: isTablet ? 1020 : 1440,
-        width: isTablet ? 380 : 380,
-        height: isTablet ? 300 : 300,
+        rect: rectOf(SettingsLeaf.announcements),
         onTap: () => Navigator.push(
           context,
           MaterialPageRoute(builder: (_) => const AnnouncementsScreen()),
@@ -84,10 +88,7 @@ class SettingsScreen extends StatelessWidget {
       _LeafButton(
         title: t.dedicationTitle,
         image: _titleImage(context, 'dedication'),
-        left: isTablet ? 65 : 70,
-        top: isTablet ? 435 : 500,
-        width: isTablet ? 400 : 400,
-        height: isTablet ? 320 : 320,
+        rect: rectOf(SettingsLeaf.dedication),
         onTap: () => Navigator.push(
           context,
           MaterialPageRoute(builder: (_) => const DedicationEditorScreen()),
@@ -99,10 +100,7 @@ class SettingsScreen extends StatelessWidget {
         _LeafButton(
           title: t.rateTitle,
           image: _titleImage(context, 'rate'),
-          left: isTablet ? 200 : 190,
-          top: isTablet ? 900 : 1060,
-          width: isTablet ? 270 : 270,
-          height: isTablet ? 320 : 320,
+          rect: rectOf(SettingsLeaf.rate),
           minFontSize: 56,
           phase: 0.68,
           period: const Duration(milliseconds: 3700),
@@ -111,10 +109,7 @@ class SettingsScreen extends StatelessWidget {
       _LeafButton(
         title: t.shareTitle,
         image: _titleImage(context, 'share'),
-        left: isTablet ? 655 : 620,
-        top: isTablet ? 560 : 890,
-        width: isTablet ? 280 : 280,
-        height: isTablet ? 320 : 320,
+        rect: rectOf(SettingsLeaf.share),
         phase: 0.85,
         period: const Duration(milliseconds: 4000),
         onTap: () => StoreActions.share(context),
@@ -139,15 +134,13 @@ class SettingsScreen extends StatelessWidget {
             child: FittedBox(
               fit: BoxFit.contain,
               child: SizedBox(
-                width: 1080,
-                height: isTablet ? 1440 : 1920,
+                width: canvasSize.width,
+                height: canvasSize.height,
                 child: Stack(
                   children: [
                     Positioned.fill(
                       child: Image.asset(
-                        isTablet
-                            ? 'assets/images/bg_bodhi_leaf_tablet.png'
-                            : 'assets/images/bg_bodhi_leaf.png',
+                        settingsCanvasBackground[canvas]!,
                         fit: BoxFit.fill,
                       ),
                     ),
@@ -167,39 +160,37 @@ class SettingsScreen extends StatelessWidget {
     final ctrl = context.read<LocaleController>();
     final current = ctrl.locale;
 
-    showModalBottomSheet(
+    showAppBottomSheet(
       context: context,
-      builder: (sheetContext) => SafeArea(
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.settings_backup_restore),
-              title: Text(t.langFollowSystem),
-              trailing: current == null
-                  ? const Icon(Icons.check, color: Brand.settingsBrown)
-                  : null,
-              onTap: () {
-                ctrl.useSystem();
-                Navigator.pop(sheetContext);
-              },
-            ),
-            const Divider(height: 1),
-
-            for (final lang in LocaleController.supportedLanguages)
+      builder: (sheetContext) => ListView(
+            shrinkWrap: true,
+            children: [
               ListTile(
-                leading: const Icon(Icons.translate),
-                title: Text(lang.endonym),
-                trailing: _isCurrent(current, lang)
+                leading: const Icon(Icons.settings_backup_restore),
+                title: Text(t.langFollowSystem),
+                trailing: current == null
                     ? const Icon(Icons.check, color: Brand.settingsBrown)
                     : null,
                 onTap: () {
-                  ctrl.setLanguage(lang.code);
+                  ctrl.useSystem();
                   Navigator.pop(sheetContext);
                 },
               ),
-          ],
-        ),
+              const Divider(height: 1),
+
+              for (final lang in LocaleController.supportedLanguages)
+                ListTile(
+                  leading: const Icon(Icons.translate),
+                  title: Text(lang.endonym),
+                  trailing: _isCurrent(current, lang)
+                      ? const Icon(Icons.check, color: Brand.settingsBrown)
+                      : null,
+                  onTap: () {
+                    ctrl.setLanguage(lang.code);
+                    Navigator.pop(sheetContext);
+                  },
+                ),
+        ],
       ),
     );
   }
@@ -226,10 +217,7 @@ TextStyle _leafTextStyle(String fontFamily) => TextStyle(
 class _LeafButton extends StatefulWidget {
   const _LeafButton({
     required this.title,
-    required this.left,
-    required this.top,
-    required this.width,
-    required this.height,
+    required this.rect,
     required this.onTap,
     required this.phase,
     required this.period,
@@ -239,10 +227,7 @@ class _LeafButton extends StatefulWidget {
 
   final String title;
   final String? image;
-  final double left;
-  final double top;
-  final double width;
-  final double height;
+  final LeafRect rect;
   final VoidCallback onTap;
   final double minFontSize;
   final double phase;
@@ -296,10 +281,10 @@ class _LeafButtonState extends State<_LeafButton>
     final family = Brand.settingsFontFor(Localizations.localeOf(context));
     const anim = Duration(milliseconds: 120);
     return Positioned(
-      left: widget.left,
-      top: widget.top,
-      width: widget.width,
-      height: widget.height,
+      left: widget.rect.left,
+      top: widget.rect.top,
+      width: widget.rect.width,
+      height: widget.rect.height,
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTapDown: (_) => _setPressed(true),
