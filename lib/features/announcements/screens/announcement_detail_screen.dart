@@ -1,5 +1,7 @@
 // amitabha/lib/features/announcements/screens/announcement_detail_screen.dart
 import 'package:amitabha/core/theme/brand.dart';
+import 'package:amitabha/core/widgets/content_width.dart';
+import 'package:amitabha/core/widgets/fitted_title.dart';
 import 'package:amitabha/features/announcements/announcement_controller.dart';
 import 'package:amitabha/features/announcements/announcement_item.dart';
 import 'package:amitabha/features/announcements/widgets/simple_markdown.dart';
@@ -20,56 +22,65 @@ class AnnouncementDetailScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: FittedTitle(
           item.displayTitle(lang),
           style: const TextStyle(
             fontFamilyFallback: SimpleMarkdown.cjkFallback,
           ),
         ),
       ),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(24, 20, 24, 32),
-        children: [
-          if (item.date.isNotEmpty) ...[
-            Text(
-              item.date,
-              style: const TextStyle(
-                fontSize: 13,
-                color: Brand.settingsBrownSoft,
-              ),
-            ),
-            const SizedBox(height: 16),
-          ],
-          FutureBuilder<String?>(
-            future: c.ensureBody(item, lang),
-            builder: (context, snap) {
-              if (snap.connectionState == ConnectionState.waiting &&
-                  c.cachedBody(item.id, item.resolveBodyLang(lang) ?? 'zh') ==
-                      null) {
-                return const Padding(
-                  padding: EdgeInsets.only(top: 40),
-                  child: Center(child: CircularProgressIndicator()),
-                );
-              }
-              final body = snap.data ??
-                  c.cachedBody(item.id, item.resolveBodyLang(lang) ?? 'zh');
-              if (body == null || body.trim().isEmpty) {
-                return Text(
-                  AppLocalizations.of(context).announcementsEmpty,
-                  style: const TextStyle(color: Brand.settingsBrownSoft),
-                );
-              }
-              final bodyLang = item.resolveBodyLang(lang) ?? 'zh';
-              return SimpleMarkdown(
-                data: body,
-                accentColor: Brand.settingsGold,
-                justify: bodyLang == 'zh' || bodyLang == 'ja',
-                baseFontSize: item.id == 'licenses' ? 14 : 18,
-                onLinkTap: (url) => _copyLink(context, url),
-              );
-            },
+      body: ContentWidth(
+        maxWidth: 640,
+        child: ListView(
+          padding: EdgeInsets.fromLTRB(
+            24,
+            20,
+            24,
+            32 + MediaQuery.paddingOf(context).bottom,
           ),
-        ],
+          children: [
+            if (item.date.isNotEmpty) ...[
+              Text(
+                item.date,
+                style: const TextStyle(
+                  fontSize: 13,
+                  color: Brand.settingsBrownSoft,
+                ),
+              ),
+              const SizedBox(height: 16),
+            ],
+            FutureBuilder<String?>(
+              future: c.ensureBody(item, lang),
+              builder: (context, snap) {
+                if (snap.connectionState == ConnectionState.waiting &&
+                    c.cachedBody(item.id, item.resolveBodyLang(lang) ?? 'zh') ==
+                        null) {
+                  return const Padding(
+                    padding: EdgeInsets.only(top: 40),
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                }
+                final body =
+                    snap.data ??
+                    c.cachedBody(item.id, item.resolveBodyLang(lang) ?? 'zh');
+                if (body == null || body.trim().isEmpty) {
+                  return Text(
+                    AppLocalizations.of(context).announcementsEmpty,
+                    style: const TextStyle(color: Brand.settingsBrownSoft),
+                  );
+                }
+                final bodyLang = item.resolveBodyLang(lang) ?? 'zh';
+                return SimpleMarkdown(
+                  data: body,
+                  accentColor: Brand.settingsGold,
+                  justify: bodyLang == 'zh' || bodyLang == 'ja',
+                  baseFontSize: item.id == 'licenses' ? 14 : 18,
+                  onLinkTap: (url) => _copyLink(context, url),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

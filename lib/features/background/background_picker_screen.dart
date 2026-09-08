@@ -1,4 +1,6 @@
 // amitabha/lib/features/background/screens/background_picker_screen.dart
+import 'package:amitabha/core/widgets/content_width.dart';
+import 'package:amitabha/core/widgets/fitted_title.dart';
 import 'package:amitabha/features/background/background_controller.dart';
 import 'package:amitabha/features/background/background_item.dart';
 import 'package:amitabha/features/background/widgets/background_card.dart';
@@ -31,7 +33,7 @@ class _BackgroundPickerScreenState extends State<BackgroundPickerScreen> {
     final t = AppLocalizations.of(context);
     final lang = Localizations.localeOf(context).languageCode;
     return Scaffold(
-      appBar: AppBar(title: Text(t.bgScreenTitle)),
+      appBar: AppBar(title: FittedTitle(t.bgScreenTitle)),
       body: Consumer<BackgroundController>(
         builder: (context, c, _) {
           if (c.isLoading && c.items.isEmpty) {
@@ -50,21 +52,28 @@ class _BackgroundPickerScreenState extends State<BackgroundPickerScreen> {
               Expanded(
                 child: RefreshIndicator(
                   onRefresh: c.load,
-                  child: ListView.separated(
-                    padding: const EdgeInsets.all(16),
-                    itemCount: c.items.length,
-                    separatorBuilder: (_, __) => const SizedBox(height: 12),
-                    itemBuilder: (context, i) {
-                      final item = c.items[i];
-                      return BackgroundCard(
-                        item: item,
-                        isActive: item.id == c.activeId,
-                        onDownload: () => _handleDownload(context, c, item),
-                        onCancel: () => c.cancelDownload(item),
-                        onUse: () => c.use(item),
-                        onDelete: () => _confirmDelete(context, c, item),
-                      );
-                    },
+                  child: ContentWidth(
+                    child: ListView.separated(
+                      padding: EdgeInsets.fromLTRB(
+                        16,
+                        16,
+                        16,
+                        16 + MediaQuery.paddingOf(context).bottom,
+                      ),
+                      itemCount: c.items.length,
+                      separatorBuilder: (_, __) => const SizedBox(height: 12),
+                      itemBuilder: (context, i) {
+                        final item = c.items[i];
+                        return BackgroundCard(
+                          item: item,
+                          isActive: item.id == c.activeId,
+                          onDownload: () => _handleDownload(context, c, item),
+                          onCancel: () => c.cancelDownload(item),
+                          onUse: () => c.use(item),
+                          onDelete: () => _confirmDelete(context, c, item),
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -116,7 +125,7 @@ class _BackgroundPickerScreenState extends State<BackgroundPickerScreen> {
         BackgroundDownloadError.notAvailable => t.bgDownloadErrorNotAvailable,
         BackgroundDownloadError.unknown => t.bgDownloadErrorGeneric,
       };
-      
+
       final retryable = error != BackgroundDownloadError.notAvailable;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -132,7 +141,7 @@ class _BackgroundPickerScreenState extends State<BackgroundPickerScreen> {
       );
     }
   }
-} 
+}
 
 class _ClearedNoticeBanner extends StatelessWidget {
   const _ClearedNoticeBanner({
@@ -172,7 +181,7 @@ class _ClearedNoticeBanner extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 4),
-                Text( 
+                Text(
                   t.bgClearedBody,
                   style: const TextStyle(fontSize: 12.5, height: 1.4),
                 ),
@@ -211,7 +220,7 @@ class _OfflineNoticeBanner extends StatelessWidget {
         children: [
           const Icon(Icons.cloud_off_outlined, size: 20, color: Colors.amber),
           const SizedBox(width: 10),
-          Expanded( 
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -231,9 +240,9 @@ class _OfflineNoticeBanner extends StatelessWidget {
             ),
           ),
           TextButton.icon(
-            onPressed: onRetry,        
+            onPressed: onRetry,
             icon: const Icon(Icons.refresh, size: 20),
-            label: Text(t.retry),     
+            label: Text(t.retry),
             style: TextButton.styleFrom(
               foregroundColor: const Color(0xFF6F5C44),
               textStyle: const TextStyle(

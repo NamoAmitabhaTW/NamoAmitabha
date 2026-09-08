@@ -1,5 +1,7 @@
 // amitabha/lib/features/announcements/screens/announcements_screen.dart
 import 'package:amitabha/core/theme/brand.dart';
+import 'package:amitabha/core/widgets/content_width.dart';
+import 'package:amitabha/core/widgets/fitted_title.dart';
 import 'package:amitabha/features/announcements/announcement_controller.dart';
 import 'package:amitabha/features/announcements/announcement_item.dart';
 import 'package:amitabha/features/announcements/screens/announcement_detail_screen.dart';
@@ -34,7 +36,7 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
     final lang = Localizations.localeOf(context).languageCode;
 
     return Scaffold(
-      appBar: AppBar(title: Text(t.announcementsTitle)),
+      appBar: AppBar(title: FittedTitle(t.announcementsTitle)),
       body: Consumer<AnnouncementController>(
         builder: (context, c, _) {
           if (c.isLoading && c.items.isEmpty) {
@@ -54,20 +56,28 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
           }
           return RefreshIndicator(
             onRefresh: c.load,
-            child: ListView.separated(
-              padding: const EdgeInsets.fromLTRB(24, 12, 24, 32),
-              itemCount: c.items.length,
-              separatorBuilder: (_, __) => const Divider(
-                height: 32,
-                thickness: 1,
-                color: Brand.settingsDivider,
+            child: ContentWidth(
+              maxWidth: 640,
+              child: ListView.separated(
+                padding: EdgeInsets.fromLTRB(
+                  24,
+                  12,
+                  24,
+                  32 + MediaQuery.paddingOf(context).bottom,
+                ),
+                itemCount: c.items.length,
+                separatorBuilder: (_, __) => const Divider(
+                  height: 32,
+                  thickness: 1,
+                  color: Brand.settingsDivider,
+                ),
+                itemBuilder: (context, i) {
+                  final item = c.items[i];
+                  return item.pinned
+                      ? _PinnedCard(item: item, lang: lang)
+                      : _AnnouncementRow(item: item, lang: lang);
+                },
               ),
-              itemBuilder: (context, i) {
-                final item = c.items[i];
-                return item.pinned
-                    ? _PinnedCard(item: item, lang: lang)
-                    : _AnnouncementRow(item: item, lang: lang);
-              },
             ),
           );
         },
@@ -164,9 +174,7 @@ class _AnnouncementRow extends StatelessWidget {
     return InkWell(
       onTap: () => Navigator.push(
         context,
-        MaterialPageRoute(
-          builder: (_) => AnnouncementDetailScreen(item: item),
-        ),
+        MaterialPageRoute(builder: (_) => AnnouncementDetailScreen(item: item)),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 18),
