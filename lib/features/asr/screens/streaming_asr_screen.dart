@@ -175,11 +175,17 @@ class StreamingAsrScreen extends StatelessWidget {
     final kleeFamily = Brand.primaryFontFor(locale);
     final labelFallbackFamily = Brand.settingsFontFor(locale);
 
+
     final numberColor = Colors.white;
     final unitColor = Colors.white;
 
    
     final viewPadding = MediaQuery.of(context).viewPadding;
+
+    final titleToCountGap = (MediaQuery.sizeOf(context).height * 0.375).clamp(
+      160.0,
+      320.0,
+    );
 
     final titleImage = Image.asset(
       _calligraphyAsset(lang),
@@ -195,9 +201,11 @@ class StreamingAsrScreen extends StatelessWidget {
           offset: const Offset(0, 1),
         );
 
-    final countWidget = FittedBox(
-      fit: BoxFit.scaleDown,
-      child: Text.rich(
+    final countWidget = MediaQuery.withClampedTextScaling(
+      maxScaleFactor: 1.0,
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Text.rich(
         TextSpan(
           children: [
             TextSpan(
@@ -218,7 +226,8 @@ class StreamingAsrScreen extends StatelessWidget {
                 shadows: [numShadow()],
               ),
             ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -277,14 +286,14 @@ class StreamingAsrScreen extends StatelessWidget {
               SizedBox(height: viewPadding.top + 16),
               titleImage,
               const Spacer(),
-              countWidget,
+              Flexible(child: countWidget),
               const Spacer(),
               buttonsRow,
             ]
           : [
               const Spacer(flex: 4),
               titleImage,
-              const SizedBox(height: 320),
+              SizedBox(height: titleToCountGap),
               countWidget,
               const Spacer(flex: 10),
               buttonsRow,

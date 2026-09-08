@@ -4,7 +4,6 @@ import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-
 const _kBrown = Color(0xFF6F4E37);
 const _kDangerColor = Color(0xFFA8623F);
 const _kCream = Color(0xFFFFF8EC);
@@ -19,10 +18,38 @@ const _kPreviewBg = Color(0x1F000000);
 const _kPreviewIcon = Color(0x61000000);
 const _kSubtleText = Color(0x8A000000);
 
-Widget _btnLabel(String text) => FittedBox(
-  fit: BoxFit.scaleDown,
-  child: Text(text, maxLines: 1, softWrap: false),
+Widget _btnLabel(String text) => Text(
+  text,
+  textAlign: TextAlign.center,
+  maxLines: 2,
+  overflow: TextOverflow.ellipsis,
 );
+
+const _kBtnGap = 12.0;
+
+const _kBtnChrome = 20.0 + 8.0 + 16.0 * 2 + 12.0;
+
+const _kBtnTextStyle = TextStyle(fontSize: 16, fontWeight: FontWeight.w600);
+
+bool _labelsFitSideBySide(
+  BuildContext context,
+  double maxWidth,
+  List<String> labels,
+) {
+  final scaler = MediaQuery.textScalerOf(context);
+  final perLabel = (maxWidth - _kBtnGap) / 2 - _kBtnChrome;
+  if (perLabel <= 0) return false;
+  for (final label in labels) {
+    final painter = TextPainter(
+      text: TextSpan(text: label, style: _kBtnTextStyle),
+      textDirection: Directionality.of(context),
+      textScaler: scaler,
+      maxLines: 1,
+    )..layout();
+    if (painter.width > perLabel) return false;
+  }
+  return true;
+}
 
 class BackgroundCard extends StatelessWidget {
   const BackgroundCard({
@@ -64,8 +91,8 @@ class BackgroundCard extends StatelessWidget {
         children: [
           Stack(
             children: [
-              SizedBox(height: 180, width: double.infinity, child: _preview()),
-              Positioned(top: 12, right: 12, child: _metaChip(t)), 
+              AspectRatio(aspectRatio: 16 / 9, child: _preview()),
+              Positioned(top: 12, right: 12, child: _metaChip(t)),
             ],
           ),
           Padding(
@@ -82,7 +109,7 @@ class BackgroundCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 16),
-                _actions(state, t), 
+                _actions(context, state, t),
               ],
             ),
           ),
@@ -117,8 +144,9 @@ class BackgroundCard extends StatelessWidget {
     if (item.isBuiltin) {
       text = t.bgDefault;
     } else {
-      final typeLabel =
-          item.type == BackgroundType.video ? t.bgTypeVideo : t.bgTypeImage;
+      final typeLabel = item.type == BackgroundType.video
+          ? t.bgTypeVideo
+          : t.bgTypeImage;
       final size = _fmtSize(item.fileSize);
       text = size.isEmpty ? typeLabel : '$typeLabel · $size';
     }
@@ -140,7 +168,11 @@ class BackgroundCard extends StatelessWidget {
     );
   }
 
-  Widget _actions(BackgroundUiState state, AppLocalizations t) {
+  Widget _actions(
+    BuildContext context,
+    BackgroundUiState state,
+    AppLocalizations t,
+  ) {
     switch (state) {
       case BackgroundUiState.activeBuiltin:
       case BackgroundUiState.activeDownloaded:
@@ -166,13 +198,7 @@ class BackgroundCard extends StatelessWidget {
               _updateBtn(t),
               const SizedBox(height: 12),
             ],
-            Row(
-              children: [
-                Expanded(child: _useBtn(t)),
-                const SizedBox(width: 12),
-                Expanded(child: _deleteBtn(t)),
-              ],
-            ),
+            _useDeleteActions(context, t),
           ],
         );
 
@@ -206,6 +232,34 @@ class BackgroundCard extends StatelessWidget {
         return SizedBox(width: double.infinity, child: _downloadBtn(t));
     }
   }
+
+  Widget _useDeleteActions(BuildContext context, AppLocalizations t) =>
+      LayoutBuilder(
+        builder: (context, constraints) {
+          final sideBySide = _labelsFitSideBySide(
+            context,
+            constraints.maxWidth,
+            [t.bgUse, t.bgDelete],
+          );
+          if (sideBySide) {
+            return Row(
+              children: [
+                Expanded(child: _useBtn(t)),
+                const SizedBox(width: _kBtnGap),
+                Expanded(child: _deleteBtn(t)),
+              ],
+            );
+          }
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _useBtn(t),
+              const SizedBox(height: _kBtnGap),
+              _deleteBtn(t),
+            ],
+          );
+        },
+      );
 
   Widget _useBtn(AppLocalizations t) => OutlinedButton.icon(
     onPressed: onUse,
@@ -260,31 +314,29 @@ class BackgroundCard extends StatelessWidget {
   );
 
   Widget _activeBanner(AppLocalizations t) => Container(
-    height: 50,
+    constraints: const BoxConstraints(minHeight: 50),
     alignment: Alignment.center,
     decoration: BoxDecoration(
       color: _kBrown,
       borderRadius: BorderRadius.circular(25),
     ),
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-    child: Row( 
+    child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: [
         const Icon(Icons.check_circle, color: _kCream, size: 20),
         const SizedBox(width: 8),
         Flexible(
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Text(
-              t.bgInUse,
-              maxLines: 1,
-              softWrap: false,
-              style: const TextStyle(
-                color: _kCream,
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
+          child: Text(
+            t.bgInUse,
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              color: _kCream,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ),

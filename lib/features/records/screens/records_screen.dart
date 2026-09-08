@@ -2,6 +2,7 @@
 import 'dart:io';
 
 import 'package:amitabha/core/theme/brand.dart';
+import 'package:amitabha/core/widgets/content_width.dart';
 import 'package:amitabha/features/asr/application/asr_session_controller.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:amitabha/storage/app_paths.dart';
@@ -118,61 +119,67 @@ class RecordsScreen extends StatelessWidget {
           return SafeArea(
             top: true,
             bottom: false,
-            child: ListView(
-              padding: EdgeInsets.only(bottom: bottomInset),
-              children: [
-                header,
-                Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: Center(
-                    child: Text(
-                      t.noRecords,
-                      style: const TextStyle(fontSize: 20, color: _brownSoft),
+            child: ContentWidth(
+              child: ListView(
+                padding: EdgeInsets.only(bottom: bottomInset),
+                children: [
+                  header,
+                  Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: Center(
+                      child: Text(
+                        t.noRecords,
+                        style: const TextStyle(fontSize: 20, color: _brownSoft),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         }
 
-        return CustomScrollView(
-          slivers: [
-            SliverSafeArea(
-              top: true,
-              bottom: false,
-              sliver: SliverToBoxAdapter(child: header),
-            ),
-            SliverList.builder(
-              itemCount: data.items.length,
-              itemBuilder: (_, i) {
-                final r = data.items[i];
-                final y = int.parse(r.yyyymmdd.substring(0, 4));
-                final m = int.parse(r.yyyymmdd.substring(4, 6));
-                final d = int.parse(r.yyyymmdd.substring(6, 8));
-                final dt = DateTime(y, m, d);
+        return ContentWidth(
+          child: CustomScrollView(
+            slivers: [
+              SliverSafeArea(
+                top: true,
+                bottom: false,
+                sliver: SliverToBoxAdapter(child: header),
+              ),
+              SliverList.builder(
+                itemCount: data.items.length,
+                itemBuilder: (_, i) {
+                  final r = data.items[i];
+                  final y = int.parse(r.yyyymmdd.substring(0, 4));
+                  final m = int.parse(r.yyyymmdd.substring(4, 6));
+                  final d = int.parse(r.yyyymmdd.substring(6, 8));
+                  final dt = DateTime(y, m, d);
 
-                final isMonthStart =
-                    i == 0 || data.items[i - 1].yyyymmdd.substring(0, 6) != r.yyyymmdd.substring(0, 6);
+                  final isMonthStart =
+                      i == 0 ||
+                      data.items[i - 1].yyyymmdd.substring(0, 6) !=
+                          r.yyyymmdd.substring(0, 6);
 
-                final tile = _RecordTile(
-                  dateText: df.format(dt),
-                  countText: '${r.amitabhaCount}',
-                  unitText: t.times,
-                );
+                  final tile = _RecordTile(
+                    dateText: df.format(dt),
+                    countText: '${r.amitabhaCount}',
+                    unitText: t.times,
+                  );
 
-                if (!isMonthStart) return tile;
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    _MonthHeader(label: dfMonth.format(dt), isFirst: i == 0),
-                    tile,
-                  ],
-                );
-              },
-            ),
-            SliverToBoxAdapter(child: SizedBox(height: bottomInset)),
-          ],
+                  if (!isMonthStart) return tile;
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      _MonthHeader(label: dfMonth.format(dt), isFirst: i == 0),
+                      tile,
+                    ],
+                  );
+                },
+              ),
+              SliverToBoxAdapter(child: SizedBox(height: bottomInset)),
+            ],
+          ),
         );
       },
     );
@@ -205,8 +212,7 @@ Future<_DailyLoadResult> _loadAllDaily() async {
     if (j.isEmpty) continue;
     try {
       items.add(DailySummary.fromJson(j));
-    } catch (_) {
-    }
+    } catch (_) {}
   }
 
   items.sort((a, b) => b.yyyymmdd.compareTo(a.yyyymmdd));
@@ -246,33 +252,14 @@ class _HeaderCards extends StatelessWidget {
             semanticLabel: t.amitabha,
           ),
           const SizedBox(height: 2),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            textBaseline: TextBaseline.alphabetic,
-            children: [
-              const Expanded(child: SizedBox.shrink()),
-              const SizedBox(width: 8),
-              Text(
-                totalText,
-                style: const TextStyle(
-                  fontSize: 80,
-                  fontWeight: FontWeight.w400,
-                  height: 1.0,
-                  color: _goldDeep,
-                  letterSpacing: 1,
-                ),
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  t.times,
-                  textAlign: TextAlign.left,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontSize: 16, color: _brownSoft),
-                ),
-              ),
-            ],
+          _CenteredMetric(
+            value: totalText,
+            label: t.times,
+            valueSize: 80,
+            labelSize: 16,
+            maxScaleFactor: 1.4,
+            valueWeight: FontWeight.w400,
+            letterSpacing: 1,
           ),
           const SizedBox(height: 16),
           SizedBox(
@@ -280,31 +267,14 @@ class _HeaderCards extends StatelessWidget {
             child: _GoldDivider(label: t.total),
           ),
           const SizedBox(height: 14),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            textBaseline: TextBaseline.alphabetic,
-            children: [
-              const Expanded(child: SizedBox.shrink()),
-              const SizedBox(width: 8),
-              Text(
-                practiceDaysText,
-                style: const TextStyle(
-                  fontSize: 44,
-                  fontWeight: FontWeight.w500,
-                  color: _goldDeep,
-                ),
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  t.days,
-                  textAlign: TextAlign.left,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontSize: 19, color: _brownSoft),
-                ),
-              ),
-            ],
+          _CenteredMetric(
+            value: practiceDaysText,
+            label: t.days,
+            valueSize: 44,
+            labelSize: 19,
+            maxScaleFactor: 1.6,
+            valueWeight: FontWeight.w500,
+            centerValueOnAxis: true,
           ),
         ],
       ),
@@ -325,7 +295,7 @@ class _GoldDivider extends StatelessWidget {
         Expanded(child: _line(fadeToLeft: true)),
         if (l != null)
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14),
+            padding: const EdgeInsets.only(left: 14, right: 10),
             child: Text(
               l,
               style: const TextStyle(
@@ -391,48 +361,155 @@ class _RecordTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scaledDate = MediaQuery.textScalerOf(context).scale(19);
+    final stacked = scaledDate > 30;
+
+    final dateWidget = Text(
+      dateText,
+      style: const TextStyle(
+        fontSize: 19,
+        fontWeight: FontWeight.w400,
+        color: _amitabhaInk,
+      ),
+    );
+
+    final countWidget = Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(
+            text: countText,
+            style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w400),
+          ),
+          TextSpan(
+            text: ' $unitText',
+            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+          ),
+        ],
+      ),
+      style: const TextStyle(color: _amitabhaInk),
+      textAlign: stacked ? TextAlign.start : TextAlign.end,
+    );
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 22),
       decoration: const BoxDecoration(
         border: Border(bottom: BorderSide(color: _goldHairline, width: 1)),
       ),
       padding: const EdgeInsets.symmetric(vertical: 18),
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              dateText,
-              style: const TextStyle(
-                fontSize: 19,
-                fontWeight: FontWeight.w400,
-                color: _amitabhaInk,
+      child: stacked
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [dateWidget, const SizedBox(height: 6), countWidget],
+            )
+          : Row(
+              children: [
+                Expanded(child: dateWidget),
+                const SizedBox(width: 12),
+                Expanded(child: countWidget),
+              ],
+            ),
+    );
+  }
+}
+
+class _CenteredMetric extends StatelessWidget {
+  const _CenteredMetric({
+    required this.value,
+    required this.label,
+    required this.valueSize,
+    required this.labelSize,
+    required this.maxScaleFactor,
+    required this.valueWeight,
+    this.letterSpacing,
+    this.centerValueOnAxis = false,
+  });
+
+  final String value;
+  final String label;
+  final double valueSize;
+  final double labelSize;
+  final double maxScaleFactor;
+  final FontWeight valueWeight;
+  final double? letterSpacing;
+
+  final bool centerValueOnAxis;
+
+  @override
+  Widget build(BuildContext context) {
+    final valueStyle = TextStyle(
+      fontSize: valueSize,
+      fontWeight: valueWeight,
+      height: 1.0,
+      color: _goldDeep,
+      letterSpacing: letterSpacing,
+    );
+    final labelStyle = TextStyle(fontSize: labelSize, color: _brownSoft);
+
+    if (centerValueOnAxis) {
+      final labelWidget = Text(
+        label,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: labelStyle,
+      );
+      return MediaQuery.withClampedTextScaling(
+        maxScaleFactor: maxScaleFactor,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.baseline,
+          textBaseline: TextBaseline.alphabetic,
+          children: [
+            Visibility(
+              visible: false,
+              maintainSize: true,
+              maintainAnimation: true,
+              maintainState: true,
+              child: labelWidget,
+            ),
+            const SizedBox(width: 8),
+            Flexible(
+              child: Text(
+                value,
+                maxLines: 1,
+                softWrap: false,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+                style: valueStyle,
               ),
             ),
-          ),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            textBaseline: TextBaseline.alphabetic,
-            children: [
-              Text(
-                countText,
-                style: const TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.w400,
-                  color: _amitabhaInk,
-                ),
+            const SizedBox(width: 8),
+            labelWidget,
+          ],
+        ),
+      );
+    }
+
+    return MediaQuery.withClampedTextScaling(
+      maxScaleFactor: maxScaleFactor,
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Visibility(
+              visible: false,
+              maintainSize: true,
+              maintainAnimation: true,
+              maintainState: true,
+              child: Text('  $label', maxLines: 1, style: labelStyle),
+            ),
+            Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(text: value, style: valueStyle),
+                  TextSpan(text: '  $label', style: labelStyle),
+                ],
               ),
-              Text(
-                ' $unitText',
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w400,
-                  color: _amitabhaInk,
-                ),
-              ),
-            ],
-          ),
-        ],
+              maxLines: 1,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }
