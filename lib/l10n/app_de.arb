@@ -88,7 +88,7 @@
   "modelPrepareFailed": "Installation des Spracherkennungsmodells fehlgeschlagen. Bitte stellen Sie sicher, dass genügend Speicherplatz auf dem Gerät vorhanden ist, und versuchen Sie es erneut.",
   "retry": "Wiederholen",
   "micPermissionTitle": "Mikrofonberechtigung erforderlich",
-  "micPermissionRationale": "Um Rezitationen zu zählen, aktivieren Sie das Mikrofon in den Systemeinstellungen > Amitabha.",
+  "micPermissionRationale": "Um Rezitationen zu zählen, aktivieren Sie das Mikrofon in den Systemeinstellungen > Amitabha Buddha.",
   "openSettings": "Einstellungen öffnen",
   "bgScreenTitle": "Rezitations-Hintergrund",
   "bgUse": "Verwenden",

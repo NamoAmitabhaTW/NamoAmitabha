@@ -119,7 +119,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get micPermissionRationale =>
-      'To count chants, please enable Microphone in System Settings > Amitabha.';
+      'To count chants, please enable Microphone in System Settings > Amitabha Buddha.';
 
   @override
   String get openSettings => 'Open Settings';

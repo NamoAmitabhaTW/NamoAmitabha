@@ -88,7 +88,7 @@
   "modelPrepareFailed": "音声認識モデルのインストールに失敗しました。デバイスの空き容量が十分にあることを確認してから、もう一度お試しください。",
   "retry": "再試行",
   "micPermissionTitle": "マイクの許可が必要です",
-  "micPermissionRationale": "念仏の回数を数えるため、システムの「設定」>「念仏」>「マイク」で許可を有効にしてください。",
+  "micPermissionRationale": "念仏の回数を数えるため、システムの「設定」>「念仏日和」>「マイク」で許可を有効にしてください。",
   "openSettings": "設定を開く",
   "bgScreenTitle": "念仏の背景",
   "bgUse": "使用",

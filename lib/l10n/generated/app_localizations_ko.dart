@@ -118,7 +118,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get micPermissionRationale =>
-      '염불 횟수를 세려면 시스템 설정 > 염불 > 마이크에서 권한을 켜 주세요.';
+      '염불 횟수를 세려면 시스템 설정 > 하루 염불 > 마이크에서 권한을 켜 주세요.';
 
   @override
   String get openSettings => '설정 열기';

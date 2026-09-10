@@ -88,7 +88,7 @@
   "modelPrepareFailed": "語音辨識模型安裝失敗，請確認裝置儲存空間足夠後再試。",
   "retry": "重試",
   "micPermissionTitle": "需要麥克風權限",
-  "micPermissionRationale": "語音辨識計算佛號數量，請前往系統「設定」>「念佛」>「麥克風」將權限開啟。",
+  "micPermissionRationale": "語音辨識計算佛號數量，請前往系統「設定」>「好好念佛」>「麥克風」將權限開啟。",
   "openSettings": "前往設定",
   "bgScreenTitle": "念佛背景",
   "bgUse": "使用",

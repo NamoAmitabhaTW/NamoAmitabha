@@ -7,9 +7,9 @@ Les manières courantes de compter les récitations — appuyer sur un compteur,
 
 *Mon intention première était d'utiliser la reconnaissance vocale pour compter automatiquement les récitations, afin que vous n'ayez pas à vous laisser distraire par le comptage et que vous puissiez recueillir corps et esprit dans chaque invocation du nom du Bouddha.*
 
-L'application prend actuellement en charge 7 prononciations pour la récitation : chinois, taïwanais, japonais, coréen, vietnamien, anglais et sanskrit (certaines prononciations sont encore en cours de test pour la précision et la stabilité)
+L'application prend actuellement en charge 7 prononciations pour la récitation : chinois, taïwanais, japonais, coréen, vietnamien, anglais et sanskrit (certaines langues sont encore en cours de test pour la précision et la stabilité)
 
-La reconnaissance vocale n'est pas parfaitement précise. En particulier lors de la première utilisation, dans un environnement bruyant, ou lorsque la parole est rapide et peu claire, des erreurs de comptage peuvent survenir. J'espère que vous comprendrez les imperfections de l'application.
+La reconnaissance vocale n'est pas parfaitement précise. En particulier juste après le démarrage, dans un environnement bruyant, ou lorsque la parole est rapide et peu claire, des erreurs de comptage peuvent survenir. J'espère que vous comprendrez les imperfections de l'application.
 
 Si cette application vous est utile, je vous serais profondément reconnaissant de laisser une recommandation sur la boutique, afin que davantage de personnes puissent découvrir « Amitabha Buddha ».
 

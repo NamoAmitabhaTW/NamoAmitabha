@@ -7,9 +7,9 @@ Common ways of counting recitations — pressing a counter, turning prayer beads
 
 *My original intention was to use speech recognition to count recitations automatically, so that you need not be distracted by counting and can gather body and mind into each utterance of the Buddha's name.*
 
-The app currently supports 7 pronunciations for recitation: Chinese, Taiwanese, Japanese, Korean, Vietnamese, English, and Sanskrit (some pronunciations are still being tested for accuracy and stability)
+The app currently supports 7 pronunciations for recitation: Chinese, Taiwanese, Japanese, Korean, Vietnamese, English, and Sanskrit (some languages are still being tested for accuracy and stability)
 
-Speech recognition is not perfectly accurate. Especially on first use, in noisy environments, or when speech is fast and unclear, counting errors may occur. I hope you can understand the app's shortcomings.
+Speech recognition is not perfectly accurate. Especially right after startup, in noisy environments, or when speech is fast and unclear, counting errors may occur. I hope you can understand the app's shortcomings.
 
 If you find this app helpful, I would be deeply grateful if you could leave a recommendation in the store, so that more people have the chance to discover “Amitabha Buddha”.
 

@@ -119,7 +119,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get micPermissionRationale =>
-      'To count chants, please enable Microphone in System Settings > Amitabha.';
+      'To count chants, please enable Microphone in System Settings > Amitabha Buddha.';
 
   @override
   String get openSettings => 'Open Settings';
@@ -388,7 +388,8 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get micPermissionTitle => '需要麥克風權限';
 
   @override
-  String get micPermissionRationale => '語音辨識計算佛號數量，請前往系統「設定」>「念佛」>「麥克風」將權限開啟。';
+  String get micPermissionRationale =>
+      '語音辨識計算佛號數量，請前往系統「設定」>「好好念佛」>「麥克風」將權限開啟。';
 
   @override
   String get openSettings => '前往設定';

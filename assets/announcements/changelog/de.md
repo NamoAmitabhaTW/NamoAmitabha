@@ -2,7 +2,7 @@
 
 **1. Verbesserte Nutzung**
 
-- Verbesserte Spracherkennung, unterstützt jetzt 7 Aussprachen für die Rezitation: Chinesisch, Taiwanesisch, Japanisch, Koreanisch, Vietnamesisch, Englisch und Sanskrit (einige Aussprachen werden noch auf Genauigkeit und Stabilität getestet)
+- Verbesserte Spracherkennung, unterstützt jetzt 7 Aussprachen für die Rezitation: Chinesisch, Taiwanesisch, Japanisch, Koreanisch, Vietnamesisch, Englisch und Sanskrit (einige Sprachen werden noch auf Genauigkeit und Stabilität getestet)
 - Mehrsprachige Unterstützung mit jetzt 7 Oberflächensprachen: Traditionelles Chinesisch, Englisch, Japanisch, Koreanisch, Vietnamesisch, Deutsch und Französisch
 - Neue Widmungsfunktion mit frei bearbeitbarem Inhalt
 - Neue Ankündigungsfunktion, die Neuigkeiten anzeigt
@@ -14,6 +14,7 @@
 - Neue Animationen: zeichenweises Erscheinen des Widmungsverses und eine Abschlussanimation der Widmung
 - Neue Schriftart für den Widmungsvers
 - Oberfläche neu gestaltet – optisch verfeinert
+- Unterstützung für den Querformat-Modus auf Tablets
 
 **Version 1.1.0**
 

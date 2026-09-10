@@ -88,7 +88,7 @@
   "modelPrepareFailed": "Échec de l'installation du modèle de reconnaissance vocale. Veuillez vérifier que votre appareil dispose de suffisamment d'espace de stockage, puis réessayez.",
   "retry": "Réessayer",
   "micPermissionTitle": "Autorisation du micro requise",
-  "micPermissionRationale": "Pour compter les récitations, activez le micro dans Réglages système > Amitabha.",
+  "micPermissionRationale": "Pour compter les récitations, activez le micro dans Réglages système > Amitabha Buddha.",
   "openSettings": "Ouvrir les réglages",
   "bgScreenTitle": "Arrière-plan de récitation",
   "bgUse": "Utiliser",

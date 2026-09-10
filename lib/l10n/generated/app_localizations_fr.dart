@@ -119,7 +119,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get micPermissionRationale =>
-      'Pour compter les récitations, activez le micro dans Réglages système > Amitabha.';
+      'Pour compter les récitations, activez le micro dans Réglages système > Amitabha Buddha.';
 
   @override
   String get openSettings => 'Ouvrir les réglages';

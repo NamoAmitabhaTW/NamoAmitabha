@@ -322,7 +322,7 @@ abstract class AppLocalizations {
   /// No description provided for @micPermissionRationale.
   ///
   /// In en, this message translates to:
-  /// **'To count chants, please enable Microphone in System Settings > Amitabha.'**
+  /// **'To count chants, please enable Microphone in System Settings > Amitabha Buddha.'**
   String get micPermissionRationale;
 
   /// No description provided for @openSettings.

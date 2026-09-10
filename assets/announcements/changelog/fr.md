@@ -2,7 +2,7 @@
 
 **1. Expérience améliorée**
 
-- Reconnaissance vocale améliorée, prenant désormais en charge 7 prononciations pour la récitation : chinois, taïwanais, japonais, coréen, vietnamien, anglais et sanskrit (certaines prononciations sont encore en cours de test pour la précision et la stabilité)
+- Reconnaissance vocale améliorée, prenant désormais en charge 7 prononciations pour la récitation : chinois, taïwanais, japonais, coréen, vietnamien, anglais et sanskrit (certaines langues sont encore en cours de test pour la précision et la stabilité)
 - Prise en charge multilingue, avec désormais 7 langues d'interface : chinois traditionnel, anglais, japonais, coréen, vietnamien, allemand et français
 - Nouvelle fonction de dédicace au contenu modifiable
 - Nouvelle fonction d'annonces qui affiche les nouveautés
@@ -14,6 +14,7 @@
 - Nouvelles animations : remplissage caractère par caractère du verset de dédicace et animation de fin de dédicace
 - Nouvelle police pour le verset de dédicace
 - Interface repensée, visuellement plus raffinée
+- Prise en charge du mode paysage sur tablette
 
 **Version 1.1.0**
 

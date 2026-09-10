@@ -119,7 +119,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get micPermissionRationale =>
-      'Để đếm số lần niệm Phật, vui lòng bật Micrô trong Cài đặt hệ thống > Niệm Phật.';
+      'Để đếm số lần niệm Phật, vui lòng bật Micrô trong Cài đặt hệ thống > Chuyên Tâm Niệm Phật.';
 
   @override
   String get openSettings => 'Mở Cài đặt';
