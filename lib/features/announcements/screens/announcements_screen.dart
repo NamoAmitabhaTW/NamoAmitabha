@@ -1,4 +1,5 @@
 // amitabha/lib/features/announcements/screens/announcements_screen.dart
+import 'package:amitabha/core/layout/layout_scale.dart';
 import 'package:amitabha/core/theme/brand.dart';
 import 'package:amitabha/core/widgets/content_width.dart';
 import 'package:amitabha/core/widgets/fitted_title.dart';
@@ -57,17 +58,18 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
           return RefreshIndicator(
             onRefresh: c.load,
             child: ContentWidth(
-              maxWidth: 640,
+              maxWidth: 640 * layoutScale(context),
               child: ListView.separated(
                 padding: EdgeInsets.fromLTRB(
-                  24,
-                  12,
-                  24,
-                  32 + MediaQuery.paddingOf(context).bottom,
+                  24 * layoutScale(context),
+                  12 * layoutScale(context),
+                  24 * layoutScale(context),
+                  32 * layoutScale(context) +
+                      MediaQuery.paddingOf(context).bottom,
                 ),
                 itemCount: c.items.length,
-                separatorBuilder: (_, __) => const Divider(
-                  height: 32,
+                separatorBuilder: (_, __) => Divider(
+                  height: 32 * layoutScale(context),
                   thickness: 1,
                   color: Brand.settingsDivider,
                 ),
@@ -95,43 +97,44 @@ class _PinnedCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.read<AnnouncementController>();
+    final s = layoutScale(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const SizedBox(height: 4),
+        SizedBox(height: 4 * s),
         Text(
           item.displayTitle(lang),
           textAlign: TextAlign.center,
-          style: const TextStyle(
-            fontSize: 24,
+          style: TextStyle(
+            fontSize: 24 * s,
             fontWeight: FontWeight.w500,
-            letterSpacing: 2,
+            letterSpacing: 2 * s,
             color: Brand.amitabhaInk,
             fontFamily: Brand.lxgwWenkaiTc,
             fontFamilyFallback: SimpleMarkdown.cjkFallback,
           ),
         ),
         if (item.date.isNotEmpty) ...[
-          const SizedBox(height: 8),
+          SizedBox(height: 8 * s),
           Text(
             item.date,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 12.5,
-              letterSpacing: 3,
+            style: TextStyle(
+              fontSize: 12.5 * s,
+              letterSpacing: 3 * s,
               color: Brand.settingsBrownSoft,
             ),
           ),
         ],
-        const SizedBox(height: 16),
+        SizedBox(height: 16 * s),
         Center(
           child: Container(
-            width: 28,
+            width: 28 * s,
             height: 1,
             color: const Color(0x598A6320),
           ),
         ),
-        const SizedBox(height: 22),
+        SizedBox(height: 22 * s),
         FutureBuilder<String?>(
           future: c.ensureBody(item, lang),
           builder: (context, snap) {
@@ -153,11 +156,12 @@ class _PinnedCard extends StatelessWidget {
               data: body,
               accentColor: Brand.settingsGold,
               justify: bodyLang == 'zh' || bodyLang == 'ja',
+              scale: s,
               onLinkTap: (url) => _copyLink(context, url),
             );
           },
         ),
-        const SizedBox(height: 4),
+        SizedBox(height: 4 * s),
       ],
     );
   }
@@ -171,13 +175,14 @@ class _AnnouncementRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = layoutScale(context);
     return InkWell(
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(builder: (_) => AnnouncementDetailScreen(item: item)),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 18),
+        padding: EdgeInsets.symmetric(vertical: 18 * s),
         child: Row(
           children: [
             Expanded(
@@ -186,20 +191,20 @@ class _AnnouncementRow extends StatelessWidget {
                 children: [
                   Text(
                     item.displayTitle(lang),
-                    style: const TextStyle(
-                      fontSize: 18,
+                    style: TextStyle(
+                      fontSize: 18 * s,
                       fontWeight: FontWeight.w600,
                       color: Brand.settingsTitle,
                       fontFamilyFallback: SimpleMarkdown.cjkFallback,
                     ),
                   ),
                   if (item.date.isNotEmpty) ...[
-                    const SizedBox(height: 4),
+                    SizedBox(height: 4 * s),
                     Text(
                       item.date,
-                      style: const TextStyle(
-                        fontSize: 12.5,
-                        letterSpacing: 1,
+                      style: TextStyle(
+                        fontSize: 12.5 * s,
+                        letterSpacing: 1 * s,
                         color: Brand.settingsBrownSoft,
                       ),
                     ),
@@ -207,10 +212,10 @@ class _AnnouncementRow extends StatelessWidget {
                 ],
               ),
             ),
-            const Icon(
+            Icon(
               Icons.chevron_right,
               color: Brand.settingsBrownSoft,
-              size: 22,
+              size: 22 * s,
             ),
           ],
         ),

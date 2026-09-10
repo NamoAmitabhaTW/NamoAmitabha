@@ -1,4 +1,5 @@
 // amitabha/lib/features/background/screens/background_picker_screen.dart
+import 'package:amitabha/core/layout/layout_scale.dart';
 import 'package:amitabha/core/widgets/content_width.dart';
 import 'package:amitabha/core/widgets/fitted_title.dart';
 import 'package:amitabha/features/background/background_controller.dart';
@@ -53,15 +54,18 @@ class _BackgroundPickerScreenState extends State<BackgroundPickerScreen> {
                 child: RefreshIndicator(
                   onRefresh: c.load,
                   child: ContentWidth(
+                    maxWidth: 600 * layoutScale(context),
                     child: ListView.separated(
                       padding: EdgeInsets.fromLTRB(
-                        16,
-                        16,
-                        16,
-                        16 + MediaQuery.paddingOf(context).bottom,
+                        16 * layoutScale(context),
+                        16 * layoutScale(context),
+                        16 * layoutScale(context),
+                        16 * layoutScale(context) +
+                            MediaQuery.paddingOf(context).bottom,
                       ),
                       itemCount: c.items.length,
-                      separatorBuilder: (_, __) => const SizedBox(height: 12),
+                      separatorBuilder: (_, __) =>
+                          SizedBox(height: 12 * layoutScale(context)),
                       itemBuilder: (context, i) {
                         final item = c.items[i];
                         return BackgroundCard(
@@ -156,40 +160,41 @@ class _ClearedNoticeBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = layoutScale(context);
     return Container(
-      margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-      padding: const EdgeInsets.all(12),
+      margin: EdgeInsets.fromLTRB(16 * s, 16 * s, 16 * s, 0),
+      padding: EdgeInsets.all(12 * s),
       decoration: BoxDecoration(
         color: Colors.amber.withValues(alpha: 0.15),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12 * s),
         border: Border.all(color: Colors.amber.withValues(alpha: 0.5)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(Icons.info_outline, size: 20, color: Colors.amber),
-          const SizedBox(width: 10),
+          Icon(Icons.info_outline, size: 20 * s, color: Colors.amber),
+          SizedBox(width: 10 * s),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   t.bgClearedTitle(name),
-                  style: const TextStyle(
-                    fontSize: 14,
+                  style: TextStyle(
+                    fontSize: 14 * s,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: 4 * s),
                 Text(
                   t.bgClearedBody,
-                  style: const TextStyle(fontSize: 12.5, height: 1.4),
+                  style: TextStyle(fontSize: 12.5 * s, height: 1.4),
                 ),
               ],
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.close, size: 18),
+            icon: Icon(Icons.close, size: 18 * s),
             visualDensity: VisualDensity.compact,
             onPressed: onDismiss,
           ),
@@ -207,46 +212,47 @@ class _OfflineNoticeBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = layoutScale(context);
     return Container(
-      margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-      padding: const EdgeInsets.all(12),
+      margin: EdgeInsets.fromLTRB(16 * s, 16 * s, 16 * s, 0),
+      padding: EdgeInsets.all(12 * s),
       decoration: BoxDecoration(
         color: Colors.amber.withValues(alpha: 0.15),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12 * s),
         border: Border.all(color: Colors.amber.withValues(alpha: 0.5)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(Icons.cloud_off_outlined, size: 20, color: Colors.amber),
-          const SizedBox(width: 10),
+          Icon(Icons.cloud_off_outlined, size: 20 * s, color: Colors.amber),
+          SizedBox(width: 10 * s),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   t.bgOfflineTitle,
-                  style: const TextStyle(
-                    fontSize: 14,
+                  style: TextStyle(
+                    fontSize: 14 * s,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: 4 * s),
                 Text(
                   t.bgOfflineBody,
-                  style: const TextStyle(fontSize: 12.5, height: 1.4),
+                  style: TextStyle(fontSize: 12.5 * s, height: 1.4),
                 ),
               ],
             ),
           ),
           TextButton.icon(
             onPressed: onRetry,
-            icon: const Icon(Icons.refresh, size: 20),
+            icon: Icon(Icons.refresh, size: 20 * s),
             label: Text(t.retry),
             style: TextButton.styleFrom(
               foregroundColor: const Color(0xFF6F5C44),
-              textStyle: const TextStyle(
-                fontSize: 16,
+              textStyle: TextStyle(
+                fontSize: 16 * s,
                 fontWeight: FontWeight.w600,
               ),
             ),

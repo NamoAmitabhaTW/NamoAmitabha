@@ -1,4 +1,5 @@
 // amitabha/lib/features/dedication/screens/dedication_editor_screen.dart
+import 'package:amitabha/core/layout/layout_scale.dart';
 import 'package:amitabha/core/theme/brand.dart';
 import 'package:amitabha/features/dedication/dedication_controller.dart';
 import 'package:amitabha/features/dedication/dedication_style.dart';
@@ -34,23 +35,26 @@ class _DedicationEditorScreenState extends State<DedicationEditorScreen>
     Brand.lxgwWenkaiTc,
   ];
 
-  TextStyle get _editStyle => _isLatin
-      ? TextStyle(
-          fontFamily: Brand.notoSerifTc,
-          fontFamilyFallback: _editFontFallback,
-          fontSize: _lang == 'vi' ? _viFontSize : _latinFontSize,
-          height: _lang == 'vi' ? _viLineHeight : _latinLineHeight,
-          fontWeight: FontWeight.w500,
-          color: Brand.settingsBrown,
-        )
-      : const TextStyle(
-          fontFamily: Brand.notoSerifTc,
-          fontFamilyFallback: _editFontFallback,
-          fontSize: 30,
-          height: 1.5,
-          letterSpacing: 3,
-          color: Brand.settingsBrown,
-        );
+  TextStyle get _editStyle {
+    final s = layoutScale(context);
+    return _isLatin
+        ? TextStyle(
+            fontFamily: Brand.notoSerifTc,
+            fontFamilyFallback: _editFontFallback,
+            fontSize: (_lang == 'vi' ? _viFontSize : _latinFontSize) * s,
+            height: _lang == 'vi' ? _viLineHeight : _latinLineHeight,
+            fontWeight: FontWeight.w500,
+            color: Brand.settingsBrown,
+          )
+        : TextStyle(
+            fontFamily: Brand.notoSerifTc,
+            fontFamilyFallback: _editFontFallback,
+            fontSize: 30 * s,
+            height: 1.5,
+            letterSpacing: 3 * s,
+            color: Brand.settingsBrown,
+          );
+  }
 
   @override
   void initState() {
@@ -96,7 +100,9 @@ class _DedicationEditorScreenState extends State<DedicationEditorScreen>
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
     final locale = Localizations.localeOf(context);
-    final isCjkTitle = locale.languageCode == 'zh' || locale.languageCode == 'ja';
+    final isCjkTitle =
+        locale.languageCode == 'zh' || locale.languageCode == 'ja';
+    final s = layoutScale(context);
 
     return DecoratedBox(
       decoration: _paperDecoration,
@@ -117,9 +123,9 @@ class _DedicationEditorScreenState extends State<DedicationEditorScreen>
               style: TextStyle(
                 fontFamily: Brand.notoSerifTc,
                 fontFamilyFallback: _editFontFallback,
-                fontSize: 22,
+                fontSize: 22 * s,
                 fontWeight: FontWeight.w600,
-                letterSpacing: isCjkTitle ? 4 : 0.5,
+                letterSpacing: (isCjkTitle ? 4 : 0.5) * s,
                 color: Brand.settingsTitle,
               ),
             ),
@@ -128,43 +134,43 @@ class _DedicationEditorScreenState extends State<DedicationEditorScreen>
         body: SafeArea(
           top: false,
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+            padding: EdgeInsets.fromLTRB(16 * s, 8 * s, 16 * s, 16 * s),
             child: Column(
               children: [
-                const _GoldDivider(),
-                const SizedBox(height: 16),
+                _GoldDivider(scale: s),
+                SizedBox(height: 16 * s),
                 Expanded(
                   child: Container(
-              decoration: BoxDecoration(
-                color: Brand.settingsCardBg,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: const Color(0x22B2842E),
-                  width: 1,
-                ),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color(0x146F4E37),
-                    blurRadius: 24,
-                    spreadRadius: -6,
-                    offset: Offset(0, 8),
-                  ),
-                ],
-              ),
-              padding: const EdgeInsets.all(20),
-              child: TextField(
-                controller: _controller,
-                maxLines: null,
-                expands: true,
-                textAlignVertical: TextAlignVertical.top,
-                keyboardType: TextInputType.multiline,
-                style: _editStyle,
-                cursorColor: DedicationStyle.gold,
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  isCollapsed: true,
-                ),
-              ),
+                    decoration: BoxDecoration(
+                      color: Brand.settingsCardBg,
+                      borderRadius: BorderRadius.circular(20 * s),
+                      border: Border.all(
+                        color: const Color(0x22B2842E),
+                        width: 1,
+                      ),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0x146F4E37),
+                          blurRadius: 24,
+                          spreadRadius: -6,
+                          offset: Offset(0, 8),
+                        ),
+                      ],
+                    ),
+                    padding: EdgeInsets.all(20 * s),
+                    child: TextField(
+                      controller: _controller,
+                      maxLines: null,
+                      expands: true,
+                      textAlignVertical: TextAlignVertical.top,
+                      keyboardType: TextInputType.multiline,
+                      style: _editStyle,
+                      cursorColor: DedicationStyle.gold,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        isCollapsed: true,
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -185,24 +191,26 @@ final BoxDecoration _paperDecoration = const BoxDecoration(
 );
 
 class _GoldDivider extends StatelessWidget {
-  const _GoldDivider();
+  const _GoldDivider({required this.scale});
+
+  final double scale;
 
   @override
   Widget build(BuildContext context) {
     Widget line(List<Color> colors) => Container(
-          width: 56,
-          height: 1,
-          decoration: BoxDecoration(gradient: LinearGradient(colors: colors)),
-        );
+      width: 56 * scale,
+      height: 1,
+      decoration: BoxDecoration(gradient: LinearGradient(colors: colors)),
+    );
 
     return Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         line(const [Color(0x00B2842E), DedicationStyle.gold]),
-        const SizedBox(width: 8),
-        Image.asset('assets/images/lotus_divider.png', height: 32),
-        const SizedBox(width: 8),
+        SizedBox(width: 8 * scale),
+        Image.asset('assets/images/lotus_divider.png', height: 32 * scale),
+        SizedBox(width: 8 * scale),
         line(const [DedicationStyle.gold, Color(0x00B2842E)]),
       ],
     );
