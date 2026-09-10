@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:amitabha/core/layout/layout_scale.dart';
 import 'package:amitabha/core/localization/locale_controller.dart';
 import 'package:amitabha/features/asr/asr.dart';
-import 'package:amitabha/features/records/presentation/screens/records_screen.dart';
+import 'package:amitabha/features/records/records.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -61,6 +61,9 @@ void main() {
         MultiProvider(
           providers: [
             ChangeNotifierProvider(create: (_) => fileBackedAsrController()),
+            Provider(
+              create: (_) => const RecordsController(FileDailyRepository()),
+            ),
             ChangeNotifierProvider(create: (_) => LocaleController()),
           ],
           child: MaterialApp(

@@ -3,10 +3,12 @@ import 'package:amitabha/core/assets/app_assets.dart';
 import 'package:amitabha/core/layout/layout_scale.dart';
 import 'package:amitabha/core/localization/locale_controller.dart';
 import 'package:amitabha/features/announcements/presentation/widgets/simple_markdown.dart';
+import 'package:amitabha/features/asr/asr.dart';
 import 'package:amitabha/features/background/domain/background_item.dart';
 import 'package:amitabha/features/background/presentation/widgets/background_card.dart';
 import 'package:amitabha/features/dedication/application/dedication_controller.dart';
 import 'package:amitabha/features/dedication/presentation/screens/dedication_editor_screen.dart';
+import 'package:amitabha/features/records/records.dart';
 import 'package:amitabha/features/settings/presentation/screens/settings_screen.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -225,6 +227,9 @@ void main() {
         MultiProvider(
           providers: [
             ChangeNotifierProvider(create: (_) => fileBackedAsrController()),
+            Provider(
+              create: (_) => const RecordsController(FileDailyRepository()),
+            ),
             ChangeNotifierProvider(create: (_) => LocaleController()),
           ],
           child: MaterialApp(

@@ -1,5 +1,6 @@
 // lib/app/di/app_dependencies.dart
 import 'package:amitabha/features/asr/asr.dart';
+import 'package:amitabha/features/records/records.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 class AppDependencies {
@@ -14,6 +15,9 @@ class AppDependencies {
         setWakelock: setWakelock,
         sourceFactory: () => SherpaMicSource(),
       );
+
+  static RecordsController createRecordsController() =>
+      const RecordsController(FileDailyRepository());
 
   static Future<void> setWakelock(bool keepAwake) =>
       keepAwake ? WakelockPlus.enable() : WakelockPlus.disable();

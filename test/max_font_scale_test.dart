@@ -12,7 +12,7 @@ import 'package:amitabha/features/dedication/application/dedication_controller.d
 import 'package:amitabha/features/dedication/presentation/screens/dedication_editor_screen.dart';
 import 'package:amitabha/features/dedication/presentation/screens/dedication_screen.dart';
 import 'package:amitabha/features/dedication/presentation/widgets/dedication_karaoke.dart';
-import 'package:amitabha/features/records/presentation/screens/records_screen.dart';
+import 'package:amitabha/features/records/records.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -59,6 +59,7 @@ Widget _app({
 }) => MultiProvider(
   providers: [
     ChangeNotifierProvider(create: (_) => fileBackedAsrController()),
+    Provider(create: (_) => const RecordsController(FileDailyRepository())),
     ChangeNotifierProvider(create: (_) => LocaleController()),
     ChangeNotifierProvider(create: (_) => DedicationController()),
   ],

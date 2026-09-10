@@ -25,6 +25,8 @@ class App extends StatelessWidget {
           create: (_) => AppDependencies.createAsrSessionController(),
         ),
         ChangeNotifierProvider(create: (_) => LocaleController()),
+
+        Provider(create: (_) => AppDependencies.createRecordsController()),
         ChangeNotifierProvider(
           create: (_) => BackgroundController()..load(),
           lazy: false,

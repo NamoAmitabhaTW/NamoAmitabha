@@ -1,16 +1,14 @@
 // lib/features/records/presentation/screens/records_screen.dart
-import 'dart:io';
 import 'package:amitabha/core/assets/app_assets.dart';
-import 'package:amitabha/core/infrastructure/app_paths.dart';
-import 'package:amitabha/core/infrastructure/atomic_io.dart';
 import 'package:amitabha/core/layout/layout_scale.dart';
 import 'package:amitabha/core/theme/brand.dart';
 import 'package:amitabha/core/widgets/content_width.dart';
 import 'package:amitabha/features/asr/asr.dart';
+import 'package:amitabha/features/records/application/records_controller.dart';
+import 'package:amitabha/features/records/domain/chanting_statistics.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 
 double _scale(BuildContext context) => layoutScale(context);
@@ -78,24 +76,24 @@ class RecordsScreen extends StatelessWidget {
     int ver,
     double bottomInset,
   ) {
-    return FutureBuilder<_DailyLoadResult>(
+    return FutureBuilder<ChantingStatistics>(
       key: ValueKey(ver),
-      future: _loadAllDaily(),
+      future: context.read<RecordsController>().load(),
       builder: (context, snap) {
         if (!snap.hasData) {
           return const Center(child: CircularProgressIndicator());
         }
-        final data = snap.data!;
+        final stats = snap.data!;
         final header = _HeaderCards(
-          totalText: '${data.total}',
-          practiceDaysText: '${data.practiceDays}',
+          totalText: '${stats.total}',
+          practiceDaysText: '${stats.practiceDays}',
           calligraphyAsset: AppAssets.calligraphy(
             Localizations.localeOf(context).languageCode,
           ),
           t: t,
         );
 
-        if (data.items.isEmpty) {
+        if (stats.isEmpty) {
           return SafeArea(
             top: true,
             bottom: false,
@@ -131,9 +129,9 @@ class RecordsScreen extends StatelessWidget {
                 sliver: SliverToBoxAdapter(child: header),
               ),
               SliverList.builder(
-                itemCount: data.items.length,
+                itemCount: stats.days.length,
                 itemBuilder: (_, i) {
-                  final r = data.items[i];
+                  final r = stats.days[i];
                   final y = int.parse(r.yyyymmdd.substring(0, 4));
                   final m = int.parse(r.yyyymmdd.substring(4, 6));
                   final d = int.parse(r.yyyymmdd.substring(6, 8));
@@ -141,7 +139,7 @@ class RecordsScreen extends StatelessWidget {
 
                   final isMonthStart =
                       i == 0 ||
-                      data.items[i - 1].yyyymmdd.substring(0, 6) !=
+                      stats.days[i - 1].yyyymmdd.substring(0, 6) !=
                           r.yyyymmdd.substring(0, 6);
 
                   final tile = _RecordTile(
@@ -167,43 +165,6 @@ class RecordsScreen extends StatelessWidget {
       },
     );
   }
-}
-
-class _DailyLoadResult {
-  final List<DailySummary> items;
-  final int total;
-  final int practiceDays;
-  _DailyLoadResult(this.items, this.total, this.practiceDays);
-}
-
-Future<_DailyLoadResult> _loadAllDaily() async {
-  final root = await AppPaths.dataRoot();
-  final dir = Directory(p.join(root.path, 'daily'));
-  if (!await dir.exists()) {
-    return _DailyLoadResult(const [], 0, 0);
-  }
-
-  final files = await dir
-      .list()
-      .where((e) => e is File && e.path.endsWith('.json'))
-      .cast<File>()
-      .toList();
-
-  final items = <DailySummary>[];
-  for (final f in files) {
-    final j = await readJsonOrEmpty(f);
-    if (j.isEmpty) continue;
-    try {
-      items.add(DailySummary.fromJson(j));
-    } catch (_) {}
-  }
-
-  items.sort((a, b) => b.yyyymmdd.compareTo(a.yyyymmdd));
-
-  final total = items.fold<int>(0, (s, e) => s + e.amitabhaCount);
-  final practiceDays = items.where((e) => e.amitabhaCount > 0).length;
-
-  return _DailyLoadResult(items, total, practiceDays);
 }
 
 class _HeaderCards extends StatelessWidget {
