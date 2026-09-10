@@ -5,10 +5,11 @@ import 'package:amitabha/core/infrastructure/app_paths.dart';
 import 'package:amitabha/core/infrastructure/atomic_io.dart';
 import 'package:amitabha/features/background/data/background_paths.dart';
 import 'package:amitabha/features/background/domain/background_item.dart';
+import 'package:amitabha/features/background/domain/background_ports.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as p;
 
-class BackgroundRepo {
+class HttpBackgroundRepository implements BackgroundRepository {
   static const String manifestUrl =
       'https://cdn.jsdelivr.net/gh/Aaron-Tsai-iosDeveloper/NamoAmitabha@main/app-backgrounds/manifest.json';
 
@@ -21,6 +22,7 @@ class BackgroundRepo {
     return f;
   }
 
+  @override
   Future<List<BackgroundItem>> fetchManifest() async {
     final res = await http.get(Uri.parse(manifestUrl));
     if (res.statusCode != 200) {
@@ -38,6 +40,7 @@ class BackgroundRepo {
     return items;
   }
 
+  @override
   Future<List<BackgroundItem>> loadCachedManifest() async {
     try {
       final f = await _manifestCacheFile();
@@ -54,6 +57,7 @@ class BackgroundRepo {
   Future<File> _downloadTarget(BackgroundItem item) =>
       BackgroundPaths.file(item.id, item.fileExtension);
 
+  @override
   Future<File?> findById(String id) async {
     final dir = await BackgroundPaths.dir();
     if (!await dir.exists()) return null;
@@ -65,9 +69,11 @@ class BackgroundRepo {
     return null;
   }
 
+  @override
   Future<bool> isDownloaded(BackgroundItem item) async =>
       await findById(item.id) != null;
 
+  @override
   Future<void> download(
     BackgroundItem item, {
     required void Function(double progress) onProgress,
@@ -110,12 +116,15 @@ class BackgroundRepo {
     }
   }
 
+  @override
   void cancelDownload(String id) {
     _clients[id]?.close();
   }
 
+  @override
   Future<void> delete(BackgroundItem item) => deleteById(item.id);
 
+  @override
   Future<void> deleteById(String id) async {
     final dir = await BackgroundPaths.dir();
     if (!await dir.exists()) return;
@@ -126,6 +135,7 @@ class BackgroundRepo {
     }
   }
 
+  @override
   Future<BackgroundSource?> sourceFor(BackgroundItem item) async {
     if (item.isBuiltin) {
       return BackgroundSource(

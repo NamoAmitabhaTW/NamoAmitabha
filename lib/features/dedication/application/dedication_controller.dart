@@ -1,9 +1,13 @@
 // lib/features/dedication/application/dedication_controller.dart
-import 'package:amitabha/features/dedication/data/dedication_prefs.dart';
 import 'package:amitabha/features/dedication/domain/dedication_gatha.dart';
+import 'package:amitabha/features/dedication/domain/dedication_preferences.dart';
 import 'package:flutter/foundation.dart';
 
 class DedicationController extends ChangeNotifier {
+  DedicationController(this._prefs);
+
+  final DedicationPreferences _prefs;
+
   final Map<String, String> _overrides = {};
 
   bool _loaded = false;
@@ -11,7 +15,7 @@ class DedicationController extends ChangeNotifier {
 
   Future<void> load() async {
     try {
-      final m = await DedicationPrefs.loadOverrides();
+      final m = await _prefs.loadOverrides();
       _overrides
         ..clear()
         ..addAll(m);
@@ -40,7 +44,7 @@ class DedicationController extends ChangeNotifier {
     }
     notifyListeners();
     try {
-      await DedicationPrefs.saveOverrides(_overrides);
+      await _prefs.saveOverrides(_overrides);
     } catch (e) {
       debugPrint('[dedication] save failed: $e');
     }

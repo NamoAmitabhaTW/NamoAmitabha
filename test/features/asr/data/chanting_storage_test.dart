@@ -7,7 +7,7 @@ import 'package:amitabha/features/asr/data/chanting_paths.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
-import 'helpers/fake_path_provider.dart';
+import '../../../helpers/fake_path_provider.dart';
 
 String _nowYmdLocal() {
   final n = DateTime.now();

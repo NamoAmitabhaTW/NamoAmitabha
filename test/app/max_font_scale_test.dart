@@ -1,4 +1,4 @@
-// test/max_font_scale_test.dart
+// test/app/max_font_scale_test.dart
 import 'dart:io';
 import 'package:amitabha/core/assets/app_assets.dart';
 import 'package:amitabha/core/layout/layout_scale.dart';
@@ -8,9 +8,7 @@ import 'package:amitabha/features/announcements/presentation/widgets/simple_mark
 import 'package:amitabha/features/asr/asr.dart';
 import 'package:amitabha/features/background/domain/background_item.dart';
 import 'package:amitabha/features/background/presentation/widgets/background_card.dart';
-import 'package:amitabha/features/dedication/application/dedication_controller.dart';
-import 'package:amitabha/features/dedication/presentation/screens/dedication_editor_screen.dart';
-import 'package:amitabha/features/dedication/presentation/screens/dedication_screen.dart';
+import 'package:amitabha/features/dedication/dedication.dart';
 import 'package:amitabha/features/dedication/presentation/widgets/dedication_karaoke.dart';
 import 'package:amitabha/features/records/records.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
@@ -19,9 +17,9 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:provider/provider.dart';
-import 'helpers/asr_controller.dart';
-import 'helpers/fake_path_provider.dart';
-import 'helpers/real_fonts.dart';
+import '../helpers/asr_controller.dart';
+import '../helpers/fake_path_provider.dart';
+import '../helpers/real_fonts.dart';
 
 const _androidMaxFontScale = 2.0;
 
@@ -61,7 +59,9 @@ Widget _app({
     ChangeNotifierProvider(create: (_) => fileBackedAsrController()),
     Provider(create: (_) => const RecordsController(FileDailyRepository())),
     ChangeNotifierProvider(create: (_) => LocaleController()),
-    ChangeNotifierProvider(create: (_) => DedicationController()),
+    ChangeNotifierProvider(
+      create: (_) => DedicationController(const FileDedicationPreferences()),
+    ),
   ],
   child: MaterialApp(
     locale: locale,

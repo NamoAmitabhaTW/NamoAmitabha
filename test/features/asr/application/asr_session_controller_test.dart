@@ -6,8 +6,8 @@ import 'package:amitabha/features/asr/data/chanting_paths.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
-import 'helpers/asr_controller.dart';
-import 'helpers/fake_path_provider.dart';
+import '../../../helpers/asr_controller.dart';
+import '../../../helpers/fake_path_provider.dart';
 
 class _FakeSource implements SpeechSegmentSource {
   void Function(String)? _onSegment;

@@ -5,12 +5,16 @@ import 'package:amitabha/core/assets/app_assets.dart';
 import 'package:amitabha/core/infrastructure/app_paths.dart';
 import 'package:amitabha/core/infrastructure/atomic_io.dart';
 import 'package:amitabha/features/announcements/domain/announcement_item.dart';
+import 'package:amitabha/features/announcements/domain/announcement_ports.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as p;
 
-class AnnouncementRepo {
-  static const bool localOnly = false;
+class GithubAnnouncementRepository implements AnnouncementRepository {
+  const GithubAnnouncementRepository({this.localOnly = false});
+
+  @override
+  final bool localOnly;
 
   static const String _base =
       'https://raw.githubusercontent.com/Aaron-Tsai-iosDeveloper/NamoAmitabha/main/app-announcements';
@@ -33,6 +37,7 @@ class AnnouncementRepo {
     return File(p.join(root.path, 'announcements', 'bodies', '$id.$lang.md'));
   }
 
+  @override
   Future<List<AnnouncementItem>> loadLocalManifest() async {
     if (!localOnly) {
       try {
@@ -51,6 +56,7 @@ class AnnouncementRepo {
     }
   }
 
+  @override
   Future<List<AnnouncementItem>> fetchRemoteManifest() async {
     final res = await http.get(Uri.parse(manifestUrl));
     if (res.statusCode != 200) {
@@ -73,6 +79,7 @@ class AnnouncementRepo {
         .toList();
   }
 
+  @override
   Future<String?> loadLocalBody(String id, String lang) async {
     if (!localOnly) {
       try {
@@ -87,6 +94,7 @@ class AnnouncementRepo {
     }
   }
 
+  @override
   Future<String?> fetchRemoteBody(String id, String lang) async {
     try {
       final res = await http.get(Uri.parse(bodyUrl(id, lang)));

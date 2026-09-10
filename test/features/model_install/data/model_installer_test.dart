@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
-import 'helpers/fake_path_provider.dart';
+import '../../../helpers/fake_path_provider.dart';
 
 const _testModel = 'test-model';
 const _testRequired = {

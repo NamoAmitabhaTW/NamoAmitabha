@@ -1,4 +1,4 @@
-// test/tablet_scale_test.dart
+// test/app/tablet_scale_test.dart
 import 'package:amitabha/core/assets/app_assets.dart';
 import 'package:amitabha/core/layout/layout_scale.dart';
 import 'package:amitabha/core/localization/locale_controller.dart';
@@ -6,8 +6,7 @@ import 'package:amitabha/features/announcements/presentation/widgets/simple_mark
 import 'package:amitabha/features/asr/asr.dart';
 import 'package:amitabha/features/background/domain/background_item.dart';
 import 'package:amitabha/features/background/presentation/widgets/background_card.dart';
-import 'package:amitabha/features/dedication/application/dedication_controller.dart';
-import 'package:amitabha/features/dedication/presentation/screens/dedication_editor_screen.dart';
+import 'package:amitabha/features/dedication/dedication.dart';
 import 'package:amitabha/features/records/records.dart';
 import 'package:amitabha/features/settings/presentation/screens/settings_screen.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
@@ -15,8 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
-import 'helpers/asr_controller.dart';
-import 'helpers/real_fonts.dart';
+import '../helpers/asr_controller.dart';
+import '../helpers/real_fonts.dart';
 
 const _phoneWidths = <String, double>{
   'Android 小螢幕 360dp': 360,
@@ -295,7 +294,8 @@ void main() {
       });
       await tester.pumpWidget(
         ChangeNotifierProvider(
-          create: (_) => DedicationController(),
+          create: (_) =>
+              DedicationController(const FileDedicationPreferences()),
           child: MaterialApp(
             locale: const Locale('zh', 'TW'),
             localizationsDelegates: AppLocalizations.localizationsDelegates,

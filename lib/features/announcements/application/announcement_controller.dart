@@ -1,14 +1,13 @@
 // lib/features/announcements/application/announcement_controller.dart
-import 'package:amitabha/features/announcements/data/announcement_prefs.dart';
-import 'package:amitabha/features/announcements/data/announcement_repo.dart';
 import 'package:amitabha/features/announcements/domain/announcement_item.dart';
+import 'package:amitabha/features/announcements/domain/announcement_ports.dart';
 import 'package:flutter/foundation.dart';
 
 class AnnouncementController extends ChangeNotifier {
-  AnnouncementController({AnnouncementRepo? repo})
-    : _repo = repo ?? AnnouncementRepo();
+  AnnouncementController(this._repo, this._prefs);
 
-  final AnnouncementRepo _repo;
+  final AnnouncementRepository _repo;
+  final AnnouncementPreferences _prefs;
 
   List<AnnouncementItem> items = [];
   bool isLoading = false;
@@ -22,13 +21,13 @@ class AnnouncementController extends ChangeNotifier {
 
   Future<void> load() async {
     isLoading = true;
-    _read = await AnnouncementPrefs.loadRead();
+    _read = await _prefs.loadRead();
 
     items = await _repo.loadLocalManifest();
     notifyListeners();
 
     manifestLoadFailed = false;
-    if (!AnnouncementRepo.localOnly) {
+    if (!_repo.localOnly) {
       try {
         items = await _repo.fetchRemoteManifest();
       } catch (e) {
@@ -45,7 +44,7 @@ class AnnouncementController extends ChangeNotifier {
     final next = {for (final i in items) i.id: i.version};
     if (mapEquals(next, _read)) return;
     _read = next;
-    await AnnouncementPrefs.saveRead(next);
+    await _prefs.saveRead(next);
     notifyListeners();
   }
 
@@ -72,17 +71,16 @@ class AnnouncementController extends ChangeNotifier {
       notifyListeners();
     }
 
-    final bodyVersions = await AnnouncementPrefs.loadBodyVersions();
+    final bodyVersions = await _prefs.loadBodyVersions();
     final localVersion = bodyVersions[item.id] ?? 0;
     final needsRemote =
-        !AnnouncementRepo.localOnly &&
-        (local == null || localVersion < item.version);
+        !_repo.localOnly && (local == null || localVersion < item.version);
 
     if (needsRemote) {
       final remote = await _repo.fetchRemoteBody(item.id, lang);
       if (remote != null) {
         _bodies[key] = remote;
-        await AnnouncementPrefs.saveBodyVersion(item.id, item.version);
+        await _prefs.saveBodyVersion(item.id, item.version);
         notifyListeners();
       }
     }

@@ -3,10 +3,7 @@ import 'package:amitabha/app/di/app_dependencies.dart';
 import 'package:amitabha/app/orientation_lock.dart';
 import 'package:amitabha/core/localization/locale_controller.dart';
 import 'package:amitabha/core/theme/brand.dart';
-import 'package:amitabha/features/announcements/announcements.dart';
 import 'package:amitabha/features/app_update/app_update.dart';
-import 'package:amitabha/features/background/background.dart';
-import 'package:amitabha/features/dedication/dedication.dart';
 import 'package:amitabha/features/home/home.dart';
 import 'package:amitabha/features/model_install/model_install.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
@@ -28,19 +25,19 @@ class App extends StatelessWidget {
 
         Provider(create: (_) => AppDependencies.createRecordsController()),
         ChangeNotifierProvider(
-          create: (_) => BackgroundController()..load(),
+          create: (_) => AppDependencies.createBackgroundController()..load(),
           lazy: false,
         ),
         ChangeNotifierProvider(
-          create: (_) => DedicationController()..load(),
+          create: (_) => AppDependencies.createDedicationController()..load(),
           lazy: false,
         ),
         ChangeNotifierProvider(
-          create: (_) => AnnouncementController()..load(),
+          create: (_) => AppDependencies.createAnnouncementController()..load(),
           lazy: false,
         ),
 
-        Provider(create: (_) => AppUpdateController()),
+        Provider(create: (_) => AppDependencies.createAppUpdateController()),
       ],
       child: Builder(
         builder: (context) {

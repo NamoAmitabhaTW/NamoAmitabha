@@ -1,17 +1,16 @@
 // lib/features/background/application/background_controller.dart
 import 'dart:io';
-import 'package:amitabha/features/background/data/background_prefs.dart';
-import 'package:amitabha/features/background/data/background_repo.dart';
 import 'package:amitabha/features/background/domain/background_item.dart';
+import 'package:amitabha/features/background/domain/background_ports.dart';
 import 'package:flutter/foundation.dart';
 
 enum BackgroundDownloadError { network, notAvailable, unknown }
 
 class BackgroundController extends ChangeNotifier {
-  BackgroundController({BackgroundRepo? repo})
-    : _repo = repo ?? BackgroundRepo();
+  BackgroundController(this._repo, this._prefs);
 
-  final BackgroundRepo _repo;
+  final BackgroundRepository _repo;
+  final BackgroundPreferences _prefs;
 
   bool manifestLoadFailed = false;
 
@@ -49,7 +48,7 @@ class BackgroundController extends ChangeNotifier {
 
     final cached = await _repo.loadCachedManifest();
     items = await _reconcile(builtins, cached);
-    final active = await BackgroundPrefs.loadActive();
+    final active = await _prefs.loadActive();
     activeId = (active?['activeId'] as String?) ?? _defaultBuiltin?.id;
     await _resolveSourceFast(active);
     notifyListeners();
@@ -85,7 +84,7 @@ class BackgroundController extends ChangeNotifier {
     List<BackgroundItem> manifest,
   ) async {
     final merged = <BackgroundItem>[...builtins];
-    final versions = await BackgroundPrefs.loadVersions();
+    final versions = await _prefs.loadVersions();
     for (final item in manifest) {
       if (builtins.any((b) => b.id == item.id)) continue;
       item.isDownloaded = await _repo.isDownloaded(item);
@@ -120,7 +119,7 @@ class BackgroundController extends ChangeNotifier {
       );
       item.isDownloaded = true;
       item.needsUpdate = false;
-      await BackgroundPrefs.saveVersion(item.id, item.version);
+      await _prefs.saveVersion(item.id, item.version);
       if (item.id == activeId) {
         await _saveActive(item);
         await _resolveSource();
@@ -169,7 +168,7 @@ class BackgroundController extends ChangeNotifier {
     if (item.isBuiltin) return;
 
     await _repo.delete(item);
-    await BackgroundPrefs.removeVersion(item.id);
+    await _prefs.removeVersion(item.id);
     item.isDownloaded = false;
     item.needsUpdate = false;
 
@@ -193,7 +192,7 @@ class BackgroundController extends ChangeNotifier {
     }
     final f = await _repo.findById(item.id);
     if (f == null) return null;
-    final versions = await BackgroundPrefs.loadVersions();
+    final versions = await _prefs.loadVersions();
     final localRev = versions[item.id] ?? 1;
     return BackgroundSource(type: item.type, file: f, revision: localRev);
   }
@@ -237,7 +236,7 @@ class BackgroundController extends ChangeNotifier {
   Future<void> _saveActive(BackgroundItem item) async {
     final localRev = item.isBuiltin
         ? 1
-        : ((await BackgroundPrefs.loadVersions())[item.id] ?? item.version);
-    await BackgroundPrefs.saveActive(item.id, item.type, localRev);
+        : ((await _prefs.loadVersions())[item.id] ?? item.version);
+    await _prefs.saveActive(item.id, item.type, localRev);
   }
 }

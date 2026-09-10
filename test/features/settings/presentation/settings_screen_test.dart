@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:provider/provider.dart';
-import 'helpers/asr_controller.dart';
-import 'helpers/fake_path_provider.dart';
+import '../../../helpers/asr_controller.dart';
+import '../../../helpers/fake_path_provider.dart';
 
 Widget _wrap(Widget child) {
   return MultiProvider(

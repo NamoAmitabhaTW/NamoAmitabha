@@ -1,14 +1,13 @@
-// test/dedication_layout_test.dart
-import 'package:amitabha/features/dedication/application/dedication_controller.dart';
+// test/features/dedication/presentation/dedication_layout_test.dart
+import 'package:amitabha/features/dedication/dedication.dart';
 import 'package:amitabha/features/dedication/domain/dedication_gatha.dart';
-import 'package:amitabha/features/dedication/presentation/screens/dedication_screen.dart';
 import 'package:amitabha/features/dedication/presentation/widgets/dedication_karaoke.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
-import 'helpers/real_fonts.dart';
+import '../../../helpers/real_fonts.dart';
 
 const _iPhone = Size(390, 844);
 const _iPadPortrait = Size(820, 1180);
@@ -79,7 +78,7 @@ Future<void> _pumpScreen(WidgetTester tester, Size logical) async {
 
   await tester.pumpWidget(
     ChangeNotifierProvider(
-      create: (_) => DedicationController(),
+      create: (_) => DedicationController(const FileDedicationPreferences()),
       child: MaterialApp(
         locale: _zhTw,
         localizationsDelegates: AppLocalizations.localizationsDelegates,

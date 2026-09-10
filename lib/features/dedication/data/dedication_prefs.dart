@@ -1,10 +1,14 @@
 // lib/features/dedication/data/dedication_prefs.dart
 import 'package:amitabha/core/infrastructure/json_prefs_file.dart';
+import 'package:amitabha/features/dedication/domain/dedication_preferences.dart';
 
-class DedicationPrefs {
+class FileDedicationPreferences implements DedicationPreferences {
+  const FileDedicationPreferences();
+
   static final _file = JsonPrefsFile('dedication');
 
-  static Future<Map<String, String>> loadOverrides() async {
+  @override
+  Future<Map<String, String>> loadOverrides() async {
     final j = await _file.read();
     if (j == null) return {};
 
@@ -24,6 +28,7 @@ class DedicationPrefs {
     return {};
   }
 
-  static Future<void> saveOverrides(Map<String, String> overrides) =>
+  @override
+  Future<void> saveOverrides(Map<String, String> overrides) =>
       _file.write({'overrides': overrides});
 }

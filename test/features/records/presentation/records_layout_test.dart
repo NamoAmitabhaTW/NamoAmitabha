@@ -1,4 +1,4 @@
-// test/records_layout_test.dart
+// test/features/records/presentation/records_layout_test.dart
 import 'dart:io';
 import 'package:amitabha/core/layout/layout_scale.dart';
 import 'package:amitabha/core/localization/locale_controller.dart';
@@ -10,9 +10,9 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:provider/provider.dart';
-import 'helpers/asr_controller.dart';
-import 'helpers/fake_path_provider.dart';
-import 'helpers/real_fonts.dart';
+import '../../../helpers/asr_controller.dart';
+import '../../../helpers/fake_path_provider.dart';
+import '../../../helpers/real_fonts.dart';
 
 const _dateSize = 19.0;
 const _countSize = 32.0;

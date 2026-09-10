@@ -1,12 +1,16 @@
 // lib/features/app_update/data/app_update_repo.dart
 import 'dart:convert';
 import 'dart:io';
+import 'package:amitabha/features/app_update/domain/app_update_ports.dart';
 import 'package:http/http.dart' as http;
 
-class AppUpdateRepo {
+class HttpLatestVersionSource implements LatestVersionSource {
+  const HttpLatestVersionSource();
+
   static const String url =
       'https://raw.githubusercontent.com/Aaron-Tsai-iosDeveloper/NamoAmitabha/main/app-release/version.json';
 
+  @override
   Future<String?> fetchLatest() async {
     final key = Platform.isIOS
         ? 'ios'

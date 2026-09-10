@@ -1,17 +1,17 @@
 // lib/features/app_update/application/app_update_controller.dart
 import 'dart:io' show Platform;
 import 'package:amitabha/core/config/store_links.dart';
-import 'package:amitabha/features/app_update/data/app_update_prefs.dart';
-import 'package:amitabha/features/app_update/data/app_update_repo.dart';
+import 'package:amitabha/features/app_update/domain/app_update_ports.dart';
 import 'package:amitabha/features/app_update/domain/app_version.dart';
 import 'package:flutter/foundation.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AppUpdateController {
-  AppUpdateController({AppUpdateRepo? repo}) : _repo = repo ?? AppUpdateRepo();
+  AppUpdateController(this._latestVersion, this._prefs);
 
-  final AppUpdateRepo _repo;
+  final LatestVersionSource _latestVersion;
+  final AppUpdatePreferences _prefs;
 
   static const bool debugAlwaysShow = false;
 
@@ -26,7 +26,7 @@ class AppUpdateController {
 
     final String? rawLatest;
     try {
-      rawLatest = await _repo.fetchLatest();
+      rawLatest = await _latestVersion.fetchLatest();
     } catch (e) {
       debugPrint('版本資訊載入失敗: $e');
       return false;
@@ -39,7 +39,7 @@ class AppUpdateController {
 
     _pendingLatest = latest;
 
-    final dismissed = await AppUpdatePrefs.load();
+    final dismissed = await _prefs.load();
     final at = dismissed.at;
     if (dismissed.version == latest.toString() &&
         at != null &&
@@ -53,7 +53,7 @@ class AppUpdateController {
     if (debugAlwaysShow) return;
     final latest = _pendingLatest;
     if (latest == null) return;
-    await AppUpdatePrefs.saveDismissed(latest.toString());
+    await _prefs.saveDismissed(latest.toString());
   }
 
   Future<bool> openStore() async {

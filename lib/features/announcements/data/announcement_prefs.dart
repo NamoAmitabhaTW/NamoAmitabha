@@ -1,19 +1,25 @@
 // lib/features/announcements/data/announcement_prefs.dart
 import 'package:amitabha/core/infrastructure/json_prefs_file.dart';
+import 'package:amitabha/features/announcements/domain/announcement_ports.dart';
 
-class AnnouncementPrefs {
+class FileAnnouncementPreferences implements AnnouncementPreferences {
+  const FileAnnouncementPreferences();
+
   static final _read = JsonPrefsFile('announcement_read');
   static final _bodyVersions = JsonPrefsFile('announcement_body_versions');
 
-  static Future<Map<String, int>> loadRead() => _loadIntMap(_read);
+  @override
+  Future<Map<String, int>> loadRead() => _loadIntMap(_read);
 
-  static Future<void> saveRead(Map<String, int> versions) =>
+  @override
+  Future<void> saveRead(Map<String, int> versions) =>
       _read.write(versions.map((k, v) => MapEntry(k, v)));
 
-  static Future<Map<String, int>> loadBodyVersions() =>
-      _loadIntMap(_bodyVersions);
+  @override
+  Future<Map<String, int>> loadBodyVersions() => _loadIntMap(_bodyVersions);
 
-  static Future<void> saveBodyVersion(String id, int version) async {
+  @override
+  Future<void> saveBodyVersion(String id, int version) async {
     final map = await loadBodyVersions();
     map[id] = version;
     await _bodyVersions.write(map.map((k, v) => MapEntry(k, v)));
