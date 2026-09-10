@@ -1,4 +1,10 @@
+// test/core/utils/audio_convert_test.dart
+//
+// 守住麥克風 PCM 位元組轉浮點的邊界值與位元組序。
+// 算錯會讓語音辨識整個失準，而且不會拋任何例外。
+
 import 'dart:typed_data';
+
 import 'package:amitabha/core/utils/audio_convert.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -19,6 +25,7 @@ Uint8List _i16ToBytesBE(List<int> xs) {
 }
 
 void main() {
+  // 涵蓋邊界值、奇數長度、大端序與子片段位移四種情況。
   group('convertBytesToFloat32', () {
     test('邊界值：-32768、0、32767（小端）', () {
       final bytes = _i16ToBytesLE([-32768, 0, 32767]);

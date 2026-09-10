@@ -1,4 +1,4 @@
-// lib/features/asr/domain/amitabha_normalizer.dart
+//amitabha/lib/amitabha_normalizer.dart
 String normalizeForAmitabha(String s) {
   final noSpace = s.replaceAll(RegExp(r'\s+'), '');
   final noPunct = noSpace.replaceAll(

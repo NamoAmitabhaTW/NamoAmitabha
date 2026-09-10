@@ -1,3 +1,8 @@
+// test/features/asr/application/asr_session_controller_test.dart
+//
+// 守住念佛工作階段的狀態機，以及 App 在任何時候被殺都不掉數。
+// 計數先落地成 pending 暫存再重放，重放以 sessionId 去重，失敗留在原地等下次。
+
 import 'dart:io';
 import 'package:amitabha/core/infrastructure/atomic_io.dart';
 import 'package:amitabha/core/utils/date_format.dart';

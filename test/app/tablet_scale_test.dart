@@ -1,4 +1,8 @@
 // test/app/tablet_scale_test.dart
+//
+// 守住同一台平板上各頁的放大程度一致，且手機一個像素都不動。
+// 設定頁刻意除外：它的固定畫布倍率是為了讓葉片對上校準圖。
+
 import 'package:amitabha/core/assets/app_assets.dart';
 import 'package:amitabha/core/layout/layout_scale.dart';
 import 'package:amitabha/core/localization/locale_controller.dart';
@@ -67,6 +71,7 @@ void main() {
 
   setUpAll(loadAppFonts);
 
+  // 手機恆為 1.0；平板從斷點線性升到上限，不是一過斷點就跳滿。
   group('layoutScale 契約', () {
     Future<double> scaleAt(WidgetTester tester, double shortestSide) async {
       late double result;
@@ -101,6 +106,7 @@ void main() {
     });
   });
 
+  // 平板倍率下標題階層等比放大，不會被壓扁。
   group('公告內文 markdown', () {
     const base = 18.0;
 
@@ -156,6 +162,7 @@ void main() {
     });
   });
 
+  // 卡片字級與按鈕字級一起放大，手機不動。
   group('背景卡片', () {
     const titleSize = 20.0;
     const btnSize = 16.0;
@@ -211,6 +218,7 @@ void main() {
     });
   });
 
+  // 手機維持 Material 預設，平板吃全 app 上限。
   group('語系底部彈窗', () {
     Future<double> tileFontSize(WidgetTester tester, Size logical) async {
       tester.view
@@ -279,6 +287,7 @@ void main() {
     });
   });
 
+  // 編輯區字級與迴向顯示頁一致，所見即所得。
   group('迴向偈編輯頁', () {
     const titleSize = 22.0;
     const cjkVerseSize = 30.0;

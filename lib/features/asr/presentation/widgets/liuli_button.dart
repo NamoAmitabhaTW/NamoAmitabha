@@ -27,11 +27,9 @@ class LiuliButton extends StatelessWidget {
   final double borderRadius;
   final EdgeInsets padding;
   final List<Color>? gradientColors;
-
   final String? labelFontFamily;
   final List<String>? labelFontFamilyFallback;
   final double labelFontSize;
-
   final String? labelImageAsset;
 
   @override
@@ -92,7 +90,6 @@ class LiuliButton extends StatelessWidget {
                         labelImageAsset!,
                         width: double.infinity,
                         fit: BoxFit.contain,
-
                         color: effForeground,
                         colorBlendMode: BlendMode.srcIn,
                         semanticLabel: label,

@@ -1,4 +1,8 @@
 // test/features/asr/data/legacy_schema_compat_test.dart
+//
+// 守住既有使用者升級後不掉念佛記錄，這是重構裡唯一碰到使用者資料的改動。
+// 用真的舊格式檔案跑一遍，而不是靠「新版沒讀那兩個鍵」這句推論。
+
 import 'dart:convert';
 import 'dart:io';
 import 'package:amitabha/features/asr/asr.dart';
@@ -58,6 +62,7 @@ void main() {
     }
   });
 
+  // 1.x 的 daily 檔沒有 sessionIds，缺鍵必須視為空清單。
   group('升級自 1.x（目前架上的版本）', () {
     test('日結讀得出來，佛號數不變；缺少的 sessionIds 視為空清單', () async {
       await _writeRaw(
@@ -135,6 +140,7 @@ void main() {
     });
   });
 
+  // 2.0.0 多了 sessionIds 與 pending 暫存，兩者都要能接上。
   group('升級自 2.0.0（未上架，僅開發機）', () {
     test('帶 sessionIds 的日結，去重仍然有效', () async {
       await _writeRaw(
@@ -173,6 +179,7 @@ void main() {
     });
   });
 
+  // schemaVersion 升為 2 並移除登入殘留欄位，但數字原封不動。
   group('寫回：新版覆寫舊檔之後', () {
     test('升級為 schemaVersion 2 並移除登入殘留欄位，但數字原封不動', () async {
       final file = await ChantingPaths.daily('20260808');

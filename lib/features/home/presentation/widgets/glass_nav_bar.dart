@@ -1,5 +1,6 @@
 // lib/features/home/presentation/widgets/glass_nav_bar.dart
 import 'dart:ui' show ImageFilter;
+
 import 'package:amitabha/core/theme/brand.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +19,6 @@ class GlassNavBar extends StatelessWidget {
   final int selectedIndex;
   final ValueChanged<int> onDestinationSelected;
   final List<NavigationDestination> destinations;
-
   final bool glass;
   final double blurSigma;
   final double tintOpacity;

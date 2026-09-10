@@ -1,3 +1,4 @@
+// lib/features/dedication/presentation/widgets/dedication_paragraph.dart
 import 'package:flutter/material.dart';
 
 const Set<String> kGathaPunct = {'，', '。', '、', '；', '：', '？', '！'};

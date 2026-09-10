@@ -1,4 +1,8 @@
 // test/features/records/presentation/records_layout_test.dart
+//
+// 守住記錄頁在平板上的字級會跟著畫布一起放大。
+// 手機那條斷言最重要：縮放下限是 1.0，基準寬度上字級必須與加入縮放前完全相同。
+
 import 'dart:io';
 import 'package:amitabha/core/layout/layout_scale.dart';
 import 'package:amitabha/core/localization/locale_controller.dart';
@@ -112,6 +116,7 @@ void main() {
     return (spans[0].style!.fontSize!, spans[1].style!.fontSize!);
   }
 
+  // 任何一個字級改回寫死的常數，這裡就會失敗。
   group('手機：版面縮放夾在 1.0，字級與加入縮放前完全相同', () {
     for (final (label, size) in [
       ('iPhone SE', _iPhoneSE),
@@ -130,6 +135,7 @@ void main() {
     }
   });
 
+  // 放大後不得誤觸 _RecordTile 的上下堆疊門檻。
   group('平板：字級跟著畫布一起放大', () {
     testWidgets('iPad 直向套用 $kDefaultMaxScale 倍', (tester) async {
       await pumpAt(tester, _iPadPortrait);

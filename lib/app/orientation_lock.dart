@@ -18,7 +18,6 @@ class _OrientationLockState extends State<OrientationLock>
   @override
   void initState() {
     super.initState();
-
     WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((_) => _apply());
   }
@@ -36,7 +35,6 @@ class _OrientationLockState extends State<OrientationLock>
     if (!mounted) return;
 
     final display = View.of(context).display;
-
     final screenShortestSide =
         display.size.shortestSide / display.devicePixelRatio;
     final shouldLock = screenShortestSide < 600;

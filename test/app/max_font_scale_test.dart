@@ -1,4 +1,8 @@
 // test/app/max_font_scale_test.dart
+//
+// 守住「平板放大倍率 × 使用者輔助字級」的乘積不爆版、不裁字。
+// 文字被裁不會拋例外，所以除了看例外，還直接比對渲染後的字寬與格子寬。
+
 import 'dart:io';
 import 'package:amitabha/core/assets/app_assets.dart';
 import 'package:amitabha/core/layout/layout_scale.dart';
@@ -178,6 +182,7 @@ void main() {
     ),
   };
 
+  // 每個頁面 × 平板 × 字級的組合，斷言不拋 overflow 例外。
   group('平板 × 最大輔助字級：不爆版', () {
     const devices = <String, Size>{..._tablets, 'iPhone 14': Size(390, 844)};
     for (final scale in [_androidMaxFontScale, _iosMaxFontScale]) {
@@ -209,6 +214,7 @@ void main() {
     }
   });
 
+  // 七語系全跑，涵蓋念佛、記錄、設定、迴向、公告、背景六個畫面。
   group('所有語系 × 最大字級：不爆版、不裁字', () {
     const devices = <String, Size>{
       'iPhone SE': Size(375, 667),
@@ -250,6 +256,7 @@ void main() {
     }
   });
 
+  // 直接量測字寬與格子寬——這是唯一抓得到「安靜裁字」的方式。
   group('方塊字偈文：字不會被格子裁掉', () {
     ({double advance, double cell, double effective}) measure(
       WidgetTester tester,

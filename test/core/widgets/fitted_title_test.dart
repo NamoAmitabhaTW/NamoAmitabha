@@ -1,3 +1,8 @@
+// test/core/widgets/fitted_title_test.dart
+//
+// 守住 FittedTitle 的契約：空間夠就等比縮小塞下，不夠就停在下限並截斷。
+// 測試字型是全形方格、約為實機兩倍寬，這裡的寬度是用來逼出分支，不是實機像素。
+
 import 'package:amitabha/core/widgets/fitted_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -44,13 +49,13 @@ double _renderedFontSize(WidgetTester tester, RenderParagraph para) {
   if (fitted.evaluate().isEmpty) {
     return declared;
   }
-
   final box = tester.renderObject<RenderBox>(fitted);
   final scale = box.size.width / para.size.width;
   return para.textScaler.scale(declared) * scale;
 }
 
 void main() {
+  // 各語系 × 各字級都要塞得下，且不出現「…」。
   group('空間足夠時：等比縮小塞下，不出現「…」', () {
     for (final entry in _realTitles.entries) {
       for (final scale in const [1.0, 1.5, 2.0]) {

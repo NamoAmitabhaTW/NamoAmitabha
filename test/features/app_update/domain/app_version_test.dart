@@ -1,7 +1,13 @@
+// test/features/app_update/domain/app_version_test.dart
+//
+// 守住版本號的解析與比較，這是不碰網路也不碰 Flutter 的純 domain 邏輯。
+// 比較必須是數值而非字串，否則 2.10.0 會被判定小於 2.9.0。
+
 import 'package:amitabha/features/app_update/domain/app_version.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  // 格式不合一律回 null——抓不到就當作沒有新版，寧可不提醒。
   group('AppVersion.tryParse', () {
     test('解析完整的三段版本號', () {
       final v = AppVersion.tryParse('2.1.3')!;
@@ -32,6 +38,7 @@ void main() {
     });
   });
 
+  // major 優先於 minor，minor 優先於 patch。
   group('比較', () {
     test('數值比較，不是字串比較', () {
       expect(const AppVersion(2, 10, 0) > const AppVersion(2, 9, 0), isTrue);

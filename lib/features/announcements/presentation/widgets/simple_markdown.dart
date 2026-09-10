@@ -201,7 +201,6 @@ class _SimpleMarkdownState extends State<SimpleMarkdown> {
 
   TextSpan _inlineSpan(String text, TextStyle base) {
     final spans = <InlineSpan>[];
-
     final pattern = RegExp(r'\*\*(.+?)\*\*|\*(.+?)\*|\[([^\]]+)\]\(([^)]+)\)');
     var index = 0;
 

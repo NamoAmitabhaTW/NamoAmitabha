@@ -3,6 +3,7 @@
 // This file is modified based on the open-source project:
 // Flutter-EasySpeechRecognition (https://github.com/Jason-chen-coder/Flutter-EasySpeechRecognition)
 // Original copyright (c) 2024 Xiaomi Corporation
+
 import 'package:flutter/foundation.dart';
 
 class InstallProgressModel with ChangeNotifier {

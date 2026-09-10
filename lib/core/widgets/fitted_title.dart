@@ -1,4 +1,5 @@
 // lib/core/widgets/fitted_title.dart
+
 import 'package:flutter/material.dart';
 
 class FittedTitle extends StatelessWidget {

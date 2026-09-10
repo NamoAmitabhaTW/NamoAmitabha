@@ -1,4 +1,8 @@
 // test/architecture/dependency_rule_test.dart
+//
+// 把「依賴只能往內」變成一個會失敗的測試。
+// 掃描 lib/ 每一行 import 與 export，違反分層或跳過 barrel 就紅燈。
+
 import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;

@@ -1,3 +1,8 @@
+// test/features/settings/presentation/settings_screen_test.dart
+//
+// 兩個冒煙測試，確認設定頁與記錄頁在正常組裝下畫得出來。
+// 記錄頁另外驗證空資料時的提示文字與統計卡。
+
 import 'dart:io';
 import 'package:amitabha/core/localization/locale_controller.dart';
 import 'package:amitabha/features/asr/asr.dart';

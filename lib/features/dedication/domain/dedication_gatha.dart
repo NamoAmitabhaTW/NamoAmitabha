@@ -1,3 +1,5 @@
+// lib/features/dedication/domain/dedication_gatha.dart
+
 const String kGathaZh =
     '願以此功德\n'
     '莊嚴佛淨土\n'

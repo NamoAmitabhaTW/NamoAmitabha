@@ -1,3 +1,8 @@
+// test/features/model_install/data/model_installer_test.dart
+//
+// 守住 160MB 語音模型的下載與解壓流程。
+// 重點在五種失敗路徑各自的處置與殘檔清理，這段失敗了 App 就完全不能用。
+
 import 'dart:async';
 import 'dart:io';
 import 'package:amitabha/features/model_install/data/model_installer.dart';
@@ -88,6 +93,7 @@ void main() {
     }
   });
 
+  // 有 zip 就不重新下載，缺檔才回頭抓。
   group('status()', () {
     test('無資料夾也無 zip → needsDownload', () async {
       expect(
@@ -127,6 +133,7 @@ void main() {
     });
   });
 
+  // int8 與 float 擇一即可，未登錄的模型不做驗證。
   group('modelFilesComplete()', () {
     test('int8/float 擇一:只有 float 版也算齊全', () async {
       await _makeModelDir(_realModel, [
@@ -155,6 +162,7 @@ void main() {
     });
   });
 
+  // 每種失敗都要刪殘檔，只有使用者取消時保留已下載的部分。
   group('download()', () {
     test('成功:寫出完整檔案並回報進度到 1.0', () async {
       final chunks = [List.filled(30, 1), List.filled(70, 2)];
@@ -265,6 +273,7 @@ void main() {
     });
   });
 
+  // zip 損毀就刪掉重下，使用者取消則保留 zip 供下次續用。
   group('unzipAndVerify()', () {
     test('成功:解出檔案、驗證通過、刪除 zip、回報進度', () async {
       await _makeArchive(_testModel, {

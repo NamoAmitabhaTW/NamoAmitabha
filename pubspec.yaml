@@ -1,32 +1,12 @@
 name: amitabha
 description: "好好念佛 — 以語音辨識自動計數佛號的App。"
-# The following line prevents the package from being accidentally published to
-# pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: 'none'
 
-# The following defines the version and build number for your application.
-# A version number is three numbers separated by dots, like 1.2.43
-# followed by an optional build number separated by a +.
-# Both the version and the builder number may be overridden in flutter
-# build by specifying --build-name and --build-number, respectively.
-# In Android, build-name is used as versionName while build-number used as versionCode.
-# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
-# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
-# Read more about iOS versioning at
-# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-# In Windows, build-name is used as the major, minor, and patch parts
-# of the product and file versions while build-number is used as the build suffix.
 version: 2.0.0+16
 
 environment:
   sdk: ^3.9.0
 
-# Dependencies specify other packages that your package needs in order to work.
-# To automatically upgrade your package dependencies to the latest versions
-# consider running `flutter pub upgrade --major-versions`. Alternatively,
-# dependencies can be manually updated by changing the version numbers below to
-# the latest version available on pub.dev. To see which dependencies have newer
-# versions available, run `flutter pub outdated`.
 dependencies:
   flutter:
     sdk: flutter
@@ -58,10 +38,6 @@ dependencies:
   package_info_plus: ^9.0.1
   url_launcher: ^6.3.2
 
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -70,7 +46,6 @@ dev_dependencies:
   flutter_flavorizr: 2.4.1
   flutter_launcher_icons: ^0.14.4
   
-
 flavorizr:
   app:
     android:
@@ -102,49 +77,37 @@ flavorizr:
       ios:
         bundleId: "com.earth.amitabha"
 
-
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
-# The following section is specific to Flutter packages.
 flutter:
   generate: true 
 
-  # 素材依「用途」分類，路徑常數集中在 lib/core/assets/app_assets.dart。
-  # 注意：tool/launcher_icons/ 是建置期素材（flutter_launcher_icons 用），
-  # 刻意放在 assets/ 之外，不會被打進安裝包。
   assets:
-    # --- 品牌識別 ---
     - assets/branding/app_icon.png
-    - assets/branding/calligraphy/          # 佛號書法字，逐語系一檔（sa = 梵字，供 en/de/fr）
+    - assets/branding/calligraphy/
 
-    # --- 背景 ---
-    - assets/backgrounds/bodhi_leaf/        # 設定頁菩提葉：phone / tablet_portrait / tablet_landscape / bleed
-    - assets/backgrounds/mountain_stream/   # 念佛頁動態背景：thumbnail.png + video.mp4
+    - assets/backgrounds/bodhi_leaf/
+    - assets/backgrounds/mountain_stream/
 
-    # --- UI 素材 ---
-    - assets/ui/chant_buttons/zh/           # 念佛頁按鈕書法字（白字透明底，執行時染色）
+    - assets/ui/chant_buttons/zh/
     - assets/ui/chant_buttons/ja/
     - assets/ui/chant_buttons/ko/
     - assets/ui/chant_buttons/vi/
     - assets/ui/chant_buttons/en/
     - assets/ui/chant_buttons/de/
     - assets/ui/chant_buttons/fr/
-    - assets/ui/settings_titles/zh/         # 設定頁葉上標題書法字
+    - assets/ui/settings_titles/zh/
     - assets/ui/settings_titles/en/
     - assets/ui/settings_titles/ja/
     - assets/ui/settings_titles/ko/
     - assets/ui/settings_titles/vi/
     - assets/ui/settings_titles/de/
     - assets/ui/settings_titles/fr/
-    - assets/ui/decorations/                # lotus_divider.png、lotus_flower.webp
+    - assets/ui/decorations/
 
-    # --- 內容（Markdown 公告） ---
     - assets/content/announcements/
     - assets/content/announcements/dev-intro/
     - assets/content/announcements/changelog/
     - assets/content/announcements/licenses/
 
-    # --- ASR 模型（由 tool/fetch_model.sh 下載，不入 git） ---
     - assets/ml/asr/encoder.int8.onnx
     - assets/ml/asr/decoder.onnx
     - assets/ml/asr/joiner.int8.onnx
@@ -152,79 +115,33 @@ flutter:
     - assets/ml/asr/bpe.vocab
     - assets/ml/asr/hotwords.txt
 
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
   uses-material-design: true
 
   fonts:
-    # 思源宋體 繁中完整字（Noto Serif TC ExtraLight，OFL，全 ~20,000 字）；纖細明體。
-    # 同時供「迴向偈顯示」與「編輯迴向偈自由輸入」用——原顯示的 Gatha 子集即此字重
-    # 的子集，改用完整檔後合併為一，顯示外觀不變、編輯亦纖細且不缺字。
     - family: NotoSerifTC
       fonts:
         - asset: assets/fonts/NotoSerifTC-ExtraLight.ttf
-    # 日文明體（常用漢字 + 假名 + 偈文），日文改用日文字形。
     - family: NotoSerifGathaJP
       fonts:
         - asset: assets/fonts/NotoSerifJP-Gatha.ttf
-    # 韓文諺文明體（Noto Serif KR ExtraLight，實例化＋子集化為 KS X 1001 常用
-    # 2,350 音節，涵蓋日常韓文；罕見音節落系統字）。韓文迴向偈主字型、他語系諺文
-    # fallback。漢字仍由 TC / LXGW 承接。
     - family: NotoSerifGathaKR
       fonts:
         - asset: assets/fonts/NotoSerifKR-ExtraLight.ttf
-    # 霞鶩文楷 TC LXGW WenKai TC（lxgw/LxgwWenkaiTC，OFL）；
-    # 記錄頁/設定頁的繁體字 fallback（Klee One 為日文字體，缺字時落回此楷體）。
     - family: LxgwWenkaiTC
       fonts:
         - asset: assets/fonts/LXGWWenKaiTC-Regular.ttf
-    # Klee One（googlefonts/klee，OFL）；記錄頁/設定頁主字體，手寫楷書風。
-    # 日文字體，繁體缺字由 LxgwWenkaiTC fallback 補上。
-    # 記錄/念佛頁主字體，手寫楷書風。已依實際使用字集子集化（原檔約 8MB → ~1MB）；
-    # 未收錄的冷僻字由 LxgwWenkaiTC fallback 承接。
     - family: KleeOne
       fonts:
         - asset: assets/fonts/KleeOne-Regular.ttf
         - asset: assets/fonts/KleeOne-SemiBold.ttf
           weight: 600
 
-  # To add assets to your application, add an assets section, like this:
-  # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/to/resolution-aware-images
-
-  # For details regarding adding assets from package dependencies, see
-  # https://flutter.dev/to/asset-from-package
-
-  # To add custom fonts to your application, add a fonts section here,
-  # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
-  # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
-  # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/to/font-from-package
-
-
 flutter_launcher_icons:
-  # 頂層一定要宣告平台
-  android: "app"   # 你的 Android module 名稱
+  android: "app"
   ios: true
   remove_alpha_ios: true
   remove_existing: true
 
-  # 為了通過舊版驗證，給一個備用圖（實際會被 flavor 覆蓋）
   image_path: tool/launcher_icons/prod_ios.png
   adaptive_icon_foreground: tool/launcher_icons/prod_android_fg.png
   adaptive_icon_background: "#FFFFFF"

@@ -1,4 +1,8 @@
 // test/features/dedication/presentation/dedication_layout_test.dart
+//
+// 守住迴向頁的方塊字行寬、拉丁排版與八行偈文的垂直預算。
+// 方塊字的數字與字型無關、實機同樣成立；拉丁文的寬度則是用來逼出分支。
+
 import 'package:amitabha/features/dedication/dedication.dart';
 import 'package:amitabha/features/dedication/domain/dedication_gatha.dart';
 import 'package:amitabha/features/dedication/presentation/widgets/dedication_karaoke.dart';
@@ -119,6 +123,7 @@ void main() {
 
   setUpAll(loadAppFonts);
 
+  // 不再隨螢幕變鬆——這是「橫排被讀成直排」的成因。
   group('方塊字：行寬鎖在字寬的固定比例', () {
     for (final (label, width, scale) in [
       ('手機基準', 334.0, 1.0),
@@ -160,6 +165,7 @@ void main() {
     });
   });
 
+  // 標題需有明確行高，垂直預算才算得準。
   group('迴向頁：八行中文偈文放得下且垂直置中', () {
     for (final (label, size) in [
       ('iPhone', _iPhone),
@@ -201,6 +207,7 @@ void main() {
     });
   });
 
+  // 方塊字的字距不得漏進來，越南文要逐句成行。
   group('拉丁排版', () {
     testWidgets('不吃方塊字的字距', (tester) async {
       await _pumpKaraoke(tester, text: kGathaVi, lang: 'vi', width: 900);

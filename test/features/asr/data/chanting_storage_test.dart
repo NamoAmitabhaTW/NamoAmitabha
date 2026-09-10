@@ -1,3 +1,8 @@
+// test/features/asr/data/chanting_storage_test.dart
+//
+// 守住檔案層的崩潰安全：原子寫入、流水帳輪檔、損毀檔案容錯。
+// 壞掉的偏好設定必須回 null 而不是拋錯，否則 App 會開不起來。
+
 import 'dart:convert';
 import 'dart:io';
 import 'package:amitabha/core/infrastructure/atomic_io.dart';
