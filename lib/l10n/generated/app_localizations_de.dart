@@ -119,7 +119,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get micPermissionRationale =>
-      'Um Rezitationen zu zählen, aktivieren Sie das Mikrofon in den Systemeinstellungen > Amitabha.';
+      'Um Rezitationen zu zählen, aktivieren Sie das Mikrofon in den Systemeinstellungen > Amitabha Buddha.';
 
   @override
   String get openSettings => 'Einstellungen öffnen';

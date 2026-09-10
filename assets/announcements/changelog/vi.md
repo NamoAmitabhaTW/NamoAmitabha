@@ -10,7 +10,7 @@ Rất mong quý vị giúp giới thiệu và để lại đánh giá tốt, đ�
 
 **2. Cải thiện trải nghiệm**
 
-- Cải thiện nhận diện giọng nói, hiện hỗ trợ 7 cách phát âm niệm Phật: Tiếng Trung, tiếng Đài, tiếng Nhật, tiếng Hàn, tiếng Việt, tiếng Anh, tiếng Phạn (một số cách phát âm vẫn đang được kiểm tra độ chính xác và ổn định)
+- Cải thiện nhận diện giọng nói, hiện hỗ trợ 7 cách phát âm niệm Phật: Tiếng Trung, tiếng Đài, tiếng Nhật, tiếng Hàn, tiếng Việt, tiếng Anh, tiếng Phạn (một số ngôn ngữ vẫn đang được kiểm tra độ chính xác và ổn định)
 - Hỗ trợ đa ngôn ngữ, hiện có 7 ngôn ngữ giao diện: Tiếng Trung phồn thể, tiếng Anh, tiếng Nhật, tiếng Hàn, tiếng Việt, tiếng Đức, tiếng Pháp
 - Thêm tính năng hồi hướng, có thể tự chỉnh sửa nội dung
 - Thêm tính năng thông báo, hiển thị nội dung cập nhật
@@ -22,6 +22,7 @@ Rất mong quý vị giúp giới thiệu và để lại đánh giá tốt, đ�
 - Thêm hiệu ứng động: bài kệ hồi hướng hiện dần từng chữ, hoạt ảnh hoàn tất hồi hướng
 - Thêm phông chữ: chữ của bài kệ hồi hướng
 - Thiết kế lại giao diện, hình ảnh tinh tế hơn
+- Hỗ trợ sử dụng ngang trên máy tính bảng
 
 **Phiên bản 1.1.0**
 

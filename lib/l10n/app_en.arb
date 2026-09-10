@@ -88,7 +88,7 @@
   "modelPrepareFailed": "Speech recognition model installation failed. Please make sure your device has enough storage space and try again.",
   "retry": "Retry",
   "micPermissionTitle": "Microphone Permission Required",
-  "micPermissionRationale": "To count chants, please enable Microphone in System Settings > Amitabha.",
+  "micPermissionRationale": "To count chants, please enable Microphone in System Settings > Amitabha Buddha.",
   "openSettings": "Open Settings",
   "bgScreenTitle": "Chanting Background",
   "bgUse": "Use",

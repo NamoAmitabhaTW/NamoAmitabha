@@ -2,7 +2,7 @@
 
 **1. Improved experience**
 
-- Improved speech recognition, now covering 7 recitation pronunciations: Chinese, Taiwanese, Japanese, Korean, Vietnamese, English, and Sanskrit (some pronunciations are still being tested for accuracy and stability)
+- Improved speech recognition, now covering 7 recitation pronunciations: Chinese, Taiwanese, Japanese, Korean, Vietnamese, English, and Sanskrit (some languages are still being tested for accuracy and stability)
 - Multi-language support, now covering 7 interface languages: Traditional Chinese, English, Japanese, Korean, Vietnamese, German, and French
 - Added a dedication feature with editable content
 - Added an announcements feature that shows update notes
@@ -14,6 +14,7 @@
 - Added animations: the dedication verse filling in character by character, and a dedication-completion animation
 - Added a font for the dedication verse
 - Redesigned interface with a more refined look
+- Added landscape support on tablets
 
 **Version 1.1.0**
 

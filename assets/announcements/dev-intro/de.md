@@ -7,9 +7,9 @@ Gängige Zählweisen für die Rezitation – das Drücken eines Zählers, das Dr
 
 *Meine ursprüngliche Absicht war es, mithilfe von Spracherkennung die Rezitationen automatisch zu zählen, damit Sie sich nicht durch das Zählen ablenken lassen, sondern Körper und Geist in jede Anrufung des Buddha-Namens sammeln können.*
 
-Die App unterstützt derzeit 7 Aussprachen für die Rezitation: Chinesisch, Taiwanesisch, Japanisch, Koreanisch, Vietnamesisch, Englisch und Sanskrit (einige Aussprachen werden noch auf Genauigkeit und Stabilität getestet)
+Die App unterstützt derzeit 7 Aussprachen für die Rezitation: Chinesisch, Taiwanesisch, Japanisch, Koreanisch, Vietnamesisch, Englisch und Sanskrit (einige Sprachen werden noch auf Genauigkeit und Stabilität getestet)
 
-Die Spracherkennung ist nicht vollkommen genau. Besonders bei der ersten Nutzung, in lauter Umgebung oder bei schneller, undeutlicher Sprache können Zählfehler auftreten. Ich bitte um Ihr Verständnis für die Unzulänglichkeiten der App.
+Die Spracherkennung ist nicht vollkommen genau. Besonders direkt nach dem Start, in lauter Umgebung oder bei schneller, undeutlicher Sprache können Zählfehler auftreten. Ich bitte um Ihr Verständnis für die Unzulänglichkeiten der App.
 
 Wenn Ihnen diese App hilfreich ist, würde ich mich von Herzen freuen, wenn Sie im Store eine Empfehlung hinterlassen, damit mehr Menschen die Möglichkeit haben, „Amitabha Buddha“ zu entdecken.
 

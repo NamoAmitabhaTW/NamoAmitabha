@@ -1,7 +1,7 @@
 [
   {
     "id": "dev-intro",
-    "version": 4,
+    "version": 5,
     "date": "2026-08-01",
     "pinned": true,
     "title": {
@@ -17,7 +17,7 @@
   },
   {
     "id": "changelog",
-    "version": 2,
+    "version": 3,
     "date": "",
     "pinned": false,
     "title": {

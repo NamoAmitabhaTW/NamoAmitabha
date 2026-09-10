@@ -118,7 +118,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get micPermissionRationale =>
-      '念仏の回数を数えるため、システムの「設定」>「念仏」>「マイク」で許可を有効にしてください。';
+      '念仏の回数を数えるため、システムの「設定」>「念仏日和」>「マイク」で許可を有効にしてください。';
 
   @override
   String get openSettings => '設定を開く';

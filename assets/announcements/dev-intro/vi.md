@@ -7,9 +7,9 @@ Các cách đếm câu niệm Phật thường thấy như bấm máy đếm, l�
 
 *Tâm nguyện ban đầu khi phát triển là mong nhờ nhận diện giọng nói tự động đếm số câu niệm Phật, giúp người dùng không phải phân tâm đếm số, mà nhiếp thân tâm vào từng câu niệm Phật.*
 
-Hiện ứng dụng hỗ trợ 7 cách phát âm niệm Phật: Tiếng Trung, tiếng Đài, tiếng Nhật, tiếng Hàn, tiếng Việt, tiếng Anh, tiếng Phạn (một số cách phát âm vẫn đang được kiểm tra độ chính xác và ổn định)
+Hiện ứng dụng hỗ trợ 7 cách phát âm niệm Phật: Tiếng Trung, tiếng Đài, tiếng Nhật, tiếng Hàn, tiếng Việt, tiếng Anh, tiếng Phạn (một số ngôn ngữ vẫn đang được kiểm tra độ chính xác và ổn định)
 
-Nhận diện giọng nói không hoàn toàn chính xác. Đặc biệt khi mới sử dụng lần đầu, trong môi trường ồn ào, hoặc khi nói nhanh và không rõ, đều có thể xảy ra sai sót khi đếm. Mong bạn thông cảm cho những điểm còn thiếu sót của ứng dụng.
+Nhận diện giọng nói không hoàn toàn chính xác. Đặc biệt khi vừa khởi động, trong môi trường ồn ào, hoặc khi nói nhanh và không rõ, đều có thể xảy ra sai sót khi đếm. Mong bạn thông cảm cho những điểm còn thiếu sót của ứng dụng.
 
 Nếu bạn thấy ứng dụng này hữu ích, chân thành mong bạn để lại lời giới thiệu trên cửa hàng ứng dụng, để nhiều người hơn có cơ hội biết đến “Chuyên Tâm Niệm Phật”.
 
