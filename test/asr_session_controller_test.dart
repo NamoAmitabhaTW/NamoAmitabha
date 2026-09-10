@@ -1,14 +1,12 @@
 import 'dart:io';
+import 'package:amitabha/core/infrastructure/atomic_io.dart';
 import 'package:amitabha/core/utils/date_format.dart';
-import 'package:amitabha/features/asr/application/asr_session_controller.dart';
-import 'package:amitabha/storage/app_paths.dart';
-import 'package:amitabha/storage/atomic_io.dart';
-import 'package:amitabha/storage/daily_repo.dart';
-import 'package:amitabha/storage/pending_commits.dart';
-import 'package:amitabha/storage/session_repo.dart';
+import 'package:amitabha/features/asr/asr.dart';
+import 'package:amitabha/features/asr/data/chanting_paths.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
+import 'helpers/asr_controller.dart';
 import 'helpers/fake_path_provider.dart';
 
 class _FakeSource implements SpeechSegmentSource {
@@ -40,17 +38,24 @@ class _FakeSource implements SpeechSegmentSource {
   void emit(String text) => _onSegment?.call(text);
 }
 
-class _FailingDailyRepo extends DailyRepository {
+class _FailingDailyRepo implements DailyRepository {
+  final DailyRepository _inner = const FileDailyRepository();
+
+  @override
+  Future<void> addCount(String yyyymmdd, int delta) =>
+      _inner.addCount(yyyymmdd, delta);
+
   @override
   Future<void> addCountForSession(
     String yyyymmdd,
-    String userId,
-    String userName,
     int delta,
     String sessionId,
   ) async {
     throw const FileSystemException('simulated disk failure');
   }
+
+  @override
+  Future<List<DailySummary>> readAll() => _inner.readAll();
 }
 
 void main() {
@@ -59,13 +64,11 @@ void main() {
   late Directory tempRoot;
   late _FakeSource source;
 
-  AsrSessionController makeController({DailyRepository? dailyRepo}) {
-    return AsrSessionController(
-      sourceFactory: () => source,
-      dailyRepo: dailyRepo,
-      setWakelock: (_) async {},
-    );
-  }
+  AsrSessionController makeController({DailyRepository? dailyRepo}) =>
+      fileBackedAsrController(
+        sourceFactory: () => source,
+        dailyRepo: dailyRepo,
+      );
 
   setUp(() async {
     tempRoot = await Directory.systemTemp.createTemp('asr_ctrl_test_');
@@ -140,17 +143,19 @@ void main() {
     expect(c.sessionCount, 0);
     expect(c.dataVersion, versionBefore + 1);
 
-    final got = await SessionRepository().readSnapshot(sessionId);
+    final got = await const FileSessionRepository().readSnapshot(sessionId);
     expect(got, isNotNull);
     expect(got!.amitabhaCount, 2);
 
-    final daily = await readJsonOrEmpty(await AppPaths.daily(nowYmdLocal()));
+    final daily = await readJsonOrEmpty(
+      await ChantingPaths.daily(nowYmdLocal()),
+    );
     expect(daily['amitabhaCount'], 2);
     expect((daily['sessionIds'] as List).contains(sessionId), isTrue);
 
-    expect(await PendingCommitStore().list(), isEmpty);
+    expect(await const FilePendingCommitStore().list(), isEmpty);
 
-    final hits = await AppPaths.sessionHits(sessionId);
+    final hits = await ChantingPaths.sessionHits(sessionId);
     expect(await hits.exists(), isTrue);
     expect((await hits.readAsLines()).length, 2);
 
@@ -166,7 +171,7 @@ void main() {
 
     expect(c.sessionState, SessionState.recording);
     expect(c.dataVersion, versionBefore);
-    expect(await PendingCommitStore().list(), isEmpty);
+    expect(await const FilePendingCommitStore().list(), isEmpty);
 
     c.dispose();
   });
@@ -182,7 +187,7 @@ void main() {
     await broken.save();
 
     expect(broken.sessionCount, 0);
-    final pendingAfterFail = await PendingCommitStore().list();
+    final pendingAfterFail = await const FilePendingCommitStore().list();
     expect(pendingAfterFail, hasLength(1));
     expect(pendingAfterFail.first.snapshot.amitabhaCount, 3);
     broken.dispose();
@@ -190,30 +195,34 @@ void main() {
     final healthy = makeController();
     await healthy.replayPending();
 
-    final daily = await readJsonOrEmpty(await AppPaths.daily(nowYmdLocal()));
+    final daily = await readJsonOrEmpty(
+      await ChantingPaths.daily(nowYmdLocal()),
+    );
     expect(daily['amitabhaCount'], 3);
-    expect(await PendingCommitStore().list(), isEmpty);
+    expect(await const FilePendingCommitStore().list(), isEmpty);
 
-    final store = PendingCommitStore();
+    const store = FilePendingCommitStore();
     await store.add(pendingAfterFail.first);
     await healthy.replayPending();
-    final daily2 = await readJsonOrEmpty(await AppPaths.daily(nowYmdLocal()));
+    final daily2 = await readJsonOrEmpty(
+      await ChantingPaths.daily(nowYmdLocal()),
+    );
     expect(daily2['amitabhaCount'], 3);
-    expect(await PendingCommitStore().list(), isEmpty);
+    expect(await const FilePendingCommitStore().list(), isEmpty);
 
     expect(sessionId, isNotEmpty);
     healthy.dispose();
   });
 
   test('addCountForSession 幂等:同 sessionId 重複呼叫只累計一次', () async {
-    final repo = DailyRepository();
+    const repo = FileDailyRepository();
     const ymd = '20260707';
 
-    await repo.addCountForSession(ymd, 'u', 'n', 5, 'sess-1');
-    await repo.addCountForSession(ymd, 'u', 'n', 5, 'sess-1');
-    await repo.addCountForSession(ymd, 'u', 'n', 2, 'sess-2');
+    await repo.addCountForSession(ymd, 5, 'sess-1');
+    await repo.addCountForSession(ymd, 5, 'sess-1');
+    await repo.addCountForSession(ymd, 2, 'sess-2');
 
-    final daily = await readJsonOrEmpty(await AppPaths.daily(ymd));
+    final daily = await readJsonOrEmpty(await ChantingPaths.daily(ymd));
     expect(daily['amitabhaCount'], 7);
   });
 
@@ -240,11 +249,11 @@ void main() {
 
     c.didChangeAppLifecycleState(AppLifecycleState.paused);
     final deadline = DateTime.now().add(const Duration(seconds: 5));
-    while ((await PendingCommitStore().list()).isEmpty) {
+    while ((await const FilePendingCommitStore().list()).isEmpty) {
       if (DateTime.now().isAfter(deadline)) fail('draft not written in time');
       await Future<void>.delayed(const Duration(milliseconds: 10));
     }
-    final draft = (await PendingCommitStore().list()).single;
+    final draft = (await const FilePendingCommitStore().list()).single;
     expect(draft.snapshot.sessionId, sessionId);
     expect(draft.snapshot.amitabhaCount, 2);
     expect(c.sessionCount, 2);
@@ -253,9 +262,11 @@ void main() {
     final relaunched = makeController();
     await relaunched.replayPending();
 
-    final daily = await readJsonOrEmpty(await AppPaths.daily(nowYmdLocal()));
+    final daily = await readJsonOrEmpty(
+      await ChantingPaths.daily(nowYmdLocal()),
+    );
     expect(daily['amitabhaCount'], 2);
-    expect(await PendingCommitStore().list(), isEmpty);
+    expect(await const FilePendingCommitStore().list(), isEmpty);
     relaunched.dispose();
   });
 
@@ -266,7 +277,7 @@ void main() {
 
     c.didChangeAppLifecycleState(AppLifecycleState.paused);
     final deadline = DateTime.now().add(const Duration(seconds: 5));
-    while ((await PendingCommitStore().list()).isEmpty) {
+    while ((await const FilePendingCommitStore().list()).isEmpty) {
       if (DateTime.now().isAfter(deadline)) fail('draft not written in time');
       await Future<void>.delayed(const Duration(milliseconds: 10));
     }
@@ -275,9 +286,11 @@ void main() {
     source.emit('阿彌陀佛阿彌陀佛');
     await c.save();
 
-    final daily = await readJsonOrEmpty(await AppPaths.daily(nowYmdLocal()));
+    final daily = await readJsonOrEmpty(
+      await ChantingPaths.daily(nowYmdLocal()),
+    );
     expect(daily['amitabhaCount'], 3);
-    expect(await PendingCommitStore().list(), isEmpty);
+    expect(await const FilePendingCommitStore().list(), isEmpty);
 
     c.dispose();
   });
@@ -300,7 +313,7 @@ void main() {
     }
 
     expect(c.sessionCount, 0);
-    final got = await SessionRepository().readSnapshot(sessionId);
+    final got = await const FileSessionRepository().readSnapshot(sessionId);
     expect(got?.amitabhaCount, 1);
 
     c.dispose();

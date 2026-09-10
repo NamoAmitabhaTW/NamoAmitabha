@@ -1,12 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:amitabha/storage/app_paths.dart';
-import 'package:amitabha/storage/atomic_io.dart';
-import 'package:amitabha/storage/daily_repo.dart';
-import 'package:amitabha/storage/hit_logger.dart';
-import 'package:amitabha/storage/json_prefs_file.dart';
-import 'package:amitabha/storage/models.dart';
-import 'package:amitabha/storage/session_repo.dart';
+import 'package:amitabha/core/infrastructure/atomic_io.dart';
+import 'package:amitabha/core/infrastructure/json_prefs_file.dart';
+import 'package:amitabha/features/asr/asr.dart';
+import 'package:amitabha/features/asr/data/chanting_paths.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
@@ -35,26 +32,24 @@ void main() {
     }
   });
 
-  test('DailyRepository.addCount 累加成功', () async {
-    final repo = DailyRepository();
+  test('FileDailyRepository.addCount 累加成功', () async {
+    const repo = FileDailyRepository();
     final ymd = _nowYmdLocal();
 
-    await repo.addCount(ymd, 'u1', '使用者', 3);
-    await repo.addCount(ymd, 'u1', '使用者', 2);
+    await repo.addCount(ymd, 3);
+    await repo.addCount(ymd, 2);
 
-    final file = await AppPaths.daily(ymd);
+    final file = await ChantingPaths.daily(ymd);
     final j = await readJsonOrEmpty(file);
 
     expect(j['date'], ymd);
     expect(j['amitabhaCount'], 5);
   });
 
-  test('SessionRepository upsert / read 往返', () async {
-    final repo = SessionRepository();
+  test('FileSessionRepository upsert / read 往返', () async {
+    const repo = FileSessionRepository();
     final s = SessionSnapshot(
       sessionId: 's1',
-      userId: 'u1',
-      userName: '使用者',
       startedAt: DateTime.now().toUtc(),
       lastAt: DateTime.now().toUtc(),
       amitabhaCount: 42,
@@ -68,8 +63,8 @@ void main() {
     expect(got.amitabhaCount, 42);
   });
 
-  test('HitLogger.appendMany 會寫出 NDJSON 且可輪檔', () async {
-    final logger = HitLogger('sessA', rotateEvery: 2);
+  test('FileHitLog.appendMany 會寫出 NDJSON 且可輪檔', () async {
+    final logger = FileHitLog('sessA', rotateEvery: 2);
 
     await logger.appendMany([
       DateTime.now().toUtc(),
@@ -77,8 +72,8 @@ void main() {
       DateTime.now().toUtc(),
     ]);
 
-    final f1 = await AppPaths.sessionHits('sessA', part: 1);
-    final f2 = await AppPaths.sessionHits('sessA', part: 2);
+    final f1 = await ChantingPaths.sessionHits('sessA', part: 1);
+    final f2 = await ChantingPaths.sessionHits('sessA', part: 2);
 
     expect(await f1.exists(), isTrue);
     expect(await f2.exists(), isTrue);

@@ -5,7 +5,8 @@
 import 'dart:async';
 import 'package:amitabha/core/utils/audio_convert.dart';
 import 'package:amitabha/features/asr/application/asr_session_controller.dart'
-    show SpeechSegmentSource, kAsrModelName;
+    show kAsrModelName;
+import 'package:amitabha/features/asr/domain/speech_segment_source.dart';
 import 'package:amitabha/features/model_install/model_install.dart';
 import 'package:flutter/foundation.dart';
 import 'package:record/record.dart';

@@ -1,10 +1,10 @@
 // lib/app/app.dart
+import 'package:amitabha/app/di/app_dependencies.dart';
 import 'package:amitabha/app/orientation_lock.dart';
 import 'package:amitabha/core/localization/locale_controller.dart';
 import 'package:amitabha/core/theme/brand.dart';
 import 'package:amitabha/features/announcements/announcements.dart';
 import 'package:amitabha/features/app_update/app_update.dart';
-import 'package:amitabha/features/asr/asr.dart';
 import 'package:amitabha/features/background/background.dart';
 import 'package:amitabha/features/dedication/dedication.dart';
 import 'package:amitabha/features/home/home.dart';
@@ -22,8 +22,7 @@ class App extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => InstallProgressModel()),
         ChangeNotifierProvider(
-          create: (_) =>
-              AsrSessionController(sourceFactory: () => SherpaMicSource()),
+          create: (_) => AppDependencies.createAsrSessionController(),
         ),
         ChangeNotifierProvider(create: (_) => LocaleController()),
         ChangeNotifierProvider(

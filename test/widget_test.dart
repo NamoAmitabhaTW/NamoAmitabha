@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:amitabha/core/localization/locale_controller.dart';
-import 'package:amitabha/features/asr/application/asr_session_controller.dart';
 import 'package:amitabha/features/records/presentation/screens/records_screen.dart';
 import 'package:amitabha/features/settings/presentation/screens/settings_screen.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
@@ -8,12 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:provider/provider.dart';
+import 'helpers/asr_controller.dart';
 import 'helpers/fake_path_provider.dart';
 
 Widget _wrap(Widget child) {
   return MultiProvider(
     providers: [
-      ChangeNotifierProvider(create: (_) => AsrSessionController()),
+      ChangeNotifierProvider(create: (_) => fileBackedAsrController()),
       ChangeNotifierProvider(create: (_) => LocaleController()),
     ],
     child: MaterialApp(

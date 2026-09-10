@@ -1,6 +1,6 @@
 // lib/features/background/data/background_prefs.dart
+import 'package:amitabha/core/infrastructure/json_prefs_file.dart';
 import 'package:amitabha/features/background/domain/background_item.dart';
-import 'package:amitabha/storage/json_prefs_file.dart';
 
 class BackgroundPrefs {
   static final _active = JsonPrefsFile('background');

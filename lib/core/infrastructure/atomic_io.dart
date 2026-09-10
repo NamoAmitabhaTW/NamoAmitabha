@@ -1,4 +1,4 @@
-// lib/storage/atomic_io.dart
+// lib/core/infrastructure/atomic_io.dart
 import 'dart:convert';
 import 'dart:io';
 

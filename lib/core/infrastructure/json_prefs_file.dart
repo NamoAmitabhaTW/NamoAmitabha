@@ -1,8 +1,8 @@
-// lib/storage/json_prefs_file.dart
+// lib/core/infrastructure/json_prefs_file.dart
 import 'dart:io';
+import 'package:amitabha/core/infrastructure/app_paths.dart';
+import 'package:amitabha/core/infrastructure/atomic_io.dart';
 import 'package:path/path.dart' as p;
-import 'app_paths.dart';
-import 'atomic_io.dart';
 
 class JsonPrefsFile {
   JsonPrefsFile(this.name);

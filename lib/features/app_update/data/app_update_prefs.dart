@@ -1,5 +1,5 @@
 // lib/features/app_update/data/app_update_prefs.dart
-import 'package:amitabha/storage/json_prefs_file.dart';
+import 'package:amitabha/core/infrastructure/json_prefs_file.dart';
 
 class AppUpdatePrefs {
   static final _file = JsonPrefsFile('app_update_dismissed');

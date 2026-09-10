@@ -1,9 +1,10 @@
 // lib/features/background/data/background_repo.dart
 import 'dart:convert';
 import 'dart:io';
+import 'package:amitabha/core/infrastructure/app_paths.dart';
+import 'package:amitabha/core/infrastructure/atomic_io.dart';
+import 'package:amitabha/features/background/data/background_paths.dart';
 import 'package:amitabha/features/background/domain/background_item.dart';
-import 'package:amitabha/storage/app_paths.dart';
-import 'package:amitabha/storage/atomic_io.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as p;
 
@@ -51,10 +52,10 @@ class BackgroundRepo {
   }
 
   Future<File> _downloadTarget(BackgroundItem item) =>
-      AppPaths.background(item.id, item.fileExtension);
+      BackgroundPaths.file(item.id, item.fileExtension);
 
   Future<File?> findById(String id) async {
-    final dir = await AppPaths.backgroundsDir();
+    final dir = await BackgroundPaths.dir();
     if (!await dir.exists()) return null;
     await for (final entry in dir.list()) {
       if (entry is File && p.basenameWithoutExtension(entry.path) == id) {
@@ -116,7 +117,7 @@ class BackgroundRepo {
   Future<void> delete(BackgroundItem item) => deleteById(item.id);
 
   Future<void> deleteById(String id) async {
-    final dir = await AppPaths.backgroundsDir();
+    final dir = await BackgroundPaths.dir();
     if (!await dir.exists()) return;
     await for (final entry in dir.list()) {
       if (entry is File && p.basenameWithoutExtension(entry.path) == id) {

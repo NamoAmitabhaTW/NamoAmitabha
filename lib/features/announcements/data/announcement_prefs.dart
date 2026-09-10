@@ -1,5 +1,5 @@
 // lib/features/announcements/data/announcement_prefs.dart
-import 'package:amitabha/storage/json_prefs_file.dart';
+import 'package:amitabha/core/infrastructure/json_prefs_file.dart';
 
 class AnnouncementPrefs {
   static final _read = JsonPrefsFile('announcement_read');

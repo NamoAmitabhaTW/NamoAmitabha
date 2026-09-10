@@ -1,46 +1,33 @@
 // lib/features/asr/application/asr_session_controller.dart
 import 'dart:async';
 import 'package:amitabha/core/utils/date_format.dart';
+import 'package:amitabha/features/asr/application/buffered_hits.dart';
 import 'package:amitabha/features/asr/domain/amitabha_normalizer.dart';
-import 'package:amitabha/storage/buffered_hits.dart';
-import 'package:amitabha/storage/daily_repo.dart';
-import 'package:amitabha/storage/hit_logger.dart';
-import 'package:amitabha/storage/models.dart';
-import 'package:amitabha/storage/pending_commits.dart';
-import 'package:amitabha/storage/session_repo.dart';
+import 'package:amitabha/features/asr/domain/chanting_repositories.dart';
+import 'package:amitabha/features/asr/domain/pending_commit.dart';
+import 'package:amitabha/features/asr/domain/session_snapshot.dart';
+import 'package:amitabha/features/asr/domain/speech_segment_source.dart';
 import 'package:flutter/widgets.dart';
-import 'package:wakelock_plus/wakelock_plus.dart';
 
 const String kAsrModelName =
     'sherpa-onnx-x-asr-960ms-streaming-zipformer-transducer-zh-en-punct-int8-2026-06-05';
 
-const String kLocalUserId = 'local';
-const String kLocalUserName = '使用者';
-
 enum SessionState { idle, recording, paused }
-
-abstract class SpeechSegmentSource {
-  Future<bool> hasPermission();
-
-  Future<void> start({required void Function(String text) onSegment});
-
-  Future<void> stop();
-
-  Future<void> dispose();
-}
 
 class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
   AsrSessionController({
+    required SessionRepository sessionRepo,
+    required DailyRepository dailyRepo,
+    required PendingCommitStore pendingStore,
+    required HitLogFactory hitLogFactory,
+    required Future<void> Function(bool keepAwake) setWakelock,
     SpeechSegmentSource Function()? sourceFactory,
-    SessionRepository? sessionRepo,
-    DailyRepository? dailyRepo,
-    PendingCommitStore? pendingStore,
-    Future<void> Function(bool keepAwake)? setWakelock,
   }) : _sourceFactory = sourceFactory,
-       _sessionRepo = sessionRepo ?? SessionRepository(),
-       _dailyRepo = dailyRepo ?? DailyRepository(),
-       _pendingStore = pendingStore ?? PendingCommitStore(),
-       _setWakelock = setWakelock ?? _defaultSetWakelock {
+       _sessionRepo = sessionRepo,
+       _dailyRepo = dailyRepo,
+       _pendingStore = pendingStore,
+       _hitLogFactory = hitLogFactory,
+       _setWakelock = setWakelock {
     WidgetsBinding.instance.addObserver(this);
     unawaited(
       replayPending().catchError((e) => debugPrint('replay on init: $e')),
@@ -51,6 +38,7 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
   final SessionRepository _sessionRepo;
   final DailyRepository _dailyRepo;
   final PendingCommitStore _pendingStore;
+  final HitLogFactory _hitLogFactory;
   final Future<void> Function(bool keepAwake) _setWakelock;
 
   SpeechSegmentSource? _source;
@@ -70,7 +58,7 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
   String? _sessionId;
   String? get currentSessionId => _sessionId;
   DateTime? _sessionStartedAt;
-  HitLogger? _hitLogger;
+  HitLog? _hitLogger;
   BufferedHits? _buffer;
   bool _committing = false;
 
@@ -155,7 +143,7 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
     _sessionCount = 0;
     _lastHitAt = null;
 
-    final logger = HitLogger(sessionId, rotateEvery: 5000);
+    final logger = _hitLogFactory(sessionId);
     await logger.initFromDisk();
     _hitLogger = logger;
 
@@ -179,8 +167,6 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
     final pending = PendingCommit(
       snapshot: SessionSnapshot(
         sessionId: sessionId,
-        userId: kLocalUserId,
-        userName: kLocalUserName,
         startedAt: startedAt,
         lastAt: (_lastHitAt ?? DateTime.now()).toUtc(),
         amitabhaCount: _sessionCount,
@@ -216,8 +202,6 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
         await _sessionRepo.upsertSnapshot(entry.snapshot);
         await _dailyRepo.addCountForSession(
           entry.ymd,
-          entry.snapshot.userId,
-          entry.snapshot.userName,
           entry.snapshot.amitabhaCount,
           entry.snapshot.sessionId,
         );
@@ -259,8 +243,6 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
         PendingCommit(
           snapshot: SessionSnapshot(
             sessionId: sessionId,
-            userId: kLocalUserId,
-            userName: kLocalUserName,
             startedAt: startedAt,
             lastAt: (_lastHitAt ?? DateTime.now()).toUtc(),
             amitabhaCount: _sessionCount,
@@ -290,7 +272,4 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
     unawaited(_setWakelock(false).catchError((_) {}));
     super.dispose();
   }
-
-  static Future<void> _defaultSetWakelock(bool keepAwake) =>
-      keepAwake ? WakelockPlus.enable() : WakelockPlus.disable();
 }

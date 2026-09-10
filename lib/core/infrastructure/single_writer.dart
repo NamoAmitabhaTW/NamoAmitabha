@@ -1,4 +1,4 @@
-// lib/storage/single_writer.dart
+// lib/core/infrastructure/single_writer.dart
 class SingleWriter {
   Future<void> _last = Future.value();
 

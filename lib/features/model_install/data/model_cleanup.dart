@@ -1,6 +1,6 @@
 // lib/features/model_install/data/model_cleanup.dart
 import 'dart:io';
-import 'package:amitabha/storage/model_paths.dart';
+import 'package:amitabha/features/model_install/data/model_paths.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 

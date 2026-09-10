@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:amitabha/features/model_install/data/model_installer.dart';
-import 'package:amitabha/storage/model_paths.dart';
+import 'package:amitabha/features/model_install/data/model_paths.dart';
 import 'package:archive/archive.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;

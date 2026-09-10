@@ -1,4 +1,4 @@
-// lib/storage/buffered_hits.dart
+// lib/features/asr/application/buffered_hits.dart
 import 'dart:async';
 
 class BufferedHits {

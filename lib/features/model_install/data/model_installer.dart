@@ -7,7 +7,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
 import 'package:amitabha/features/model_install/data/model_cleanup.dart';
-import 'package:amitabha/storage/model_paths.dart';
+import 'package:amitabha/features/model_install/data/model_paths.dart';
 import 'package:archive/archive.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;

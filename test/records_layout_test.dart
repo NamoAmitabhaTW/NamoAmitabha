@@ -2,15 +2,15 @@
 import 'dart:io';
 import 'package:amitabha/core/layout/layout_scale.dart';
 import 'package:amitabha/core/localization/locale_controller.dart';
-import 'package:amitabha/features/asr/application/asr_session_controller.dart';
+import 'package:amitabha/features/asr/asr.dart';
 import 'package:amitabha/features/records/presentation/screens/records_screen.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
-import 'package:amitabha/storage/daily_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:provider/provider.dart';
+import 'helpers/asr_controller.dart';
 import 'helpers/fake_path_provider.dart';
 import 'helpers/real_fonts.dart';
 
@@ -35,9 +35,9 @@ void main() {
     tempRoot = await Directory.systemTemp.createTemp('records_layout_test_');
     PathProviderPlatform.instance = FakePathProviderPlatform(tempRoot);
 
-    final repo = DailyRepository();
-    await repo.addCount('20260908', 'local', '使用者', 81);
-    await repo.addCount('20260909', 'local', '使用者', 12345);
+    final repo = FileDailyRepository();
+    await repo.addCount('20260908', 81);
+    await repo.addCount('20260909', 12345);
   });
 
   tearDown(() async {
@@ -60,7 +60,7 @@ void main() {
       await tester.pumpWidget(
         MultiProvider(
           providers: [
-            ChangeNotifierProvider(create: (_) => AsrSessionController()),
+            ChangeNotifierProvider(create: (_) => fileBackedAsrController()),
             ChangeNotifierProvider(create: (_) => LocaleController()),
           ],
           child: MaterialApp(

@@ -1,9 +1,9 @@
 // lib/features/model_install/data/bundled_model.dart
 import 'dart:io';
 import 'package:amitabha/core/assets/app_assets.dart';
+import 'package:amitabha/core/infrastructure/backup_exclusion.dart';
 import 'package:amitabha/features/model_install/data/model_cleanup.dart';
-import 'package:amitabha/storage/backup_exclusion.dart';
-import 'package:amitabha/storage/model_paths.dart';
+import 'package:amitabha/features/model_install/data/model_paths.dart';
 import 'package:flutter/services.dart';
 
 const List<String> bundledModelFiles = <String>[
