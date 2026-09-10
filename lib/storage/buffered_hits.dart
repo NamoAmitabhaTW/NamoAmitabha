@@ -1,4 +1,4 @@
-//amitabha/lib/storage/buffered_hits.dart
+// lib/storage/buffered_hits.dart
 import 'dart:async';
 
 class BufferedHits {
@@ -16,12 +16,16 @@ class BufferedHits {
 
   void add(DateTime t) {
     _buf.add(t);
-    if (_buf.length >= maxBuffer) { _flush(); }
-    else { _t ??= Timer(flushEvery, _flush); }
+    if (_buf.length >= maxBuffer) {
+      _flush();
+    } else {
+      _t ??= Timer(flushEvery, _flush);
+    }
   }
 
   Future<void> _flush() async {
-    _t?.cancel(); _t = null;
+    _t?.cancel();
+    _t = null;
     if (_buf.isEmpty) return;
     final copy = List<DateTime>.from(_buf);
     _buf.clear();

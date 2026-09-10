@@ -1,4 +1,4 @@
-// features/asr/widgets/chanting_background.dart
+// lib/features/asr/widgets/chanting_background.dart
 import 'package:amitabha/features/background/background_item.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
@@ -7,8 +7,8 @@ class ChantingBackground extends StatefulWidget {
   const ChantingBackground({
     super.key,
     required this.source,
-    this.active = true, 
-    this.scrimOpacity = 0, 
+    this.active = true,
+    this.scrimOpacity = 0,
   });
 
   final BackgroundSource? source;
@@ -53,7 +53,7 @@ class _ChantingBackgroundState extends State<ChantingBackground> {
     try {
       await c.initialize();
       await c.setLooping(true);
-      await c.setVolume(0); 
+      await c.setVolume(0);
       if (widget.active) await c.play();
       if (mounted) setState(() => _ready = true);
     } catch (_) {

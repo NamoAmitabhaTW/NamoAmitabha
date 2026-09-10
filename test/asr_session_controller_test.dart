@@ -1,4 +1,3 @@
-
 import 'dart:io';
 import 'package:amitabha/core/utils/date_format.dart';
 import 'package:amitabha/features/asr/application/asr_session_controller.dart';
@@ -10,7 +9,6 @@ import 'package:amitabha/storage/session_repo.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
-
 import 'helpers/fake_path_provider.dart';
 
 class _FakeSource implements SpeechSegmentSource {
@@ -39,7 +37,6 @@ class _FakeSource implements SpeechSegmentSource {
     disposed = true;
   }
 
- 
   void emit(String text) => _onSegment?.call(text);
 }
 
@@ -77,7 +74,6 @@ void main() {
   });
 
   tearDown(() async {
-   
     for (var attempt = 0; attempt < 5; attempt++) {
       try {
         if (await tempRoot.exists()) {
@@ -88,7 +84,6 @@ void main() {
         await Future<void>.delayed(const Duration(milliseconds: 50));
       }
     }
-    
   });
 
   test('狀態機:idle → recording → paused → save 後回 idle', () async {
@@ -104,7 +99,7 @@ void main() {
     expect(c.sessionState, SessionState.paused);
     expect(source.stopCalls, 1);
 
-    await c.start(); 
+    await c.start();
     expect(c.sessionState, SessionState.recording);
 
     source.emit('阿彌陀佛');
@@ -123,10 +118,10 @@ void main() {
     expect(c.sessionCount, 2);
     expect(c.lastHitAt, isNotNull);
 
-    source.emit('南無觀世音菩薩'); 
+    source.emit('南無觀世音菩薩');
     expect(c.sessionCount, 2);
 
-    source.emit('阿弥陀佛'); 
+    source.emit('阿弥陀佛');
     expect(c.sessionCount, 3);
 
     c.dispose();
@@ -145,19 +140,15 @@ void main() {
     expect(c.sessionCount, 0);
     expect(c.dataVersion, versionBefore + 1);
 
-
     final got = await SessionRepository().readSnapshot(sessionId);
     expect(got, isNotNull);
     expect(got!.amitabhaCount, 2);
 
-  
     final daily = await readJsonOrEmpty(await AppPaths.daily(nowYmdLocal()));
     expect(daily['amitabhaCount'], 2);
     expect((daily['sessionIds'] as List).contains(sessionId), isTrue);
 
-    
     expect(await PendingCommitStore().list(), isEmpty);
-
 
     final hits = await AppPaths.sessionHits(sessionId);
     expect(await hits.exists(), isTrue);
@@ -173,7 +164,7 @@ void main() {
 
     await c.save();
 
-    expect(c.sessionState, SessionState.recording);  
+    expect(c.sessionState, SessionState.recording);
     expect(c.dataVersion, versionBefore);
     expect(await PendingCommitStore().list(), isEmpty);
 
@@ -181,7 +172,6 @@ void main() {
   });
 
   test('daily 寫入失敗 → 計數保留在 journal,重放後補寫成功且不重複', () async {
-
     final broken = makeController(dailyRepo: _FailingDailyRepo());
     await broken.start();
     source.emit('阿彌陀佛');
@@ -197,7 +187,6 @@ void main() {
     expect(pendingAfterFail.first.snapshot.amitabhaCount, 3);
     broken.dispose();
 
-
     final healthy = makeController();
     await healthy.replayPending();
 
@@ -205,12 +194,11 @@ void main() {
     expect(daily['amitabhaCount'], 3);
     expect(await PendingCommitStore().list(), isEmpty);
 
-
     final store = PendingCommitStore();
-    await store.add(pendingAfterFail.first); 
+    await store.add(pendingAfterFail.first);
     await healthy.replayPending();
     final daily2 = await readJsonOrEmpty(await AppPaths.daily(nowYmdLocal()));
-    expect(daily2['amitabhaCount'], 3); 
+    expect(daily2['amitabhaCount'], 3);
     expect(await PendingCommitStore().list(), isEmpty);
 
     expect(sessionId, isNotEmpty);
@@ -222,8 +210,8 @@ void main() {
     const ymd = '20260707';
 
     await repo.addCountForSession(ymd, 'u', 'n', 5, 'sess-1');
-    await repo.addCountForSession(ymd, 'u', 'n', 5, 'sess-1'); 
-    await repo.addCountForSession(ymd, 'u', 'n', 2, 'sess-2'); 
+    await repo.addCountForSession(ymd, 'u', 'n', 5, 'sess-1');
+    await repo.addCountForSession(ymd, 'u', 'n', 2, 'sess-2');
 
     final daily = await readJsonOrEmpty(await AppPaths.daily(ymd));
     expect(daily['amitabhaCount'], 7);
@@ -250,7 +238,6 @@ void main() {
     source.emit('阿彌陀佛');
     final sessionId = c.currentSessionId!;
 
-   
     c.didChangeAppLifecycleState(AppLifecycleState.paused);
     final deadline = DateTime.now().add(const Duration(seconds: 5));
     while ((await PendingCommitStore().list()).isEmpty) {
@@ -260,9 +247,8 @@ void main() {
     final draft = (await PendingCommitStore().list()).single;
     expect(draft.snapshot.sessionId, sessionId);
     expect(draft.snapshot.amitabhaCount, 2);
-    expect(c.sessionCount, 2); 
+    expect(c.sessionCount, 2);
     c.dispose();
-
 
     final relaunched = makeController();
     await relaunched.replayPending();
@@ -276,9 +262,8 @@ void main() {
   test('草稿後回前景繼續念、正常儲存 → 以最終數字覆蓋,不重複計數', () async {
     final c = makeController();
     await c.start();
-    source.emit('阿彌陀佛'); 
+    source.emit('阿彌陀佛');
 
-  
     c.didChangeAppLifecycleState(AppLifecycleState.paused);
     final deadline = DateTime.now().add(const Duration(seconds: 5));
     while ((await PendingCommitStore().list()).isEmpty) {
@@ -286,11 +271,9 @@ void main() {
       await Future<void>.delayed(const Duration(milliseconds: 10));
     }
 
-    
     await c.start();
-    source.emit('阿彌陀佛阿彌陀佛'); 
+    source.emit('阿彌陀佛阿彌陀佛');
     await c.save();
-
 
     final daily = await readJsonOrEmpty(await AppPaths.daily(nowYmdLocal()));
     expect(daily['amitabhaCount'], 3);
@@ -308,7 +291,6 @@ void main() {
 
     c.didChangeAppLifecycleState(AppLifecycleState.detached);
 
-  
     final deadline = DateTime.now().add(const Duration(seconds: 5));
     while (c.dataVersion == versionBefore) {
       if (DateTime.now().isAfter(deadline)) {

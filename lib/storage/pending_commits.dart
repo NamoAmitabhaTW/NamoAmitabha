@@ -1,7 +1,5 @@
 // lib/storage/pending_commits.dart
-
 import 'dart:io';
-
 import 'app_paths.dart';
 import 'atomic_io.dart';
 import 'models.dart';
@@ -45,10 +43,10 @@ class PendingCommitStore {
 
     final files =
         await dir
-            .list()
-            .where((e) => e is File && e.path.endsWith('.json'))
-            .cast<File>()
-            .toList()
+              .list()
+              .where((e) => e is File && e.path.endsWith('.json'))
+              .cast<File>()
+              .toList()
           ..sort((a, b) => a.path.compareTo(b.path));
 
     final result = <PendingCommit>[];
@@ -57,9 +55,7 @@ class PendingCommitStore {
       if (j.isEmpty) continue;
       try {
         result.add(PendingCommit.fromJson(j));
-      } catch (_) {
-      
-      }
+      } catch (_) {}
     }
     return result;
   }

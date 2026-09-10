@@ -1,4 +1,4 @@
-// amitabha/lib/features/background/screens/background_picker_screen.dart
+// lib/features/background/background_picker_screen.dart
 import 'package:amitabha/core/layout/layout_scale.dart';
 import 'package:amitabha/core/widgets/content_width.dart';
 import 'package:amitabha/core/widgets/fitted_title.dart';
@@ -53,6 +53,7 @@ class _BackgroundPickerScreenState extends State<BackgroundPickerScreen> {
               Expanded(
                 child: RefreshIndicator(
                   onRefresh: c.load,
+
                   child: ContentWidth(
                     maxWidth: 600 * layoutScale(context),
                     child: ListView.separated(

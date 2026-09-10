@@ -1,6 +1,6 @@
-//amitabha/lib/features/settings/screens/settings_screen.dart
+// lib/features/settings/screens/settings_screen.dart
 import 'dart:math' as math;
-
+import 'package:amitabha/core/assets/app_assets.dart';
 import 'package:amitabha/core/layout/layout_scale.dart';
 import 'package:amitabha/core/localization/locale_controller.dart';
 import 'package:amitabha/core/theme/brand.dart';
@@ -14,16 +14,12 @@ import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-const _titleImageLocales = {'zh', 'en', 'ja', 'ko', 'vi', 'de', 'fr'};
-
-String? _titleImage(BuildContext context, String feature) {
-  final lang = Localizations.localeOf(context).languageCode;
-  if (!_titleImageLocales.contains(lang)) return null;
-  return 'assets/images/settings_titles/$lang/title_${feature}_$lang.png';
-}
+String? _titleImage(BuildContext context, SettingsTitleArt art) =>
+    AppAssets.settingsTitle(Localizations.localeOf(context).languageCode, art);
 
 const _breathFloat = 6.0;
 const _breathScale = 0.018;
+
 const _breathHold = Duration(milliseconds: 500);
 
 const _titleInkColor = Brand.amitabhaInk;
@@ -42,6 +38,7 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
+
     final size = MediaQuery.sizeOf(context);
     final isTablet = size.shortestSide >= 600;
     final isLandscape = size.width > size.height;
@@ -58,7 +55,7 @@ class SettingsScreen extends StatelessWidget {
     final buttons = <Widget>[
       _LeafButton(
         title: t.language,
-        image: _titleImage(context, 'language'),
+        image: _titleImage(context, SettingsTitleArt.language),
         rect: rectOf(SettingsLeaf.language),
         phase: 0.00,
         period: const Duration(milliseconds: 3400),
@@ -66,7 +63,7 @@ class SettingsScreen extends StatelessWidget {
       ),
       _LeafButton(
         title: t.bgScreenTitle,
-        image: _titleImage(context, 'background'),
+        image: _titleImage(context, SettingsTitleArt.background),
         rect: rectOf(SettingsLeaf.background),
         onTap: () => Navigator.push(
           context,
@@ -77,7 +74,7 @@ class SettingsScreen extends StatelessWidget {
       ),
       _LeafButton(
         title: t.announcementsTitle,
-        image: _titleImage(context, 'announcements'),
+        image: _titleImage(context, SettingsTitleArt.announcements),
         rect: rectOf(SettingsLeaf.announcements),
         onTap: () => Navigator.push(
           context,
@@ -88,7 +85,7 @@ class SettingsScreen extends StatelessWidget {
       ),
       _LeafButton(
         title: t.dedicationTitle,
-        image: _titleImage(context, 'dedication'),
+        image: _titleImage(context, SettingsTitleArt.dedication),
         rect: rectOf(SettingsLeaf.dedication),
         onTap: () => Navigator.push(
           context,
@@ -100,8 +97,9 @@ class SettingsScreen extends StatelessWidget {
       if (isRateSupported)
         _LeafButton(
           title: t.rateTitle,
-          image: _titleImage(context, 'rate'),
+          image: _titleImage(context, SettingsTitleArt.rate),
           rect: rectOf(SettingsLeaf.rate),
+
           minFontSize: 56,
           phase: 0.68,
           period: const Duration(milliseconds: 3700),
@@ -109,7 +107,7 @@ class SettingsScreen extends StatelessWidget {
         ),
       _LeafButton(
         title: t.shareTitle,
-        image: _titleImage(context, 'share'),
+        image: _titleImage(context, SettingsTitleArt.share),
         rect: rectOf(SettingsLeaf.share),
         phase: 0.85,
         period: const Duration(milliseconds: 4000),
@@ -125,10 +123,7 @@ class SettingsScreen extends StatelessWidget {
         children: [
           Positioned.fill(
             child: isTablet
-                ? Image.asset(
-                    'assets/images/bg_bodhi_leaf_bleed.png',
-                    fit: BoxFit.cover,
-                  )
+                ? Image.asset(AppAssets.bodhiLeafBleed, fit: BoxFit.cover)
                 : const ColoredBox(color: Brand.cream),
           ),
           Center(
@@ -238,11 +233,16 @@ class _LeafButton extends StatefulWidget {
   });
 
   final String title;
+
   final String? image;
+
   final LeafRect rect;
   final VoidCallback onTap;
+
   final double minFontSize;
+
   final double phase;
+
   final Duration period;
 
   @override
@@ -317,6 +317,7 @@ class _LeafButtonState extends State<_LeafButton>
                     padding: const EdgeInsets.all(6),
                     child: AnimatedBuilder(
                       animation: _breath,
+
                       child: Image.asset(
                         widget.image!,
                         fit: BoxFit.contain,
@@ -366,6 +367,7 @@ class _LeafButtonState extends State<_LeafButton>
     if (_reduceMotion) return child;
     return AnimatedBuilder(
       animation: _breath,
+
       child: RepaintBoundary(child: child),
       builder: (context, child) {
         final v = _phaseValue();
@@ -389,9 +391,11 @@ class _FitText extends StatelessWidget {
   final String text;
   final TextStyle style;
   final double maxFontSize;
+
   final double minFontSize;
 
   static final RegExp _breakable = RegExp(r'[぀-ヿ㐀-鿿豈-﫿가-힯]');
+
   static final RegExp _splitter = RegExp(r'[\s‐-―\-]+');
 
   @override
@@ -400,8 +404,11 @@ class _FitText extends StatelessWidget {
       builder: (context, constraints) {
         final maxW = constraints.maxWidth;
         final maxH = constraints.maxHeight;
+
         final scaler = MediaQuery.textScalerOf(context);
+
         final safeW = maxW * 0.96;
+
         final wordMaxW = maxW * 0.92;
 
         bool fits(double fontSize) {
@@ -415,6 +422,7 @@ class _FitText extends StatelessWidget {
           )..layout(maxWidth: safeW);
           if (tp.didExceedMaxLines) return false;
           if (tp.height > maxH || tp.width > safeW) return false;
+
           for (final token in text.split(_splitter)) {
             if (token.isEmpty || _breakable.hasMatch(token)) continue;
             final wtp = TextPainter(

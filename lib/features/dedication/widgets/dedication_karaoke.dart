@@ -1,5 +1,4 @@
 import 'dart:math' as math;
-
 import 'package:amitabha/features/dedication/widgets/dedication_paragraph.dart';
 import 'package:flutter/material.dart';
 
@@ -116,6 +115,7 @@ class _DedicationKaraokeState extends State<DedicationKaraoke>
       _lineCuts = const [];
       return;
     }
+
     final texts = <String>[];
     final lineCuts = <List<int>>[];
     for (final line in widget.text.split('\n')) {
@@ -187,6 +187,7 @@ class _DedicationKaraokeState extends State<DedicationKaraoke>
           maxScaleFactor: _gridMaxTextScale(box.maxWidth, base),
           child: AnimatedBuilder(
             animation: _ac,
+
             builder: (clampedContext, __) =>
                 _buildGrid(clampedContext, _elapsedMs, base, fill),
           ),
@@ -279,6 +280,7 @@ class _DedicationKaraokeState extends State<DedicationKaraoke>
     if (widest <= 0) return size;
 
     final factor = widest <= maxWidth ? 1.0 : maxWidth / widest;
+
     if (scaler.scale(size) * factor < _kLatinMinFontSize) return null;
     return size * factor;
   }

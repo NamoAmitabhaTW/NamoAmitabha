@@ -133,8 +133,8 @@ ios/Runner.xcworkspace/
 # FVM Version Cache
 .fvm/
 # ASR model (fetched from GitHub Release via tool/fetch_model.sh, not versioned)
-assets/sherpa-onnx/encoder.int8.onnx
-assets/sherpa-onnx/decoder.onnx
-assets/sherpa-onnx/joiner.int8.onnx
-assets/sherpa-onnx/tokens.txt
-assets/sherpa-onnx/bpe.vocab
+assets/ml/asr/encoder.int8.onnx
+assets/ml/asr/decoder.onnx
+assets/ml/asr/joiner.int8.onnx
+assets/ml/asr/tokens.txt
+assets/ml/asr/bpe.vocab

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:amitabha/storage/app_paths.dart';
 import 'package:amitabha/storage/atomic_io.dart';
 import 'package:amitabha/storage/daily_repo.dart';
@@ -11,14 +10,13 @@ import 'package:amitabha/storage/session_repo.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
-
 import 'helpers/fake_path_provider.dart';
 
 String _nowYmdLocal() {
   final n = DateTime.now();
   return '${n.year.toString().padLeft(4, '0')}'
-         '${n.month.toString().padLeft(2, '0')}'
-         '${n.day.toString().padLeft(2, '0')}';
+      '${n.month.toString().padLeft(2, '0')}'
+      '${n.day.toString().padLeft(2, '0')}';
 }
 
 void main() {
@@ -104,7 +102,7 @@ void main() {
 
   test('JsonPrefsFile 寫入/讀回往返', () async {
     final prefs = JsonPrefsFile('test_prefs');
-    expect(await prefs.read(), isNull); 
+    expect(await prefs.read(), isNull);
 
     await prefs.write({'theme_style': 'zenWood', 'n': 3});
     final j = await prefs.read();

@@ -1,6 +1,6 @@
 // lib/features/records/screens/records_screen.dart
 import 'dart:io';
-
+import 'package:amitabha/core/assets/app_assets.dart';
 import 'package:amitabha/core/layout/layout_scale.dart';
 import 'package:amitabha/core/theme/brand.dart';
 import 'package:amitabha/core/widgets/content_width.dart';
@@ -35,24 +35,6 @@ const RadialGradient _headerSpotlight = RadialGradient(
   stops: [0.0, 0.5, 1.0],
 );
 
-String _calligraphyAsset(String lang) {
-  switch (lang) {
-    case 'ja':
-      return 'assets/images/amitabha_calligraphy_ja.png';
-    case 'ko':
-      return 'assets/images/amitabha_calligraphy_ko.png';
-    case 'vi':
-      return 'assets/images/amitabha_calligraphy_vi.png';
-    case 'en':
-    case 'de':
-    case 'fr':
-      return 'assets/images/amitabha_calligraphy_sa.png';
-    case 'zh':
-    default:
-      return 'assets/images/amitabha_calligraphy.png';
-  }
-}
-
 class RecordsScreen extends StatelessWidget {
   const RecordsScreen({super.key});
 
@@ -61,6 +43,7 @@ class RecordsScreen extends StatelessWidget {
     final t = AppLocalizations.of(context);
     final localeObj = Localizations.localeOf(context);
     final locale = localeObj.toString();
+
     final df = localeObj.languageCode == 'en'
         ? DateFormat.yMd(locale)
         : DateFormat(
@@ -70,12 +53,15 @@ class RecordsScreen extends StatelessWidget {
                 .replaceAll(RegExp('y+'), 'yyyy'),
             locale,
           );
+
     final dfMonth = DateFormat.yMMM(locale);
     final ver = context.select<AsrSessionController, int>((s) => s.dataVersion);
+
     final bottomInset = MediaQuery.of(context).padding.bottom + 80;
 
     return Brand.withFontFamily(
       context,
+
       Container(
         decoration: const BoxDecoration(gradient: _recordsBackground),
         child: _buildContent(context, t, df, dfMonth, ver, bottomInset),
@@ -104,7 +90,7 @@ class RecordsScreen extends StatelessWidget {
         final header = _HeaderCards(
           totalText: '${data.total}',
           practiceDaysText: '${data.practiceDays}',
-          calligraphyAsset: _calligraphyAsset(
+          calligraphyAsset: AppAssets.calligraphy(
             Localizations.localeOf(context).languageCode,
           ),
           t: t,
@@ -251,21 +237,25 @@ class _HeaderCards extends StatelessWidget {
             semanticLabel: t.amitabha,
           ),
           SizedBox(height: 2 * s),
+
           _CenteredMetric(
             value: totalText,
             label: t.times,
             valueSize: 80 * s,
             labelSize: 16 * s,
+
             maxScaleFactor: 1.4,
             valueWeight: FontWeight.w400,
             letterSpacing: 1,
           ),
           SizedBox(height: 16 * s),
+
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.72,
             child: _GoldDivider(label: t.total),
           ),
           SizedBox(height: 14 * s),
+
           _CenteredMetric(
             value: practiceDaysText,
             label: t.days,
@@ -273,6 +263,7 @@ class _HeaderCards extends StatelessWidget {
             labelSize: 19 * s,
             maxScaleFactor: 1.6,
             valueWeight: FontWeight.w500,
+
             centerValueOnAxis: true,
           ),
         ],
@@ -414,6 +405,7 @@ class _RecordTile extends StatelessWidget {
           ),
         ],
       ),
+
       style: const TextStyle(color: _amitabhaInk),
       textAlign: stacked ? TextAlign.start : TextAlign.end,
     );
@@ -437,6 +429,7 @@ class _RecordTile extends StatelessWidget {
               children: [
                 Expanded(child: dateWidget),
                 SizedBox(width: 12 * s),
+
                 Expanded(child: countWidget),
               ],
             ),
@@ -528,6 +521,7 @@ class _CenteredMetric extends StatelessWidget {
               maintainSize: true,
               maintainAnimation: true,
               maintainState: true,
+
               child: Text('  $label', maxLines: 1, style: labelStyle),
             ),
             Text.rich(

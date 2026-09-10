@@ -1,7 +1,5 @@
 // lib/features/asr/application/asr_session_controller.dart
-
 import 'dart:async';
-
 import 'package:amitabha/core/utils/date_format.dart';
 import 'package:amitabha/features/asr/domain/amitabha_normalizer.dart';
 import 'package:amitabha/storage/buffered_hits.dart';
@@ -13,7 +11,6 @@ import 'package:amitabha/storage/session_repo.dart';
 import 'package:flutter/widgets.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
-
 const String kAsrModelName =
     'sherpa-onnx-x-asr-960ms-streaming-zipformer-transducer-zh-en-punct-int8-2026-06-05';
 
@@ -23,7 +20,6 @@ const String kLocalUserName = '使用者';
 enum SessionState { idle, recording, paused }
 
 abstract class SpeechSegmentSource {
-
   Future<bool> hasPermission();
 
   Future<void> start({required void Function(String text) onSegment});
@@ -152,7 +148,6 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
     notifyListeners();
   }
 
-
   Future<void> _beginNewSession() async {
     final sessionId = DateTime.now().toUtc().millisecondsSinceEpoch.toString();
     _sessionId = sessionId;
@@ -229,7 +224,7 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
         await _pendingStore.remove(entry.snapshot.sessionId);
         wroteAny = true;
       } catch (e) {
-        debugPrint('[ASR] replay pending failed: $e'); 
+        debugPrint('[ASR] replay pending failed: $e');
       }
     }
     if (wroteAny) {
@@ -237,7 +232,6 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
       notifyListeners();
     }
   }
-
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -254,7 +248,6 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
     }
   }
 
- 
   Future<void> _saveDraft() async {
     if (_sessionCount <= 0) return;
     final sessionId = _sessionId;

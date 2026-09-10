@@ -1,4 +1,4 @@
-// amitabha/lib/features/dedication/dedication_style.dart
+// lib/features/dedication/dedication_style.dart
 import 'package:flutter/material.dart';
 
 class DedicationStyle {
@@ -7,14 +7,17 @@ class DedicationStyle {
   static const String _kr = 'NotoSerifGathaKR';
   static const String _lxgw = 'LxgwWenkaiTC';
 
-  static String fontFamilyFor(String lang) =>
-      lang == 'ja' ? _jp : lang == 'ko' ? _kr : _tc;
+  static String fontFamilyFor(String lang) => lang == 'ja'
+      ? _jp
+      : lang == 'ko'
+      ? _kr
+      : _tc;
 
   static List<String> fontFallbackFor(String lang) => lang == 'ja'
       ? const [_tc, _kr, _lxgw]
       : lang == 'ko'
-          ? const [_tc, _jp, _lxgw]
-          : const [_jp, _kr, _lxgw];
+      ? const [_tc, _jp, _lxgw]
+      : const [_jp, _kr, _lxgw];
 
   static const Color paperCenter = Color(0xFFFFFDF6);
   static const Color paperEdge = Color(0xFFEFE1C4);

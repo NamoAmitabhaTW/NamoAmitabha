@@ -1,7 +1,5 @@
 // test/records_layout_test.dart
-
 import 'dart:io';
-
 import 'package:amitabha/core/layout/layout_scale.dart';
 import 'package:amitabha/core/localization/locale_controller.dart';
 import 'package:amitabha/features/asr/application/asr_session_controller.dart';
@@ -13,7 +11,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:provider/provider.dart';
-
 import 'helpers/fake_path_provider.dart';
 import 'helpers/real_fonts.dart';
 
@@ -37,6 +34,7 @@ void main() {
   setUp(() async {
     tempRoot = await Directory.systemTemp.createTemp('records_layout_test_');
     PathProviderPlatform.instance = FakePathProviderPlatform(tempRoot);
+
     final repo = DailyRepository();
     await repo.addCount('20260908', 'local', '使用者', 81);
     await repo.addCount('20260909', 'local', '使用者', 12345);

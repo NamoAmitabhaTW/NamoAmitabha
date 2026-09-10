@@ -1,5 +1,4 @@
 // test/dedication_layout_test.dart
-
 import 'package:amitabha/features/dedication/dedication_controller.dart';
 import 'package:amitabha/features/dedication/dedication_gatha.dart';
 import 'package:amitabha/features/dedication/screens/dedication_screen.dart';
@@ -9,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
-
 import 'helpers/real_fonts.dart';
 
 const _iPhone = Size(390, 844);
@@ -36,6 +34,7 @@ Future<void> _pumpKaraoke(
   double scale = 1.0,
 }) async {
   final style = _verseStyle(scale);
+
   tester.view
     ..devicePixelRatio = 1.0
     ..physicalSize = Size(width + 200, 1800);
@@ -248,6 +247,7 @@ void main() {
 
     testWidgets('縮到下限仍放不下時，改回自然換行', (tester) async {
       await _pumpKaraoke(tester, text: kGathaVi, lang: 'vi', width: 200);
+
       expect(_versePargraphs(tester).length, 1, reason: '縮到看不清比斷句更糟，到下限就該改回換行');
     });
 

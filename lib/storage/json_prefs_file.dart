@@ -1,9 +1,6 @@
 // lib/storage/json_prefs_file.dart
-
 import 'dart:io';
-
 import 'package:path/path.dart' as p;
-
 import 'app_paths.dart';
 import 'atomic_io.dart';
 
@@ -18,7 +15,6 @@ class JsonPrefsFile {
     await f.parent.create(recursive: true);
     return f;
   }
-
 
   Future<Map<String, dynamic>?> read() async {
     final f = await file();

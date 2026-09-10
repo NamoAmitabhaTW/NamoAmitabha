@@ -1,4 +1,4 @@
-// amitabha/lib/features/dedication/dedication_controller.dart
+// lib/features/dedication/dedication_controller.dart
 import 'package:amitabha/features/dedication/dedication_gatha.dart';
 import 'package:amitabha/features/dedication/dedication_prefs.dart';
 import 'package:flutter/foundation.dart';

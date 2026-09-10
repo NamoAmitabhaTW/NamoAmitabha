@@ -4,7 +4,7 @@
 #
 # The model is NOT stored in git (the encoder exceeds GitHub's 100 MB
 # per-file limit). It is downloaded here, verified against known SHA256
-# checksums, and extracted into assets/sherpa-onnx/ before the app is built.
+# checksums, and extracted into assets/ml/asr/ before the app is built.
 #
 # Idempotent: if the correct files are already present it does nothing.
 # Run this before `flutter build` / `flutter run` (locally and in CI).
@@ -20,7 +20,7 @@ ARCHIVE_URL="${BASE_URL}/${MODEL_NAME}.tar.gz"
 # --- Layout ------------------------------------------------------------------
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
-DEST_DIR="${REPO_ROOT}/assets/sherpa-onnx"
+DEST_DIR="${REPO_ROOT}/assets/ml/asr"
 
 # Expected SHA256 of the extracted model files (must match SHA256SUMS.txt
 # published alongside the release).

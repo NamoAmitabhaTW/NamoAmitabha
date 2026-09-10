@@ -1,6 +1,6 @@
+// lib/features/app_update/app_update_repo.dart
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:http/http.dart' as http;
 
 class AppUpdateRepo {
@@ -11,8 +11,8 @@ class AppUpdateRepo {
     final key = Platform.isIOS
         ? 'ios'
         : Platform.isAndroid
-            ? 'android'
-            : null;
+        ? 'android'
+        : null;
     if (key == null) return null;
 
     final res = await http.get(Uri.parse(url));

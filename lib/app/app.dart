@@ -40,6 +40,7 @@ class App extends StatelessWidget {
           create: (_) => AnnouncementController()..load(),
           lazy: false,
         ),
+
         Provider(create: (_) => AppUpdateController()),
       ],
       child: Builder(
@@ -47,7 +48,7 @@ class App extends StatelessWidget {
           final locale = context.watch<LocaleController>().locale;
           final themeData = Brand.getTheme(AppThemeStyle.zenWood);
           return MaterialApp(
-            locale: locale, 
+            locale: locale,
             localeListResolutionCallback: (locales, supported) {
               final prefs = locales ?? const <Locale>[];
 
@@ -62,13 +63,11 @@ class App extends StatelessWidget {
                   return const Locale('zh', 'TW');
                 }
 
-             
                 for (final s in supported) {
                   if (s.languageCode == l.languageCode) {
-                    return s; 
+                    return s;
                   }
                 }
-                
               }
 
               return const Locale('zh', 'TW');
@@ -86,5 +85,4 @@ class App extends StatelessWidget {
       ),
     );
   }
-
 }

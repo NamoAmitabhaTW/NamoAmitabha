@@ -1,3 +1,4 @@
+// lib/features/announcements/announcement_item.dart
 class AnnouncementItem {
   final String id;
 
@@ -25,7 +26,9 @@ class AnnouncementItem {
     final titles = <String, String>{};
     if (rawTitle is Map) {
       for (final e in rawTitle.entries) {
-        if (e.value is String) titles[e.key.toString().toLowerCase()] = e.value as String;
+        if (e.value is String) {
+          titles[e.key.toString().toLowerCase()] = e.value as String;
+        }
       }
     } else if (rawTitle is String) {
       titles['zh'] = rawTitle;
@@ -54,6 +57,7 @@ class AnnouncementItem {
       final t = titles[code];
       if (t != null && t.isNotEmpty) return t;
     }
+
     for (final t in titles.values) {
       if (t.isNotEmpty) return t;
     }

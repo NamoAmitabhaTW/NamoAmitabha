@@ -1,12 +1,9 @@
 // lib/features/model_install/model_install_flow.dart
-
 import 'dart:async';
-
 import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
-
 import 'install_progress_model.dart';
 import 'model_installer.dart';
 import 'widgets/download_progress_dialog.dart';
@@ -18,7 +15,6 @@ class ModelInstallFlow {
     : _installer = installer ?? ModelInstaller();
 
   final ModelInstaller _installer;
-
 
   Future<InstallFlowResult> ensureReady(
     BuildContext context,
@@ -37,7 +33,8 @@ class ModelInstallFlow {
       if (status == InstallStatus.ready) return InstallFlowResult.installed;
       if (!context.mounted) return InstallFlowResult.failed;
 
-      final needsDownload = status == InstallStatus.needsDownload ||
+      final needsDownload =
+          status == InstallStatus.needsDownload ||
           status == InstallStatus.incompleteNeedsDownload;
 
       if (needsDownload) {
@@ -52,26 +49,26 @@ class ModelInstallFlow {
         try {
           await _installer.download(
             modelName,
-            onProgress: (p) =>
-                progress.setProgress(p < 0.001 ? 0.001 : p), 
+            onProgress: (p) => progress.setProgress(p < 0.001 ? 0.001 : p),
             isCancelled: () => progress.cancelRequested,
           );
         } on UserCancelledException {
           if (context.mounted) _closeProgressDialog(context);
           progress.reset();
-          return InstallFlowResult.cancelled; // 主動取消,不顯示失敗對話框
+          return InstallFlowResult.cancelled;
         } on InstallException catch (e) {
           if (context.mounted) _closeProgressDialog(context);
           progress.reset();
           if (!context.mounted) return InstallFlowResult.failed;
-          final retry =
-              await _showFailureDialog(context, e.reason, unzipPhase: false);
+          final retry = await _showFailureDialog(
+            context,
+            e.reason,
+            unzipPhase: false,
+          );
           if (!retry) return InstallFlowResult.failed;
-          continue; 
+          continue;
         }
-
       } else {
-
         progress.clearCancel();
         if (retryUnzipAfterDiskFull && context.mounted) {
           progress.setStatusNote(AppLocalizations.of(context).retryUnzipNote);
@@ -81,8 +78,7 @@ class ModelInstallFlow {
       }
       retryUnzipAfterDiskFull = false;
 
-      
-      progress.setUnzipProgress(0.001); 
+      progress.setUnzipProgress(0.001);
       final smoother = _startDecodeSmoothing(progress);
       try {
         await _installer.unzipAndVerify(
@@ -99,14 +95,17 @@ class ModelInstallFlow {
         smoother.cancel();
         if (context.mounted) _closeProgressDialog(context);
         progress.reset();
-        return InstallFlowResult.cancelled; 
+        return InstallFlowResult.cancelled;
       } on InstallException catch (e) {
         smoother.cancel();
         if (context.mounted) _closeProgressDialog(context);
         progress.reset();
         if (!context.mounted) return InstallFlowResult.failed;
-        final retry =
-            await _showFailureDialog(context, e.reason, unzipPhase: true);
+        final retry = await _showFailureDialog(
+          context,
+          e.reason,
+          unzipPhase: true,
+        );
         if (!retry) return InstallFlowResult.failed;
         retryUnzipAfterDiskFull = e.reason == InstallFailureReason.diskFull;
         continue;
@@ -114,19 +113,16 @@ class ModelInstallFlow {
         smoother.cancel();
       }
 
-
       if (context.mounted) {
         _closeProgressDialog(context);
         progress.reset();
-        _showSuccessDialog(context); 
+        _showSuccessDialog(context);
       } else {
         progress.reset();
       }
       return InstallFlowResult.installed;
     }
   }
-
-  
 
   void _openProgressDialog(BuildContext context) {
     if (!context.mounted) return;
@@ -141,7 +137,6 @@ class ModelInstallFlow {
     if (!context.mounted) return;
     if (Navigator.canPop(context)) Navigator.of(context).pop();
   }
-
 
   static const _decodePhaseCap = 0.35;
 
@@ -158,8 +153,6 @@ class ModelInstallFlow {
     });
     return timer;
   }
-
-  
 
   Future<bool> _confirmDownload(BuildContext context, String modelName) async {
     return await showDialog<bool>(
@@ -186,7 +179,6 @@ class ModelInstallFlow {
         false;
   }
 
-
   Future<bool> _showFailureDialog(
     BuildContext context,
     InstallFailureReason reason, {
@@ -212,7 +204,6 @@ class ModelInstallFlow {
         message = t.serverErrorBody;
         retryLabel = t.retry;
       case InstallFailureReason.diskFull:
-        
         if (unzipPhase) {
           title = t.unzipFailedTitle;
           message = t.unzipFailedLowSpaceBody;

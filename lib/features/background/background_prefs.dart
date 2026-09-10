@@ -1,9 +1,8 @@
-// amitabha/lib/features/background/background_prefs.dart
+// lib/features/background/background_prefs.dart
 import 'package:amitabha/features/background/background_item.dart';
 import 'package:amitabha/storage/json_prefs_file.dart';
 
 class BackgroundPrefs {
-
   static final _active = JsonPrefsFile('background');
 
   static Future<void> saveActive(
@@ -12,7 +11,6 @@ class BackgroundPrefs {
     int revision,
   ) => _active.write({'activeId': id, 'type': type.name, 'revision': revision});
 
-  
   static Future<Map<String, dynamic>?> loadActive() => _active.read();
 
   static final _versions = JsonPrefsFile('background_versions');

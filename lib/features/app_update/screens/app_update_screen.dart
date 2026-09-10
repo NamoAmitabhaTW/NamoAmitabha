@@ -1,3 +1,5 @@
+// lib/features/app_update/screens/app_update_screen.dart
+import 'package:amitabha/core/assets/app_assets.dart';
 import 'package:amitabha/core/theme/brand.dart';
 import 'package:amitabha/features/app_update/app_update_controller.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
@@ -23,6 +25,7 @@ class AppUpdateScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
+
     final isTablet = MediaQuery.of(context).size.shortestSide >= 600;
     final maxWidth = isTablet ? 520.0 : 400.0;
     final titleSize = isTablet ? 30.0 : 24.0;
@@ -152,10 +155,11 @@ class _AppIconBadge extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(size * 0.224),
         child: Image.asset(
-          'assets/images/app_icon.png',
+          AppAssets.appIcon,
           width: size,
           height: size,
           fit: BoxFit.cover,
+
           errorBuilder: (_, __, ___) => const SizedBox.shrink(),
         ),
       ),
@@ -209,6 +213,7 @@ class _AutoShrinkText extends StatelessWidget {
         return Text(
           text,
           textAlign: TextAlign.center,
+
           style: effective.copyWith(fontSize: size),
         );
       },

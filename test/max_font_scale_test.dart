@@ -1,7 +1,6 @@
 // test/max_font_scale_test.dart
-
 import 'dart:io';
-
+import 'package:amitabha/core/assets/app_assets.dart';
 import 'package:amitabha/core/layout/layout_scale.dart';
 import 'package:amitabha/core/localization/locale_controller.dart';
 import 'package:amitabha/core/widgets/content_width.dart';
@@ -21,7 +20,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:provider/provider.dart';
-
 import 'helpers/fake_path_provider.dart';
 import 'helpers/real_fonts.dart';
 
@@ -128,6 +126,7 @@ void main() {
   setUp(() async {
     tempRoot = await Directory.systemTemp.createTemp('max_font_test_');
     PathProviderPlatform.instance = FakePathProviderPlatform(tempRoot);
+
     await DailyRepository().addCount('20260908', 'local', '使用者', 88888);
   });
   tearDown(() async {
@@ -138,7 +137,7 @@ void main() {
     id: 'probe',
     name: '預設背景',
     type: BackgroundType.image,
-    thumbnail: 'assets/images/lotus_divider.png',
+    thumbnail: AppAssets.lotusDivider,
     isBuiltin: true,
   );
 

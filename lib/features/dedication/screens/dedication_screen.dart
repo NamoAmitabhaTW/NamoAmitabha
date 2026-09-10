@@ -1,6 +1,6 @@
-// amitabha/lib/features/dedication/screens/dedication_screen.dart
+// lib/features/dedication/screens/dedication_screen.dart
 import 'dart:math' as math;
-
+import 'package:amitabha/core/assets/app_assets.dart';
 import 'package:amitabha/core/layout/layout_scale.dart';
 import 'package:amitabha/core/widgets/content_width.dart';
 import 'package:amitabha/features/dedication/dedication_controller.dart';
@@ -27,6 +27,7 @@ class _DedicationScreenState extends State<DedicationScreen>
     vsync: this,
     duration: const Duration(milliseconds: 700),
   )..forward();
+
   late final CurvedAnimation _enterFade = CurvedAnimation(
     parent: _enter,
     curve: Curves.easeOut,
@@ -47,6 +48,7 @@ class _DedicationScreenState extends State<DedicationScreen>
     if (max <= 0) return;
     final vh = pos.viewportDimension;
     final contentH = max + vh;
+
     final target = (t * contentH - _activeAnchor * vh).clamp(0.0, max);
     _scroll.jumpTo(target);
   }
@@ -101,6 +103,7 @@ class _DedicationScreenState extends State<DedicationScreen>
                             text: t.dedicationTitle,
                             lang: _lang,
                             scale: scale,
+
                             maxHeight: MediaQuery.sizeOf(context).height * 0.22,
                           ),
                           SizedBox(height: 16 * scale),
@@ -113,6 +116,7 @@ class _DedicationScreenState extends State<DedicationScreen>
                   Expanded(
                     child: FadeTransition(
                       opacity: fade,
+
                       child: LayoutBuilder(
                         builder: (context, box) => SingleChildScrollView(
                           controller: _scroll,
@@ -154,6 +158,7 @@ class _DedicationScreenState extends State<DedicationScreen>
                     ),
                   ),
                   SizedBox(height: 8 * scale),
+
                   ContentWidth(
                     maxWidth: 340 * scale,
                     child: _DedicationButton(
@@ -176,6 +181,7 @@ class _DedicationScreenState extends State<DedicationScreen>
                 child: IconButton(
                   icon: const Icon(Icons.close),
                   iconSize: 26 * scale,
+
                   constraints: const BoxConstraints(
                     minWidth: 48,
                     minHeight: 48,
@@ -223,6 +229,7 @@ class _DedicationTitle extends StatelessWidget {
     final base = TextStyle(
       fontFamily: DedicationStyle.fontFamilyFor(lang),
       fontFamilyFallback: DedicationStyle.fontFallbackFor(lang),
+
       height: 1.3,
       fontWeight: FontWeight.w600,
       color: DedicationStyle.ink,
@@ -267,6 +274,7 @@ class _DedicationTitle extends StatelessWidget {
               high = mid;
             }
           }
+
           fitted = low;
         }
 
@@ -274,6 +282,7 @@ class _DedicationTitle extends StatelessWidget {
           text,
           textAlign: TextAlign.center,
           maxLines: 2,
+
           overflow: TextOverflow.ellipsis,
           style: _sized(base, fitted),
         );
@@ -333,7 +342,8 @@ class _GoldDivider extends StatelessWidget {
       children: [
         line(const [Color(0x00B2842E), DedicationStyle.gold]),
         SizedBox(width: 6 * scale),
-        Image.asset('assets/images/lotus_divider.png', height: 68 * scale),
+
+        Image.asset(AppAssets.lotusDivider, height: 68 * scale),
         SizedBox(width: 6 * scale),
         line(const [DedicationStyle.gold, Color(0x00B2842E)]),
       ],

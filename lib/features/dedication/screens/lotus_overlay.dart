@@ -1,10 +1,10 @@
-// amitabha/lib/features/dedication/screens/lotus_overlay.dart
+// lib/features/dedication/screens/lotus_overlay.dart
 import 'dart:async';
 import 'dart:math' as math;
-
+import 'package:amitabha/core/assets/app_assets.dart';
 import 'package:flutter/material.dart';
 
-const String _kFlowerAsset = 'assets/gifs/lotus_flower.webp';
+const String _kFlowerAsset = AppAssets.lotusFlower;
 
 const double _kHaloFraction = 0.5;
 
@@ -278,6 +278,7 @@ class _SandRiverPainter extends CustomPainter {
       final len = d.distance == 0 ? 1.0 : d.distance;
       final perp = Offset(-d.dy / len, d.dx / len);
       final pos = p + perp * (g.perp * half);
+
       final edge = 1 - (2 * t - 1).abs();
       final twinkle = 0.5 + 0.5 * math.sin(flow * 2 * math.pi * 2 + g.phase);
       final a = (0.55 * edge * twinkle).clamp(0.0, 1.0);

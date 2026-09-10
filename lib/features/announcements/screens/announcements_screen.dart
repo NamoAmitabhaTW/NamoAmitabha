@@ -1,4 +1,4 @@
-// amitabha/lib/features/announcements/screens/announcements_screen.dart
+// lib/features/announcements/screens/announcements_screen.dart
 import 'package:amitabha/core/layout/layout_scale.dart';
 import 'package:amitabha/core/theme/brand.dart';
 import 'package:amitabha/core/widgets/content_width.dart';
@@ -27,6 +27,7 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
       if (!mounted) return;
       final c = context.read<AnnouncementController>();
       if (c.manifestLoadFailed) c.load();
+
       c.markAllRead();
     });
   }
@@ -57,6 +58,7 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
           }
           return RefreshIndicator(
             onRefresh: c.load,
+
             child: ContentWidth(
               maxWidth: 640 * layoutScale(context),
               child: ListView.separated(
@@ -127,6 +129,7 @@ class _PinnedCard extends StatelessWidget {
           ),
         ],
         SizedBox(height: 16 * s),
+
         Center(
           child: Container(
             width: 28 * s,

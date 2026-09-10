@@ -1,3 +1,4 @@
+// lib/features/announcements/announcement_controller.dart
 import 'package:amitabha/features/announcements/announcement_item.dart';
 import 'package:amitabha/features/announcements/announcement_prefs.dart';
 import 'package:amitabha/features/announcements/announcement_repo.dart';
@@ -73,7 +74,8 @@ class AnnouncementController extends ChangeNotifier {
 
     final bodyVersions = await AnnouncementPrefs.loadBodyVersions();
     final localVersion = bodyVersions[item.id] ?? 0;
-    final needsRemote = !AnnouncementRepo.localOnly &&
+    final needsRemote =
+        !AnnouncementRepo.localOnly &&
         (local == null || localVersion < item.version);
 
     if (needsRemote) {

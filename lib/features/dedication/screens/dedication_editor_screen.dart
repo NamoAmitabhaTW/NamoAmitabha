@@ -1,4 +1,5 @@
-// amitabha/lib/features/dedication/screens/dedication_editor_screen.dart
+// lib/features/dedication/screens/dedication_editor_screen.dart
+import 'package:amitabha/core/assets/app_assets.dart';
 import 'package:amitabha/core/layout/layout_scale.dart';
 import 'package:amitabha/core/theme/brand.dart';
 import 'package:amitabha/features/dedication/dedication_controller.dart';
@@ -91,6 +92,7 @@ class _DedicationEditorScreenState extends State<DedicationEditorScreen>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+
     _persistIfChanged();
     _controller?.dispose();
     super.dispose();
@@ -100,6 +102,7 @@ class _DedicationEditorScreenState extends State<DedicationEditorScreen>
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
     final locale = Localizations.localeOf(context);
+
     final isCjkTitle =
         locale.languageCode == 'zh' || locale.languageCode == 'ja';
     final s = layoutScale(context);
@@ -114,6 +117,7 @@ class _DedicationEditorScreenState extends State<DedicationEditorScreen>
           scrolledUnderElevation: 0,
           centerTitle: true,
           iconTheme: const IconThemeData(color: Brand.settingsBrownSoft),
+
           title: FittedBox(
             fit: BoxFit.scaleDown,
             child: Text(
@@ -144,10 +148,12 @@ class _DedicationEditorScreenState extends State<DedicationEditorScreen>
                     decoration: BoxDecoration(
                       color: Brand.settingsCardBg,
                       borderRadius: BorderRadius.circular(20 * s),
+
                       border: Border.all(
                         color: const Color(0x22B2842E),
                         width: 1,
                       ),
+
                       boxShadow: const [
                         BoxShadow(
                           color: Color(0x146F4E37),
@@ -209,7 +215,8 @@ class _GoldDivider extends StatelessWidget {
       children: [
         line(const [Color(0x00B2842E), DedicationStyle.gold]),
         SizedBox(width: 8 * scale),
-        Image.asset('assets/images/lotus_divider.png', height: 32 * scale),
+
+        Image.asset(AppAssets.lotusDivider, height: 32 * scale),
         SizedBox(width: 8 * scale),
         line(const [DedicationStyle.gold, Color(0x00B2842E)]),
       ],

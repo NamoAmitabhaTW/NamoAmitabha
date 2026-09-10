@@ -2,9 +2,7 @@
 // This file is modified based on the open-source project:
 // Flutter-EasySpeechRecognition (https://github.com/Jason-chen-coder/Flutter-EasySpeechRecognition)
 // Original copyright (c) 2024 Xiaomi Corporation
-
 import 'dart:async';
-
 import 'package:amitabha/core/utils/audio_convert.dart';
 import 'package:amitabha/features/model_install/asr_hotwords.dart';
 import 'package:amitabha/features/model_install/bundled_model.dart';
@@ -12,7 +10,6 @@ import 'package:amitabha/features/model_install/online_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:record/record.dart';
 import 'package:sherpa_onnx/sherpa_onnx.dart' as sherpa_onnx;
-
 import 'asr_session_controller.dart' show SpeechSegmentSource, kAsrModelName;
 
 Future<sherpa_onnx.OnlineRecognizer> createOnlineRecognizer(
@@ -52,18 +49,15 @@ class SherpaMicSource implements SpeechSegmentSource {
   StreamSubscription<Uint8List>? _subscription;
   bool _running = false;
 
-  
-  int _dbgDecodeMs = 0; 
-  double _dbgAudioMs = 0; 
-  int _dbgEmptyEndpoints = 0; 
+  int _dbgDecodeMs = 0;
+  double _dbgAudioMs = 0;
+  int _dbgEmptyEndpoints = 0;
 
   @override
   Future<bool> hasPermission() => _recorder.hasPermission();
 
   @override
-  Future<void> start({
-    required void Function(String text) onSegment,
-  }) async {
+  Future<void> start({required void Function(String text) onSegment}) async {
     if (_running) return;
 
     if (_recognizer == null) {
@@ -87,42 +81,39 @@ class SherpaMicSource implements SpeechSegmentSource {
     _dbgEmptyEndpoints = 0;
 
     _running = true;
-    _subscription = audio.listen(
-      (data) {
-        if (!_running) return;
-        final recognizer = _recognizer;
-        final stream = _stream;
-        if (recognizer == null || stream == null) return;
+    _subscription = audio.listen((data) {
+      if (!_running) return;
+      final recognizer = _recognizer;
+      final stream = _stream;
+      if (recognizer == null || stream == null) return;
 
-        final samples = convertBytesToFloat32(Uint8List.fromList(data));
-        stream.acceptWaveform(samples: samples, sampleRate: _sampleRate);
+      final samples = convertBytesToFloat32(Uint8List.fromList(data));
+      stream.acceptWaveform(samples: samples, sampleRate: _sampleRate);
 
-        final sw = Stopwatch()..start();
-        while (recognizer.isReady(stream)) {
-          recognizer.decode(stream);
+      final sw = Stopwatch()..start();
+      while (recognizer.isReady(stream)) {
+        recognizer.decode(stream);
+      }
+      sw.stop();
+      _dbgDecodeMs += sw.elapsedMilliseconds;
+      _dbgAudioMs += samples.length / _sampleRate * 1000;
+
+      final text = recognizer.getResult(stream).text;
+      if (recognizer.isEndpoint(stream)) {
+        recognizer.reset(stream);
+        final rtf = _dbgAudioMs > 0 ? _dbgDecodeMs / _dbgAudioMs : 0;
+        final rtfStr = rtf.toStringAsFixed(2);
+        if (text != '') {
+          debugPrint('[ASR] =$text  [RTF=$rtfStr]');
+          onSegment(text);
+        } else {
+          _dbgEmptyEndpoints++;
+          debugPrint(
+            '[ASR] (空端點#$_dbgEmptyEndpoints — 有端點但辨識為空,模型漏辨識或未出聲)  [RTF=$rtfStr]',
+          );
         }
-        sw.stop();
-        _dbgDecodeMs += sw.elapsedMilliseconds;
-        _dbgAudioMs += samples.length / _sampleRate * 1000;
-
-        final text = recognizer.getResult(stream).text;
-        if (recognizer.isEndpoint(stream)) {
-          recognizer.reset(stream);
-          final rtf = _dbgAudioMs > 0 ? _dbgDecodeMs / _dbgAudioMs : 0;
-          final rtfStr = rtf.toStringAsFixed(2);
-          if (text != '') {
-            debugPrint('[ASR] =$text  [RTF=$rtfStr]');
-            onSegment(text);
-          } else {
-            _dbgEmptyEndpoints++;
-            debugPrint(
-              '[ASR] (空端點#$_dbgEmptyEndpoints — 有端點但辨識為空,模型漏辨識或未出聲)  [RTF=$rtfStr]',
-            );
-          }
-        }
-      },
-      onDone: () => debugPrint('[ASR] audio stream done'),
-    );
+      }
+    }, onDone: () => debugPrint('[ASR] audio stream done'));
   }
 
   @override
@@ -136,7 +127,7 @@ class SherpaMicSource implements SpeechSegmentSource {
     } catch (_) {}
 
     _stream?.free();
-    _stream = _recognizer?.createStream(); 
+    _stream = _recognizer?.createStream();
   }
 
   @override

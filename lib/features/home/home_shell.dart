@@ -1,4 +1,4 @@
-// lib/home/presentation/home_shell.dart
+// lib/features/home/home_shell.dart
 import 'package:amitabha/core/theme/brand.dart';
 import 'package:amitabha/features/asr/application/asr_session_controller.dart';
 import 'package:amitabha/features/asr/screens/streaming_asr_screen.dart';
@@ -38,7 +38,9 @@ class _HomeShellState extends State<HomeShell> {
 
   Widget _pageFor(int i) {
     if (i == 1) {
-      final ver = context.select<AsrSessionController, int>((s) => s.dataVersion);
+      final ver = context.select<AsrSessionController, int>(
+        (s) => s.dataVersion,
+      );
       return KeyedSubtree(key: ValueKey(ver), child: const RecordsScreen());
     }
     return _cache[i] ??= _buildStaticPage(i);
@@ -47,18 +49,21 @@ class _HomeShellState extends State<HomeShell> {
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
+
     final navFg = _index == 0 ? Colors.white : Brand.amitabhaInk;
-        
+
     return Container(
       decoration: Brand.getBackgroundDecoration(AppThemeStyle.zenWood),
       child: Scaffold(
         backgroundColor: Colors.transparent,
+
         extendBody: _index != 2,
         body: _pageFor(_index),
         bottomNavigationBar: GlassNavBar(
           selectedIndex: _index,
           onDestinationSelected: (i) => setState(() => _index = i),
           foreground: navFg,
+
           glass: _index == 1,
           destinations: [
             NavigationDestination(icon: const Icon(Icons.mic), label: t.chant),

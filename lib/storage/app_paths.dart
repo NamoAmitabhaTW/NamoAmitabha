@@ -1,6 +1,5 @@
-//amitabha/lib/storage/app_paths.dart
+// lib/storage/app_paths.dart
 import 'dart:io';
-
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
@@ -28,7 +27,9 @@ class AppPaths {
 
   static Future<File> sessionHits(String sessionId, {int part = 1}) async {
     final r = await root();
-    final file = File(p.join(r.path, 'data', 'sessions', '$sessionId-hits-$part.ndjson'));
+    final file = File(
+      p.join(r.path, 'data', 'sessions', '$sessionId-hits-$part.ndjson'),
+    );
     await file.parent.create(recursive: true);
     return file;
   }
@@ -40,7 +41,6 @@ class AppPaths {
     return file;
   }
 
-  
   static Future<Directory> pendingDir() async {
     final r = await root();
     return Directory(p.join(r.path, 'data', 'pending'));

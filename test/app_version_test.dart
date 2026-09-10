@@ -34,14 +34,8 @@ void main() {
 
   group('比較', () {
     test('數值比較，不是字串比較', () {
-      expect(
-        const AppVersion(2, 10, 0) > const AppVersion(2, 9, 0),
-        isTrue,
-      );
-      expect(
-        const AppVersion(2, 0, 10) > const AppVersion(2, 0, 9),
-        isTrue,
-      );
+      expect(const AppVersion(2, 10, 0) > const AppVersion(2, 9, 0), isTrue);
+      expect(const AppVersion(2, 0, 10) > const AppVersion(2, 0, 9), isTrue);
     });
 
     test('major 優先於 minor，minor 優先於 patch', () {

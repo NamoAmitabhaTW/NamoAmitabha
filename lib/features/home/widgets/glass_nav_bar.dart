@@ -1,6 +1,5 @@
-// features/home/widgets/glass_nav_bar.dart
+// lib/features/home/widgets/glass_nav_bar.dart
 import 'dart:ui' show ImageFilter;
-
 import 'package:amitabha/core/theme/brand.dart';
 import 'package:flutter/material.dart';
 
@@ -19,6 +18,7 @@ class GlassNavBar extends StatelessWidget {
   final int selectedIndex;
   final ValueChanged<int> onDestinationSelected;
   final List<NavigationDestination> destinations;
+
   final bool glass;
   final double blurSigma;
   final double tintOpacity;
@@ -28,8 +28,14 @@ class GlassNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final isLightFg = foreground.computeLuminance() > 0.5;
     final shadows = isLightFg
-    ? [Shadow(color: Colors.black.withValues(alpha: 0.5), blurRadius: 4, offset: const Offset(0, 1))]
-    : const <Shadow>[];
+        ? [
+            Shadow(
+              color: Colors.black.withValues(alpha: 0.5),
+              blurRadius: 4,
+              offset: const Offset(0, 1),
+            ),
+          ]
+        : const <Shadow>[];
 
     final locale = Localizations.localeOf(context);
 
@@ -48,10 +54,7 @@ class GlassNavBar extends StatelessWidget {
           ),
         ),
         iconTheme: WidgetStatePropertyAll(
-          IconThemeData(
-            color: foreground,
-            shadows: shadows, 
-          ),
+          IconThemeData(color: foreground, shadows: shadows),
         ),
         indicatorColor: foreground.withValues(alpha: 0.18),
       ),
@@ -64,9 +67,9 @@ class GlassNavBar extends StatelessWidget {
 
     if (!glass) return bar;
 
-    final tint = Theme.of(context).colorScheme.surface.withValues(
-      alpha: tintOpacity,
-    );
+    final tint = Theme.of(
+      context,
+    ).colorScheme.surface.withValues(alpha: tintOpacity);
     return ClipRect(
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: blurSigma, sigmaY: blurSigma),

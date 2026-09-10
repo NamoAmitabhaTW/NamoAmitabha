@@ -1,14 +1,13 @@
-//amitabha/lib/online_model.dart
+// lib/features/model_install/online_model.dart
 // This file is modified based on the open-source project:
 // Flutter-EasySpeechRecognition (https://github.com/Jason-chen-coder/Flutter-EasySpeechRecognition)
 // Original copyright (c) 2024 Xiaomi Corporation
-
 import 'package:amitabha/storage/model_paths.dart';
 import 'package:sherpa_onnx/sherpa_onnx.dart' as sherpa_onnx;
 
-// ASR 
-Future<sherpa_onnx.OnlineModelConfig> getModelConfigByModelName(
-    {required String modelName}) async {
+Future<sherpa_onnx.OnlineModelConfig> getModelConfigByModelName({
+  required String modelName,
+}) async {
   final dir = await ModelPaths.modelDir(modelName);
   final modelDir = dir.path;
   switch (modelName) {

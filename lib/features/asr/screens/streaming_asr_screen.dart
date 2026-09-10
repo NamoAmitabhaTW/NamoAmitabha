@@ -1,6 +1,6 @@
-// features/asr/screens/streaming_asr_screen.dart
+// lib/features/asr/screens/streaming_asr_screen.dart
 import 'dart:async';
-
+import 'package:amitabha/core/assets/app_assets.dart';
 import 'package:amitabha/core/theme/brand.dart';
 import 'package:amitabha/features/asr/application/asr_session_controller.dart';
 import 'package:amitabha/features/asr/widgets/chanting_background.dart';
@@ -22,7 +22,7 @@ class StreamingAsrScreen extends StatelessWidget {
     if (!await bundledModelReady(kAsrModelName)) {
       if (!context.mounted) return;
       final ready = await _prepareBundledModel(context);
-      if (!ready) return;  
+      if (!ready) return;
       if (!context.mounted) return;
     }
 
@@ -39,26 +39,28 @@ class StreamingAsrScreen extends StatelessWidget {
   Future<bool> _prepareBundledModel(BuildContext context) async {
     final t = AppLocalizations.of(context);
 
-    unawaited(showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (_) => PopScope(
-        canPop: false,
-        child: AlertDialog(
-          content: Row(
-            children: [
-              const SizedBox(
-                width: 24,
-                height: 24,
-                child: CircularProgressIndicator(strokeWidth: 3),
-              ),
-              const SizedBox(width: 20),
-              Expanded(child: Text(t.preparingPleaseWait)),
-            ],
+    unawaited(
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) => PopScope(
+          canPop: false,
+          child: AlertDialog(
+            content: Row(
+              children: [
+                const SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(strokeWidth: 3),
+                ),
+                const SizedBox(width: 20),
+                Expanded(child: Text(t.preparingPleaseWait)),
+              ],
+            ),
           ),
         ),
       ),
-    ));
+    );
 
     try {
       await materializeBundledModel(kAsrModelName);
@@ -119,40 +121,13 @@ class StreamingAsrScreen extends StatelessWidget {
           FilledButton(
             onPressed: () async {
               Navigator.pop(dialogContext);
-              await openAppSettings(); 
+              await openAppSettings();
             },
             child: Text(t.openSettings),
           ),
         ],
       ),
     );
-  }
-
-  static const Set<String> _buttonImageLangs = {
-    'zh', 'ja', 'ko', 'vi', 'en', 'de', 'fr',
-  };
-
-  static String? _buttonImage(String lang, String name) =>
-      _buttonImageLangs.contains(lang)
-          ? 'assets/images/chant_buttons/$lang/$name.png'
-          : null;
-
-  static String _calligraphyAsset(String lang) {
-    switch (lang) {
-      case 'ja':
-        return 'assets/images/amitabha_calligraphy_ja.png';
-      case 'ko':
-        return 'assets/images/amitabha_calligraphy_ko.png';
-      case 'vi':
-        return 'assets/images/amitabha_calligraphy_vi.png';
-      case 'en':
-      case 'de':
-      case 'fr':
-        return 'assets/images/amitabha_calligraphy_sa.png';
-      case 'zh':
-      default:
-        return 'assets/images/amitabha_calligraphy.png';
-    }
   }
 
   @override
@@ -162,6 +137,7 @@ class StreamingAsrScreen extends StatelessWidget {
     final bg = context.watch<BackgroundController>();
     final locale = Localizations.localeOf(context);
     final lang = locale.languageCode;
+
     final isTablet = MediaQuery.of(context).size.shortestSide >= 600;
 
     final baseCount = Theme.of(context).textTheme.displayLarge;
@@ -173,13 +149,12 @@ class StreamingAsrScreen extends StatelessWidget {
     );
 
     final kleeFamily = Brand.primaryFontFor(locale);
-    final labelFallbackFamily = Brand.settingsFontFor(locale);
 
+    final labelFallbackFamily = Brand.settingsFontFor(locale);
 
     final numberColor = Colors.white;
     final unitColor = Colors.white;
 
-   
     final viewPadding = MediaQuery.of(context).viewPadding;
 
     final titleToCountGap = (MediaQuery.sizeOf(context).height * 0.375).clamp(
@@ -188,7 +163,7 @@ class StreamingAsrScreen extends StatelessWidget {
     );
 
     final titleImage = Image.asset(
-      _calligraphyAsset(lang),
+      AppAssets.calligraphy(lang),
       width: isTablet
           ? MediaQuery.of(context).size.width.clamp(0.0, 640.0) * 0.88
           : MediaQuery.of(context).size.width.clamp(0.0, 520.0) * 0.8,
@@ -196,36 +171,36 @@ class StreamingAsrScreen extends StatelessWidget {
     );
 
     Shadow numShadow() => Shadow(
-          color: Colors.black.withValues(alpha: 0.4),
-          blurRadius: 6,
-          offset: const Offset(0, 1),
-        );
+      color: Colors.black.withValues(alpha: 0.4),
+      blurRadius: 6,
+      offset: const Offset(0, 1),
+    );
 
     final countWidget = MediaQuery.withClampedTextScaling(
       maxScaleFactor: 1.0,
       child: FittedBox(
         fit: BoxFit.scaleDown,
         child: Text.rich(
-        TextSpan(
-          children: [
-            TextSpan(
-              text: '${s.sessionCount} ',
-              style: countStyle?.copyWith(
-                color: numberColor,
-                shadows: [numShadow()],
+          TextSpan(
+            children: [
+              TextSpan(
+                text: '${s.sessionCount} ',
+                style: countStyle?.copyWith(
+                  color: numberColor,
+                  shadows: [numShadow()],
+                ),
               ),
-            ),
-            TextSpan(
-              text: t.times,
-              style: countStyle?.copyWith(
-                fontFamily: kleeFamily,
-                fontFamilyFallback: Brand.cjkFallback,
-                color: unitColor,
-                fontWeight: FontWeight.w700,
-                fontSize: (countStyle.fontSize ?? 57.0) * 0.62,
-                shadows: [numShadow()],
+              TextSpan(
+                text: t.times,
+                style: countStyle?.copyWith(
+                  fontFamily: kleeFamily,
+                  fontFamilyFallback: Brand.cjkFallback,
+                  color: unitColor,
+                  fontWeight: FontWeight.w700,
+                  fontSize: (countStyle.fontSize ?? 57.0) * 0.62,
+                  shadows: [numShadow()],
+                ),
               ),
-            ),
             ],
           ),
         ),
@@ -242,7 +217,11 @@ class StreamingAsrScreen extends StatelessWidget {
       },
       icon: s.isRecording ? Icons.pause : Icons.play_arrow,
       label: s.isRecording ? t.pause : t.start,
-      labelImageAsset: _buttonImage(lang, s.isRecording ? 'pause' : 'start'),
+
+      labelImageAsset: AppAssets.chantButton(
+        lang,
+        s.isRecording ? ChantButtonArt.pause : ChantButtonArt.start,
+      ),
       labelFontFamily: labelFallbackFamily,
       labelFontFamilyFallback: Brand.cjkFallback,
       labelFontSize: 26,
@@ -256,7 +235,8 @@ class StreamingAsrScreen extends StatelessWidget {
       onPressed: s.sessionCount > 0 ? () => _handleSave(context) : null,
       icon: Icons.save,
       label: t.save,
-      labelImageAsset: _buttonImage(lang, 'save'),
+
+      labelImageAsset: AppAssets.chantButton(lang, ChantButtonArt.save),
       labelFontFamily: labelFallbackFamily,
       labelFontFamilyFallback: Brand.cjkFallback,
       labelFontSize: 26,
@@ -286,6 +266,7 @@ class StreamingAsrScreen extends StatelessWidget {
               SizedBox(height: viewPadding.top + 16),
               titleImage,
               const Spacer(),
+
               Flexible(child: countWidget),
               const Spacer(),
               buttonsRow,
@@ -294,6 +275,7 @@ class StreamingAsrScreen extends StatelessWidget {
               const Spacer(flex: 4),
               titleImage,
               SizedBox(height: titleToCountGap),
+
               countWidget,
               const Spacer(flex: 10),
               buttonsRow,
@@ -302,10 +284,7 @@ class StreamingAsrScreen extends StatelessWidget {
 
     final content = Padding(
       padding: EdgeInsets.only(bottom: viewPadding.bottom + 120),
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: contentColumn,
-      ),
+      child: Padding(padding: const EdgeInsets.all(20), child: contentColumn),
     );
 
     final body = Center(
@@ -318,7 +297,6 @@ class StreamingAsrScreen extends StatelessWidget {
     return FocusTraversalGroup(
       child: Stack(
         children: [
-         
           Positioned.fill(
             child: ChantingBackground(source: bg.currentSource, active: true),
           ),

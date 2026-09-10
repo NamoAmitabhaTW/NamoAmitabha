@@ -1,5 +1,5 @@
+// lib/features/app_update/app_update_gate.dart
 import 'dart:async';
-
 import 'package:amitabha/features/announcements/announcement_controller.dart';
 import 'package:amitabha/features/app_update/app_update_controller.dart';
 import 'package:amitabha/features/app_update/screens/app_update_screen.dart';
@@ -28,8 +28,10 @@ class _AppUpdateGateState extends State<AppUpdateGate>
   @override
   void initState() {
     super.initState();
+
     _lastCheckedAt = DateTime.now();
     WidgetsBinding.instance.addObserver(this);
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) unawaited(_run(isStartup: true));
     });

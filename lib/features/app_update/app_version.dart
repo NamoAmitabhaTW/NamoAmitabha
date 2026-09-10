@@ -1,3 +1,4 @@
+// lib/features/app_update/app_version.dart
 class AppVersion implements Comparable<AppVersion> {
   const AppVersion(this.major, this.minor, this.patch);
 

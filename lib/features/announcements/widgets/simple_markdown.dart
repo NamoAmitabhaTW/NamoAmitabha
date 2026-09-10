@@ -1,4 +1,4 @@
-// amitabha/lib/features/announcements/widgets/simple_markdown.dart
+// lib/features/announcements/widgets/simple_markdown.dart
 import 'package:amitabha/core/theme/brand.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -201,6 +201,7 @@ class _SimpleMarkdownState extends State<SimpleMarkdown> {
 
   TextSpan _inlineSpan(String text, TextStyle base) {
     final spans = <InlineSpan>[];
+
     final pattern = RegExp(r'\*\*(.+?)\*\*|\*(.+?)\*|\[([^\]]+)\]\(([^)]+)\)');
     var index = 0;
 

@@ -1,23 +1,22 @@
-// amitabha/lib/features/background/background_item.dart
+// lib/features/background/background_item.dart
 import 'dart:io';
-
+import 'package:amitabha/core/assets/app_assets.dart';
 import 'package:path/path.dart' as p;
 
 enum BackgroundType { video, image }
 
-
 enum BackgroundUiState {
-  activeBuiltin, 
-  idleBuiltin, 
-  activeDownloaded, 
-  idleDownloaded, 
-  downloading, 
-  notDownloaded, 
+  activeBuiltin,
+  idleBuiltin,
+  activeDownloaded,
+  idleDownloaded,
+  downloading,
+  notDownloaded,
 }
 
 class BackgroundItem {
   final String id;
-  final String name; 
+  final String name;
   final String? nameEn;
 
   final Map<String, String> names;
@@ -40,8 +39,8 @@ class BackgroundItem {
 
   bool isDownloaded;
   bool isDownloading;
-  double downloadProgress; 
-  bool needsUpdate; 
+  double downloadProgress;
+  bool needsUpdate;
 
   BackgroundItem({
     required this.id,
@@ -75,7 +74,6 @@ class BackgroundItem {
   }
 
   factory BackgroundItem.fromJson(Map<String, dynamic> json) {
-
     final names = <String, String>{};
     for (final entry in json.entries) {
       final k = entry.key;
@@ -83,7 +81,7 @@ class BackgroundItem {
           k.startsWith('name') &&
           k != 'nameEn' &&
           entry.value is String) {
-        final code = k.substring(4).toLowerCase(); 
+        final code = k.substring(4).toLowerCase();
         names[code] = entry.value as String;
       }
     }
@@ -132,10 +130,10 @@ class BackgroundItem {
       case 'ja':
       case 'ko':
       case 'vi':
-        return name; 
+        return name;
       case 'de':
       case 'fr':
-        return nameEn ?? name; 
+        return nameEn ?? name;
       case 'en':
         return nameEn ?? _prettifyId(id);
       default:
@@ -150,30 +148,30 @@ class BackgroundItem {
       .join(' ');
 
   static List<BackgroundItem> builtinDefaults() => [
-        BackgroundItem(
-          id: 'mountain_stream',
-          name: '清流明澈',
-          nameEn: 'Clear Stream',
-          names: const {
-            'ja': '清流明澈',
-            'ko': '맑은 물줄기',
-            'vi': 'Dòng suối trong',
-            'de': 'Klarer Strom',
-            'fr': 'Courant limpide',
-          },
-          type: BackgroundType.video,
-          thumbnail: 'assets/images/bg_mountain_stream.png',
-          isBuiltin: true,
-          assetPath: 'assets/videos/bg_mountain_stream.mp4',
-        ),
-      ];
+    BackgroundItem(
+      id: 'mountain_stream',
+      name: '清流明澈',
+      nameEn: 'Clear Stream',
+      names: const {
+        'ja': '清流明澈',
+        'ko': '맑은 물줄기',
+        'vi': 'Dòng suối trong',
+        'de': 'Klarer Strom',
+        'fr': 'Courant limpide',
+      },
+      type: BackgroundType.video,
+      thumbnail: AppAssets.mountainStreamThumbnail,
+      isBuiltin: true,
+      assetPath: AppAssets.mountainStreamVideo,
+    ),
+  ];
 }
 
 class BackgroundSource {
   final BackgroundType type;
-  final String? assetPath; 
-  final File? file; 
-  final int revision; 
+  final String? assetPath;
+  final File? file;
+  final int revision;
   BackgroundSource({
     required this.type,
     this.assetPath,

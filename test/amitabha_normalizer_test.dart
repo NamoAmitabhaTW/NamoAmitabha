@@ -31,9 +31,9 @@ void main() {
 
     test('normalization mapping sanity', () {
       final n = normalizeForAmitabha('阿驮佛/阿彌陀仏');
-      expect(n.contains('陀'), true); 
-      expect(n.contains('弥'), true); 
-      expect(n.contains('佛'), true); 
+      expect(n.contains('陀'), true);
+      expect(n.contains('弥'), true);
+      expect(n.contains('佛'), true);
     });
   });
 }

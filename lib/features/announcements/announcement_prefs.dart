@@ -1,3 +1,4 @@
+// lib/features/announcements/announcement_prefs.dart
 import 'package:amitabha/storage/json_prefs_file.dart';
 
 class AnnouncementPrefs {
@@ -9,7 +10,8 @@ class AnnouncementPrefs {
   static Future<void> saveRead(Map<String, int> versions) =>
       _read.write(versions.map((k, v) => MapEntry(k, v)));
 
-  static Future<Map<String, int>> loadBodyVersions() => _loadIntMap(_bodyVersions);
+  static Future<Map<String, int>> loadBodyVersions() =>
+      _loadIntMap(_bodyVersions);
 
   static Future<void> saveBodyVersion(String id, int version) async {
     final map = await loadBodyVersions();

@@ -1,13 +1,10 @@
 // lib/features/model_install/bundled_model.dart
-
 import 'dart:io';
+import 'package:amitabha/core/assets/app_assets.dart';
 import 'package:amitabha/features/model_install/model_cleanup.dart';
 import 'package:amitabha/storage/backup_exclusion.dart';
 import 'package:amitabha/storage/model_paths.dart';
 import 'package:flutter/services.dart';
-
-const String _assetDir =
-    'assets/sherpa-onnx';
 
 const List<String> bundledModelFiles = <String>[
   'encoder.int8.onnx',
@@ -26,7 +23,6 @@ Future<bool> bundledModelReady(String modelName) async {
   return true;
 }
 
-
 Future<Directory> materializeBundledModel(
   String modelName, {
   void Function(double progress)? onProgress,
@@ -38,7 +34,7 @@ Future<Directory> materializeBundledModel(
   for (final name in bundledModelFiles) {
     final dest = File('${dir.path}/$name');
     if (await dest.exists() && await dest.length() > 0) continue;
-    final data = await rootBundle.load('$_assetDir/$name');
+    final data = await rootBundle.load('${AppAssets.asrModelDir}/$name');
     pending[name] = data;
     totalBytes += data.lengthInBytes;
   }
@@ -49,8 +45,10 @@ Future<Directory> materializeBundledModel(
     var written = 0;
     for (final entry in pending.entries) {
       final data = entry.value;
-      final bytes =
-          data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+      final bytes = data.buffer.asUint8List(
+        data.offsetInBytes,
+        data.lengthInBytes,
+      );
       await File('${dir.path}/${entry.key}').writeAsBytes(bytes, flush: true);
       written += data.lengthInBytes;
       if (totalBytes > 0) onProgress?.call(written / totalBytes);

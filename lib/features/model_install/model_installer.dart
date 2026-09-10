@@ -3,27 +3,17 @@
 // This file is modified based on the open-source project:
 // Flutter-EasySpeechRecognition (https://github.com/Jason-chen-coder/Flutter-EasySpeechRecognition)
 // Original copyright (c) 2024 Xiaomi Corporation
-
 import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
-
 import 'package:amitabha/storage/model_paths.dart';
 import 'package:archive/archive.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
-
 import 'model_cleanup.dart';
 
-
-
-enum InstallStatus {
-  ready,
-  needsDownload,
-  needsUnzip,
-  incompleteNeedsDownload,
-}
+enum InstallStatus { ready, needsDownload, needsUnzip, incompleteNeedsDownload }
 
 enum InstallFailureReason {
   network,
@@ -45,6 +35,7 @@ class InstallException implements Exception {
 }
 
 class UserCancelledException implements Exception {}
+
 const Map<String, List<List<String>>> _defaultRequiredModelFiles = {
   'sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20': [
     ['encoder-epoch-99-avg-1.int8.onnx', 'encoder-epoch-99-avg-1.onnx'],
@@ -198,7 +189,7 @@ class ModelInstaller {
         client.close();
       }
     } on UserCancelledException {
-      await _safeDelete(zipPath); 
+      await _safeDelete(zipPath);
       rethrow;
     } on SocketException catch (e) {
       await _safeDelete(zipPath);
@@ -259,25 +250,23 @@ class ModelInstaller {
 
       final isComplete = await modelFilesComplete(modelName);
       if (!isComplete) {
-        await _safeDelete(zipPath); 
+        await _safeDelete(zipPath);
         throw InstallException(InstallFailureReason.verificationFailed);
       }
 
-
       await _safeDelete(zipPath);
     } on UserCancelledException {
-      rethrow; 
+      rethrow;
     } on InstallException {
-      rethrow; 
+      rethrow;
     } catch (e) {
       if (_looksLikeDiskFull(e)) {
-
         throw InstallException(InstallFailureReason.diskFull, e);
       }
-      await _safeDelete(zipPath); 
+      await _safeDelete(zipPath);
       throw InstallException(InstallFailureReason.corruptedArchive, e);
     } finally {
-      await _safeDelete(tempTarPath); 
+      await _safeDelete(tempTarPath);
     }
   }
 
@@ -355,7 +344,7 @@ class _UnzipWorkerArgs {
   final String zipPath;
   final String destinationRoot;
   final String tempTarPath;
-  final List<String> skipPaths; 
+  final List<String> skipPaths;
 
   _UnzipWorkerArgs({
     required this.sendPort,
@@ -377,7 +366,7 @@ Future<void> _unzipWorker(_UnzipWorkerArgs args) async {
       await bz2Input.close();
       await tarOutput.close();
     }
-    send.send(['progress', 0.0]); 
+    send.send(['progress', 0.0]);
 
     final tarInput = InputFileStream(args.tempTarPath);
     try {
@@ -406,7 +395,7 @@ Future<void> _unzipWorker(_UnzipWorkerArgs args) async {
         await Directory(dirname(destPath)).create(recursive: true);
         final out = OutputFileStream(destPath);
         try {
-          entry.writeContent(out); 
+          entry.writeContent(out);
         } finally {
           await out.close();
         }

@@ -1,4 +1,4 @@
-//amitabha/lib/storage/hit_logger.dart
+// lib/storage/hit_logger.dart
 import 'dart:convert';
 import 'dart:io';
 import 'app_paths.dart';
@@ -7,7 +7,7 @@ class HitLogger {
   final String sessionId;
   int _part = 1;
   int _lines = 0;
-  final int rotateEvery; 
+  final int rotateEvery;
 
   HitLogger(this.sessionId, {this.rotateEvery = 5000});
 
@@ -23,7 +23,8 @@ class HitLogger {
         if (_lines >= rotateEvery) {
           await sink.flush();
           await sink.close();
-          _part++; _lines = 0;
+          _part++;
+          _lines = 0;
           file = await AppPaths.sessionHits(sessionId, part: _part);
           sink = file.openWrite(mode: FileMode.append);
         }
@@ -36,15 +37,18 @@ class HitLogger {
 
   Future<void> initFromDisk() async {
     var part = 1;
-    while (await AppPaths.sessionHits(sessionId, part: part + 1)
-        .then((f) => f.exists())) {
+    while (await AppPaths.sessionHits(
+      sessionId,
+      part: part + 1,
+    ).then((f) => f.exists())) {
       part++;
     }
     _part = part;
 
     final file = await AppPaths.sessionHits(sessionId, part: _part);
     if (await file.exists()) {
-      final lines = await file.openRead()
+      final lines = await file
+          .openRead()
           .transform(utf8.decoder)
           .transform(const LineSplitter())
           .length;

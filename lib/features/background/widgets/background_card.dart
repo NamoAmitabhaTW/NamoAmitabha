@@ -1,4 +1,4 @@
-// amitabha/lib/features/background/widgets/background_card.dart
+// lib/features/background/widgets/background_card.dart
 import 'package:amitabha/core/layout/layout_scale.dart';
 import 'package:amitabha/features/background/background_item.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';

@@ -1,4 +1,4 @@
-// amitabha/lib/features/dedication/dedication_prefs.dart
+// lib/features/dedication/dedication_prefs.dart
 import 'package:amitabha/storage/json_prefs_file.dart';
 
 class DedicationPrefs {

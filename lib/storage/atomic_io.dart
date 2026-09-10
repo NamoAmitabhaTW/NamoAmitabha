@@ -1,4 +1,4 @@
-//amitabha/lib/storage/atomic_io.dart
+// lib/storage/atomic_io.dart
 import 'dart:convert';
 import 'dart:io';
 
@@ -15,9 +15,10 @@ Future<void> atomicWriteJson(File file, Object jsonObj) async {
 
     await tmp.rename(file.path);
   } catch (e) {
- 
     if (await tmp.exists()) {
-      try { await tmp.delete(); } catch (_) {}
+      try {
+        await tmp.delete();
+      } catch (_) {}
     }
     rethrow;
   }
@@ -39,7 +40,7 @@ Future<Map<String, dynamic>> readJsonOrEmpty(File file) async {
     final obj = jsonDecode(text);
     if (obj is Map<String, dynamic>) return obj;
     return {};
-  } on FormatException { 
+  } on FormatException {
     return {};
   }
 }

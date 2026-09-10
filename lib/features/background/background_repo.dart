@@ -1,7 +1,6 @@
-// amitabha/lib/features/background/background_repo.dart
+// lib/features/background/background_repo.dart
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:amitabha/features/background/background_item.dart';
 import 'package:amitabha/storage/app_paths.dart';
 import 'package:amitabha/storage/atomic_io.dart';

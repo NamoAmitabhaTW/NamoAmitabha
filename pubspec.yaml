@@ -109,47 +109,48 @@ flavorizr:
 flutter:
   generate: true 
 
+  # 素材依「用途」分類，路徑常數集中在 lib/core/assets/app_assets.dart。
+  # 注意：tool/launcher_icons/ 是建置期素材（flutter_launcher_icons 用），
+  # 刻意放在 assets/ 之外，不會被打進安裝包。
   assets:
-    - assets/hotwords.txt
-    - assets/images/amitabha_calligraphy.png
-    - assets/images/amitabha_calligraphy_ja.png
-    - assets/images/amitabha_calligraphy_sa.png
-    - assets/images/amitabha_calligraphy_vi.png
-    - assets/images/amitabha_calligraphy_ko.png
-    # 念佛頁按鈕標題書法圖（白字透明底，執行時染色）；逐語系一目錄。
-    - assets/images/chant_buttons/zh/
-    - assets/images/chant_buttons/ja/
-    - assets/images/chant_buttons/ko/
-    - assets/images/chant_buttons/vi/
-    - assets/images/chant_buttons/en/
-    - assets/images/chant_buttons/de/
-    - assets/images/chant_buttons/fr/
-    - assets/videos/bg_mountain_stream.mp4
-    - assets/images/bg_mountain_stream.png
-    - assets/images/bg_bodhi_leaf.png
-    # 平板專用：3:4 畫布背景 + 全螢幕鋪底（cover）。
-    - assets/images/bg_bodhi_leaf_tablet_portrait.png
-    - assets/images/bg_bodhi_leaf_tablet_landscape.png
-    - assets/images/bg_bodhi_leaf_bleed.png
-    - assets/images/settings_titles/zh/
-    - assets/images/settings_titles/en/
-    - assets/images/settings_titles/ja/
-    - assets/images/settings_titles/ko/
-    - assets/images/settings_titles/vi/
-    - assets/images/settings_titles/de/
-    - assets/images/settings_titles/fr/
-    - assets/gifs/lotus_flower.webp
-    - assets/images/lotus_divider.png
-    - assets/images/app_icon.png
-    - assets/sherpa-onnx/encoder.int8.onnx
-    - assets/sherpa-onnx/decoder.onnx
-    - assets/sherpa-onnx/joiner.int8.onnx
-    - assets/sherpa-onnx/tokens.txt
-    - assets/sherpa-onnx/bpe.vocab
-    - assets/announcements/
-    - assets/announcements/dev-intro/
-    - assets/announcements/changelog/
-    - assets/announcements/licenses/
+    # --- 品牌識別 ---
+    - assets/branding/app_icon.png
+    - assets/branding/calligraphy/          # 佛號書法字，逐語系一檔（sa = 梵字，供 en/de/fr）
+
+    # --- 背景 ---
+    - assets/backgrounds/bodhi_leaf/        # 設定頁菩提葉：phone / tablet_portrait / tablet_landscape / bleed
+    - assets/backgrounds/mountain_stream/   # 念佛頁動態背景：thumbnail.png + video.mp4
+
+    # --- UI 素材 ---
+    - assets/ui/chant_buttons/zh/           # 念佛頁按鈕書法字（白字透明底，執行時染色）
+    - assets/ui/chant_buttons/ja/
+    - assets/ui/chant_buttons/ko/
+    - assets/ui/chant_buttons/vi/
+    - assets/ui/chant_buttons/en/
+    - assets/ui/chant_buttons/de/
+    - assets/ui/chant_buttons/fr/
+    - assets/ui/settings_titles/zh/         # 設定頁葉上標題書法字
+    - assets/ui/settings_titles/en/
+    - assets/ui/settings_titles/ja/
+    - assets/ui/settings_titles/ko/
+    - assets/ui/settings_titles/vi/
+    - assets/ui/settings_titles/de/
+    - assets/ui/settings_titles/fr/
+    - assets/ui/decorations/                # lotus_divider.png、lotus_flower.webp
+
+    # --- 內容（Markdown 公告） ---
+    - assets/content/announcements/
+    - assets/content/announcements/dev-intro/
+    - assets/content/announcements/changelog/
+    - assets/content/announcements/licenses/
+
+    # --- ASR 模型（由 tool/fetch_model.sh 下載，不入 git） ---
+    - assets/ml/asr/encoder.int8.onnx
+    - assets/ml/asr/decoder.onnx
+    - assets/ml/asr/joiner.int8.onnx
+    - assets/ml/asr/tokens.txt
+    - assets/ml/asr/bpe.vocab
+    - assets/ml/asr/hotwords.txt
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
@@ -224,32 +225,32 @@ flutter_launcher_icons:
   remove_existing: true
 
   # 為了通過舊版驗證，給一個備用圖（實際會被 flavor 覆蓋）
-  image_path: assets/icons/prod_ios.png
-  adaptive_icon_foreground: assets/icons/prod_android_fg.png
+  image_path: tool/launcher_icons/prod_ios.png
+  adaptive_icon_foreground: tool/launcher_icons/prod_android_fg.png
   adaptive_icon_background: "#FFFFFF"
-  adaptive_icon_monochrome: assets/icons/prod_android_mono.png
+  adaptive_icon_monochrome: tool/launcher_icons/prod_android_mono.png
 
   flavors:
     dev:
       ios: true
       android: "app"
-      image_path_ios: assets/icons/dev_ios.png
-      adaptive_icon_foreground: assets/icons/dev_android_fg.png
+      image_path_ios: tool/launcher_icons/dev_ios.png
+      adaptive_icon_foreground: tool/launcher_icons/dev_android_fg.png
       adaptive_icon_background: "#FFFFFF"
-      adaptive_icon_monochrome: assets/icons/dev_android_mono.png
+      adaptive_icon_monochrome: tool/launcher_icons/dev_android_mono.png
 
     staging:
       ios: true
       android: "app"
-      image_path_ios: assets/icons/staging_ios.png
-      adaptive_icon_foreground: assets/icons/staging_android_fg.png
+      image_path_ios: tool/launcher_icons/staging_ios.png
+      adaptive_icon_foreground: tool/launcher_icons/staging_android_fg.png
       adaptive_icon_background: "#FFFFFF"
-      adaptive_icon_monochrome: assets/icons/staging_android_mono.png
+      adaptive_icon_monochrome: tool/launcher_icons/staging_android_mono.png
 
     prod:
       ios: true
       android: "app"
-      image_path_ios: assets/icons/prod_ios.png
-      adaptive_icon_foreground: assets/icons/prod_android_fg.png
+      image_path_ios: tool/launcher_icons/prod_ios.png
+      adaptive_icon_foreground: tool/launcher_icons/prod_android_fg.png
       adaptive_icon_background: "#FFFFFF"
-      adaptive_icon_monochrome: assets/icons/prod_android_mono.png
+      adaptive_icon_monochrome: tool/launcher_icons/prod_android_mono.png

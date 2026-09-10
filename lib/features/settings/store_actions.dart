@@ -1,5 +1,4 @@
 import 'dart:io' show Platform;
-
 import 'package:amitabha/core/config/store_links.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -16,12 +15,12 @@ class StoreActions {
     final t = AppLocalizations.of(context);
     try {
       await _review.openStoreListing(
-        appStoreId: StoreLinks.hasIosAppStoreId ? StoreLinks.iosAppStoreId : null,
+        appStoreId: StoreLinks.hasIosAppStoreId
+            ? StoreLinks.iosAppStoreId
+            : null,
       );
     } catch (_) {
-      messenger?.showSnackBar(
-        SnackBar(content: Text(t.storeActionFailed)),
-      );
+      messenger?.showSnackBar(SnackBar(content: Text(t.storeActionFailed)));
     }
   }
 

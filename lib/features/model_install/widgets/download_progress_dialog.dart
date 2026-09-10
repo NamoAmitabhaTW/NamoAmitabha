@@ -1,6 +1,5 @@
 // lib/features/model_install/widgets/download_progress_dialog.dart
 import 'dart:async';
-
 import 'package:amitabha/features/model_install/install_progress_model.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -82,9 +81,7 @@ class DownloadProgressDialog extends StatelessWidget {
                       onPressed: m.cancelRequested
                           ? null
                           : () => m.requestCancel(),
-                      child: Text(
-                        m.cancelRequested ? t.cancelling : t.cancel,
-                      ),
+                      child: Text(m.cancelRequested ? t.cancelling : t.cancel),
                     ),
                   if (downloading) const SizedBox(width: 12),
                   const SizedBox(
@@ -139,10 +136,7 @@ class _AnimatedDotsTextState extends State<_AnimatedDotsText> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(widget.text),
-        SizedBox(
-          width: _maxDots * 6.0,
-          child: Text('.' * _dotCount),
-        ),
+        SizedBox(width: _maxDots * 6.0, child: Text('.' * _dotCount)),
       ],
     );
   }

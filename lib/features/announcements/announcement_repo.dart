@@ -1,6 +1,7 @@
+// lib/features/announcements/announcement_repo.dart
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:amitabha/core/assets/app_assets.dart';
 import 'package:amitabha/features/announcements/announcement_item.dart';
 import 'package:amitabha/storage/app_paths.dart';
 import 'package:amitabha/storage/atomic_io.dart';
@@ -18,9 +19,9 @@ class AnnouncementRepo {
 
   static String bodyUrl(String id, String lang) => '$_base/$id/$lang.md';
 
-  static const String _assetManifest = 'assets/announcements/manifest.json';
+  static const String _assetManifest = AppAssets.announcementManifest;
   static String _assetBody(String id, String lang) =>
-      'assets/announcements/$id/$lang.md';
+      AppAssets.announcementBody(id, lang);
 
   Future<File> _manifestCacheFile() async {
     final root = await AppPaths.root();
@@ -42,7 +43,9 @@ class AnnouncementRepo {
       } catch (_) {}
     }
     try {
-      return _parseManifest(await rootBundle.loadString(_assetManifest, cache: false));
+      return _parseManifest(
+        await rootBundle.loadString(_assetManifest, cache: false),
+      );
     } catch (_) {
       return [];
     }

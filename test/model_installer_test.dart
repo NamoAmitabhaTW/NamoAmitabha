@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:amitabha/features/model_install/model_installer.dart';
 import 'package:amitabha/storage/model_paths.dart';
 import 'package:archive/archive.dart';
@@ -9,7 +8,6 @@ import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
-
 import 'helpers/fake_path_provider.dart';
 
 const _testModel = 'test-model';
@@ -57,12 +55,12 @@ http.Client Function() _mockResponse({
   int? contentLength,
 }) {
   return () => MockClient.streaming((request, bodyStream) async {
-        return http.StreamedResponse(
-          Stream.fromIterable(chunks),
-          statusCode,
-          contentLength: contentLength,
-        );
-      });
+    return http.StreamedResponse(
+      Stream.fromIterable(chunks),
+      statusCode,
+      contentLength: contentLength,
+    );
+  });
 }
 
 class _ThrowingClient extends http.BaseClient {
@@ -132,7 +130,7 @@ void main() {
   group('modelFilesComplete()', () {
     test('int8/float 擇一:只有 float 版也算齊全', () async {
       await _makeModelDir(_realModel, [
-        'encoder-epoch-99-avg-1.onnx', 
+        'encoder-epoch-99-avg-1.onnx',
         'decoder-epoch-99-avg-1.onnx',
         'joiner-epoch-99-avg-1.onnx',
         'tokens.txt',
@@ -159,10 +157,7 @@ void main() {
 
   group('download()', () {
     test('成功:寫出完整檔案並回報進度到 1.0', () async {
-      final chunks = [
-        List.filled(30, 1),
-        List.filled(70, 2),
-      ];
+      final chunks = [List.filled(30, 1), List.filled(70, 2)];
       final installer = _testInstaller(
         clientFactory: _mockResponse(
           statusCode: 200,
@@ -252,7 +247,7 @@ void main() {
         clientFactory: _mockResponse(
           statusCode: 200,
           chunks: [List.filled(10, 1)],
-          contentLength: 100, 
+          contentLength: 100,
         ),
       );
 
@@ -286,16 +281,15 @@ void main() {
       expect(await tokens.readAsString(), 'token-data');
       expect(await installer.status(_testModel), InstallStatus.ready);
       expect(await (await ModelPaths.archiveFile(_testModel)).exists(), false);
-      expect(progresses.first, 0.0); 
+      expect(progresses.first, 0.0);
       expect(progresses.last, 1.0);
     });
 
     test('zip 損毀 → InstallException(需重新下載),zip 刪除', () async {
       final zip = await ModelPaths.archiveFile(_testModel);
-      await zip.writeAsBytes(List.filled(64, 42)); 
+      await zip.writeAsBytes(List.filled(64, 42));
       final installer = _testInstaller();
 
-      
       await expectLater(
         installer.unzipAndVerify(_testModel),
         throwsA(
@@ -313,7 +307,6 @@ void main() {
     });
 
     test('解壓成功但缺關鍵檔案 → verificationFailed,zip 刪除', () async {
-      
       await _makeArchive(_testModel, {'$_testModel/other.txt': 'x'});
       final installer = _testInstaller();
 
@@ -340,7 +333,7 @@ void main() {
         installer.unzipAndVerify(_testModel, isCancelled: () => true),
         throwsA(isA<UserCancelledException>()),
       );
-      expect(await zip.exists(), true); 
+      expect(await zip.exists(), true);
     });
   });
 }

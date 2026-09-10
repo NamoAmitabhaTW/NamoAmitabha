@@ -1,11 +1,16 @@
-//amitabha/lib/storage/daily_repo.dart
+// lib/storage/daily_repo.dart
 import 'app_paths.dart';
 import 'atomic_io.dart';
 import 'models.dart';
 import 'single_writer.dart';
 
 class DailyRepository {
-  Future<void> addCount(String yyyymmdd, String userId, String userName, int delta) async {
+  Future<void> addCount(
+    String yyyymmdd,
+    String userId,
+    String userName,
+    int delta,
+  ) async {
     await _add(yyyymmdd, userId, userName, delta, sessionId: null);
   }
 
@@ -41,7 +46,7 @@ class DailyRepository {
       } else {
         final d = DailySummary.fromJson(j);
         if (sessionId != null && d.sessionIds.contains(sessionId)) {
-          return; 
+          return;
         }
         final updated = DailySummary(
           yyyymmdd: d.yyyymmdd,

@@ -53,11 +53,7 @@ void main() {
 
     for (final lang in langs) {
       final finder = find.text(lang.endonym);
-      expect(
-        finder,
-        findsOneWidget,
-        reason: '${lang.endonym} 沒有被渲染',
-      );
+      expect(finder, findsOneWidget, reason: '${lang.endonym} 沒有被渲染');
 
       final rect = tester.getRect(finder);
       expect(

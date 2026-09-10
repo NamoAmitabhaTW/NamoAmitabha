@@ -1,4 +1,4 @@
-//amitabha/lib/amitabha_normalizer.dart
+// lib/features/asr/domain/amitabha_normalizer.dart
 String normalizeForAmitabha(String s) {
   final noSpace = s.replaceAll(RegExp(r'\s+'), '');
   final noPunct = noSpace.replaceAll(
@@ -18,10 +18,7 @@ String normalizeForAmitabha(String s) {
   }
   var t = sb.toString();
 
-  t = t
-      .replaceAll('彌', '弥') 
-      .replaceAll('仏', '佛') 
-      .replaceAll('驮', '陀'); 
+  t = t.replaceAll('彌', '弥').replaceAll('仏', '佛').replaceAll('驮', '陀');
 
   return t;
 }

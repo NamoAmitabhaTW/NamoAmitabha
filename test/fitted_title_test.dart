@@ -44,6 +44,7 @@ double _renderedFontSize(WidgetTester tester, RenderParagraph para) {
   if (fitted.evaluate().isEmpty) {
     return declared;
   }
+
   final box = tester.renderObject<RenderBox>(fitted);
   final scale = box.size.width / para.size.width;
   return para.textScaler.scale(declared) * scale;
@@ -81,11 +82,7 @@ void main() {
 
     final para = await _pump(tester, absurd, width: 200, fontScale: 1.0);
 
-    expect(
-      para.didExceedMaxLines,
-      isTrue,
-      reason: '縮到下限仍塞不下時應該截斷',
-    );
+    expect(para.didExceedMaxLines, isTrue, reason: '縮到下限仍塞不下時應該截斷');
     expect(
       para.text.style?.fontSize,
       _minFontSize,

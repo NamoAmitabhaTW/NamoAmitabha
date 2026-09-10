@@ -1,7 +1,6 @@
-
+// test/settings_leaf_anchor_test.dart
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:amitabha/features/settings/leaf_layout.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -30,7 +29,8 @@ void main() {
     expect(
       fixture.keys.toSet(),
       _calibratedCanvases.keys.toSet(),
-      reason: 'anchors.json 的畫布與測試預期的不一致，'
+      reason:
+          'anchors.json 的畫布與測試預期的不一致，'
           '請確認 tool/extract_anchors.py 的 TARGETS',
     );
   });
@@ -99,17 +99,14 @@ void main() {
           expect(
             previous,
             isNull,
-            reason: '$key 的 ${leaf.name} 與 ${previous?.name} '
+            reason:
+                '$key 的 ${leaf.name} 與 ${previous?.name} '
                 '對到了同一個標記，表示有葉子被放到別片的位置上',
           );
           claimedBy[bestIndex] = leaf;
         }
 
-        expect(
-          claimedBy.length,
-          anchors.length,
-          reason: '$key 有標記沒有對應的葉子',
-        );
+        expect(claimedBy.length, anchors.length, reason: '$key 有標記沒有對應的葉子');
       });
     });
   }

@@ -1,4 +1,4 @@
-// features/asr/widgets/liuli_button.dart
+// lib/features/asr/widgets/liuli_button.dart
 import 'dart:ui';
 import 'package:flutter/material.dart';
 
@@ -9,7 +9,7 @@ class LiuliButton extends StatelessWidget {
     required this.icon,
     required this.label,
     this.foreground = Colors.white,
-    this.blurSigma = 8, 
+    this.blurSigma = 8,
     this.borderRadius = 18,
     this.padding = const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
     this.gradientColors,
@@ -27,9 +27,11 @@ class LiuliButton extends StatelessWidget {
   final double borderRadius;
   final EdgeInsets padding;
   final List<Color>? gradientColors;
+
   final String? labelFontFamily;
   final List<String>? labelFontFamilyFallback;
   final double labelFontSize;
+
   final String? labelImageAsset;
 
   @override
@@ -90,6 +92,7 @@ class LiuliButton extends StatelessWidget {
                         labelImageAsset!,
                         width: double.infinity,
                         fit: BoxFit.contain,
+
                         color: effForeground,
                         colorBlendMode: BlendMode.srcIn,
                         semanticLabel: label,

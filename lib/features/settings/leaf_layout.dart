@@ -1,6 +1,6 @@
 // lib/features/settings/leaf_layout.dart
 import 'dart:ui' show Size;
-
+import 'package:amitabha/core/assets/app_assets.dart';
 import 'package:flutter/foundation.dart';
 
 enum SettingsCanvas { phone, tabletPortrait, tabletLandscape }
@@ -12,11 +12,9 @@ const Map<SettingsCanvas, Size> settingsCanvasSize = {
 };
 
 const Map<SettingsCanvas, String> settingsCanvasBackground = {
-  SettingsCanvas.phone: 'assets/images/bg_bodhi_leaf.png',
-  SettingsCanvas.tabletPortrait:
-      'assets/images/bg_bodhi_leaf_tablet_portrait.png',
-  SettingsCanvas.tabletLandscape:
-      'assets/images/bg_bodhi_leaf_tablet_landscape.png',
+  SettingsCanvas.phone: AppAssets.bodhiLeafPhone,
+  SettingsCanvas.tabletPortrait: AppAssets.bodhiLeafTabletPortrait,
+  SettingsCanvas.tabletLandscape: AppAssets.bodhiLeafTabletLandscape,
 };
 
 enum SettingsLeaf {
@@ -72,26 +70,31 @@ const Map<SettingsLeaf, LeafLayout> settingsLeafLayout = {
     tabletPortrait: LeafRect(left: 618, top: 148, width: 340, height: 240),
     tabletLandscape: LeafRect(left: 576, top: 98, width: 330, height: 230),
   ),
+
   SettingsLeaf.background: LeafLayout(
     phone: LeafRect(left: 0, top: 60, width: 430, height: 300),
     tabletPortrait: LeafRect(left: -32, top: 17, width: 340, height: 270),
     tabletLandscape: LeafRect(left: 23, top: 2, width: 340, height: 230),
   ),
+
   SettingsLeaf.announcements: LeafLayout(
     phone: LeafRect(left: 630, top: 1440, width: 380, height: 300),
     tabletPortrait: LeafRect(left: 552, top: 1021, width: 380, height: 300),
     tabletLandscape: LeafRect(left: 774, top: 609, width: 330, height: 240),
   ),
+
   SettingsLeaf.dedication: LeafLayout(
     phone: LeafRect(left: 70, top: 500, width: 400, height: 320),
     tabletPortrait: LeafRect(left: -20, top: 456, width: 400, height: 320),
     tabletLandscape: LeafRect(left: 177, top: 356, width: 330, height: 240),
   ),
+
   SettingsLeaf.rate: LeafLayout(
     phone: LeafRect(left: 190, top: 1060, width: 270, height: 320),
     tabletPortrait: LeafRect(left: 102, top: 874, width: 270, height: 320),
     tabletLandscape: LeafRect(left: 250, top: 700, width: 320, height: 230),
   ),
+
   SettingsLeaf.share: LeafLayout(
     phone: LeafRect(left: 620, top: 890, width: 280, height: 320),
     tabletPortrait: LeafRect(left: 692, top: 573, width: 280, height: 320),

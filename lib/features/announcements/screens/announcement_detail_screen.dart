@@ -1,4 +1,4 @@
-// amitabha/lib/features/announcements/screens/announcement_detail_screen.dart
+// lib/features/announcements/screens/announcement_detail_screen.dart
 import 'package:amitabha/core/layout/layout_scale.dart';
 import 'package:amitabha/core/theme/brand.dart';
 import 'package:amitabha/core/widgets/content_width.dart';
@@ -30,6 +30,7 @@ class AnnouncementDetailScreen extends StatelessWidget {
           ),
         ),
       ),
+
       body: ContentWidth(
         maxWidth: 640 * layoutScale(context),
         child: ListView(
@@ -75,6 +76,7 @@ class AnnouncementDetailScreen extends StatelessWidget {
                   data: body,
                   accentColor: Brand.settingsGold,
                   justify: bodyLang == 'zh' || bodyLang == 'ja',
+
                   baseFontSize: item.id == 'licenses' ? 14 : 18,
                   scale: layoutScale(context),
                   onLinkTap: (url) => _copyLink(context, url),

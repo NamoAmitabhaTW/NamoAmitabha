@@ -1,3 +1,4 @@
+// lib/features/app_update/app_update_prefs.dart
 import 'package:amitabha/storage/json_prefs_file.dart';
 
 class AppUpdatePrefs {
@@ -15,7 +16,7 @@ class AppUpdatePrefs {
   }
 
   static Future<void> saveDismissed(String version) => _file.write({
-        'version': version,
-        'at': DateTime.now().millisecondsSinceEpoch,
-      });
+    'version': version,
+    'at': DateTime.now().millisecondsSinceEpoch,
+  });
 }

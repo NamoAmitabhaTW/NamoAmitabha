@@ -1,5 +1,5 @@
 // test/tablet_scale_test.dart
-
+import 'package:amitabha/core/assets/app_assets.dart';
 import 'package:amitabha/core/layout/layout_scale.dart';
 import 'package:amitabha/core/localization/locale_controller.dart';
 import 'package:amitabha/features/announcements/widgets/simple_markdown.dart';
@@ -14,7 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
-
 import 'helpers/real_fonts.dart';
 
 const _phoneWidths = <String, double>{
@@ -122,6 +121,7 @@ void main() {
           ),
         ),
       );
+
       final out = <double>[
         for (final p in tester.renderObjectList<RenderParagraph>(
           find.byType(RichText),
@@ -137,6 +137,7 @@ void main() {
 
     testWidgets('scale=1 時與加入縮放前完全相同', (tester) async {
       final got = await sizes(tester, const Size(390, 844), 1.0);
+
       expect(got, containsAll(<double>[base + 6, base, base - 4]));
     });
 
@@ -162,7 +163,7 @@ void main() {
       id: 'test',
       name: '測試背景',
       type: BackgroundType.image,
-      thumbnail: 'assets/images/lotus_divider.png',
+      thumbnail: AppAssets.lotusDivider,
       isBuiltin: true,
     );
 
@@ -239,12 +240,14 @@ void main() {
       final t = AppLocalizations.of(
         tester.element(find.byType(SettingsScreen)),
       );
+
       await tester.tap(
         find.byWidgetPredicate(
           (w) => w is Image && w.semanticLabel == t.language,
         ),
         warnIfMissed: false,
       );
+
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 400));
 
