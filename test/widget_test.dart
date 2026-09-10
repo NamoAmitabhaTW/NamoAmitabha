@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:amitabha/core/localization/locale_controller.dart';
@@ -44,19 +43,21 @@ void main() {
   });
 
   testWidgets('SettingsScreen 顯示語言與背景設定項', (tester) async {
+    final semantics = tester.ensureSemantics();
+
     await tester.pumpWidget(_wrap(const SettingsScreen()));
     await tester.pump();
-
 
     final ctx = tester.element(find.byType(SettingsScreen));
     final t = AppLocalizations.of(ctx);
 
-    expect(find.text(t.language), findsOneWidget);
-    expect(find.text(t.bgScreenTitle), findsOneWidget);
+    expect(find.bySemanticsLabel(t.language), findsOneWidget);
+    expect(find.bySemanticsLabel(t.bgScreenTitle), findsOneWidget);
+
+    semantics.dispose();
   });
 
   testWidgets('RecordsScreen 空資料時顯示「尚無紀錄」與統計卡', (tester) async {
-
     await tester.runAsync(() async {
       await tester.pumpWidget(_wrap(const RecordsScreen()));
       await Future<void>.delayed(const Duration(milliseconds: 100));
@@ -66,10 +67,9 @@ void main() {
     final ctx = tester.element(find.byType(RecordsScreen));
     final t = AppLocalizations.of(ctx);
 
-
     expect(find.text(t.noRecords), findsOneWidget);
     expect(find.text('0'), findsWidgets);
-    
+
     expect(find.byType(CircularProgressIndicator), findsNothing);
   });
 }

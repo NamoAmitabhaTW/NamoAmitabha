@@ -1,6 +1,7 @@
 //amitabha/lib/features/settings/screens/settings_screen.dart
 import 'dart:math' as math;
 
+import 'package:amitabha/core/layout/layout_scale.dart';
 import 'package:amitabha/core/localization/locale_controller.dart';
 import 'package:amitabha/core/theme/brand.dart';
 import 'package:amitabha/core/widgets/app_bottom_sheet.dart';
@@ -162,36 +163,47 @@ class SettingsScreen extends StatelessWidget {
 
     showAppBottomSheet(
       context: context,
-      builder: (sheetContext) => ListView(
-            shrinkWrap: true,
-            children: [
+      builder: (sheetContext) {
+        final s = layoutScale(sheetContext);
+        final base = Theme.of(sheetContext).textTheme.bodyLarge;
+        final titleStyle = base?.copyWith(fontSize: (base.fontSize ?? 16) * s);
+        final iconSize = 24.0 * s;
+
+        Widget? check(bool isCurrent) => isCurrent
+            ? Icon(Icons.check, size: iconSize, color: Brand.settingsBrown)
+            : null;
+
+        return ListView(
+          shrinkWrap: true,
+          children: [
+            ListTile(
+              minVerticalPadding: 4 * s,
+              titleTextStyle: titleStyle,
+              leading: Icon(Icons.settings_backup_restore, size: iconSize),
+              title: Text(t.langFollowSystem),
+              trailing: check(current == null),
+              onTap: () {
+                ctrl.useSystem();
+                Navigator.pop(sheetContext);
+              },
+            ),
+            const Divider(height: 1),
+
+            for (final lang in LocaleController.supportedLanguages)
               ListTile(
-                leading: const Icon(Icons.settings_backup_restore),
-                title: Text(t.langFollowSystem),
-                trailing: current == null
-                    ? const Icon(Icons.check, color: Brand.settingsBrown)
-                    : null,
+                minVerticalPadding: 4 * s,
+                titleTextStyle: titleStyle,
+                leading: Icon(Icons.translate, size: iconSize),
+                title: Text(lang.endonym),
+                trailing: check(_isCurrent(current, lang)),
                 onTap: () {
-                  ctrl.useSystem();
+                  ctrl.setLanguage(lang.code);
                   Navigator.pop(sheetContext);
                 },
               ),
-              const Divider(height: 1),
-
-              for (final lang in LocaleController.supportedLanguages)
-                ListTile(
-                  leading: const Icon(Icons.translate),
-                  title: Text(lang.endonym),
-                  trailing: _isCurrent(current, lang)
-                      ? const Icon(Icons.check, color: Brand.settingsBrown)
-                      : null,
-                  onTap: () {
-                    ctrl.setLanguage(lang.code);
-                    Navigator.pop(sheetContext);
-                  },
-                ),
-        ],
-      ),
+          ],
+        );
+      },
     );
   }
 

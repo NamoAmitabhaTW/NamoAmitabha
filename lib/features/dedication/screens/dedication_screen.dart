@@ -1,6 +1,8 @@
 // amitabha/lib/features/dedication/screens/dedication_screen.dart
 import 'dart:math' as math;
 
+import 'package:amitabha/core/layout/layout_scale.dart';
+import 'package:amitabha/core/widgets/content_width.dart';
 import 'package:amitabha/features/dedication/dedication_controller.dart';
 import 'package:amitabha/features/dedication/dedication_style.dart';
 import 'package:amitabha/features/dedication/widgets/dedication_karaoke.dart';
@@ -61,8 +63,18 @@ class _DedicationScreenState extends State<DedicationScreen>
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
 
+    final scale = layoutScale(context);
+
     final fade = _enterFade;
     final slide = _enterSlide;
+
+    final verse = TextStyle(
+      fontFamily: DedicationStyle.fontFamilyFor(_lang),
+      fontFamilyFallback: DedicationStyle.fontFallbackFor(_lang),
+      fontSize: 30 * scale,
+      height: 1.5,
+      letterSpacing: 3 * scale,
+    );
 
     return Scaffold(
       body: Stack(
@@ -70,84 +82,87 @@ class _DedicationScreenState extends State<DedicationScreen>
           const Positioned.fill(child: _PaperBackground()),
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(28, 8, 28, 28),
+              padding: EdgeInsets.fromLTRB(
+                28 * scale,
+                8,
+                28 * scale,
+                28 * scale,
+              ),
               child: Column(
                 children: [
-                  const SizedBox(height: 44),
+                  SizedBox(height: 44 * scale),
                   FadeTransition(
                     opacity: fade,
                     child: SlideTransition(
                       position: slide,
                       child: Column(
                         children: [
-                          Text(
-                            t.dedicationTitle,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontFamily: DedicationStyle.fontFamilyFor(_lang),
-                              fontFamilyFallback:
-                                  DedicationStyle.fontFallbackFor(_lang),
-                              fontSize: 34,
-                              fontWeight: FontWeight.w600,
-                              color: DedicationStyle.ink,
-                              letterSpacing: 8,
-                            ),
+                          _DedicationTitle(
+                            text: t.dedicationTitle,
+                            lang: _lang,
+                            scale: scale,
+                            maxHeight: MediaQuery.sizeOf(context).height * 0.22,
                           ),
-                          const SizedBox(height: 16),
-                          const _GoldDivider(),
+                          SizedBox(height: 16 * scale),
+                          _GoldDivider(scale: scale),
                         ],
                       ),
                     ),
                   ),
-                  const SizedBox(height: 2),
+                  SizedBox(height: 2 * scale),
                   Expanded(
                     child: FadeTransition(
                       opacity: fade,
-                      child: SingleChildScrollView(
-                        controller: _scroll,
-                        child: DedicationKaraoke(
-                          text: _text,
-                          languageCode: _lang,
-                          perCharMs: 400,
-                          rowSpacing: 12,
-                          onProgress: _followProgress,
-                          baseStyle: TextStyle(
-                            fontFamily: DedicationStyle.fontFamilyFor(_lang),
-                            fontFamilyFallback: DedicationStyle.fontFallbackFor(
-                              _lang,
+                      child: LayoutBuilder(
+                        builder: (context, box) => SingleChildScrollView(
+                          controller: _scroll,
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                              minHeight: box.maxHeight,
                             ),
-                            fontSize: 30,
-                            height: 1.5,
-                            letterSpacing: 3,
-                            color: const Color(0x3D3A2E25), // ink 24%
-                          ),
-                          fillStyle: TextStyle(
-                            fontFamily: DedicationStyle.fontFamilyFor(_lang),
-                            fontFamilyFallback: DedicationStyle.fontFallbackFor(
-                              _lang,
+                            child: Center(
+                              child: DedicationKaraoke(
+                                text: _text,
+                                languageCode: _lang,
+                                perCharMs: 400,
+                                rowSpacing: 12 * scale,
+                                scale: scale,
+                                onProgress: _followProgress,
+                                baseStyle: verse.copyWith(
+                                  color: const Color(0x3D3A2E25),
+                                ),
+                                fillStyle: verse.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  color: DedicationStyle.gold,
+                                  shadows: [
+                                    Shadow(
+                                      color: const Color(0x66DCB765),
+                                      blurRadius: 12 * scale,
+                                    ),
+                                  ],
+                                ),
+                                onCompleted: () {
+                                  if (mounted) {
+                                    setState(() => _completed = true);
+                                  }
+                                },
+                              ),
                             ),
-                            fontSize: 30,
-                            height: 1.5,
-                            letterSpacing: 3,
-                            fontWeight: FontWeight.w600,
-                            color: DedicationStyle.gold,
-                            shadows: const [
-                              Shadow(color: Color(0x66DCB765), blurRadius: 12),
-                            ],
                           ),
-                          onCompleted: () {
-                            if (mounted) setState(() => _completed = true);
-                          },
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  _DedicationButton(
-                    label: t.dedicationButton,
-                    lang: _lang,
-                    enabled: _completed,
-                    onTap: () => Navigator.of(context).pop(true),
+                  SizedBox(height: 8 * scale),
+                  ContentWidth(
+                    maxWidth: 340 * scale,
+                    child: _DedicationButton(
+                      label: t.dedicationButton,
+                      lang: _lang,
+                      scale: scale,
+                      enabled: _completed,
+                      onTap: () => Navigator.of(context).pop(true),
+                    ),
                   ),
                 ],
               ),
@@ -160,7 +175,7 @@ class _DedicationScreenState extends State<DedicationScreen>
                 padding: const EdgeInsets.all(4),
                 child: IconButton(
                   icon: const Icon(Icons.close),
-                  iconSize: 26,
+                  iconSize: 26 * scale,
                   constraints: const BoxConstraints(
                     minWidth: 48,
                     minHeight: 48,
@@ -169,7 +184,7 @@ class _DedicationScreenState extends State<DedicationScreen>
                     foregroundColor: const Color(0xCCB2842E),
                     backgroundColor: const Color(0x12B2842E),
                     shape: const CircleBorder(),
-                    padding: const EdgeInsets.all(11),
+                    padding: EdgeInsets.all(11 * scale),
                   ),
                   onPressed: () => Navigator.of(context).pop(false),
                   tooltip: t.close,
@@ -181,6 +196,95 @@ class _DedicationScreenState extends State<DedicationScreen>
       ),
     );
   }
+}
+
+class _DedicationTitle extends StatelessWidget {
+  const _DedicationTitle({
+    required this.text,
+    required this.lang,
+    required this.scale,
+    required this.maxHeight,
+  });
+
+  final String text;
+  final String lang;
+  final double scale;
+
+  final double maxHeight;
+
+  static const double _baseFontSize = 34;
+
+  static const double _minVisualFontSize = 20;
+
+  static const int _searchSteps = 12;
+
+  @override
+  Widget build(BuildContext context) {
+    final base = TextStyle(
+      fontFamily: DedicationStyle.fontFamilyFor(lang),
+      fontFamilyFallback: DedicationStyle.fontFallbackFor(lang),
+      height: 1.3,
+      fontWeight: FontWeight.w600,
+      color: DedicationStyle.ink,
+    );
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final maxWidth = constraints.maxWidth;
+        final baseSize = _baseFontSize * scale;
+        if (!maxWidth.isFinite || maxWidth <= 0) {
+          return Text(text, textAlign: TextAlign.center, style: base);
+        }
+
+        final scaler = MediaQuery.textScalerOf(context);
+        final direction = Directionality.of(context);
+
+        bool fits(double size) {
+          final painter = TextPainter(
+            text: TextSpan(text: text, style: _sized(base, size)),
+            maxLines: 2,
+            textScaler: scaler,
+            textAlign: TextAlign.center,
+            textDirection: direction,
+          )..layout(maxWidth: maxWidth);
+          return !painter.didExceedMaxLines && painter.height <= maxHeight;
+        }
+
+        var fitted = baseSize;
+        if (!fits(baseSize)) {
+          final factor = scaler.scale(1000) / 1000;
+          final lowLimit = factor > 0
+              ? _minVisualFontSize / factor
+              : _minVisualFontSize;
+
+          var low = lowLimit;
+          var high = baseSize;
+          for (var i = 0; i < _searchSteps; i++) {
+            final mid = (low + high) / 2;
+            if (fits(mid)) {
+              low = mid;
+            } else {
+              high = mid;
+            }
+          }
+          fitted = low;
+        }
+
+        return Text(
+          text,
+          textAlign: TextAlign.center,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: _sized(base, fitted),
+        );
+      },
+    );
+  }
+
+  TextStyle _sized(TextStyle base, double size) => base.copyWith(
+    fontSize: size,
+    letterSpacing: 8 * scale * (size / (_baseFontSize * scale)),
+  );
 }
 
 class _PaperBackground extends StatelessWidget {
@@ -201,7 +305,7 @@ class _PaperBackground extends StatelessWidget {
           gradient: RadialGradient(
             center: Alignment(0, -0.1),
             radius: 1.2,
-            colors: [Color(0x00000000), Color(0x14000000)], // 暈影
+            colors: [Color(0x00000000), Color(0x14000000)],
             stops: [0.65, 1.0],
           ),
         ),
@@ -212,12 +316,14 @@ class _PaperBackground extends StatelessWidget {
 }
 
 class _GoldDivider extends StatelessWidget {
-  const _GoldDivider();
+  const _GoldDivider({required this.scale});
+
+  final double scale;
 
   @override
   Widget build(BuildContext context) {
     Widget line(List<Color> colors) => Container(
-      width: 40,
+      width: 40 * scale,
       height: 1,
       decoration: BoxDecoration(gradient: LinearGradient(colors: colors)),
     );
@@ -226,9 +332,9 @@ class _GoldDivider extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         line(const [Color(0x00B2842E), DedicationStyle.gold]),
-        const SizedBox(width: 6),
-        Image.asset('assets/images/lotus_divider.png', height: 68),
-        const SizedBox(width: 6),
+        SizedBox(width: 6 * scale),
+        Image.asset('assets/images/lotus_divider.png', height: 68 * scale),
+        SizedBox(width: 6 * scale),
         line(const [DedicationStyle.gold, Color(0x00B2842E)]),
       ],
     );
@@ -239,12 +345,14 @@ class _DedicationButton extends StatefulWidget {
   const _DedicationButton({
     required this.label,
     required this.lang,
+    required this.scale,
     required this.enabled,
     required this.onTap,
   });
 
   final String label;
   final String lang;
+  final double scale;
   final bool enabled;
   final VoidCallback onTap;
 
@@ -254,8 +362,8 @@ class _DedicationButton extends StatefulWidget {
 
 class _DedicationButtonState extends State<_DedicationButton>
     with TickerProviderStateMixin {
-  static const double _radius = 30;
-  static const double _height = 58;
+  double get _radius => 30 * widget.scale;
+  double get _height => 58 * widget.scale;
 
   late final AnimationController _breathe = AnimationController(
     vsync: this,
@@ -307,7 +415,8 @@ class _DedicationButtonState extends State<_DedicationButton>
       duration: const Duration(milliseconds: 450),
       curve: Curves.easeOut,
       width: double.infinity,
-      height: _height,
+      constraints: BoxConstraints(minHeight: _height),
+      padding: EdgeInsets.symmetric(vertical: 6 * widget.scale),
       alignment: Alignment.center,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(_radius),
@@ -324,9 +433,9 @@ class _DedicationButtonState extends State<_DedicationButton>
         style: TextStyle(
           fontFamily: DedicationStyle.fontFamilyFor(widget.lang),
           fontFamilyFallback: DedicationStyle.fontFallbackFor(widget.lang),
-          fontSize: 30,
+          fontSize: 30 * widget.scale,
           fontWeight: FontWeight.w900,
-          letterSpacing: 6,
+          letterSpacing: 6 * widget.scale,
           color: enabled ? DedicationStyle.gold : const Color(0x59B2842E),
         ),
         child: Text(widget.label),
@@ -344,7 +453,6 @@ class _DedicationButtonState extends State<_DedicationButton>
           return Transform.scale(scale: scale, child: child);
         },
         child: SizedBox(
-          height: _height,
           width: double.infinity,
           child: Stack(
             children: [
@@ -374,7 +482,7 @@ class _DedicationButtonState extends State<_DedicationButton>
 class _SweepBorderPainter extends CustomPainter {
   _SweepBorderPainter({required this.progress, required this.radius});
 
-  final double progress; // 0..1，光芒繞行一圈的進度
+  final double progress;
   final double radius;
 
   @override

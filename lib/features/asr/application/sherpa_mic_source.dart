@@ -31,7 +31,7 @@ Future<sherpa_onnx.OnlineRecognizer> createOnlineRecognizer(
     hotwordsScore: 1.0,
     enableEndpoint: true,
     maxActivePaths: 8,
-    blankPenalty: 1.2,
+    blankPenalty: 0.0,
     rule2MinTrailingSilence: 1.0,
     rule3MinUtteranceLength: 20,
   );

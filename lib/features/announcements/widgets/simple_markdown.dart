@@ -14,6 +14,7 @@ class SimpleMarkdown extends StatefulWidget {
     this.accentColor,
     this.justify = false,
     this.baseFontSize = 18,
+    this.scale = 1.0,
   });
 
   static const List<String> cjkFallback = [
@@ -37,6 +38,8 @@ class SimpleMarkdown extends StatefulWidget {
   final bool justify;
 
   final double baseFontSize;
+
+  final double scale;
 
   @override
   State<SimpleMarkdown> createState() => _SimpleMarkdownState();
@@ -114,7 +117,7 @@ class _SimpleMarkdownState extends State<SimpleMarkdown> {
         _inlineSpan(
           text,
           TextStyle(
-            fontSize: size,
+            fontSize: size * widget.scale,
             fontWeight: FontWeight.w700,
             color: widget.headingColor,
             height: 1.35,
@@ -134,7 +137,7 @@ class _SimpleMarkdownState extends State<SimpleMarkdown> {
         _inlineSpan(
           text,
           TextStyle(
-            fontSize: widget.baseFontSize - 4,
+            fontSize: (widget.baseFontSize - 4) * widget.scale,
             color: widget.textColor,
             height: 1.5,
             fontFamilyFallback: SimpleMarkdown.cjkFallback,
@@ -143,12 +146,10 @@ class _SimpleMarkdownState extends State<SimpleMarkdown> {
       );
     }
 
-    final isList = lines.every(
-      (l) => RegExp(r'^\s*([-*•])\s+').hasMatch(l),
-    );
+    final isList = lines.every((l) => RegExp(r'^\s*([-*•])\s+').hasMatch(l));
     if (isList) {
       final baseStyle = TextStyle(
-        fontSize: widget.baseFontSize,
+        fontSize: widget.baseFontSize * widget.scale,
         color: widget.textColor,
         height: 1.8,
         fontFamilyFallback: SimpleMarkdown.cjkFallback,
@@ -186,7 +187,7 @@ class _SimpleMarkdownState extends State<SimpleMarkdown> {
       _inlineSpan(
         block,
         TextStyle(
-          fontSize: widget.baseFontSize,
+          fontSize: widget.baseFontSize * widget.scale,
           color: widget.textColor,
           height: 1.85,
           fontFamilyFallback: SimpleMarkdown.cjkFallback,

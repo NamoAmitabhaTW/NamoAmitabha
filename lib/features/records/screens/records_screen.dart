@@ -1,6 +1,7 @@
 // lib/features/records/screens/records_screen.dart
 import 'dart:io';
 
+import 'package:amitabha/core/layout/layout_scale.dart';
 import 'package:amitabha/core/theme/brand.dart';
 import 'package:amitabha/core/widgets/content_width.dart';
 import 'package:amitabha/features/asr/application/asr_session_controller.dart';
@@ -13,6 +14,8 @@ import 'package:intl/intl.dart';
 import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 
+double _scale(BuildContext context) => layoutScale(context);
+
 const Color _goldHairline = Color(0x4D82663A);
 const Color _goldDeep = Color(0xFF82663A);
 const Color _amitabhaInk = Brand.amitabhaInk;
@@ -21,22 +24,14 @@ const Color _brownSoft = Color(0xFF6F4E37);
 const RadialGradient _recordsBackground = RadialGradient(
   center: Alignment(0, -0.55),
   radius: 1.3,
-  colors: [
-    Color(0xFFFFFCF3),
-    Color(0xFFFFF8E7),
-    Color(0xFFF3E7CE),
-  ],
+  colors: [Color(0xFFFFFCF3), Color(0xFFFFF8E7), Color(0xFFF3E7CE)],
   stops: [0.0, 0.55, 1.0],
 );
 
 const RadialGradient _headerSpotlight = RadialGradient(
   center: Alignment(0, -0.35),
   radius: 1.0,
-  colors: [
-    Color(0x4DFFFCF3),
-    Color(0x1AFFFCF3),
-    Color(0x00FFFCF3),
-  ],
+  colors: [Color(0x4DFFFCF3), Color(0x1AFFFCF3), Color(0x00FFFCF3)],
   stops: [0.0, 0.5, 1.0],
 );
 
@@ -125,11 +120,14 @@ class RecordsScreen extends StatelessWidget {
                 children: [
                   header,
                   Padding(
-                    padding: const EdgeInsets.all(24),
+                    padding: EdgeInsets.all(24 * _scale(context)),
                     child: Center(
                       child: Text(
                         t.noRecords,
-                        style: const TextStyle(fontSize: 20, color: _brownSoft),
+                        style: TextStyle(
+                          fontSize: 20 * _scale(context),
+                          color: _brownSoft,
+                        ),
                       ),
                     ),
                   ),
@@ -238,9 +236,10 @@ class _HeaderCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = _scale(context);
     return Container(
       decoration: const BoxDecoration(gradient: _headerSpotlight),
-      padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
+      padding: EdgeInsets.fromLTRB(24 * s, 16 * s, 24 * s, 24 * s),
       child: Column(
         children: [
           Image.asset(
@@ -251,27 +250,27 @@ class _HeaderCards extends StatelessWidget {
             colorBlendMode: BlendMode.srcIn,
             semanticLabel: t.amitabha,
           ),
-          const SizedBox(height: 2),
+          SizedBox(height: 2 * s),
           _CenteredMetric(
             value: totalText,
             label: t.times,
-            valueSize: 80,
-            labelSize: 16,
+            valueSize: 80 * s,
+            labelSize: 16 * s,
             maxScaleFactor: 1.4,
             valueWeight: FontWeight.w400,
             letterSpacing: 1,
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16 * s),
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.72,
             child: _GoldDivider(label: t.total),
           ),
-          const SizedBox(height: 14),
+          SizedBox(height: 14 * s),
           _CenteredMetric(
             value: practiceDaysText,
             label: t.days,
-            valueSize: 44,
-            labelSize: 19,
+            valueSize: 44 * s,
+            labelSize: 19 * s,
             maxScaleFactor: 1.6,
             valueWeight: FontWeight.w500,
             centerValueOnAxis: true,
@@ -289,19 +288,41 @@ class _GoldDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l = label;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final maxWidth = constraints.maxWidth.isFinite
+            ? constraints.maxWidth
+            : double.infinity;
+        return _row(context, l, maxWidth);
+      },
+    );
+  }
+
+  Widget _row(BuildContext context, String? l, double maxWidth) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Expanded(child: _line(fadeToLeft: true)),
         if (l != null)
-          Padding(
-            padding: const EdgeInsets.only(left: 14, right: 10),
-            child: Text(
-              l,
-              style: const TextStyle(
-                fontSize: 13,
-                color: _brownSoft,
-                letterSpacing: 4,
+          MediaQuery.withClampedTextScaling(
+            maxScaleFactor: 1.6,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: maxWidth - 32),
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: 14 * _scale(context),
+                  right: 10 * _scale(context),
+                ),
+                child: Text(
+                  l,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 13 * _scale(context),
+                    color: _brownSoft,
+                    letterSpacing: 4 * _scale(context),
+                  ),
+                ),
               ),
             ),
           ),
@@ -333,15 +354,21 @@ class _MonthHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = _scale(context);
     return Padding(
-      padding: EdgeInsets.fromLTRB(22, isFirst ? 4 : 28, 22, 10),
+      padding: EdgeInsets.fromLTRB(
+        22 * s,
+        (isFirst ? 4 : 28) * s,
+        22 * s,
+        10 * s,
+      ),
       child: Text(
         label,
-        style: const TextStyle(
-          fontSize: 13,
+        style: TextStyle(
+          fontSize: 13 * s,
           fontWeight: FontWeight.w500,
           color: _brownSoft,
-          letterSpacing: 1,
+          letterSpacing: 1 * s,
         ),
       ),
     );
@@ -361,13 +388,14 @@ class _RecordTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scaledDate = MediaQuery.textScalerOf(context).scale(19);
-    final stacked = scaledDate > 30;
+    final s = _scale(context);
+    final scaledDate = MediaQuery.textScalerOf(context).scale(19 * s);
+    final stacked = scaledDate > 30 * s;
 
     final dateWidget = Text(
       dateText,
-      style: const TextStyle(
-        fontSize: 19,
+      style: TextStyle(
+        fontSize: 19 * s,
         fontWeight: FontWeight.w400,
         color: _amitabhaInk,
       ),
@@ -378,11 +406,11 @@ class _RecordTile extends StatelessWidget {
         children: [
           TextSpan(
             text: countText,
-            style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w400),
+            style: TextStyle(fontSize: 32 * s, fontWeight: FontWeight.w400),
           ),
           TextSpan(
             text: ' $unitText',
-            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+            style: TextStyle(fontSize: 15 * s, fontWeight: FontWeight.w400),
           ),
         ],
       ),
@@ -391,20 +419,24 @@ class _RecordTile extends StatelessWidget {
     );
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 22),
+      margin: EdgeInsets.symmetric(horizontal: 22 * s),
       decoration: const BoxDecoration(
         border: Border(bottom: BorderSide(color: _goldHairline, width: 1)),
       ),
-      padding: const EdgeInsets.symmetric(vertical: 18),
+      padding: EdgeInsets.symmetric(vertical: 18 * s),
       child: stacked
           ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [dateWidget, const SizedBox(height: 6), countWidget],
+              children: [
+                dateWidget,
+                SizedBox(height: 6 * s),
+                countWidget,
+              ],
             )
           : Row(
               children: [
                 Expanded(child: dateWidget),
-                const SizedBox(width: 12),
+                SizedBox(width: 12 * s),
                 Expanded(child: countWidget),
               ],
             ),

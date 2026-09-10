@@ -1,4 +1,5 @@
 // amitabha/lib/features/announcements/screens/announcement_detail_screen.dart
+import 'package:amitabha/core/layout/layout_scale.dart';
 import 'package:amitabha/core/theme/brand.dart';
 import 'package:amitabha/core/widgets/content_width.dart';
 import 'package:amitabha/core/widgets/fitted_title.dart';
@@ -30,24 +31,24 @@ class AnnouncementDetailScreen extends StatelessWidget {
         ),
       ),
       body: ContentWidth(
-        maxWidth: 640,
+        maxWidth: 640 * layoutScale(context),
         child: ListView(
           padding: EdgeInsets.fromLTRB(
-            24,
-            20,
-            24,
-            32 + MediaQuery.paddingOf(context).bottom,
+            24 * layoutScale(context),
+            20 * layoutScale(context),
+            24 * layoutScale(context),
+            32 * layoutScale(context) + MediaQuery.paddingOf(context).bottom,
           ),
           children: [
             if (item.date.isNotEmpty) ...[
               Text(
                 item.date,
-                style: const TextStyle(
-                  fontSize: 13,
+                style: TextStyle(
+                  fontSize: 13 * layoutScale(context),
                   color: Brand.settingsBrownSoft,
                 ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16 * layoutScale(context)),
             ],
             FutureBuilder<String?>(
               future: c.ensureBody(item, lang),
@@ -75,6 +76,7 @@ class AnnouncementDetailScreen extends StatelessWidget {
                   accentColor: Brand.settingsGold,
                   justify: bodyLang == 'zh' || bodyLang == 'ja',
                   baseFontSize: item.id == 'licenses' ? 14 : 18,
+                  scale: layoutScale(context),
                   onLinkTap: (url) => _copyLink(context, url),
                 );
               },
