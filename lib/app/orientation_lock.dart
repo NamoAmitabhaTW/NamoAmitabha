@@ -35,7 +35,8 @@ class _OrientationLockState extends State<OrientationLock>
     if (!mounted) return;
 
     final display = View.of(context).display;
-    final screenShortestSide = display.size.shortestSide / display.devicePixelRatio;
+    final screenShortestSide =
+        display.size.shortestSide / display.devicePixelRatio;
     final shouldLock = screenShortestSide < 600;
 
     if (_lockedToPortrait == shouldLock) return;

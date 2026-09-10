@@ -1,5 +1,5 @@
 // lib/core/localization/locale_prefs.dart
-import 'package:amitabha/storage/json_prefs_file.dart';
+import 'package:amitabha/core/infrastructure/json_prefs_file.dart';
 
 class LocalePrefs {
   static final _file = JsonPrefsFile('locale');

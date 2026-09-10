@@ -18,10 +18,7 @@ String normalizeForAmitabha(String s) {
   }
   var t = sb.toString();
 
-  t = t
-      .replaceAll('彌', '弥') 
-      .replaceAll('仏', '佛') 
-      .replaceAll('驮', '陀'); 
+  t = t.replaceAll('彌', '弥').replaceAll('仏', '佛').replaceAll('驮', '陀');
 
   return t;
 }

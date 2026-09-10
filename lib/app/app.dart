@@ -1,16 +1,11 @@
 // lib/app/app.dart
+import 'package:amitabha/app/di/app_dependencies.dart';
 import 'package:amitabha/app/orientation_lock.dart';
 import 'package:amitabha/core/localization/locale_controller.dart';
 import 'package:amitabha/core/theme/brand.dart';
-import 'package:amitabha/features/announcements/announcement_controller.dart';
-import 'package:amitabha/features/app_update/app_update_controller.dart';
-import 'package:amitabha/features/app_update/app_update_gate.dart';
-import 'package:amitabha/features/asr/application/asr_session_controller.dart';
-import 'package:amitabha/features/asr/application/sherpa_mic_source.dart';
-import 'package:amitabha/features/background/background_controller.dart';
-import 'package:amitabha/features/dedication/dedication_controller.dart';
-import 'package:amitabha/features/home/home_shell.dart';
-import 'package:amitabha/features/model_install/install_progress_model.dart';
+import 'package:amitabha/features/app_update/app_update.dart';
+import 'package:amitabha/features/home/home.dart';
+import 'package:amitabha/features/model_install/model_install.dart';
 import 'package:amitabha/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,30 +19,32 @@ class App extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => InstallProgressModel()),
         ChangeNotifierProvider(
-          create: (_) =>
-              AsrSessionController(sourceFactory: () => SherpaMicSource()),
+          create: (_) => AppDependencies.createAsrSessionController(),
         ),
         ChangeNotifierProvider(create: (_) => LocaleController()),
+
+        Provider(create: (_) => AppDependencies.createRecordsController()),
         ChangeNotifierProvider(
-          create: (_) => BackgroundController()..load(),
+          create: (_) => AppDependencies.createBackgroundController()..load(),
           lazy: false,
         ),
         ChangeNotifierProvider(
-          create: (_) => DedicationController()..load(),
+          create: (_) => AppDependencies.createDedicationController()..load(),
           lazy: false,
         ),
         ChangeNotifierProvider(
-          create: (_) => AnnouncementController()..load(),
+          create: (_) => AppDependencies.createAnnouncementController()..load(),
           lazy: false,
         ),
-        Provider(create: (_) => AppUpdateController()),
+
+        Provider(create: (_) => AppDependencies.createAppUpdateController()),
       ],
       child: Builder(
         builder: (context) {
           final locale = context.watch<LocaleController>().locale;
           final themeData = Brand.getTheme(AppThemeStyle.zenWood);
           return MaterialApp(
-            locale: locale, 
+            locale: locale,
             localeListResolutionCallback: (locales, supported) {
               final prefs = locales ?? const <Locale>[];
 
@@ -62,13 +59,11 @@ class App extends StatelessWidget {
                   return const Locale('zh', 'TW');
                 }
 
-             
                 for (final s in supported) {
                   if (s.languageCode == l.languageCode) {
-                    return s; 
+                    return s;
                   }
                 }
-                
               }
 
               return const Locale('zh', 'TW');
@@ -86,5 +81,4 @@ class App extends StatelessWidget {
       ),
     );
   }
-
 }

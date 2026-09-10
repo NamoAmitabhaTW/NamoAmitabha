@@ -19,14 +19,14 @@ App名稱：好好念佛
 
 The ASR model (~160 MB) is **not stored in git**. Fetch it from the GitHub
 Release before building — run this once (it downloads, verifies the SHA256
-checksums, and extracts into `assets/sherpa-onnx/`; it's idempotent and
+checksums, and extracts into `assets/ml/asr/`; it's idempotent and
 skips if the files are already present):
 
 ```bash
 ./tool/fetch_model.sh
 ```
 
-> 若 `assets/sherpa-onnx/` 為空，App 會找不到模型而無法運作。CI 若之後加入
+> 若 `assets/ml/asr/` 為空，App 會找不到模型而無法運作。CI 若之後加入
 > `flutter build` / `flutter test`，也需在建置前加上這一步。
 
 ## Licenses

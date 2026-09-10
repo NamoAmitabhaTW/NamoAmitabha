@@ -1,0 +1,40 @@
+// lib/features/background/data/background_prefs.dart
+import 'package:amitabha/core/infrastructure/json_prefs_file.dart';
+import 'package:amitabha/features/background/domain/background_item.dart';
+import 'package:amitabha/features/background/domain/background_ports.dart';
+
+class FileBackgroundPreferences implements BackgroundPreferences {
+  const FileBackgroundPreferences();
+
+  static final _active = JsonPrefsFile('background');
+
+  @override
+  Future<void> saveActive(String id, BackgroundType type, int revision) =>
+      _active.write({'activeId': id, 'type': type.name, 'revision': revision});
+
+  @override
+  Future<Map<String, dynamic>?> loadActive() => _active.read();
+
+  static final _versions = JsonPrefsFile('background_versions');
+
+  @override
+  Future<Map<String, int>> loadVersions() async {
+    final j = await _versions.read();
+    if (j == null) return {};
+    return j.map((k, v) => MapEntry(k, (v as num).toInt()));
+  }
+
+  @override
+  Future<void> saveVersion(String id, int version) async {
+    final map = await loadVersions();
+    map[id] = version;
+    await _versions.write(map);
+  }
+
+  @override
+  Future<void> removeVersion(String id) async {
+    final map = await loadVersions();
+    map.remove(id);
+    await _versions.write(map);
+  }
+}

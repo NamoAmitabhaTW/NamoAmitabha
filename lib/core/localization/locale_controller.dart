@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'locale_prefs.dart';
 
-
 class AppLanguage {
   const AppLanguage(this.code, this.locale, this.endonym);
   final String code;
@@ -11,7 +10,7 @@ class AppLanguage {
 }
 
 class LocaleController extends ChangeNotifier {
-  Locale? _locale; 
+  Locale? _locale;
   Locale? get locale => _locale;
 
   static const List<AppLanguage> supportedLanguages = [
@@ -31,10 +30,9 @@ class LocaleController extends ChangeNotifier {
   }
 
   Future<void> restore() async {
-    final code =
-        await LocalePrefs.load();
+    final code = await LocalePrefs.load();
     if (code == null || code == 'system') {
-      _locale = null; 
+      _locale = null;
       notifyListeners();
       return;
     }
@@ -42,11 +40,10 @@ class LocaleController extends ChangeNotifier {
     notifyListeners();
   }
 
-  
   Future<void> setLanguage(String code) async => _setAndPersist(code);
 
   Future<void> useSystem() async {
-    _locale = null; 
+    _locale = null;
     notifyListeners();
     await LocalePrefs.save('system');
   }
@@ -84,7 +81,7 @@ class LocaleController extends ChangeNotifier {
       case 'fr':
         return const Locale('fr');
       default:
-        return null; 
+        return null;
     }
   }
 }

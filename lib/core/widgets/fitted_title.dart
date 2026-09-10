@@ -14,11 +14,12 @@ class FittedTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final effective = (style ??
-            theme.appBarTheme.titleTextStyle ??
-            theme.textTheme.titleLarge ??
-            const TextStyle(fontSize: 20))
-        .merge(style);
+    final effective =
+        (style ??
+                theme.appBarTheme.titleTextStyle ??
+                theme.textTheme.titleLarge ??
+                const TextStyle(fontSize: 20))
+            .merge(style);
     final baseSize = effective.fontSize ?? 20;
 
     final scaler = MediaQuery.textScalerOf(context);
@@ -37,7 +38,9 @@ class FittedTitle extends StatelessWidget {
           textDirection: Directionality.of(context),
         )..layout();
 
-        final factor = painter.width <= maxWidth ? 1.0 : maxWidth / painter.width;
+        final factor = painter.width <= maxWidth
+            ? 1.0
+            : maxWidth / painter.width;
         final fitted = scaler.scale(baseSize) * factor;
 
         if (fitted >= minFontSize) {

@@ -15,8 +15,7 @@ Future<T?> showAppBottomSheet<T>({
       maxHeight: MediaQuery.sizeOf(context).height * maxHeightFactor,
       maxWidth: maxWidth,
     ),
-    builder: (sheetContext) => SafeArea(
-      child: Scrollbar(child: builder(sheetContext)),
-    ),
+    builder: (sheetContext) =>
+        SafeArea(child: Scrollbar(child: builder(sheetContext))),
   );
 }
