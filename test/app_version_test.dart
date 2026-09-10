@@ -1,4 +1,4 @@
-import 'package:amitabha/features/app_update/app_version.dart';
+import 'package:amitabha/features/app_update/domain/app_version.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

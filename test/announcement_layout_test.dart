@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:amitabha/core/assets/app_assets.dart';
-import 'package:amitabha/features/announcements/widgets/simple_markdown.dart';
+import 'package:amitabha/features/announcements/presentation/widgets/simple_markdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
