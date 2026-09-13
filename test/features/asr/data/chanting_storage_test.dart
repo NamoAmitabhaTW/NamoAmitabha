@@ -3,7 +3,6 @@
 // 守住檔案層的崩潰安全：原子寫入、流水帳輪檔、損毀檔案容錯。
 // 壞掉的偏好設定必須回 null 而不是拋錯，否則 App 會開不起來。
 
-import 'dart:convert';
 import 'dart:io';
 import 'package:amitabha/core/infrastructure/atomic_io.dart';
 import 'package:amitabha/core/infrastructure/json_prefs_file.dart';
@@ -66,31 +65,6 @@ void main() {
     expect(got, isNotNull);
     expect(got!.sessionId, 's1');
     expect(got.amitabhaCount, 42);
-  });
-
-  test('FileHitLog.appendMany 會寫出 NDJSON 且可輪檔', () async {
-    final logger = FileHitLog('sessA', rotateEvery: 2);
-
-    await logger.appendMany([
-      DateTime.now().toUtc(),
-      DateTime.now().toUtc(),
-      DateTime.now().toUtc(),
-    ]);
-
-    final f1 = await ChantingPaths.sessionHits('sessA', part: 1);
-    final f2 = await ChantingPaths.sessionHits('sessA', part: 2);
-
-    expect(await f1.exists(), isTrue);
-    expect(await f2.exists(), isTrue);
-
-    final l1 = await f1.readAsLines();
-    final l2 = await f2.readAsLines();
-
-    expect(l1.length, 2);
-    expect(l2.length, 1);
-
-    final obj = jsonDecode(l1.first);
-    expect(obj, contains('t'));
   });
 
   test('atomicWriteJson 原子寫入成功', () async {

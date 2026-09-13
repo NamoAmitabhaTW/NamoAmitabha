@@ -1,4 +1,5 @@
 // lib/features/asr/domain/chanting_repositories.dart
+
 import 'package:amitabha/features/asr/domain/daily_summary.dart';
 import 'package:amitabha/features/asr/domain/pending_commit.dart';
 import 'package:amitabha/features/asr/domain/session_snapshot.dart';
@@ -24,11 +25,3 @@ abstract class PendingCommitStore {
 
   Future<List<PendingCommit>> list();
 }
-
-abstract class HitLog {
-  Future<void> initFromDisk();
-
-  Future<void> appendMany(Iterable<DateTime> hitsUtc);
-}
-
-typedef HitLogFactory = HitLog Function(String sessionId);

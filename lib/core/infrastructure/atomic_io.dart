@@ -2,7 +2,11 @@
 import 'dart:convert';
 import 'dart:io';
 
-Future<void> atomicWriteJson(File file, Object jsonObj) async {
+Future<void> atomicWriteJson(
+  File file,
+  Object jsonObj, {
+  bool pretty = true,
+}) async {
   final dir = file.parent;
   if (!await dir.exists()) {
     await dir.create(recursive: true);
@@ -10,7 +14,9 @@ Future<void> atomicWriteJson(File file, Object jsonObj) async {
 
   final tmp = File('${file.path}.tmp');
   try {
-    final jsonStr = const JsonEncoder.withIndent('  ').convert(jsonObj);
+    const prettyEncoder = JsonEncoder.withIndent('  ');
+    const compactEncoder = JsonEncoder();
+    final jsonStr = (pretty ? prettyEncoder : compactEncoder).convert(jsonObj);
     await tmp.writeAsString(jsonStr, flush: true);
 
     await tmp.rename(file.path);

@@ -69,11 +69,14 @@ void main() {
   late Directory tempRoot;
   late _FakeSource source;
 
-  AsrSessionController makeController({DailyRepository? dailyRepo}) =>
-      fileBackedAsrController(
-        sourceFactory: () => source,
-        dailyRepo: dailyRepo,
-      );
+  AsrSessionController makeController({
+    DailyRepository? dailyRepo,
+    Duration? draftEvery,
+  }) => fileBackedAsrController(
+    sourceFactory: () => source,
+    dailyRepo: dailyRepo,
+    draftEvery: draftEvery,
+  );
 
   setUp(() async {
     tempRoot = await Directory.systemTemp.createTemp('asr_ctrl_test_');
@@ -160,9 +163,6 @@ void main() {
 
     expect(await const FilePendingCommitStore().list(), isEmpty);
 
-    final hits = await ChantingPaths.sessionHits(sessionId);
-    expect(await hits.exists(), isTrue);
-    expect((await hits.readAsLines()).length, 2);
 
     c.dispose();
   });
@@ -322,5 +322,110 @@ void main() {
     expect(got?.amitabhaCount, 1);
 
     c.dispose();
+  });
+
+  group('定時草稿', () {
+    const store = FilePendingCommitStore();
+    const tick = Duration(milliseconds: 20);
+
+    /// 輪詢等待，比固定 sleep 穩定：計時器與寫檔都是非同步的。
+    Future<void> waitUntil(
+      Future<bool> Function() ready, {
+      Duration timeout = const Duration(seconds: 3),
+    }) async {
+      final sw = Stopwatch()..start();
+      while (sw.elapsed < timeout) {
+        if (await ready()) return;
+        await Future<void>.delayed(const Duration(milliseconds: 5));
+      }
+      fail('等待逾時');
+    }
+
+    test('錄音中計時器到點 → 寫出草稿，內容是當下的累計數', () async {
+      final c = makeController(draftEvery: tick);
+      addTearDown(c.dispose);
+
+      await c.start();
+      source.emit('阿彌陀佛阿彌陀佛');
+
+      await waitUntil(() async => (await store.list()).isNotEmpty);
+
+      final pending = await store.list();
+      expect(pending.single.snapshot.amitabhaCount, 2);
+    });
+
+    test('連續兩次草稿 → 仍只有一個檔，且是較新的總數（覆寫而非累加）', () async {
+      final c = makeController(draftEvery: tick);
+      addTearDown(c.dispose);
+
+      await c.start();
+      source.emit('阿彌陀佛');
+      await waitUntil(() async => (await store.list()).isNotEmpty);
+
+      source.emit('阿彌陀佛阿彌陀佛');
+      await waitUntil(
+        () async => (await store.list()).single.snapshot.amitabhaCount == 3,
+      );
+
+      // 草稿以 sessionId 命名、存的是累計總數，所以寫幾次都只有一個檔。
+      expect(await store.list(), hasLength(1));
+    });
+
+    test('草稿之後程序被殺 → 重新啟動時把計數補回 daily', () async {
+      final c = makeController(draftEvery: tick);
+      await c.start();
+      source.emit('阿彌陀佛阿彌陀佛');
+      await waitUntil(() async => (await store.list()).isNotEmpty);
+
+      // 不呼叫 save()，直接丟掉——模擬 native crash 或被系統殺掉。
+      c.dispose();
+
+      final relaunched = makeController();
+      addTearDown(relaunched.dispose);
+      await relaunched.replayPending();
+
+      final days = await const FileDailyRepository().readAll();
+      expect(days.single.amitabhaCount, 2);
+      expect(await store.list(), isEmpty, reason: '補寫成功後草稿要清掉');
+    });
+
+    test('還沒念佛時計時器到點 → 不產生草稿檔', () async {
+      final c = makeController(draftEvery: tick);
+      addTearDown(c.dispose);
+
+      await c.start();
+      await Future<void>.delayed(const Duration(milliseconds: 120));
+
+      expect(await store.list(), isEmpty);
+    });
+
+    test('stop() 之後計時器不再觸發', () async {
+      final c = makeController(draftEvery: tick);
+      addTearDown(c.dispose);
+
+      await c.start();
+      source.emit('阿彌陀佛');
+      await waitUntil(() async => (await store.list()).isNotEmpty);
+
+      await c.stop();
+      await store.remove(c.currentSessionId!);
+      await Future<void>.delayed(const Duration(milliseconds: 120));
+
+      expect(await store.list(), isEmpty, reason: '暫停後不該再寫草稿');
+    });
+
+    test('dispose() 之後計時器不再觸發', () async {
+      final c = makeController(draftEvery: tick);
+      await c.start();
+      source.emit('阿彌陀佛');
+      await waitUntil(() async => (await store.list()).isNotEmpty);
+
+      final sessionId = c.currentSessionId!;
+      c.dispose();
+      await store.remove(sessionId);
+      await Future<void>.delayed(const Duration(milliseconds: 120));
+
+      expect(await store.list(), isEmpty, reason: '釋放後不該再寫草稿');
+    });
   });
 }

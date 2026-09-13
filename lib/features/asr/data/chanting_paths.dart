@@ -1,5 +1,7 @@
 // lib/features/asr/data/chanting_paths.dart
+
 import 'dart:io';
+
 import 'package:amitabha/core/infrastructure/app_paths.dart';
 import 'package:path/path.dart' as p;
 
@@ -18,15 +20,6 @@ class ChantingPaths {
     return file;
   }
 
-  static Future<File> sessionHits(String sessionId, {int part = 1}) async {
-    final root = await AppPaths.dataRoot();
-    final file = File(
-      p.join(root.path, 'sessions', '$sessionId-hits-$part.ndjson'),
-    );
-    await file.parent.create(recursive: true);
-    return file;
-  }
-
   static Future<Directory> dailyDir() async {
     final root = await AppPaths.dataRoot();
     return Directory(p.join(root.path, 'daily'));
@@ -35,6 +28,13 @@ class ChantingPaths {
   static Future<File> daily(String yyyymmdd) async {
     final dir = await dailyDir();
     final file = File(p.join(dir.path, '$yyyymmdd.json'));
+    await file.parent.create(recursive: true);
+    return file;
+  }
+
+  static Future<File> dailyIndex() async {
+    final root = await AppPaths.dataRoot();
+    final file = File(p.join(root.path, 'daily_index.json'));
     await file.parent.create(recursive: true);
     return file;
   }
