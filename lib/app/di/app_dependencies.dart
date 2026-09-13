@@ -15,7 +15,6 @@ class AppDependencies {
         sessionRepo: const FileSessionRepository(),
         dailyRepo: const FileDailyRepository(),
         pendingStore: const FilePendingCommitStore(),
-        hitLogFactory: FileHitLog.new,
         setWakelock: setWakelock,
         sourceFactory: () => SherpaMicSource(),
       );

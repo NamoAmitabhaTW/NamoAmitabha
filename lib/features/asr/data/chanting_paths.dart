@@ -1,5 +1,7 @@
 // lib/features/asr/data/chanting_paths.dart
+
 import 'dart:io';
+
 import 'package:amitabha/core/infrastructure/app_paths.dart';
 import 'package:path/path.dart' as p;
 
@@ -14,15 +16,6 @@ class ChantingPaths {
   static Future<File> sessionSnapshot(String sessionId) async {
     final root = await AppPaths.dataRoot();
     final file = File(p.join(root.path, 'sessions', '$sessionId.json'));
-    await file.parent.create(recursive: true);
-    return file;
-  }
-
-  static Future<File> sessionHits(String sessionId, {int part = 1}) async {
-    final root = await AppPaths.dataRoot();
-    final file = File(
-      p.join(root.path, 'sessions', '$sessionId-hits-$part.ndjson'),
-    );
     await file.parent.create(recursive: true);
     return file;
   }

@@ -2,7 +2,6 @@
 export 'application/asr_session_controller.dart';
 export 'data/chanting_backup.dart';
 export 'data/file_daily_repository.dart';
-export 'data/file_hit_log.dart';
 export 'data/file_pending_commit_store.dart';
 export 'data/file_session_repository.dart';
 export 'data/sherpa_mic_source.dart';

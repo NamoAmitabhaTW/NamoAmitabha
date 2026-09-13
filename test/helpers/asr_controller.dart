@@ -6,13 +6,13 @@ AsrSessionController fileBackedAsrController({
   SessionRepository? sessionRepo,
   DailyRepository? dailyRepo,
   PendingCommitStore? pendingStore,
-  HitLogFactory? hitLogFactory,
   Future<void> Function(bool keepAwake)? setWakelock,
+  Duration? draftEvery,
 }) => AsrSessionController(
   sessionRepo: sessionRepo ?? const FileSessionRepository(),
   dailyRepo: dailyRepo ?? const FileDailyRepository(),
   pendingStore: pendingStore ?? const FilePendingCommitStore(),
-  hitLogFactory: hitLogFactory ?? FileHitLog.new,
   setWakelock: setWakelock ?? (_) async {},
   sourceFactory: sourceFactory,
+  draftEvery: draftEvery ?? const Duration(seconds: 30),
 );

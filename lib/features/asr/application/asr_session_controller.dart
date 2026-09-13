@@ -1,7 +1,8 @@
 // lib/features/asr/application/asr_session_controller.dart
+
 import 'dart:async';
+
 import 'package:amitabha/core/utils/date_format.dart';
-import 'package:amitabha/features/asr/application/buffered_hits.dart';
 import 'package:amitabha/features/asr/domain/amitabha_normalizer.dart';
 import 'package:amitabha/features/asr/domain/chanting_repositories.dart';
 import 'package:amitabha/features/asr/domain/pending_commit.dart';
@@ -19,15 +20,15 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
     required SessionRepository sessionRepo,
     required DailyRepository dailyRepo,
     required PendingCommitStore pendingStore,
-    required HitLogFactory hitLogFactory,
     required Future<void> Function(bool keepAwake) setWakelock,
     SpeechSegmentSource Function()? sourceFactory,
+    Duration draftEvery = const Duration(seconds: 30),
   }) : _sourceFactory = sourceFactory,
        _sessionRepo = sessionRepo,
        _dailyRepo = dailyRepo,
        _pendingStore = pendingStore,
-       _hitLogFactory = hitLogFactory,
-       _setWakelock = setWakelock {
+       _setWakelock = setWakelock,
+       _draftEvery = draftEvery {
     WidgetsBinding.instance.addObserver(this);
     unawaited(
       replayPending().catchError((e) => debugPrint('replay on init: $e')),
@@ -38,8 +39,9 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
   final SessionRepository _sessionRepo;
   final DailyRepository _dailyRepo;
   final PendingCommitStore _pendingStore;
-  final HitLogFactory _hitLogFactory;
   final Future<void> Function(bool keepAwake) _setWakelock;
+
+  final Duration _draftEvery;
 
   SpeechSegmentSource? _source;
   SessionState _sessionState = SessionState.idle;
@@ -58,8 +60,8 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
   String? _sessionId;
   String? get currentSessionId => _sessionId;
   DateTime? _sessionStartedAt;
-  HitLog? _hitLogger;
-  BufferedHits? _buffer;
+  Timer? _draftTimer;
+  bool _savingDraft = false;
   bool _committing = false;
 
   Future<bool> hasMicPermission() async {
@@ -79,9 +81,10 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
     }
 
     if (_sessionState == SessionState.idle) {
-      await _beginNewSession();
+      _beginNewSession();
     }
     _sessionState = SessionState.recording;
+    _startDraftTimer();
     notifyListeners();
 
     try {
@@ -93,6 +96,7 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
     } catch (e) {
       debugPrint('[ASR] source start error: $e');
       _sessionState = SessionState.paused;
+      _stopDraftTimer();
       try {
         await _setWakelock(false);
       } catch (_) {}
@@ -104,6 +108,7 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
     if (_sessionState != SessionState.recording) return;
     await _source?.stop();
     _sessionState = SessionState.paused;
+    _stopDraftTimer();
     try {
       await _setWakelock(false);
     } catch (_) {}
@@ -129,33 +134,24 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
     _sessionCount += hits;
     _lastHitAt = DateTime.now();
     debugPrint('[ASR] 阿彌陀佛 HIT=$hits Count=$_sessionCount');
-
-    for (int i = 0; i < hits; i++) {
-      _buffer?.add(DateTime.now());
-    }
     notifyListeners();
   }
 
-  Future<void> _beginNewSession() async {
-    final sessionId = DateTime.now().toUtc().millisecondsSinceEpoch.toString();
-    _sessionId = sessionId;
+  void _beginNewSession() {
+    _sessionId = DateTime.now().toUtc().millisecondsSinceEpoch.toString();
     _sessionStartedAt = DateTime.now().toUtc();
     _sessionCount = 0;
     _lastHitAt = null;
+  }
 
-    final logger = _hitLogFactory(sessionId);
-    await logger.initFromDisk();
-    _hitLogger = logger;
+  void _startDraftTimer() {
+    _draftTimer?.cancel();
+    _draftTimer = Timer.periodic(_draftEvery, (_) => unawaited(_saveDraft()));
+  }
 
-    _buffer = BufferedHits(
-      flushEvery: const Duration(seconds: 3),
-      maxBuffer: 200,
-      onFlush: (hits) async {
-        if (hits.isEmpty) return;
-        final hitsUtc = hits.map((e) => e.toUtc()).toList(growable: false);
-        await _hitLogger?.appendMany(hitsUtc);
-      },
-    );
+  void _stopDraftTimer() {
+    _draftTimer?.cancel();
+    _draftTimer = null;
   }
 
   Future<void> _commitSession() async {
@@ -177,11 +173,7 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
     await _pendingStore.add(pending);
 
     await _source?.stop();
-    try {
-      await _buffer?.close();
-    } catch (_) {}
-    _buffer = null;
-    _hitLogger = null;
+    _stopDraftTimer();
     _sessionCount = 0;
     _lastHitAt = null;
     _sessionState = SessionState.idle;
@@ -208,7 +200,7 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
         await _pendingStore.remove(entry.snapshot.sessionId);
         wroteAny = true;
       } catch (e) {
-        debugPrint('[ASR] replay pending failed: $e');
+        debugPrint('[ASR] replay pending failed: $e'); 
       }
     }
     if (wroteAny) {
@@ -233,11 +225,13 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
   }
 
   Future<void> _saveDraft() async {
+    if (_savingDraft) return;
     if (_sessionCount <= 0) return;
     final sessionId = _sessionId;
     final startedAt = _sessionStartedAt;
     if (sessionId == null || startedAt == null) return;
 
+    _savingDraft = true;
     try {
       await _pendingStore.add(
         PendingCommit(
@@ -253,6 +247,8 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
       debugPrint('[ASR] draft saved: $_sessionCount hits');
     } catch (e) {
       debugPrint('[ASR] draft save failed: $e');
+    } finally {
+      _savingDraft = false;
     }
   }
 
@@ -264,11 +260,7 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
     if (source != null) {
       unawaited(source.dispose().catchError((_) {}));
     }
-    final buffer = _buffer;
-    _buffer = null;
-    if (buffer != null) {
-      unawaited(buffer.close().catchError((_) {}));
-    }
+    _stopDraftTimer();
     unawaited(_setWakelock(false).catchError((_) {}));
     super.dispose();
   }
