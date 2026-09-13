@@ -28,6 +28,7 @@ void main() async {
     orElse: () => Flavor.dev,
   );
   unawaited(excludeChantingDataFromBackup());
+  unawaited(purgeLegacyHitLogs());
 
   runApp(const App());
 }
