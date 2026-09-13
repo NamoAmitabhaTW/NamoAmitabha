@@ -6,6 +6,11 @@ import 'package:path/path.dart' as p;
 class ChantingPaths {
   const ChantingPaths._();
 
+  static Future<Directory> sessionsDir() async {
+    final root = await AppPaths.dataRoot();
+    return Directory(p.join(root.path, 'sessions'));
+  }
+
   static Future<File> sessionSnapshot(String sessionId) async {
     final root = await AppPaths.dataRoot();
     final file = File(p.join(root.path, 'sessions', '$sessionId.json'));

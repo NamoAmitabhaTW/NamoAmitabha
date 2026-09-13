@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Android 12（API 31）以上的備份範圍規則。
+
+  預設會備份 files/ 底下全部內容，而語音模型展開後約 161 MB，遠超過 Auto
+  Backup 每個 App 25 MB 的雲端上限——超標不是跳過大檔，是整個 App 都不備份，
+  而且不會有任何錯誤訊息。下面排除的四項都能重新產生，排除不會損失使用者資料。
+
+  API 30 以下看 backup_rules.xml，兩份都要維護（minSdk = 24）。
+-->
+<data-extraction-rules>
+    <cloud-backup>
+        <!-- 161 MB，還原後由 materializeBundledModel() 從 App bundle 重新解開 -->
+        <exclude domain="file" path="amitabha/models" />
+        <!-- 公告清單與內文的快取，重新抓即可 -->
+        <exclude domain="file" path="amitabha/announcements" />
+        <!-- 工作階段快照與逐聲流水帳，全專案無讀取者 -->
+        <exclude domain="file" path="amitabha/data/sessions" />
+        <!-- 遠端背景清單的快取，重新抓即可 -->
+        <exclude domain="file" path="amitabha/settings/background_manifest.json" />
+        <!--
+          Flutter debug 版把 Dart kernel 與 snapshot（約 80 MB）放在 app_flutter/，
+          光這些就超過 25 MB 上限，導致備份設定在 debug 版上根本無法驗證。
+          release 版此目錄為空（Dart 已 AOT 編譯進 APK 的 libapp.so）。
+
+          本專案從未呼叫 getApplicationDocumentsDirectory()，所以這裡沒有任何
+          App 自己的資料，全是 Flutter 的產物，還原後會自行重建。
+          注意：未來若有程式碼開始使用 getApplicationDocumentsDirectory()，
+          這條會讓那些資料默默不被備份，屆時必須重新評估。
+        -->
+        <exclude domain="root" path="app_flutter" />
+    </cloud-backup>
+    <device-transfer>
+        <!-- 換機直傳沒有容量上限，排除這兩項純粹是為了傳輸時間 -->
+        <exclude domain="file" path="amitabha/models" />
+        <exclude domain="root" path="app_flutter" />
+    </device-transfer>
+</data-extraction-rules>

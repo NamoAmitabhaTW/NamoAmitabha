@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Android 11（API 30）以下的備份範圍規則，內容與 data_extraction_rules.xml
+  的 <cloud-backup> 一致；舊格式沒有雲端／直傳之分。
+
+  本專案 minSdk = 24、targetSdk = 36，跨越了格式分界，兩份規則缺一不可。
+-->
+<full-backup-content>
+    <exclude domain="file" path="amitabha/models" />
+    <exclude domain="file" path="amitabha/announcements" />
+    <exclude domain="file" path="amitabha/data/sessions" />
+    <exclude domain="file" path="amitabha/settings/background_manifest.json" />
+    <!--
+      Flutter debug 版的 Dart kernel 與 snapshot（約 80 MB）放在 app_flutter/，
+      光這些就超過 25 MB 上限。release 版此目錄為空。本專案從未呼叫
+      getApplicationDocumentsDirectory()，這裡沒有 App 自己的資料。
+      詳細說明見 data_extraction_rules.xml。
+    -->
+    <exclude domain="root" path="app_flutter" />
+</full-backup-content>

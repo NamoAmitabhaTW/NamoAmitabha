@@ -1,4 +1,7 @@
 //main.dart
+import 'dart:async';
+
+import 'package:amitabha/features/asr/asr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -24,5 +27,7 @@ void main() async {
     (e) => e.name == flavorName,
     orElse: () => Flavor.dev,
   );
+  unawaited(excludeChantingDataFromBackup());
+
   runApp(const App());
 }
