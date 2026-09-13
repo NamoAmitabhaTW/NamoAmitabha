@@ -39,6 +39,13 @@ class ChantingPaths {
     return file;
   }
 
+  static Future<File> dailyIndex() async {
+    final root = await AppPaths.dataRoot();
+    final file = File(p.join(root.path, 'daily_index.json'));
+    await file.parent.create(recursive: true);
+    return file;
+  }
+
   static Future<Directory> pendingDir() async {
     final root = await AppPaths.dataRoot();
     return Directory(p.join(root.path, 'pending'));
