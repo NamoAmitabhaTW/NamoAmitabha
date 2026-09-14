@@ -1,7 +1,7 @@
 // test/features/model_install/data/model_installer_test.dart
-//
-// 守住 160MB 語音模型的下載與解壓流程。
-// 重點在五種失敗路徑各自的處置與殘檔清理，這段失敗了 App 就完全不能用。
+// 160MB 語音模型的下載與解壓，這段失敗了 App 就完全不能用。
+// 重點在八種失敗路徑的錯誤類型與殘檔處置，兩階段刻意不一樣：
+// 下載失敗刪掉半截 zip，解壓被取消卻要留著——不然得重下 160MB。
 
 import 'dart:async';
 import 'dart:io';

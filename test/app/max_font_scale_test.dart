@@ -1,7 +1,7 @@
 // test/app/max_font_scale_test.dart
-//
-// 守住「平板放大倍率 × 使用者輔助字級」的乘積不爆版、不裁字。
-// 文字被裁不會拋例外，所以除了看例外，還直接比對渲染後的字寬與格子寬。
+// 「平板放大倍率 × 使用者輔助字級」的乘積不爆版、不裁字。
+// 裁字不會拋例外，所以偈文那組直接量字寬與格子寬。
+// 也守封頂：平板容得下 iOS AX5 就不該封，手機該封但不得低於 Android 的 2.0。
 
 import 'dart:io';
 import 'package:amitabha/core/assets/app_assets.dart';

@@ -200,7 +200,7 @@ class AsrSessionController extends ChangeNotifier with WidgetsBindingObserver {
         await _pendingStore.remove(entry.snapshot.sessionId);
         wroteAny = true;
       } catch (e) {
-        debugPrint('[ASR] replay pending failed: $e'); 
+        debugPrint('[ASR] replay pending failed: $e');
       }
     }
     if (wroteAny) {

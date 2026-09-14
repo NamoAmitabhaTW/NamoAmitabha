@@ -1,7 +1,7 @@
 // test/features/records/presentation/records_layout_test.dart
-//
-// 守住記錄頁在平板上的字級會跟著畫布一起放大。
-// 手機那條斷言最重要：縮放下限是 1.0，基準寬度上字級必須與加入縮放前完全相同。
+// 記錄頁字級在平板跟著畫布放大 1.5 倍。
+// 手機那四條更重要：縮放下限是 1.0，所以 375～440dp 的字級必須正好是
+// 19/32/15，和還沒有平板縮放之前一模一樣——動到就是回歸。
 
 import 'dart:io';
 import 'package:amitabha/core/layout/layout_scale.dart';

@@ -1,4 +1,4 @@
-//main.dart
+// lib/main.dart
 import 'dart:async';
 
 import 'package:amitabha/features/asr/asr.dart';

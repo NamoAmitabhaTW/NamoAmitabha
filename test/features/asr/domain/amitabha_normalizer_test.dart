@@ -1,6 +1,5 @@
 // test/features/asr/domain/amitabha_normalizer_test.dart
-//
-// 守住佛號辨識的容錯比對。
+// 佛號辨識的容錯比對。
 // 語音辨識輸出不會每次一致，正規化要吸收合理差異又不能寬鬆到誤判。
 
 import 'package:amitabha/features/asr/domain/amitabha_normalizer.dart';

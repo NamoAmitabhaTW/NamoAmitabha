@@ -1,7 +1,7 @@
 // test/architecture/dependency_rule_test.dart
-//
-// 把「依賴只能往內」變成一個會失敗的測試。
-// 掃描 lib/ 每一行 import 與 export，違反分層或跳過 barrel 就紅燈。
+// 掃 lib/ 每一行原始碼，把兩條約定變成會失敗的測試：
+// 依賴只能往內（跨 feature 一律走 barrel），以及素材路徑只准寫在 AppAssets。
+// 後者是為了讓素材改名時編譯就失敗，而不是在使用者手機上變成一片空白。
 
 import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';

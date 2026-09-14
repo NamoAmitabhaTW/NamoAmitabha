@@ -1,7 +1,7 @@
 // test/features/asr/data/legacy_schema_compat_test.dart
-//
-// 守住既有使用者升級後不掉念佛記錄，這是重構裡唯一碰到使用者資料的改動。
-// 用真的舊格式檔案跑一遍，而不是靠「新版沒讀那兩個鍵」這句推論。
+// 既有使用者升級後不掉念佛記錄，用真的舊格式檔案跑一遍，而不是靠推論。
+// 涵蓋架上的 1.x 與開發機的 2.0.0；寫回時升為 schemaVersion 2、
+// 清掉登入殘留欄位，但數字原封不動。
 
 import 'dart:convert';
 import 'dart:io';

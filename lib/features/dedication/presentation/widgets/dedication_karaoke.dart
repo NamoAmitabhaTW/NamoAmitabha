@@ -1,3 +1,4 @@
+// lib/features/dedication/presentation/widgets/dedication_karaoke.dart
 import 'dart:math' as math;
 import 'package:amitabha/features/dedication/presentation/widgets/dedication_paragraph.dart';
 import 'package:flutter/material.dart';

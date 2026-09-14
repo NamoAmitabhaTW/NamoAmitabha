@@ -1,7 +1,7 @@
 // test/features/asr/application/asr_session_controller_test.dart
-//
-// 守住念佛工作階段的狀態機，以及 App 在任何時候被殺都不掉數。
-// 計數先落地成 pending 暫存再重放，重放以 sessionId 去重，失敗留在原地等下次。
+// 念佛工作階段的狀態機，以及計數在 App 被中斷時不會消失。
+// 進背景與 detached 各自落地，連回呼都來不及跑就靠錄音中的定時草稿；
+// 計數先寫成 pending 暫存再重放，重放以 sessionId 去重，失敗留在原地等下次。
 
 import 'dart:io';
 import 'package:amitabha/core/infrastructure/atomic_io.dart';
@@ -162,7 +162,6 @@ void main() {
     expect((daily['sessionIds'] as List).contains(sessionId), isTrue);
 
     expect(await const FilePendingCommitStore().list(), isEmpty);
-
 
     c.dispose();
   });

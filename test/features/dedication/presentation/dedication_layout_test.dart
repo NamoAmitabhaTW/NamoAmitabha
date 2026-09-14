@@ -1,7 +1,7 @@
 // test/features/dedication/presentation/dedication_layout_test.dart
-//
-// 守住迴向頁的方塊字行寬、拉丁排版與八行偈文的垂直預算。
-// 方塊字的數字與字型無關、實機同樣成立；拉丁文的寬度則是用來逼出分支。
+// 迴向頁的方塊字行寬、拉丁排版與八行偈文的垂直預算。
+// 方塊字比的是「每格寬 ÷ 單字寬」，與字型無關、實機同樣成立；拉丁文那三個
+// 寬度不是實機尺寸，是挑來各踩一次「逐句成行 / 整塊縮小 / 改回換行」。
 
 import 'package:amitabha/features/dedication/dedication.dart';
 import 'package:amitabha/features/dedication/domain/dedication_gatha.dart';

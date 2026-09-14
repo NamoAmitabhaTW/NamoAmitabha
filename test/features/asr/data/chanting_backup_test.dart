@@ -1,4 +1,6 @@
 // test/features/asr/data/chanting_backup_test.dart
+// 排除備份的旗標要下在 sessions 目錄本身，不能下在個別檔案上——
+// 原子寫入的 rename 會換掉 inode，檔案層級的旗標會跟著默默失效。
 
 import 'dart:io';
 

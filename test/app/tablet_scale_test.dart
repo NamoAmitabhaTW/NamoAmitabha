@@ -1,7 +1,7 @@
 // test/app/tablet_scale_test.dart
-//
-// 守住同一台平板上各頁的放大程度一致，且手機一個像素都不動。
-// 設定頁刻意除外：它的固定畫布倍率是為了讓葉片對上校準圖。
+// 同一台平板上各頁的放大程度一致，且手機（360～600dp）一個像素都不動。
+// 平板是從斷點線性升到 1.5 倍，不是一過斷點就跳滿。
+// 設定頁不在這裡管：它用固定畫布倍率對齊校準圖，見 settings_leaf_anchor_test。
 
 import 'package:amitabha/core/assets/app_assets.dart';
 import 'package:amitabha/core/layout/layout_scale.dart';

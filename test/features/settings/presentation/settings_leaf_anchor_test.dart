@@ -1,6 +1,5 @@
 // test/features/settings/presentation/settings_leaf_anchor_test.dart
-//
-// 守住 leaf_layout.dart 的平板座標與 design/anchors_*.png 校準圖一致。
+// leaf_layout.dart 的平板座標與 design/anchors_*.png 校準圖一致。
 // 它只保證程式碼忠實反映校準圖；紅色標記標在對的葉子上仍要人眼確認。
 
 import 'dart:convert';
