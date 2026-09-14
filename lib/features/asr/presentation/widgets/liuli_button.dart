@@ -93,6 +93,7 @@ class LiuliButton extends StatelessWidget {
                         color: effForeground,
                         colorBlendMode: BlendMode.srcIn,
                         semanticLabel: label,
+                        gaplessPlayback: true,
                       )
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.center,

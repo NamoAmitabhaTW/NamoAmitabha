@@ -32,6 +32,17 @@ class StreamingAsrScreen extends StatelessWidget {
       return;
     }
 
+    // Decode the pause art before start() swaps the label, so the button never
+    // waits on a decode the model load is about to block.
+    if (!context.mounted) return;
+    final pauseArt = AppAssets.chantButton(
+      Localizations.localeOf(context).languageCode,
+      ChantButtonArt.pause,
+    );
+    if (pauseArt != null) {
+      await precacheImage(AssetImage(pauseArt), context);
+    }
+
     await asr.start();
   }
 
