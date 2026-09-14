@@ -49,6 +49,13 @@ class SherpaMicSource implements SpeechSegmentSource {
   StreamSubscription<Uint8List>? _subscription;
   bool _running = false;
 
+  // start() only flips _running once the model is loaded and the stream is
+  // open, which takes seconds on the first run. Without these two, a stop()
+  // arriving in that window sees _running == false, returns, and start() then
+  // opens the microphone behind a UI that already says it stopped.
+  bool _stopRequested = false;
+  Future<void> _queue = Future.value();
+
   int _dbgDecodeMs = 0;
   double _dbgAudioMs = 0;
   int _dbgEmptyEndpoints = 0;
@@ -56,18 +63,46 @@ class SherpaMicSource implements SpeechSegmentSource {
   @override
   Future<bool> hasPermission() => _recorder.hasPermission();
 
+  /// Runs [op] after everything already queued, so a stop can never overtake
+  /// a start that is still loading.
+  Future<void> _serialize(Future<void> Function() op) {
+    final next = _queue.then((_) => op());
+    _queue = next.catchError((_) {});
+    return next;
+  }
+
   @override
-  Future<void> start({required void Function(String text) onSegment}) async {
+  Future<void> start({required void Function(String text) onSegment}) {
+    _stopRequested = false;
+    return _serialize(() => _start(onSegment: onSegment));
+  }
+
+  @override
+  Future<void> stop() {
+    _stopRequested = true;
+    return _serialize(_stop);
+  }
+
+  @override
+  Future<void> dispose() {
+    _stopRequested = true;
+    return _serialize(_dispose);
+  }
+
+  Future<void> _start({required void Function(String text) onSegment}) async {
     if (_running) return;
 
     if (_recognizer == null) {
       sherpa_onnx.initBindings();
       _recognizer = await createOnlineRecognizer(modelName);
     }
+    if (_stopRequested) return;
+
     _stream ??= _recognizer!.createStream();
 
     const encoder = AudioEncoder.pcm16bits;
     if (!await _isEncoderSupported(encoder)) return;
+    if (_stopRequested) return;
 
     const config = RecordConfig(
       encoder: encoder,
@@ -75,6 +110,17 @@ class SherpaMicSource implements SpeechSegmentSource {
       numChannels: 1,
     );
     final audio = await _recorder.startStream(config);
+
+    // The stream is open now, so a stop that arrived while it was opening has
+    // to release the microphone rather than just walk away from it.
+    if (_stopRequested) {
+      try {
+        await _recorder.stop();
+      } catch (e) {
+        debugPrint('[ASR] recorder stop failed: $e');
+      }
+      return;
+    }
 
     _dbgDecodeMs = 0;
     _dbgAudioMs = 0;
@@ -116,22 +162,22 @@ class SherpaMicSource implements SpeechSegmentSource {
     }, onDone: () => debugPrint('[ASR] audio stream done'));
   }
 
-  @override
-  Future<void> stop() async {
+  Future<void> _stop() async {
     if (!_running) return;
     _running = false;
     await _subscription?.cancel();
     _subscription = null;
     try {
       await _recorder.stop();
-    } catch (_) {}
+    } catch (e) {
+      debugPrint('[ASR] recorder stop failed: $e');
+    }
 
     _stream?.free();
     _stream = _recognizer?.createStream();
   }
 
-  @override
-  Future<void> dispose() async {
+  Future<void> _dispose() async {
     _running = false;
     await _subscription?.cancel();
     _subscription = null;
