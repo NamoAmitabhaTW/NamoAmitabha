@@ -6,7 +6,8 @@
 - Mehrsprachige Unterstützung mit jetzt 7 Oberflächensprachen: Traditionelles Chinesisch, Englisch, Japanisch, Koreanisch, Vietnamesisch, Deutsch und Französisch
 - Neue Widmungsfunktion mit frei bearbeitbarem Inhalt
 - Neue Ankündigungsfunktion, die Neuigkeiten anzeigt
-- Spracherkennungsmodell jetzt integriert – kein Download beim ersten Start
+- Spracherkennungsmodell jetzt integriert (kein Download)
+- Verbesserte Datenspeicherung – benötigt weniger Speicherplatz
 
 **2. Verbesserte Oberfläche**
 

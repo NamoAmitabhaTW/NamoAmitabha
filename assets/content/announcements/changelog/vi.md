@@ -14,7 +14,8 @@ Rất mong quý vị giúp giới thiệu và để lại đánh giá tốt, đ�
 - Hỗ trợ đa ngôn ngữ, hiện có 7 ngôn ngữ giao diện: Tiếng Trung phồn thể, tiếng Anh, tiếng Nhật, tiếng Hàn, tiếng Việt, tiếng Đức, tiếng Pháp
 - Thêm tính năng hồi hướng, có thể tự chỉnh sửa nội dung
 - Thêm tính năng thông báo, hiển thị nội dung cập nhật
-- Mô hình nhận diện giọng nói được tích hợp sẵn, lần đầu mở không cần tải
+- Mô hình nhận diện giọng nói được tích hợp sẵn (không cần tải)
+- Tối ưu lưu trữ dữ liệu, giảm dung lượng sử dụng
 
 **3. Cải thiện giao diện**
 
