@@ -32,6 +32,9 @@ Color _titleColor(double v) => Color.lerp(
   ((v + 1) / 2) * _titleGoldSwing,
 )!;
 
+// Anchors the iPad share popover; kept outside build() so it survives rebuilds.
+final _shareLeafKey = GlobalKey();
+
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
@@ -106,12 +109,14 @@ class SettingsScreen extends StatelessWidget {
           onTap: () => StoreActions.rate(context),
         ),
       _LeafButton(
+        key: _shareLeafKey,
         title: t.shareTitle,
         image: _titleImage(context, SettingsTitleArt.share),
         rect: rectOf(SettingsLeaf.share),
         phase: 0.85,
         period: const Duration(milliseconds: 4000),
-        onTap: () => StoreActions.share(context),
+        onTap: () =>
+            StoreActions.share(_shareLeafKey.currentContext ?? context),
       ),
     ];
 
@@ -223,6 +228,7 @@ TextStyle _leafTextStyle(String fontFamily) => TextStyle(
 
 class _LeafButton extends StatefulWidget {
   const _LeafButton({
+    super.key,
     required this.title,
     required this.rect,
     required this.onTap,

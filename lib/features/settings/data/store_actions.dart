@@ -33,7 +33,10 @@ class StoreActions {
 
     final box = context.findRenderObject() as RenderBox?;
     final origin = box != null
-        ? box.localToGlobal(Offset.zero) & box.size
+        ? Rect.fromPoints(
+            box.localToGlobal(Offset.zero),
+            box.localToGlobal(box.size.bottomRight(Offset.zero)),
+          )
         : null;
 
     await Share.share(
