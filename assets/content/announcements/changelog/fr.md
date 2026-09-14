@@ -6,7 +6,8 @@
 - Prise en charge multilingue, avec désormais 7 langues d'interface : chinois traditionnel, anglais, japonais, coréen, vietnamien, allemand et français
 - Nouvelle fonction de dédicace au contenu modifiable
 - Nouvelle fonction d'annonces qui affiche les nouveautés
-- Modèle de reconnaissance vocale désormais intégré — aucun téléchargement au premier lancement
+- Modèle de reconnaissance vocale désormais intégré (aucun téléchargement)
+- Stockage des données optimisé, occupe moins d'espace
 
 **2. Interface améliorée**
 

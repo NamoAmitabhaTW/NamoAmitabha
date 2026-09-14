@@ -6,7 +6,8 @@
 - Multi-language support, now covering 7 interface languages: Traditional Chinese, English, Japanese, Korean, Vietnamese, German, and French
 - Added a dedication feature with editable content
 - Added an announcements feature that shows update notes
-- Speech recognition model is now built in — no download on first launch
+- Speech recognition model is now built in (no download)
+- Improved data storage, taking up less space on your device
 
 **2. Improved interface**
 
