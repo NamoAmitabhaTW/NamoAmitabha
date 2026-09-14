@@ -1,7 +1,7 @@
 // test/features/announcements/presentation/announcement_layout_test.dart
-//
-// 用真正的 SimpleMarkdown 渲染所有語系的公告內文，檢查排版正確性。
-// 涵蓋 changelog、dev-intro、licenses 三個來源 × 七個語系。
+// 用 SimpleMarkdown 把 dev-intro 與 changelog 的七個語系各渲染一次。
+// 只驗兩件事：項目符號數量與原始碼相符（清單沒被當成段落），
+// 以及畫面上不留未解析的 ** 標記。
 
 import 'dart:io';
 import 'package:amitabha/core/assets/app_assets.dart';

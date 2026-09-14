@@ -1,7 +1,7 @@
 // test/core/widgets/fitted_title_test.dart
-//
-// 守住 FittedTitle 的契約：空間夠就等比縮小塞下，不夠就停在下限並截斷。
-// 測試字型是全形方格、約為實機兩倍寬，這裡的寬度是用來逼出分支，不是實機像素。
+// FittedTitle 的契約：空間夠就等比縮小塞下，不夠就停在下限並截斷，
+// 而且任何寬度 × 字級的組合都不會低於下限。
+// 測試字型是全形方格、約實機兩倍寬，這裡的寬度是挑來踩路徑，不是實機像素。
 
 import 'package:amitabha/core/widgets/fitted_title.dart';
 import 'package:flutter/material.dart';

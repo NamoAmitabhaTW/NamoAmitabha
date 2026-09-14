@@ -1,11 +1,8 @@
 // test/platform/backup_rules_test.dart
-//
-// Android 的備份範圍由 manifest 屬性加 res/xml 規則檔決定，沒辦法在 Flutter
-// 測試裡真的跑起來——但「規則存在且內容正確」本身值得守住。這幾個檔案很容易
-// 在重新產生 manifest 或調整 flavor 時默默消失，而失效是無聲的：備份照常失敗，
-// 不會有任何錯誤訊息，直到使用者換手機才發現記錄不見了。
-//
-// 寫法比照 architecture/dependency_rule_test.dart：讀專案檔案來斷言約定。
+// Android 自動備份的排除規則：manifest 的三個備份屬性要在，且要同時指到
+// API 30 以下吃的 backup_rules.xml 與 API 31 以上吃的 data_extraction_rules.xml，
+// 兩份都排除 161 MB 模型目錄與放 debug 產物的 app_flutter。
+// 只比對檔案字串——超過 25 MB 上限是系統靜默放棄備份，跑不出錯誤。
 
 import 'dart:io';
 

@@ -1,10 +1,7 @@
 // test/features/asr/data/daily_index_test.dart
-//
-// 索引是衍生資料，不是真相。這裡守的是兩件事：讀得到索引時真的走索引（快），
-// 以及任何一種對不上的情況都能自己從 daily/ 重建（正確）。
-//
-// 「重建」這條路徑同時也是升級用的遷移，所以它壞掉的話，既有使用者升級後記錄
-// 頁會直接空白——這些測試主要是在防那個。
+// 索引是衍生資料，不是真相：讀得到就真的走索引（快），任何對不上
+// （檔案損毀、schemaVersion 不符、筆數不符）都能從 daily/ 重建（正確）。
+// 重建同時也是升級用的遷移——它壞掉，既有使用者升級後記錄頁就直接空白。
 
 import 'dart:convert';
 import 'dart:io';
@@ -166,9 +163,6 @@ void main() {
     await writeDaily('20260902', 2);
 
     final days = await repo.readAll();
-    expect(
-      days.map((d) => d.yyyymmdd),
-      ['20260903', '20260902', '20260901'],
-    );
+    expect(days.map((d) => d.yyyymmdd), ['20260903', '20260902', '20260901']);
   });
 }

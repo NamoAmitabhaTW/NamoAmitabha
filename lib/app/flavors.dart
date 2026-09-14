@@ -1,3 +1,4 @@
+// lib/app/flavors.dart
 enum Flavor { dev, staging, prod }
 
 class F {

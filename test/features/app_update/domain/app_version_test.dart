@@ -1,7 +1,6 @@
 // test/features/app_update/domain/app_version_test.dart
-//
-// 守住版本號的解析與比較，這是不碰網路也不碰 Flutter 的純 domain 邏輯。
-// 比較必須是數值而非字串，否則 2.10.0 會被判定小於 2.9.0。
+// 版本號的解析與比較，不碰網路也不碰 Flutter 的純 domain 邏輯。
+// 比較必須是數值而非字串，否則 2.10.0 會被判成小於 2.9.0，使用者永遠收不到更新。
 
 import 'package:amitabha/features/app_update/domain/app_version.dart';
 import 'package:flutter_test/flutter_test.dart';

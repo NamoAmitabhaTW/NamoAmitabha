@@ -1,7 +1,7 @@
 // test/features/settings/presentation/settings_screen_test.dart
-//
-// 兩個冒煙測試，確認設定頁與記錄頁在正常組裝下畫得出來。
-// 記錄頁另外驗證空資料時的提示文字與統計卡。
+// 最低限度的組裝檢查：設定頁與記錄頁在正常 Provider 組裝下畫得出來。
+// 記錄頁另外確認空資料會落到空狀態——顯示「尚無紀錄」與 0 的統計卡，
+// 而不是卡在轉圈圈。
 
 import 'dart:io';
 import 'package:amitabha/core/localization/locale_controller.dart';

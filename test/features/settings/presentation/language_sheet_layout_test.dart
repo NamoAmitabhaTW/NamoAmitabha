@@ -1,7 +1,6 @@
 // test/features/settings/presentation/language_sheet_layout_test.dart
-//
-// 守住 showAppBottomSheet 的高度契約：最矮螢幕加最大字級下，最後一項仍完整可見。
-// 預設的 9/16 高度只給 360dp，而清單需要 489dp，最後兩項會掉出畫面。
+// showAppBottomSheet 的高度契約：360×640 加兩倍字級下，最後一項仍要完整可見。
+// 預設的 9/16 高度只給 360dp，而語系清單需要 489dp——最後兩項會掉出畫面。
 
 import 'package:amitabha/core/localization/locale_controller.dart';
 import 'package:amitabha/core/widgets/app_bottom_sheet.dart';
